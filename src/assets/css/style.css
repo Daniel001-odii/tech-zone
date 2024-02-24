@@ -4,7 +4,11 @@
 @tailwind utilities;
 
 .btn{
-    @apply bg-blue px-6 py-3  rounded-md text-white font-bold hover:bg-dark_blue;
+    @apply bg-blue px-6 py-3  rounded-md text-white hover:bg-dark_blue font-bold;
+}
+
+.btn:disabled{
+    @apply bg-gray-500;
 }
 
 .btn_white{

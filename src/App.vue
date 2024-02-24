@@ -9,7 +9,7 @@ export default {
 </script>
 
 <template>
-  <!-- <Navbar/> -->
+  <Navbar/>
   <router-view/>
 </template>
 

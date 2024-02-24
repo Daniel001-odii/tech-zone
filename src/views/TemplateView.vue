@@ -14,7 +14,7 @@
                     </span>
                 </div>
 
-                <div class="flex flex-col">
+                <div class="flex flex-col h-full ">
                     <slot name="page-contents">
                          Page contents here...
                     </slot>

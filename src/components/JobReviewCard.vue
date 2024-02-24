@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
-            <div class="flex flex-row justify-between items-center flex-wrap gap-3">
+        <div class="flex flex-col text-left gap-3 border-b p-2 md:p-4 hover:bg-light_blue">
+            <div class="flex flex-row justify-between items-center gap-3">
                 <RouterLink to="#">
-                    <div class="text-2xl font-bold text-blue underline">Developer needed to build a custom website/app</div>
+                    <div class="text-xl font-bold text-blue underline">Developer needed to build a custom website/app</div>
                 </RouterLink>
                 <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">
                     <i class="bi bi-share"></i>
@@ -26,17 +26,20 @@
             <div class="flex flex-row gap-3">
                 <ContractStatus :type="'active'"/>
                 <ContractStatus :type="'ended'"/>
-                <ContractStatus :type="'paused'"/>
+                <!-- <ContractStatus :type="'paused'"/> -->
             </div>
         </div>
     </div>
 </template>
 <script>
+import ContractStatus from './ContractStatus.vue';
+
 export default {
     name: "JobReviewCard",
     props:{
         
-    }
+    },
+    components: { ContractStatus }
 }
 </script>
 <style lang="">

@@ -32,7 +32,7 @@
 
                 <div :class="nav_visible ? 'flex':'hidden'" class="mt-5 mb-8 px-8 flex justify-self-end md:flex gap-3 md:m-0">
                     <RouterLink to="/login">
-                        <button class="btn rounded-md text-blue bg-white hover:bg-light_blue">Login</button>
+                        <button class="btn rounded-md text-blue hover:text-blue hover:bg-light_blue">Login</button>
                     </RouterLink>
                    <RouterLink to="/login">
                         <button class="btn rounded-md bg-blue hover:bg-dark_blue text-white">Sign Up</button>
@@ -114,8 +114,8 @@ export default {
                     Authorization: `JWT ${token}`, // Assuming it's a JWT token
                 };
 
-                const response = await axios.get(`http://localhost:8000/api/user`, { headers });
-                console.log("from navbar :", response)
+                const response = await axios.get(`${this.api_url}/user`, { headers });
+                // console.log("from navbar :", response)
 
                 // push to user variable..
                 this.user = response.data.user;

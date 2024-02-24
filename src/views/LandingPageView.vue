@@ -104,9 +104,11 @@
                         <span class="text-2xl text-white">FEATURED JOBS</span>
                         <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
                             <h2 class="section_subtitle text-white">Get access to high in-demand jobs in realtime</h2>
-                            <button class="btn bg-white text-blue hover:text-white flex flex-row gap-1">
-                                Browse All jobs <i class="bi bi-arrow-right"></i> 
-                            </button>
+                            <RouterLink to="/jobs">
+                                <button class="btn bg-white text-blue hover:text-white flex flex-row gap-1">
+                                    Browse All jobs <i class="bi bi-arrow-right"></i> 
+                                </button>
+                            </RouterLink>
                         </div>
                     </div>
 

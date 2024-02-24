@@ -1,10 +1,12 @@
 <template>
     <div>
         <div  class="flex flex-col w-fit gap-4">
-            <button class="btn w-full">Get Started Now</button>
+            <RouterLink to="/register">
+                <button class="btn w-full">Get Started Now</button>
+            </RouterLink>
             <div class="flex justify-between gap-6">
                 <span class="text-sm"> Already have an account?</span>
-                <RouterLink to="/" class="text-blue text-sm">Login here</RouterLink>
+                <RouterLink to="/login" class="text-blue text-sm">Login here</RouterLink>
             </div>
         </div>
     </div>

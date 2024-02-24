@@ -27,12 +27,12 @@
                     <div class="flex flex-col justify-start p-3">
                         <div v-if="showTab == 'tab-1'">
                             <div class="flex flex-col md:flex-row gap-3">
-                                <div class=" md:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3" style="height: 600px;">
+                                <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3" style="height: 600px;">
                                     <MainJobCard></MainJobCard>
                                     <MainJobCard></MainJobCard>
                                     <MainJobCard></MainJobCard>
                                 </div>
-                                <div class=" md:w-10/12">
+                                <div class="hidden lg:flex lg:w-10/12">
                                    <JobDetailCard/>
                                 </div>
                             </div>

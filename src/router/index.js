@@ -10,6 +10,7 @@ import ContractsListPageViewVue from '@/views/ContractsListPageView.vue'
 import MyApplicationsPageViewVue from '@/views/MyApplicationsPageView.vue'
 import ProfilePageViewVue from '@/views/ProfilePageView.vue'
 import LoginViewVue from '@/views/LoginView.vue'
+import SignupViewVue from '@/views/SignupView.vue'
 
 const routes = [
   {
@@ -22,6 +23,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginViewVue
+  },
+
+  {
+    path: '/register',
+    name: 'register',
+    component: SignupViewVue
   },
 
 

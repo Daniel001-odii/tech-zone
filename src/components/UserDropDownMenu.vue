@@ -1,12 +1,13 @@
 <template>
     <div>
-        <div class=" w-52 border absolute bg-white top-10 right-0 rounded-lg p-3 hidden group-hover:block z-10">
+        <div class=" w-52 border absolute bg-white top-10 right-0 rounded-lg p-1 hidden group-hover:block z-10">
             <div class="flex flex-col text-left gap-1">
-                <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-between">
-                    <span>{{ username }} <br/> 
+                <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-evenly px-1">
+                    <div class="flex flex-col">
+                        <span>{{ username }}</span>
                         <span class="text-blue text-sm">{{ email }}</span>
-                </span>
-                    <i :class="sub_items ? 'bi bi-caret-up-fill':'bi bi-caret-down-fill'"></i>
+                    </div>
+                    <i :class="sub_items ? 'bi bi-caret-up-fill':'bi bi-caret-down-fill'" class=""></i>
                 </div>
                 <div v-if="sub_items">
                     <RouterLink to="/profile">
@@ -23,7 +24,7 @@
                 </div>
               
                 <div class="menu_item"><i class="bi bi-question-circle"></i> Help & Support</div>
-                <div class="menu_item"><i class="bi bi-box-arrow-right"></i> Logout</div>
+                <button @click="logout" class="menu_item"><i class="bi bi-box-arrow-right"></i> Logout</button>
             </div>
         </div>
     </div>
@@ -39,11 +40,17 @@ export default {
         return{
             sub_items: false,
         }
+    },
+    methods:{
+        logout(){
+            localStorage.removeItem("life-guard");
+            this.$router.push('/login')
+        }
     }
 }
 </script>
 <style scoped>
     .menu_item{
-        @apply hover:bg-light_blue p-3 rounded-md
+        @apply hover:bg-light_blue p-3 rounded-md text-left
     }
 </style>
