@@ -1,6 +1,6 @@
 <template>
     <div>
-        <RouterLink to="/">
+        <RouterLink to="/" class="">
             <div class="flex flex-row justify-center items-center font-bold text-xl">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="32" viewBox="0 0 70 52" fill="none">
                     <rect x="2" y="25.7966" width="60.7231" height="25.0813" rx="12.5406" transform="rotate(-22.9217 2 25.7966)" fill="url(#paint0_linear_2007_5583)"/>
@@ -41,7 +41,7 @@
                     </linearGradient>
                     </defs>
                 </svg>
-                <h1 class="hidden md:inline-block">Tech-zone</h1>
+                <h1 class="hidden md:inline-block text-black">Tech-zone</h1>
             </div>
            
         </RouterLink>

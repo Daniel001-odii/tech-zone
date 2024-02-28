@@ -11,6 +11,7 @@ import MyApplicationsPageViewVue from '@/views/MyApplicationsPageView.vue'
 import ProfilePageViewVue from '@/views/ProfilePageView.vue'
 import LoginViewVue from '@/views/LoginView.vue'
 import SignupViewVue from '@/views/SignupView.vue'
+import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 
 const routes = [
   {
@@ -29,6 +30,13 @@ const routes = [
     path: '/register',
     name: 'register',
     component: SignupViewVue
+  },
+
+
+  {
+    path: '/register/client',
+    name: 'register-client',
+    component: ClientSignupViewVue
   },
 
 

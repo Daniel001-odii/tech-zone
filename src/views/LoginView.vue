@@ -33,10 +33,13 @@
                         <!-- <button class="btn w-full" disabled>Sign in</button>  -->
                         <!-- GOOGLE SIGN IN -->
                         <div class="">
-                            <button type="button" class="text-white w-full bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-3.5 text-center inline-flex items-center justify-center"><svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>Continue with Google<div></div></button>
+                            <!-- <GoogleLogin class="!w-full" :callback="callback" auto-login/> -->
+                                <button @click="googleLogin" type="button" class="text-white w-full bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center"><svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>Continue with Google<div></div></button>
+                            <!-- </GoogleLogin> -->
+                            
                         </div>
                         <div class="text-center">
-                            <p>Don't have ac account yet? <RouterLink to="/register">Sign up</RouterLink> </p>
+                            <p>Don't have account yet? <RouterLink to="/register" class=" decoration-blue">Sign up</RouterLink> </p>
                         </div>                      
                     </form>
                 </div>
@@ -45,7 +48,7 @@
 
             <div class=" bg-light_blue hidden lg:flex flex-col justify-center items-center w-3/6  h-full">
                 <div>
-                    <img src="../assets/images/tech-zone.svg">
+                    <img src="../assets/images/tech-zone.svg" width="100px">
                 </div>
             </div>
         </div>
@@ -56,10 +59,12 @@
 import Alert from '@/components/Alert.vue';
 import LoaderButton from '@/components/LoaderButton.vue';
 import axios from 'axios';
-
+import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
+// import {  } from 'vue3-google-login';
 
 export default {
     name: "LoginView",
+    components: {},
     data() {
         return {
             error: '',
@@ -68,7 +73,8 @@ export default {
             form_data: {
                 email: '',
                 password: ''
-            }
+            },
+            callback: this.googleAuth,
         };
     },
     methods: {
@@ -86,7 +92,62 @@ export default {
                 this.error = error.response.data.message;
                 this.loading = false;
             }
-        }
+        },
+
+        // handling google authentication..
+        async googleAuth(response) {
+                // console.log(response)
+                console.log("decode credential: ", decodeCredential(response.credential));
+                const decoded_user_data = decodeCredential(response.credential);
+                console.log(decoded_user_data)
+                // const email = decoded_user_data.email;
+                // const firstname = decoded_user_data.given_name;
+                // const lastname = decoded_user_data.family_name;
+                // const googleId = decoded_user_data.sub;
+                // const picture = decoded_user_data.picture;
+                // try {
+                //     const userData = {
+                //         email: email,
+                //         firstname: firstname,
+                //         lastname: lastname,
+                //         googleId: googleId,
+                //         picture: picture,
+                //     }
+                //     console.log("user data from google: ", userData)
+
+                //     const response = await axios.post(`http://localhost:8000/api/google-auth`, userData);
+                //     localStorage.setItem('life-gaurd', response.data.token);
+                //     this.$router.push('/profile');
+                //     // console.log(response);
+
+                // }catch(error){
+                //     console.log(error)
+                // }
+        },
+
+        async googleLogin(){
+            try{
+                const response = await googleAuthCodeLogin();
+                console.log("response from google: ", response);
+                const auth_code = { code: response.code }
+                const res = await axios.post(`http://localhost:8000/api/google-auth`, auth_code );
+                if(res.data.message == "Sign-in successful"){
+                    // alert user of successful sign login..
+                    alert("Login Successfull");
+                    // save user token...
+                    localStorage.setItem("life-gaurd", res.data.token);
+                    // redirect to user profile...
+                    this.$router.push("/profile")
+                } else if(res.data.message == "User registered successfully"){
+                    alert("Registration successful!");
+                    this.$router.push("/profile")
+                }
+                console.log("response from backend: ", res)
+
+            }catch(error){
+                alert(error);
+            }
+        },
     },
     components: { Alert, LoaderButton }
 }

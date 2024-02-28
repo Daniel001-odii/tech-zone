@@ -60,7 +60,8 @@
                     
                     <i class="bi bi-three-dots-vertical"></i>
                     <div class="flex flex-row items-center gap-3 relative group ">
-                        <div class=" h-10 w-10 bg-slate-300 rounded-full flex justify-center items-center text-2xl">{{ user.firstname[0] }}</div>
+                        <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
+                        <!-- <div class=" h-10 w-10 bg-slate-300 rounded-full flex justify-center items-center text-2xl">{{ user.firstname[0] }}</div> -->
                         <!-- I HAVE DELIBERATELY REMOVED THE USERNAME AND EMAIL HERE -->
                         <!-- <div class="flex flex-col text-left">
                             <span>Odii Daniel</span>

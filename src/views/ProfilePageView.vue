@@ -13,16 +13,18 @@
         <TemplateView :leftnav="true">
         <!-- <TemplateView :leftNav="false"> -->
             <template #page-title>Profile</template>
-            <div v-if="!user">loading user data...</div>
-            <template #page-contents v-if="user">
-                <div class="p-8">
+            
+            <template #page-contents>
+                <div v-if="!user">loading user data...</div>
+                <div class="p-5" v-if="user">
                     <div class=" flex flex-col items-center gap-8">
 
                         <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border">
                             <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
-                                <div :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover">
-                                    <!-- <img :src="user.profile.image_url" -->
-                                </div>
+                                <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover"></div> -->
+                                <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover"></div> -->
+                                    <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" height="100px" class=" rounded-full">
+                               
                                 <div class="flex flex-col items-start">
                                     <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
                                     <h2 class="text-xl text-gray-500">{{ user.profile.title }}</h2>
