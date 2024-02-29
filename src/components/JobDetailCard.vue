@@ -13,28 +13,30 @@
                         <button class="bg-blue text-white px-5 py-2 rounded-md hover:bg-dark_blue">Apply here</button>
                     </div>
                 </div>
-                <div>
-                    Microsoft Inc.
-                    <span>Rating here...</span>
+                <div class=" capitalize flex flex-row gap-3">
+                    <span>{{ company }}</span>
                 </div>
                 <div class="flex flex-row gap-3 flex-wrap">
 
                     <div>
-                        <i class="bi bi-geo-alt"></i> <span>Lekki Phase 1, Lagos state</span>
+                        <i class="bi bi-geo-alt"></i> 
+                        <span v-if="remote">Remote</span>
+                        <span v-else>{{ location }}</span>
                     </div>
                     <div>
-                        <i class="bi bi-arrow-clockwise"></i> <span>Posted 1 hour ago</span>
+                        <i class="bi bi-arrow-clockwise"></i> <span>{{ posted }}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <i class="bi bi-wallet"></i> <span>N{{ budget }}</span>
                     </div>
                     <div>
-                        <i class="bi bi-wallet"></i> <span>N100,000</span>
-                    </div>
-                    <div>
-                        <i class="bi bi-briefcase"></i> <span>3-5 days</span>
+                        <i class="bi bi-briefcase"></i> <span>{{ period }}</span>
                     </div>
                     
                 </div>
                 <div class="flex flex-row flex-wrap gap-3">
-                    <span v-for="tag in 4" class="bg-light_blue text-blue px-3 py-2 rounded-md">CSS</span>
+                    <span v-for="skill in skills" class="bg-light_blue text-blue px-3 py-2 rounded-md">{{ skill }}</span>
                 </div>
             </div>
             <div class="font-bold">
@@ -42,24 +44,24 @@
             </div>
             <div>
                 <slot name="job-description">
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
+                   job description goes here...
                 </slot>
-            </div>
-
-            <div class="text-sm text-blue">
-                <slot name="job-posting-time">Posted 1 hour ago</slot>
             </div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: "JobDetailCard"
+    name: "JobDetailCard",
+    props: {
+        company: String,
+        location: Object,
+        posted: String,
+        budget: String,
+        period: String,
+        skills: Array,
+        remote: Boolean,
+    }
 }
 </script>
 <style scoped>

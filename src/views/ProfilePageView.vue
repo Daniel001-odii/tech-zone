@@ -2,11 +2,70 @@
     <div>
         <!-- PROFILE EDIT MODAL HERE -->
         <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
-            <div>
-                <form @submit.prevent="editUserProfile">
-                    <input type="text">
+            <template #body>
+                <div>
+                <form @submit.prevent="updateUserProfile" v-if="user">
+                    <div>
+                        <div class="flex flex-row gap-3 mb-3">
+                            <div class="w-3/6 flex flex-col">
+                                <label for="firstname">firstname</label>
+                                <input class="p-3 rounded-lg border " type="name" name="firstname" id="firstname" :value="user.firstname" disabled>
+                            </div>
+
+                            <div class="w-3/6 flex flex-col">
+                                <label for="firstname">lastname</label>
+                                <input class="p-3 rounded-lg border" type="name" name="lastname" id="lastname" :value="user.lastname" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-control">
+                                <label for="email">email</label>
+                                <input class="p-3 rounded-lg border" type="email" name="email" id="email" :value="user.email" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-control">
+                                <label for="title">profile title</label>
+                                <input class="p-3 rounded-lg border" type="text" name="title" id="title" v-model="user_form.profile.title" placeholder="Expereinced Copywriter">
+                            </div>
+                            <div class="form-control">
+                                <label for="bio">profile bio</label>
+                                <textarea class="p-3 rounded-lg border h-40 max-h-52" type="text" name="bio" id="bio" v-model="user_form.profile.bio" placeholder="A very brief and descriptive bio"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-control">
+                                <label for="skills">skills & expertise</label>
+                                <input class="p-3 rounded-lg border" type="text" name="skills" id="skills" v-model="user_form.profile.skills" placeholder="Copy writing, Technical writing, Graphic Design">
+                            </div>
+                        </div>
+
+
+                        <div class="form-section">
+                           
+
+                            <div class="form-control">
+                                <label for="phone">phone</label>
+                                <input class="p-3 rounded-lg border" type="phone" name="phone" id="phone" v-model="user_form.profile.phone" placeholder="+2348156074667">
+                            </div>
+
+                            <div class="form-control">
+                                <label for="phone">social</label>
+                                <input class="p-3 rounded-lg border" type="text" name="social" id="social" v-model="user_form.profile.social" placeholder="https://facebook.com/johndoe">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
+           
+            </template>
+            <template #footer>
+                <LoaderButton @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
+            </template>
+           
         </Modal>
 
 
@@ -23,11 +82,11 @@
                             <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
                                 <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover"></div> -->
                                 <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover"></div> -->
-                                    <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" height="100px" class=" rounded-full">
+                                    <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
                                
-                                <div class="flex flex-col items-start">
+                                <div class="flex flex-col items-start text-start">
                                     <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
-                                    <h2 class="text-xl text-gray-500">{{ user.profile.title }}</h2>
+                                    <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                                     <p>{{ user.email }}</p>
                                 </div>
                             </div>
@@ -38,7 +97,7 @@
                                     <span v-else="user.is_verified">user is not verified</span>
                                 </div>
                                 <p>Joined: {{ user.created }}</p>
-                                <p>Location: {{ user.profile.location }}</p>
+                                <p>Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
                                 <div class="flex flex-row flex-wrap gap-3 mt-3">
                                     <button class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
                                     <button class="btn_white">Resume</button>
@@ -62,8 +121,10 @@
 
                                 <div class="profile_section">
                                     <h2 class="font-bold">Skills</h2>
-                                    <div>
-                                        {{ user.profile.skills }}
+                                    <div class="flex flex-row flex-wrap gap-2 mt-3">
+                                        <div v-for="skill in user.profile.skills.split(',')" >
+                                            <span class=" bg-light_blue p-2 rounded-md text-blue">{{ skill }}</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -83,9 +144,9 @@
 
                                 <div class="profile_section">
                                     <h2 class="font-bold">Connected Accounts</h2>
-                                    <div>
-                                       lorem ipsum ...
-                                    </div>
+                                    <a :href="user.profile.social" class="text-blue">
+                                       {{ user.profile.social }}
+                                    </a>
                                 </div>
 
 
@@ -145,30 +206,38 @@ import TemplateView from './TemplateView.vue';
 import JobReviewCard from '@/components/JobReviewCard.vue';
 import Modal from '@/components/Modal.vue';
 import axios from 'axios';
+import LoaderButton from '@/components/LoaderButton.vue';
 
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal },
+    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton },
     data(){
         return{
             user: null,
 
             profile_edit_menu: false,
+
             user_form: {
+                loading: false,
                 preffered_job_types: '',
-                phone: '',
-                social: '',
-                skills: '',
                 profile: {
-                title: '',
-                bio: '',
-                location: {
-                    city: '',
-                    state: '',
-                    address: '',
-                        },
-                    }
+                    title: '',
+                    bio: '',
+                    location: {
+                        city: '',
+                        state: '',
+                        address: '',
+                    },
+                    phone: '',
+                    social: '',
+                    skills: '',
+                    },
                 },
+
+                websiteUrl: '',
+                logoUrl: '',
+
+            headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
         }
     },
     methods: {
@@ -184,11 +253,26 @@ export default {
                 console.log("profile page :", response);
                 // push to user variable..
                 this.user = response.data.user;
+                this.user_form = response.data.user;
             }
             catch(error){
                 console.error(error)
             }
         },
+
+        async updateUserProfile(){
+            this.user_form.loading = true;
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/user/profile`, this.user_form, { headers });
+                console.log(response)
+                this.user_form.loading = false;
+            }
+            catch(error){
+                // display any possible error here...
+            }
+        },
+
 
     },
     mounted(){
@@ -196,8 +280,20 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
+
+    input:disabled{
+        @apply text-gray-400
+    }
     .profile_section{
         @apply text-left p-3 mt-5
+    }
+
+    .form-section{
+        @apply flex flex-col gap-3 capitalize justify-between flex-wrap mb-3
+    }
+
+    .form-control{
+        @apply flex flex-col justify-start w-full
     }
 </style>

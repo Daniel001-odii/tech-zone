@@ -11,34 +11,34 @@
                         background-size: cover;">
                         ...
                         </div> -->
-                        <div>
+                        <div v-if="job">
                             <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md">
                                 <div class="flex flex-col gap-3">
                                     <div class="flex flex-row justify-between items-center">
                                         <span class="font-bold text-2xl">
                                             <slot name="job-title">
-                                                senior software developer (java)
+                                                {{ job.title }}
                                             </slot>
                                         </span>
                                     
                                     </div>
-                                    <div>
-                                        Microsoft Inc.
+                                    <div v-if="job.employer">
+                                       {{ job.employer.profile.company_name}}
                                         <span>Rating here...</span>
                                     </div>
                                     <div class="flex flex-row gap-3 flex-wrap">
 
                                         <div>
-                                            <i class="bi bi-geo-alt"></i> <span>Lekki Phase 1, Lagos state</span>
+                                            <i class="bi bi-geo-alt"></i> <span>{{ job.location }}</span>
                                         </div>
                                         <div>
-                                            <i class="bi bi-arrow-clockwise"></i> <span>Posted 1 hour ago</span>
+                                            <i class="bi bi-arrow-clockwise"></i> <span>{{ job.created }}</span>
                                         </div>
                                         <div>
-                                            <i class="bi bi-wallet"></i> <span>N100,000</span>
+                                            <i class="bi bi-wallet"></i> <span>N{{ job.budget.toLocaleString()}}</span>
                                         </div>
                                         <div>
-                                            <i class="bi bi-briefcase"></i> <span>3-5 days</span>
+                                            <i class="bi bi-briefcase"></i> <span>{{ job.period}}</span>
                                         </div>
                                         
                                     </div>
@@ -49,19 +49,15 @@
                                 </div>
                                 <div>
                                     <slot name="job-description">
-                                        We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                                        We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                                        We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                                        We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                                        We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
-                                        We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
+                                      {{ job.description }}
                                     </slot>
                                 </div>
 
                                 <div>
-                                    <span class="font-bold">Skills Required</span>
+                                    <!-- <span class="font-bold">{{  job.skills }}</span> -->
                                     <div class="flex flex-row flex-wrap gap-3">
-                                        <span v-for="tag in 4" class="bg-light_blue text-blue px-3 py-2 rounded-md">CSS</span>
+                                        <span v-for="(tag, tag_index) in job.skills
+                                        " class="bg-light_blue text-blue px-3 py-2 rounded-md">{{ tag }}</span>
                                     </div>
                                 </div>
 
@@ -72,12 +68,19 @@
 
                                 <div>
                                     <span class="font-bold">Payment Type</span>
-                                    <div>Fixed price</div>
+                                    <div>{{ job.budget_type }}</div>
                                 </div>
 
                                 <div>
-                                    <span class="font-bold">About Recruiters</span>
-                                    <div>Medium [a period of 30 months]</div>
+                                    <span class="font-bold">About Recruiter</span>
+                                    <div class="flex flex-row justify-start items-center gap-4">
+                                        <img :src="job.employer.profile.image_url" class=" h-14">
+                                        <div class="flex flex-col">
+                                            <span>{{ job.employer.profile.company_name }}</span>
+                                            <span>{{ job.employer.profile.tag_line }}</span>
+                                            <span>member since: {{ job.employer.created }}</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -153,10 +156,39 @@
 <script>
 import JobDetailCard from '@/components/JobDetailCard.vue';
 import TemplateView from './TemplateView.vue';
+import axios from 'axios'
 
 export default {
     name: "ApplicationPageView",
     components: { TemplateView, JobDetailCard },
+    data(){
+        return{
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+            },
+
+            job: '',
+        }
+    },
+    methods: {
+        async getCurrentJobDetails(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/jobs/${this.$route.params.job_id}`, { headers });
+                console.log(response);
+                this.job = response.data.job;
+
+            }
+            catch(error){
+                // handle response here....
+                console.log(error)
+            }
+        }
+    },
+
+    mounted(){
+        this.getCurrentJobDetails();
+    }
 }
 </script>
 <style scoped>

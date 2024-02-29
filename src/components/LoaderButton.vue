@@ -5,8 +5,8 @@
       @click="handleClick"
       class="btn hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
     >
-      <!-- <span v-if="loading" class=" animate-spin mr-2">&#9696;</span> -->
-      {{ buttonText }}
+      <span v-if="!loading">{{ buttonText }}</span>
+      <span v-if="loading">loading...</span>
     </button>
   </template>
   

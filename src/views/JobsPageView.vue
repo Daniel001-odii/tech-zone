@@ -27,13 +27,35 @@
                     <div class="flex flex-col justify-start p-3">
                         <div v-if="showTab == 'tab-1'">
                             <div class="flex flex-col md:flex-row gap-3">
-                                <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3" style="height: 600px;">
-                                    <MainJobCard></MainJobCard>
-                                    <MainJobCard></MainJobCard>
-                                    <MainJobCard></MainJobCard>
+                                <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3" v-for="(job, job_index) in jobs" :key="job_index">
+                                    <MainJobCard @click="showJobDetail(job_index)" @saveJob="console.log('job saved')" @flagJob="console.log('job flagged')" 
+                                    :budget="job.budget" 
+                                    :period="job.period" 
+                                    :company="job.employer.profile.company_name" :rating="5" 
+                                    :remote="job.location.remote">
+                                        <template #job-title>
+                                          <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                        </template>
+                                        <template #job-location>{{  job.location }}</template>
+                                        <template #job-description>{{  job.description }}</template>
+                                        <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                    </MainJobCard>
                                 </div>
                                 <div class="hidden lg:flex lg:w-10/12">
-                                   <JobDetailCard/>
+                                   <JobDetailCard v-if="jobs" 
+                                   :company="jobs[selectedJob].employer.profile.company_name" 
+                                   :remote="jobs[selectedJob].location.remote"
+                                   :location="jobs[selectedJob].location" 
+                                   :posted="formattedDate(jobs[selectedJob].created)" 
+                                   :period="jobs[selectedJob].period" 
+                                   :budget="jobs[selectedJob].budget.toLocaleString()">
+                                        <template #job-title>
+                                            {{ jobs[selectedJob].title }}
+                                        </template>
+                                        <template #job-description>
+                                            {{ jobs[selectedJob].description }}
+                                        </template>
+                                   </JobDetailCard>
                                 </div>
                             </div>
                         </div>
@@ -68,18 +90,51 @@
 import JobDetailCard from '@/components/JobDetailCard.vue';
 import TemplateView from './TemplateView.vue';
 import MainJobCard from '@/components/MainJobCard.vue';
+import axios from 'axios';
+import { formatToRelativeTime } from '../utils/dateFormat'
 
 export default {
     name: "JobsPageView",
     components: { TemplateView, MainJobCard, JobDetailCard },
     data(){
         return{
+            selectedJob: 0,
             showTab: "tab-1",
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+            },
+            jobs: '',
         }
         
     },
     methods:{
+        showJobDetail(index){
+            this.selectedJob = index;
+        },
+        async getJobs(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/jobs`, { headers } )
+                console.log(response.data.jobs)
+                this.jobs = response.data.jobs;
+            }catch(error){
+                // handle error here
+            }
+        },
+
+        formattedDate(dateToFormat) {
+        // Use the utility function to format the date
+        return formatToRelativeTime(dateToFormat);
+        }
+    },
+    computed: {
+    
+    },
+
+    mounted(){
+        this.getJobs()
     }
+
 }
 </script>
 <style scoped>

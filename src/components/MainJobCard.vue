@@ -9,29 +9,33 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="icon_btn">
+                        <button class="icon_btn" @click="saveJob">
                             <i class="bi bi-bookmark-check-fill"></i>
                         </button>
-                        <button class="icon_btn">
+                        <button class="icon_btn" @click="flagJob">
                             <i class="bi bi-hand-thumbs-down"></i>
                         </button>
                     </div>
                 </div>
-                <div>
-                    Microsoft Inc.
-                    <span>Rating here...</span>
+                <div class=" capitalize flex flex-row gap-3">
+                    <span>{{ company }}</span>
+                    <span>{{ rating }}.0 stars</span>
                 </div>
                 <div>
-                    <i class="bi bi-geo-alt"></i> <span>Lekki Phase 1, Lagos state</span>
+                    <i class="bi bi-geo-alt"></i> 
+                    <span>
+                        <slot v-if="!remote" name="job-location">job location here..</slot>
+                        <span v-else>remote</span>
+                    </span>
                 </div>
             </div>
            
             <div class="flex flex-row gap-2">
                 <span class=" bg-light_blue p-2 rounded-md">
-                    <i class="bi bi-wallet"></i> <span>#100,000</span>
+                    <i class="bi bi-wallet"></i> <span>#{{ budget.toLocaleString() }}</span>
                 </span>
                 <span class=" bg-blue p-2 rounded-md text-white">
-                    <i class="bi bi-briefcase"></i> <span>3-5 days</span>
+                    <i class="bi bi-briefcase"></i> <span>{{ period }}</span>
                 </span>
             </div>
             <div>
@@ -47,8 +51,26 @@
     </div>
 </template>
 <script>
+import { stringify } from 'postcss';
+
 export default {
-    name: "MainJobCard"
+    name: "MainJobCard",
+    props: {
+        budget: Number,
+        period: String,
+        company: String,
+        rating: Number,
+        remote: Boolean,
+    },
+    methods: {
+        saveJob(){
+            this.$emit('saveJob')
+        },
+
+        flagJob(){
+            this.$emit('flagJob')
+        }
+    }
 }
 </script>
 <style scoped>

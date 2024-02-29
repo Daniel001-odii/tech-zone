@@ -12,6 +12,7 @@ import ProfilePageViewVue from '@/views/ProfilePageView.vue'
 import LoginViewVue from '@/views/LoginView.vue'
 import SignupViewVue from '@/views/SignupView.vue'
 import ClientSignupViewVue from '@/views/ClientSignupView.vue'
+import ProfileStepViewVue from '@/views/ProfileStepView.vue'
 
 const routes = [
   {
@@ -24,6 +25,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginViewVue
+  },
+
+  {
+    path: '/profile/update',
+    name: 'new user',
+    component: ProfileStepViewVue
   },
 
   {
