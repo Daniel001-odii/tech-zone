@@ -29,7 +29,9 @@
                                     <div class="flex flex-row gap-3 flex-wrap">
 
                                         <div>
-                                            <i class="bi bi-geo-alt"></i> <span>{{ job.location }}</span>
+                                            <i class="bi bi-geo-alt mr-3"></i> 
+                                            <span v-if="job.location.remote">remote</span>
+                                            <span v-else>{{ job.location }}</span>
                                         </div>
                                         <div>
                                             <i class="bi bi-arrow-clockwise"></i> <span>{{ job.created }}</span>
@@ -106,10 +108,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
+                    <form @submit.prevent="sumbitApplication" class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Cover Letter</span>
-                            <textarea class=" h-52 max-h-96 p-4 border rounded-md">...</textarea>
+                            <textarea class=" h-52 max-h-96 p-4 border rounded-md" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" required>
+
+                            </textarea>
                          </div>
 
                          <div class="flex flex-col text-left gap-3">
@@ -126,26 +130,34 @@
                          </div>
 
                          <div class="flex flex-col text-left gap-3">
-                            <span class="font-bold text-2xl">Counter Offer</span>
-                            <div class="flex flex-col justify-center gap-5">
-                               <div class="flex flex-col">
-                                    <span class="text-xl">Requesting Fee</span>
-                                    <input type="text" placeholder="100,000.00" class="border rounded-md p-5">
-                                    <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
-                               </div>
-
-                               <div class="flex flex-col">
-                                    <span class="text-xl">Reason</span>
-                                    <input type="text" placeholder="100,000.00" class="border rounded-md p-5">
-                                    <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
-                               </div>
+                            <div class="flex flex-row gap-3">
+                                <input type="checkbox" @change="hasCounterOffer = !hasCounterOffer">
+                                <p>Do you want to counter the client's budget/offer?</p>
                             </div>
+                          
+                            <div v-if="hasCounterOffer">
+                                <span class="font-bold text-2xl">Counter Offer</span>
+                                <div class="flex flex-col justify-center gap-5 mt-3">
+                                    <div class="flex flex-col">
+                                            <span class="text-xl">Requesting Fee</span>
+                                            <input type="text" placeholder="100,000.00" class="border rounded-md p-5" v-model="application_form.counter_offer">
+                                            <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                            <span class="text-xl">Reason</span>
+                                            <textarea type="text" placeholder="a good reason for the counter offer" class="border rounded-md p-5" v-model="application_form.reason_for_co"></textarea>
+                                            <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
+                                    </div>
+                                </div>
+                            </div>
+                           
                          </div>
                          <div class="flex ">
-                            <button class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue">Submit Application</button>
+                            <button type="submit" class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue">Submit Application</button>
                          </div>
                          
-                    </div>
+                        </form>
 
                    
                 </div>
@@ -163,11 +175,18 @@ export default {
     components: { TemplateView, JobDetailCard },
     data(){
         return{
+            hasCounterOffer: false,
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
 
             job: '',
+            application_form: {
+                cover_letter: '',
+                counter_offer: '',
+                reason_for_co: ''
+            },
+            application: '',
         }
     },
     methods: {
@@ -183,11 +202,32 @@ export default {
                 // handle response here....
                 console.log(error)
             }
+        },
+
+        async getApplicationDetails(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/jobs/${this.$route.params.job_id}/application`, { headers });
+                console.log("application details: ", response);
+            } catch(error){
+                // handle error here...
+            }
+        },
+
+        async sumbitApplication(){
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form,  { headers });
+                console.log(response)
+            } catch(error){
+                console.log(error);
+            }
         }
     },
 
     mounted(){
         this.getCurrentJobDetails();
+        this.getApplicationDetails();
     }
 }
 </script>

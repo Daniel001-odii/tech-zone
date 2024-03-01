@@ -53,7 +53,7 @@
                 <div  v-if="user" class="flex flex-row items-center gap-1">
                     <div class="border border-2 rounded-full h-10 w-10 flex justify-center items-center relative group">
                         <i class="bi bi-bell"></i>
-                        <div class="menu w-72 h-24 border absolute bg-white top-9 right-0 rounded-lg p-5 hidden group-hover:block">
+                        <div class="menu w-72 h-24 border absolute bg-white top-9 rounded-lg p-5 hidden group-hover:block">
                             notifications
                         </div>
                     </div>
@@ -123,7 +123,11 @@ export default {
 
             }
             catch(error){
-                console.error(error)
+                console.error(error);
+                if(error.response.status === 401){
+                    localStorage.removeItem('life-gaurd');
+                    this.$router.push('/login');
+                }
             }
         },
     },

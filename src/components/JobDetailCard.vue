@@ -10,28 +10,30 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="bg-blue text-white px-5 py-2 rounded-md hover:bg-dark_blue">Apply here</button>
+                        <button class="bg-blue text-white px-5 py-2 rounded-md hover:bg-dark_blue" @click="openJob">Apply here</button>
                     </div>
                 </div>
                 <div class=" capitalize flex flex-row gap-3">
                     <span>{{ company }}</span>
                 </div>
-                <div class="flex flex-row gap-3 flex-wrap">
-
-                    <div>
-                        <i class="bi bi-geo-alt"></i> 
-                        <span v-if="remote">Remote</span>
-                        <span v-else>{{ location }}</span>
+                <div class="flex flex-col gap-3 flex-wrap">
+                    <div class="flex flex-row gap-3">
+                        <div>
+                            <i class="bi bi-geo-alt"></i> <span v-if="remote">Remote</span>
+                            <span v-else>{{ location }}</span>
+                        </div>
+                        <div>
+                            <i class="bi bi-arrow-clockwise"></i> <span>{{ posted }}</span>
+                        </div>
                     </div>
-                    <div>
-                        <i class="bi bi-arrow-clockwise"></i> <span>{{ posted }}</span>
-                    </div>
-                    <br/>
-                    <div>
-                        <i class="bi bi-wallet"></i> <span>N{{ budget }}</span>
-                    </div>
-                    <div>
-                        <i class="bi bi-briefcase"></i> <span>{{ period }}</span>
+                    
+                    <div class="flex flex-row gap-3">
+                        <div>
+                            <i class="bi bi-wallet"></i> <span>N{{ budget }}</span>
+                        </div>
+                        <div>
+                            <i class="bi bi-briefcase"></i> <span>{{ period }}</span>
+                        </div>
                     </div>
                     
                 </div>
@@ -51,6 +53,8 @@
     </div>
 </template>
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
     name: "JobDetailCard",
     props: {
@@ -61,6 +65,12 @@ export default {
         period: String,
         skills: Array,
         remote: Boolean,
+    },
+    components: { RouterLink },
+    methods: {
+        openJob(){
+            this.$emit('visitJobPost')
+        },
     }
 }
 </script>

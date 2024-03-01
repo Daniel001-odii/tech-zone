@@ -9,8 +9,9 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="icon_btn" @click="saveJob">
-                            <i class="bi bi-bookmark-check-fill"></i>
+                        <button class="icon_btn bg-light_blue" @click="saveJob">
+                            <i v-if="saved || job_is_saved" class="bi bi-bookmark-check-fill text-blue"></i>
+                            <i v-else class="bi bi-bookmark-check"></i>
                         </button>
                         <button class="icon_btn" @click="flagJob">
                             <i class="bi bi-hand-thumbs-down"></i>
@@ -55,16 +56,25 @@ import { stringify } from 'postcss';
 
 export default {
     name: "MainJobCard",
+    data(){
+        return{
+            saved: false,
+        }
+    },
     props: {
         budget: Number,
         period: String,
         company: String,
         rating: Number,
         remote: Boolean,
+
+        job_is_saved: Boolean,
+       
     },
     methods: {
         saveJob(){
-            this.$emit('saveJob')
+            this.$emit('saveJob');
+            this.saved = !this.saved;
         },
 
         flagJob(){
@@ -75,6 +85,6 @@ export default {
 </script>
 <style scoped>
     .icon_btn{
-        @apply p-2 bg-transparent hover:bg-light_blue h-10 w-10 rounded-full
+        @apply p-2 hover:bg-light_blue h-10 w-10 rounded-full
     }
 </style>
