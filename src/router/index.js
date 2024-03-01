@@ -13,6 +13,7 @@ import LoginViewVue from '@/views/LoginView.vue'
 import SignupViewVue from '@/views/SignupView.vue'
 import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 import ProfileStepViewVue from '@/views/ProfileStepView.vue'
+import RegistrationDecisionVue from '@/views/RegistrationDecision.vue'
 
 const routes = [
   {
@@ -37,6 +38,13 @@ const routes = [
     path: '/register',
     name: 'register',
     component: SignupViewVue
+  },
+
+
+  {
+    path: '/register/decide',
+    name: 'decide',
+    component: RegistrationDecisionVue,
   },
 
 
@@ -147,11 +155,11 @@ router.beforeEach((to, from, next) => {
   const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
 
   // If the user is logged in and is trying to visit the root URL
-  if (userRole && userRole == 'user' && to.path === '/' || to.path === '/login') {
+  if (userRole && userRole == 'user' && to.path === '/') {
     // Redirect users to /jobs
     next('/jobs')
 
-  } else if(userRole && userRole == 'employer' && to.path === '/' || to.path === '/login') {
+  } else if(userRole && userRole == 'employer' && to.path === '/') {
     // redirect clients to their dashboard
     next('/client/dashboard');
   }

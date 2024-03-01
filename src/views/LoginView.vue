@@ -136,11 +136,19 @@ export default {
                     alert("Login Successfull");
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
-                    // redirect to user profile...
-                    this.$router.push("/profile")
+
+                    // redirect to respective user or employer profile...
+
+                    if(res.data.user.model == "User"){
+                        this.$router.push("/profile")
+                    } else if(res.data.user.model == "Employer"){
+                        this.$router.push("/profile")
+                    }
+                    
                 } else if(res.data.message == "User registered successfully"){
                     alert("Registration successful!");
-                    this.$router.push("/profile")
+                  
+                  
                 }
                 console.log("response from backend: ", res)
 

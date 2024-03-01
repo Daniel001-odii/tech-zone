@@ -3,14 +3,16 @@
         <TemplateView :leftNav="true">
             <template #page-title>Application</template>
             <template #page-contents>
-                <div class="flex flex-col md:flex-row p-5" >
+
+                <div class="flex flex-col md:flex-row px-5 py-3" >
                     <div class=" md:w-2/4">
-                        <!-- <div class=" h-52" 
-                        style="background-image: url('../assets/images/Group\ 281.png');
-                        background-position: center;
-                        background-size: cover;">
-                        ...
-                        </div> -->
+                        <div v-if="is_application" class=" bg-[#e0ffec] p-4 rounded-lg border text-[#0d8f3f]  mb-3 text-start flex flex-row gap-4">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            <span>
+                                You already submitted an application for this job
+                            </span>
+                        </div>
+
                         <div v-if="job">
                             <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md">
                                 <div class="flex flex-col gap-3">
@@ -111,28 +113,44 @@
                     <form @submit.prevent="sumbitApplication" class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Cover Letter</span>
-                            <textarea class=" h-52 max-h-96 p-4 border rounded-md" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" required>
-
-                            </textarea>
+                            <textarea class=" h-52 max-h-96 p-4 border rounded-md disabled:text-gray-400" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" :disabled="is_application" required></textarea>
                          </div>
 
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Attachments</span>
-                            <div class=" h-52 border border-dotted rounded-md flex flex-col justify-center items-center">
-                                <div class="flex flex-col justify-center items-center">
+                            <div class=" h-fit border border-dotted rounded-md flex flex-col justify-center items-center py-4">
+                                <!-- <div v-if="upload_progress !== ''">
+                                    <p>Upload Progress: {{ upload_progress }}%</p>
+                                </div> -->
+                                <div v-if="!is_application" class="flex flex-col justify-center items-center">
                                     <i class="bi bi-cloud-arrow-up-fill text-4xl text-black"></i>
                                     <span>Drag & Drop files here</span>
-                                    <button class="bg-black w-72 rounded-md px-12 py-2 text-white">
+                                    <input type="file" class="bg-black w-72 rounded-md px-12 py-2 text-white" multiple @change="handleFileChange">
+                                    <!-- <button class="bg-black w-72 rounded-md px-12 py-2 text-white">
                                       <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                                    </button>
+                                    </button> -->
+                                    <div class=" p-3" v-if="selectedFiles.length > 0">
+                                        <p>Selected Files:</p>
+                                        <ul class="flex flex-row flex-wrap justify-start gap-2">
+                                            <li class=" text-blue bg-light_blue p-3 rounded-lg hover:bg-blue hover:text-white" v-for="(file, index) in selectedFiles" :key="index">
+                                                {{ file.name }} 
+                                                <button type="button" @click="removeFile(index)" class="p-2"><i class="bi bi-x-lg"></i></button>
+                                                
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div v-if="is_application">
+                                    <span v-if="application_form.attachments.length > 0">you attached files are secured..</span>
+                                    <span v-else>No attachments</span>
                                 </div>
                             </div>
                          </div>
 
                          <div class="flex flex-col text-left gap-3">
                             <div class="flex flex-row gap-3">
-                                <input type="checkbox" @change="hasCounterOffer = !hasCounterOffer">
-                                <p>Do you want to counter the client's budget/offer?</p>
+                                <input type="checkbox" name="counterOffer" id="counterOffer" @change="hasCounterOffer = !hasCounterOffer" :checked="is_application && hasCounterOffer" :disabled="is_application">
+                                <label for="counterOffer">Counter budget/offer</label>
                             </div>
                           
                             <div v-if="hasCounterOffer">
@@ -140,13 +158,13 @@
                                 <div class="flex flex-col justify-center gap-5 mt-3">
                                     <div class="flex flex-col">
                                             <span class="text-xl">Requesting Fee</span>
-                                            <input type="text" placeholder="100,000.00" class="border rounded-md p-5" v-model="application_form.counter_offer">
+                                            <input type="text" placeholder="100,000.00" class="border rounded-md p-5" v-model="application_form.counter_offer" :disabled="is_application">
                                             <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
 
                                     <div class="flex flex-col">
                                             <span class="text-xl">Reason</span>
-                                            <textarea type="text" placeholder="a good reason for the counter offer" class="border rounded-md p-5" v-model="application_form.reason_for_co"></textarea>
+                                            <textarea type="text" placeholder="a good reason for the counter offer" class="border rounded-md p-5 disabled:text-gray-400" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
                                             <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
                                 </div>
@@ -154,10 +172,10 @@
                            
                          </div>
                          <div class="flex ">
-                            <button type="submit" class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue">Submit Application</button>
+                            <button type="submit" class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue disabled:bg-gray-300" :disabled="is_application">Submit Application</button>
                          </div>
                          
-                        </form>
+                    </form>
 
                    
                 </div>
@@ -175,21 +193,41 @@ export default {
     components: { TemplateView, JobDetailCard },
     data(){
         return{
+            loading: false,
             hasCounterOffer: false,
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
 
             job: '',
+
             application_form: {
                 cover_letter: '',
                 counter_offer: '',
                 reason_for_co: ''
             },
-            application: '',
+
+            is_application: false,
+            upload_progress: '',
+            application_attachments: '',
+            selectedFiles: [],
         }
     },
     methods: {
+        handleFileChange(event) {
+            this.application_attachments = event.target.files;
+             // Update the selectedFiles array with the names of the selected files
+            for (let i = 0; i < this.application_attachments.length; i++) {
+                this.selectedFiles.push(this.application_attachments[i]);
+                // this.uploadSingleFile(this.application_attachments[i]);
+            }
+        },
+
+
+        removeFile(index) {
+            this.selectedFiles.splice(index, 1);
+        },
+
         async getCurrentJobDetails(){
             const headers = this.headers;
             try{
@@ -205,24 +243,72 @@ export default {
         },
 
         async getApplicationDetails(){
+            this.loading = true;
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/jobs/${this.$route.params.job_id}/application`, { headers });
                 console.log("application details: ", response);
+                if(response.data.application){
+                    this.application_form = response.data.application;
+                    if(response.data.application.counter_offer){
+                        this.hasCounterOffer = true;
+                    }
+                }
+               
+                this.loading = false;
+                
+                if(this.application_form.job === this.$route.params.job_id){
+                    this.is_application = true;
+                }
+                
             } catch(error){
                 // handle error here...
             }
         },
 
+        // async sumbitApplication(){
+        //     const headers = this.headers;
+        //     try{
+        //         const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form,  { headers });
+        //         console.log(response)
+        //         // show custom alert and redirect user to jobs page...
+        //         alert(response.data.message);
+        //         this.$router.push('/jobs')
+        //     } catch(error){
+        //         console.log(error);
+        //     }
+        // },
+
         async sumbitApplication(){
-            const headers = this.headers;
+            const formData = new FormData();
+            formData.append('cover_letter', this.application_form.cover_letter);
+            formData.append('counter_offer', this.application_form.counter_offer);
+            formData.append('reason_for_co', this.application_form.reason_for_co);
+
+            for (let i = 0; i < this.application_attachments.length; i++) {
+                formData.append('attachments', this.application_attachments[i]);
+            }
+
+
+            const config = {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+                },
+
+                onUploadProgress: (progressEvent) => {
+                        this.upload_progress = Math.round((progressEvent.loaded / progressEvent.total ) * 100);
+                }
+            };
+
             try{
-                const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form,  { headers });
+                const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, formData, config);
                 console.log(response)
             } catch(error){
                 console.log(error);
             }
         }
+
+    
     },
 
     mounted(){

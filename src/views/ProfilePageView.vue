@@ -97,7 +97,7 @@
                                     <span v-else="user.is_verified">user is not verified</span>
                                 </div>
                                 <p>Joined: {{ user.created }}</p>
-                                <p>Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
+                                <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
                                 <div class="flex flex-row flex-wrap gap-3 mt-3">
                                     <button class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
                                     <button class="btn_white">Resume</button>
@@ -121,7 +121,7 @@
 
                                 <div class="profile_section">
                                     <h2 class="font-bold">Skills</h2>
-                                    <div class="flex flex-row flex-wrap gap-2 mt-3">
+                                    <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 mt-3">
                                         <div v-for="skill in user.profile.skills.split(',')" >
                                             <span class=" bg-light_blue p-2 rounded-md text-blue">{{ skill }}</span>
                                         </div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" w-52 border absolute bg-white top-10 right-0 rounded-lg p-1 hidden group-hover:block z-10">
+        <div class=" w-fit border absolute bg-white top-10 right-0 rounded-lg p-1 hidden group-hover:block z-10">
             <div class="flex flex-col text-left gap-1">
                 <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-evenly px-1">
                     <div class="flex flex-col">
