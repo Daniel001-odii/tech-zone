@@ -39,7 +39,7 @@
                             
                         </div>
                         <div class="text-center">
-                            <p>Don't have account yet? <RouterLink to="/register" class=" decoration-blue">Sign up</RouterLink> </p>
+                            <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-blue">Sign up</RouterLink> </p>
                         </div>                      
                     </form>
                 </div>
@@ -85,8 +85,17 @@ export default {
                 console.log(response);
                 localStorage.setItem('life-gaurd', response.data.accessToken);
                 // alert('login successful!');
-                this.$router.push('/jobs');
+                if(response.data.user.role == "user"){
+                    window.location.reload();
+                    this.$router.push('/jobs');
+                   
+                }else if(response.data.user.role == "employer"){
+                    window.location.reload();
+                    this.$router.push('/dashboard');
+                }
+                
                 this.loading = false;
+
             }
             catch (error) {
                 this.error = error.response.data.message;
@@ -140,11 +149,13 @@ export default {
                     // redirect to respective user or employer profile...
 
                     if(res.data.user.model == "User"){
-                        this.$router.push("/profile")
+                        window.location.reload();
+                        this.$router.push("/jobs")
                     } else if(res.data.user.model == "Employer"){
-                        this.$router.push("/profile")
+                        window.location.reload();
+                        this.$router.push("/client/dashboard")
                     }
-                    
+
                 } else if(res.data.message == "User registered successfully"){
                     alert("Registration successful!");
                   

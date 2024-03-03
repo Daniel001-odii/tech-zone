@@ -14,7 +14,11 @@ import SignupViewVue from '@/views/SignupView.vue'
 import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 import ProfileStepViewVue from '@/views/ProfileStepView.vue'
 import RegistrationDecisionVue from '@/views/RegistrationDecision.vue'
+import PageNotFoundViewVue from '@/views/PageNotFoundView.vue'
 
+
+import ClientDashBoardPage from '@/views/ClientDashboardPage.vue'
+import ClientPostJobView from '@/views/ClientPostJobPageView.vue'
 const routes = [
   {
     path: '/',
@@ -59,7 +63,6 @@ const routes = [
     path: '/jobs',
     name: 'jobs',
     component: JobsPageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
   },
 
   {
@@ -112,9 +115,43 @@ const routes = [
     meta: { requiresAuth: true, role: 'user' }
   },
 
-  // {path: "/jobs/declined-jobs", 
-  // component: declinedJobs, 
-  // meta: { requiresAuth: true, role: 'user' }},
+  // 404 PAGES CONFIG...
+  {
+    path: "/404", 
+    name: "404", 
+    component: PageNotFoundViewVue
+  },
+
+  {
+    path: "/:catchAll(.*)", 
+    redirect: "/404"
+  },
+  //  404 PAGES ENDS HERE....
+
+
+/*
+// CLIENT BASED ROUTES STARTS HERE
+*/
+{
+  path: "/client/dashboard",
+  name: "dashboard",
+  component: ClientDashBoardPage,
+  meta: { requiresAuth: true, role: 'employer' }
+},
+
+{
+  path: "/client/job",
+  name: "job",
+  component: ClientPostJobView,
+  meta: { requiresAuth: true, role: 'employer' }
+},
+
+{
+  path: "/client/jobs",
+  name: "my jobs",
+  component: ClientDashBoardPage,
+  meta: { requiresAuth: true, role: 'employer' }
+}
 
 ]
 
@@ -122,40 +159,25 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-const token = localStorage.getItem('life-gaurd');
 
+
+
+const token = localStorage.getItem('life-gaurd');
 
 let redirectToLogin = false; // Initialize a flag to redirect to login after authentication
 let requestedRoute = null; // Initialize a variable to store the requested route
 
-router.beforeEach((to, from, next) => {
-  const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
-
-  if(to.meta.requiresAdminAuth && to.meta.role !== userRole){
-    redirectToLogin = true; // Set the flag to true
-    requestedRoute = to.fullPath; // Store the requested route
-
-    next('/login')
-  }
-  // Check if the route has a "requiresAuth" meta field and matches the user's role
-  else if (to.meta.requiresAuth && to.meta.role !== userRole) {
-    redirectToLogin = true; // Set the flag to true
-    requestedRoute = to.fullPath; // Store the requested route
-    next('/login'); // Redirect to login for unauthorized access
-  } else {
-    next(); // Proceed to the route
-  }
-});
 
 
+// Create a navigation guard that prevents loggedn in users from visiting irrelevant routes when logged in...
+// this is ensured via the user roles present in the token...
 
-// Create a navigation guard
 router.beforeEach((to, from, next) => {
   // Check if the user is logged in (you should replace this condition)
   const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
 
-  // If the user is logged in and is trying to visit the root URL
-  if (userRole && userRole == 'user' && to.path === '/') {
+  // If the user is logged in and is trying to visit the root URL or login page
+  if (userRole && userRole == 'user' && to.path === '/' || userRole && userRole == 'user'&& to.path === '/login') {
     // Redirect users to /jobs
     next('/jobs')
 
@@ -168,6 +190,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
 
-  })
+})
+
 
 export default router

@@ -5,23 +5,25 @@
             <template #page-contents>
                 <!-- <div class="border border-red-200 h-full"> -->
                     <div class="flex flex-row gap-2 p-2 md:p-5 border-b">
-                        <div class="gap-2 flex flex-row">
+                        <div class="gap-2 flex flex-row overflow-x-scroll">
                             <input type="search" class=" min-w-28 px-4 py-2 bg-light_blue rounded-md" placeholder="Search all types of jobs">
                             <button class="bg-light_blue text-blue px-4 py-2 rounded-md hover:bg-blue hover:text-white">
                                 <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
                             </button>
                         </div>
-                        
-
                         <button class="border text-black px-4 py-2 rounded-md ">
                             <i class="bi bi-funnel"></i> <span class="hidden md:inline-block">Filters</span>
                         </button>
                     </div>
-                    <div class="flex flex-row h-14 gap-4 pl-5 border-b items-end overflow-x-scroll md:overflow-x-visible">
-                        <button @click="showTab = 'tab-1'" :class="{ 'active_tab': showTab == 'tab-1' }" class="p-2 border-b-4 border-b-transparent">Available</button>
-                        <button @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
-                        <button @click="showTab = 'tab-3'" :class="{ 'active_tab': showTab == 'tab-3' }" class="p-2 border-b-4 border-b-transparent">Completed</button>
-                        <button @click="showTab = 'tab-4'" :class="{ 'active_tab': showTab == 'tab-4' }" class="p-2 border-b-4 border-b-transparent">Declined</button>
+
+                    <!-- <div class="flex flex-row h-14 gap-4 pl-5 border-b items-end overflow-x-scroll md:overflow-x-visible"> -->
+                    <div class="flex flex-row h-14 pl-5 border-b items-end">
+                        <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full">
+                            <button @click="showTab = 'tab-1'" :class="{ 'active_tab': showTab == 'tab-1' }" class="p-2 border-b-4 border-b-transparent">Available</button>
+                            <button @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
+                            <button @click="showTab = 'tab-3'" :class="{ 'active_tab': showTab == 'tab-3' }" class="p-2 border-b-4 border-b-transparent">Completed</button>
+                            <button @click="showTab = 'tab-4'" :class="{ 'active_tab': showTab == 'tab-4' }" class="p-2 border-b-4 border-b-transparent">Declined</button>
+                        </div>
                     </div>
 
                     <div class="flex flex-col justify-start p-3 h-full">
@@ -29,32 +31,34 @@
                         <div v-if="showTab == 'tab-1'" class="h-full">
 
                             <div class="flex flex-col md:flex-row gap-3 h-full">
-                                <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3" v-for="(job, job_index) in jobs" :key="job_index">
+                                <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
 
                                     <SkeletonLoader v-if="loading" class="w-full"/>
-
-                                    <MainJobCard @click="showJobDetail(job_index)"
-                                    :class="selectedJob == job_index ? 'bg-light_blue':''" 
-                                    @saveJob="addJobToSaves(job._id)" 
-                                    :job_is_saved="checkIfJobIsSaved(job._id)"
-
-                                    @flagJob="console.log('job flagged')"
-                                    :budget="job.budget" 
-                                    :period="job.period" 
-                                    :company="job.employer.profile.company_name" :rating="5" 
-                                    :remote="job.location.remote">
-                                        <template #job-title>
-                                          <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
-                                        </template>
-                                        <template #job-location>{{  job.location }}</template>
-                                        <template #job-description>{{  job.description }}
-                                        </template>
-                                        <template #job-posting-time>{{  formattedDate(job.created) }}</template>
-                                    </MainJobCard>
-                                    <!-- {{ getUserData }}... -->
+                                    <!-- :job_is_saved="checkIfJobIsSaved(job._id)" -->
+                                   
+                                    <div v-for="(job, job_index) in jobs" :key="job_index">
+                                        <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
+                                        <MainJobCard v-if="job" @click="showJobDetail(job_index)" 
+                                        :class="selectedJob == job_index ? 'bg-light_blue':''" 
+                                        @saveJob="addJobToSaves(job._id)" 
+                                        :job_is_saved="checkIfJobIsSaved(job._id)" 
+                                        :company="job.employer.profile.company_name" :rating="5" 
+                                        @flagJob="console.log('job flagged')"
+                                        :budget="job.budget" 
+                                        :period="job.period" 
+                                        :remote="job.location.remote">
+                                            <template #job-title>
+                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                            </template>
+                                            <template #job-location>{{  job.location }}</template>
+                                            <template #job-description>{{  job.description }}
+                                            </template>
+                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                        </MainJobCard>
+                                    </div>
                                     
-                                    <!-- {{ checkIfJobIsSaved(job._id) }} -->
                                 </div>
+
                                 <div class="hidden lg:flex lg:w-10/12 h-full">
                                    <JobDetailCard v-if="jobs" class="h-full"
                                    @visitJobPost="this.$router.push('/jobs/' + jobs[selectedJob]._id + '/application')"
@@ -74,6 +78,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <!-- ---------------------- -->
                         <div v-if="showTab == 'tab-2'">
                             <div class="flex flex-row gap-3">
@@ -124,30 +130,56 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             jobs: '',
+            saved_jobs: '',
         }
         
     },
     methods:{
         getUser(){
             this.store.dispatch('fetchUserData')
-            // console.log(this.store.getters.getUserData);
         },
+
         showJobDetail(index){
             this.selectedJob = index;
+        },
+
+        async getUserData(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/user`, { headers });
+                this.user = response.data.user;
+                this.saved_jobs = this.user.saved_jobs;
+            }catch(error){
+                console.log("user data error:", error)
+            }
         },
 
         async getJobs(){
             this.loading = true;
             const headers = this.headers;
-            try{
-                const response = await axios.get(`${this.api_url}/jobs`, { headers } )
-                console.log(response.data.jobs)
-                this.jobs = response.data.jobs;
-                this.loading = false;
-            }catch(error){
-                // handle error here...
-                this.loading = true;
+            console.log("checking for user: ", this.user)
+            if(this.user){
+                try{
+                    const response = await axios.get(`${this.api_url}/user/jobs`, { headers } )
+                    console.log(response.data.jobs)
+                    this.jobs = response.data.jobs;
+                    this.loading = false;
+                }catch(error){
+                    // handle error here...
+                    this.loading = true;
+                }
+            } else if(!this.user){
+                try{
+                    const response = await axios.get(`${this.api_url}/jobs`);
+                    // console.log(response)
+                    this.jobs = response.data.jobs;
+                    this.loading = false;
+                }catch(error){
+                    // handle error here...
+                    this.loading = true;
+                }
             }
+            
         },
 
         async addJobToSaves(job_id){
@@ -167,21 +199,20 @@ export default {
         },
 
         checkIfJobIsSaved(job_id){
-            return this.getUserData.saved_jobs.includes(job_id)
+                return this.saved_jobs.includes(job_id)
         }
 
     },
     computed: {
-        getUserData(){
-            return this.store.getters.getUserData.user
-        },
-       
+        // getUserData(){
+        //     return this.store.getters.getUserData
+        // },
 
     },
 
     mounted(){
-        this.getUser();  
-        this.getJobs()
+        this.getUserData()
+        this.getJobs();
         
     }
 

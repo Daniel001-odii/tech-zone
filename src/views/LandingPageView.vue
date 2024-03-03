@@ -1,5 +1,5 @@
 <template>
-    <Navbar :type="'wesbite'"/>
+    <!-- <Navbar :type="'wesbite'"/> -->
     <div class="py-4 mt-12 md:px-4 flex justify-center items-center flex-col">
         <section>
             <div class="section_container">

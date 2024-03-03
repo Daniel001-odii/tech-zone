@@ -5,13 +5,12 @@
             <template #page-contents>
                 <!-- {{ jobs }} -->
                 <!-- {{  getUserData }} -->
-                <div v-if="!loading && jobs.length <= 0">You have no saved jobs :(</div>
-                
                 <SkeletonLoader v-if="loading"/>
+                <div class="p-8" v-if="!loading && jobs.length <= 0">You have no saved jobs</div>
 
-                <div class="flex flex-col overscroll-y-scroll" v-for="(job, job_index) in jobs" :key="job_index">
+                <div v-if="!loading" class="flex flex-col overscroll-y-scroll" v-for="(job, job_index) in jobs" :key="job_index">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
-                        <div>{{ formatTime(job.created) }}</div>
+                        <div>posted {{ formatTime(job.created) }}</div>
                         <div class="flex flex-row justify-between items-center">
                             <div class="text-2xl font-bold">
                                 <RouterLink :to="'/jobs/' + job._id + '/application'">
@@ -80,7 +79,7 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user/jobs/saved`, { headers });
                 this.loading = false;
-                this.jobs = response.data.savedJobs;
+                this.jobs = response.data.savedJobs.reverse();
             }catch(error){
 
             }

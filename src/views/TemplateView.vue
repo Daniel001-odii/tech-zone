@@ -1,6 +1,6 @@
 <template>
     <div class=" h-screen">
-        <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
+        <!-- <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/> -->
         <div class=" h-full flex flex-col md:flex-row">
             <LeftNavBar  :class="nav_active ? 'block':'hidden'" class="md:block" v-if="leftNav == true"/>
             <div class=" w-full flex flex-col">

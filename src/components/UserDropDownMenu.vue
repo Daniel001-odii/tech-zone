@@ -43,8 +43,9 @@ export default {
     },
     methods:{
         logout(){
-            localStorage.removeItem("life-guard");
-            this.$router.push('/login')
+            localStorage.removeItem("life-gaurd");
+            this.$router.push('/');
+            window.location.reload();
         }
     }
 }
@@ -53,4 +54,5 @@ export default {
     .menu_item{
         @apply hover:bg-light_blue p-3 rounded-md text-left
     }
+
 </style>

@@ -238,7 +238,9 @@ export default {
             }
             catch(error){
                 // handle response here....
-                console.log(error)
+                if(error.response.status === 400){
+                    this.$router.push('/404');
+                }
             }
         },
 
@@ -263,6 +265,9 @@ export default {
                 
             } catch(error){
                 // handle error here...
+                if(error.response.status === 400){
+                    this.$router.push('/404');
+                }
             }
         },
 

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <nav v-if="type === 'wesbite'" class="bg-white w-full shadow p-2 fixed z-10 top-0" >
+        <!-- <nav v-if="type === 'wesbite' || !user" class="bg-white w-full shadow p-2 fixed z-10 top-0" > -->
+        <nav v-if="type === 'wesbite' || !user" class="bg-white w-full shadow p-2" >
             <div style="margin: 0 auto;" class="flex flex-col justify-between items-start md:items-center text-left md:flex-row max-w-screen-2xl">
                 <div class="flex flex-row justify-between items-center w-full md:w-auto">
                     <SiteLogo/>
@@ -43,7 +44,7 @@
         </nav>
 
         <!-- <div v-if="loading">loading...</div> -->
-        <nav v-if="type === 'app' && !loading" class="p-2 border">
+        <nav v-if="type === 'app' && !loading && user" class="p-2 border">
             <div class="flex flex-row w-full justify-between items-center">
                 <SiteLogo/>
                 <div class="border rounded-md hidden md:block">
@@ -116,31 +117,19 @@ export default {
                 };
 
                 const response = await axios.get(`${this.api_url}/user`, { headers });
-                // console.log("from navbar :", response)
-
-                // push to user variable..
                 this.user = response.data.user;
-
             }
             catch(error){
-                console.error(error);
-                if(error.response.status === 401){
-                    localStorage.removeItem('life-gaurd');
-                    this.$router.push('/login');
-                }
+                // console.log("error from navbar :", error);
             }
         },
     },
-    created(){
+    mounted(){
         this.getUserData();
     }
 }
 </script>
 <style scoped>
-
-    *{
-        /* @apply text-2xl */
-    }
     .btn{
         @apply px-5 py-2 font-bold;
     }

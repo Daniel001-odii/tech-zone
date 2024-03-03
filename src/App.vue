@@ -10,6 +10,7 @@ export default {
 
 <template>
   <!-- <Navbar/> -->
+  <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
   <router-view/>
 </template>
 
