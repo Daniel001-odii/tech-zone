@@ -97,8 +97,8 @@
     </div>
 </template>
 <script>
-import TemplateView from './TemplateView.vue';
-import { nigerianStates } from '../utils/states'
+import TemplateView from '../TemplateView.vue';
+import { nigerianStates } from '@/utils/states'
 import LoaderButton from '@/components/LoaderButton.vue';
 
 export default {

@@ -48,7 +48,7 @@
     </div>
 </template>
 <script>
-import TemplateView from './TemplateView.vue';
+import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import { useStore } from 'vuex';

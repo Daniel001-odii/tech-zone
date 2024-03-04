@@ -39,7 +39,7 @@
 </template>
 <script>
 import JobDetailCard from '@/components/JobDetailCard.vue';
-import TemplateView from './TemplateView.vue';
+import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 
 export default {

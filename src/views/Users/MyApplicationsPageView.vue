@@ -42,7 +42,7 @@
 </template>
 <script>
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
-import TemplateView from './TemplateView.vue';
+import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 

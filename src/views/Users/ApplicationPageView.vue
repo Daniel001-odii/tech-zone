@@ -185,7 +185,7 @@
 </template>
 <script>
 import JobDetailCard from '@/components/JobDetailCard.vue';
-import TemplateView from './TemplateView.vue';
+import TemplateView from '../TemplateView.vue';
 import axios from 'axios'
 
 export default {

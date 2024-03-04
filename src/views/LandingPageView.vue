@@ -11,7 +11,7 @@
                         Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-12 right-3 li"/></span> Job.<br/> Hire the right talents.
                     </div>
                     <div class=" text-xl">
-                        Tech-Zone establishes trusted networking between freelancers and businesses all across the nation. Qualified job seekers find the best in-demand jobs of their desired skills anywhere nationwide.
+                        At Apex Technologies, we serve as a comprehensive marketplace, facilitating seamless connections between companies seeking tech expertise and skilled professionals looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects, whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
                     </div>
                     <GetStartedNow/>
                 </div>

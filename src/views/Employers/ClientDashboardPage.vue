@@ -108,7 +108,7 @@
     </div>
 </template>
 <script>
-import TemplateView from './TemplateView.vue';
+import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';

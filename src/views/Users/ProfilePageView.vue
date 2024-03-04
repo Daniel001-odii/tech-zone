@@ -202,7 +202,7 @@
 </template>
 <script>
 import Navbar from '@/components/Navbar.vue';
-import TemplateView from './TemplateView.vue';
+import TemplateView from '../TemplateView.vue';
 import JobReviewCard from '@/components/JobReviewCard.vue';
 import Modal from '@/components/Modal.vue';
 import axios from 'axios';

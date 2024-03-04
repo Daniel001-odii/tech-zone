@@ -3,27 +3,44 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LandingPageViewVue from '@/views/LandingPageView.vue'
 import JobsPageViewVue from '@/views/JobsPageView.vue'
 import MessagePageViewVue from '@/views/MessagePageView.vue'
-import SavedJobsViewVue from '@/views/SavedJobsView.vue'
-import ApplicationPageViewVue from '@/views/ApplicationPageView.vue'
-import ContractPageViewVue from '@/views/ContractPageView.vue'
-import ContractsListPageViewVue from '@/views/ContractsListPageView.vue'
-import MyApplicationsPageViewVue from '@/views/MyApplicationsPageView.vue'
-import ProfilePageViewVue from '@/views/ProfilePageView.vue'
+import SavedJobsViewVue from '@/views/Users/SavedJobsView.vue'
+import ApplicationPageViewVue from '@/views/Users/ApplicationPageView.vue'
+import ContractPageViewVue from '@/views/Users/ContractPageView.vue'
+import ContractsListPageViewVue from '@/views/Users/ContractsListPageView.vue'
+import MyApplicationsPageViewVue from '@/views/Users/MyApplicationsPageView.vue'
+import ProfilePageViewVue from '@/views/Users/ProfilePageView.vue'
 import LoginViewVue from '@/views/LoginView.vue'
 import SignupViewVue from '@/views/SignupView.vue'
-import ClientSignupViewVue from '@/views/ClientSignupView.vue'
-import ProfileStepViewVue from '@/views/ProfileStepView.vue'
+
+import ProfileStepViewVue from '@/views/Users/ProfileStepView.vue'
 import RegistrationDecisionVue from '@/views/RegistrationDecision.vue'
 import PageNotFoundViewVue from '@/views/PageNotFoundView.vue'
+import AboutPageViewVue from '@/views/AboutPageView.vue'
+import MissionPageViewVue from '@/views/MissionPageView.vue'
 
 
-import ClientDashBoardPage from '@/views/ClientDashboardPage.vue'
-import ClientPostJobView from '@/views/ClientPostJobPageView.vue'
+import ClientSignupViewVue from '@/views/ClientSignupView.vue'
+import ClientDashBoardPage from '@/views/Employers/ClientDashboardPage.vue'
+import ClientPostJobView from '@/views/Employers/ClientPostJobPageView.vue'
+
+
 const routes = [
   {
     path: '/',
     name: 'home',
     component: LandingPageViewVue
+  },
+
+  {
+    path: '/about',
+    name: 'about',
+    component: AboutPageViewVue
+  },
+
+  {
+    path: '/vision',
+    name: 'mission & vision',
+    component: MissionPageViewVue
   },
 
   {

@@ -6,7 +6,8 @@
                 <ul class="list">
                     <li class="list_header">About Tech-zone</li>
                     <li>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dictum aliquet accumsan porta lectus ridiculus in mattis. Netus sodales in volutpat ullamcorper amet adipiscing fermentum.
+                        In Nigeria, the burgeoning tech industry holds immense promise for both companies seeking skilled professionals and individuals equipped with tech expertise. However, amidst this potential lies a challenge: unemployment among tech professionals persists, even as companies struggle to find the right talent for their projects. Enters Apex Technologies, a pioneering platform on a mission to revolutionize the tech employment landscape in Nigeria. 
+                        Whether you're a company looking to expand your tech team or an IT professional seeking your next challenge, Apex Technologies invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria's tech industry and pave the way for a brighter, more prosperous future. 
                     </li>
                 </ul>
                 <div class="w-full flex items-start gap-8 mb-5">
@@ -31,8 +32,8 @@
 
                 <ul class="list">
                     <li class="list_header">Company</li>
-                    <li>About Us</li>
-                    <li>Our Vision</li>
+                    <RouterLink to='/about'><li>About Us</li></RouterLink>
+                    <RouterLink to='/vision'><li>Our Vision</li></RouterLink>
                     <li>Team</li>
                 </ul>
             </div>
