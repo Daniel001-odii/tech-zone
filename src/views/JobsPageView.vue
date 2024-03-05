@@ -5,7 +5,7 @@
             <template #page-contents>
                 <!-- <div class="border border-red-200 h-full"> -->
                     <div class="flex flex-row gap-2 p-2 md:p-5 border-b">
-                        <div class="gap-2 flex flex-row overflow-x-scroll">
+                        <div class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
                             <input type="search" class=" min-w-28 px-4 py-2 bg-light_blue rounded-md" placeholder="Search all types of jobs">
                             <button class="bg-light_blue text-blue px-4 py-2 rounded-md hover:bg-blue hover:text-white">
                                 <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
@@ -32,13 +32,17 @@
 
                             <div class="flex flex-col md:flex-row gap-3 h-full">
                                 <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
-
-                                    <SkeletonLoader v-if="loading" class="w-full"/>
+                                    <div v-if="loading" class="w-full">
+                                        <SkeletonLoader />
+                                        <SkeletonLoader />
+                                        <SkeletonLoader />
+                                    </div>
+                                   
                                     <!-- :job_is_saved="checkIfJobIsSaved(job._id)" -->
                                    
                                     <div v-for="(job, job_index) in jobs" :key="job_index">
                                         <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
-                                        <MainJobCard v-if="job" @click="showJobDetail(job_index)" 
+                                        <MainJobCard v-if="job" @click="showJobDetail(job_index)"
                                         :class="selectedJob == job_index ? 'bg-light_blue':''" 
                                         @saveJob="addJobToSaves(job._id)" 
                                         :job_is_saved="checkIfJobIsSaved(job._id)" 
@@ -46,12 +50,17 @@
                                         @flagJob="console.log('job flagged')"
                                         :budget="job.budget" 
                                         :period="job.period" 
-                                        :remote="job.location.remote">
+                                        :remote="job.location.remote"
+                                        :is_applied="checkIfJobIsApplied(job._id)"
+                                        >
                                             <template #job-title>
                                             <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
                                             </template>
-                                            <template #job-location>{{  job.location }}</template>
-                                            <template #job-description>{{  job.description }}
+                                            <template #job-location>
+                                                <span v-if="job.location.remote == 'true'">remote</span>
+                                                <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
+                                            </template>
+                                            <template #job-description>{{  job.description.substring(0, 300) }}...
                                             </template>
                                             <template #job-posting-time>{{  formattedDate(job.created) }}</template>
                                         </MainJobCard>
@@ -67,7 +76,9 @@
                                    :location="jobs[selectedJob].location" 
                                    :posted="formattedDate(jobs[selectedJob].created)" 
                                    :period="jobs[selectedJob].period" 
-                                   :budget="jobs[selectedJob].budget.toLocaleString()">
+                                   :budget="jobs[selectedJob].budget.toLocaleString()"
+                                   :is_applied="checkIfJobIsApplied(jobs[selectedJob]._id)"
+                                   >
                                         <template #job-title>
                                             {{ jobs[selectedJob].title }}
                                         </template>
@@ -131,6 +142,7 @@ export default {
             },
             jobs: '',
             saved_jobs: '',
+            applied_jobs: '',
         }
         
     },
@@ -161,8 +173,8 @@ export default {
             if(this.user){
                 try{
                     const response = await axios.get(`${this.api_url}/user/jobs`, { headers } )
-                    console.log(response.data.jobs)
-                    this.jobs = response.data.jobs;
+                    // console.log(response.data.jobs)
+                    this.jobs = response.data.jobs.reverse();
                     this.loading = false;
                 }catch(error){
                     // handle error here...
@@ -193,13 +205,34 @@ export default {
            }
         },
 
+        async getAllApplications(){
+            const headers = this.headers;
+            this.loading = true;
+            try{
+                const response = await axios.get(`${this.api_url}/user/jobs/applied`, { headers });
+                console.log(response.data)
+                this.applied_jobs = response.data.applications.map(job => job._id);
+                console.log("applied jobs id: ", this.applied_jobs);
+                this.loading = false;
+            } catch(error){
+                this.loading = false;
+            }
+        },
+
         formattedDate(dateToFormat) {
-        // Use the utility function to format the date
-        return formatToRelativeTime(dateToFormat);
+            return formatToRelativeTime(dateToFormat);
         },
 
         checkIfJobIsSaved(job_id){
+            if(this.user.role == 'user'){
                 return this.saved_jobs.includes(job_id)
+            }
+        },
+
+        checkIfJobIsApplied(job_id){
+            if(this.user.role == 'user'){
+                return this.applied_jobs.includes(job_id)
+            }
         }
 
     },
@@ -213,6 +246,7 @@ export default {
     mounted(){
         this.getUserData()
         this.getJobs();
+        this.getAllApplications();
         
     }
 

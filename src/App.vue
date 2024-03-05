@@ -10,8 +10,11 @@ export default {
 
 <template>
   <!-- <Navbar/> -->
-  <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
-  <router-view/>
+  <!-- <div class=" h-screen border border-red-500"> -->
+    <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
+    <router-view/>
+  <!-- </div> -->
+  
 </template>
 
 <style>

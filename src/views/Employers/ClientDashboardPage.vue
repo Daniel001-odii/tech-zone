@@ -19,11 +19,11 @@
 
                     <div class="flex flex-col">
                         <div class="flex flex-row w-full rounded-lg bg-white items-stretch">
-                            <button @click="current_tab = 'jobs'" :class="{ 'active_tab': current_tab == 'jobs' }" class="tab_btn">
+                            <button @click="switchTab('jobs')" :class="{ 'active_tab': current_tab == 'jobs' }" class="tab_btn">
                                 <i class="bi bi-activity"></i>
                                 <span>Jobs Activity</span>
                             </button>
-                            <button @click="current_tab = 'saved'" :class="{ 'active_tab': current_tab == 'saved' }" class="tab_btn ">
+                            <button @click="switchTab('saved')" :class="{ 'active_tab': current_tab == 'saved' }" class="tab_btn ">
                                 <i class="bi bi-people"></i>
                                 <span>Saved Freelancers</span>
                             </button>
@@ -33,19 +33,20 @@
                                 <div v-if="jobs.length > 0">
                                     <!-- {{ jobs }} -->
                                     <div class=" bg-white p-2 rounded-2xl mb-4" v-for="(job, job_id) in jobs" :key="job_id">
+                                        <!-- {{ showApplicants(job._id) }} -->
                                         <div class="w-full p-3 bg-slate-50 rounded-lg text-left flex flex-row-reverse justify-start items-center">
-                                            <button @click="show_applicants(job_id)" class=" text-blue bg-light_blue p-2 rounded-full ml-3 flex justify-center items-center h-10 w-10">
+                                            <button @click="show_applicants(job_id, job._id)" class=" text-blue bg-light_blue p-2 rounded-full ml-3 flex justify-center items-center h-10 w-10">
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </button>
-                                            
                                             <div class="flex flex-row justify-between flex-wrap w-full">
                                                 <span class="text-lg font-bold">{{ job.title }}</span>
-                                                <span>posted: {{ job.created }}</span>
+                                                <span>posted {{ formattedDate(job.created) }}</span>
                                             </div>
-                                            
-                                            
                                         </div>
-                                        <div class="p-3">{{ job.description }}</div>
+                                        <div class="p-3 text-left">{{ job.description.substring(0, 200) }}..</div>
+                                        <div class="flex flex-row justify-end">
+                                            <span class="p-2 rounded-lg bg-slate-200 text-sm">applications: {{ job.no_of_applications }}</span>
+                                        </div>
                                         
                                         <div class="flex flex-col gap-3" v-if="job.show_applicants">
                                             <div class="w-full p-3 bg-slate-50 rounded-lg text-lg font-bold text-left flex flex-row justify-center items-center">
@@ -53,21 +54,37 @@
                                                 <span>Applicants</span>
                                             </div>
                                             <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
-                                            <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="user in 1">
-                                                <div class=" h-16 w-20 bg-blue rounded-lg"></div>
+                                            <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
+                                                <div class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
+                                                    <img :src="application.user.profile.image_url">
+                                                </div>
                                                 <div class="flex flex-col text-start w-full">
                                                     <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
                                                         <div>
-                                                            <p class="text-xl font-bold">Odii Daniel(test)</p>
-                                                            <p class="text-gray-400">web Developer</p>
+                                                            <!-- {{  application }} -->
+                                                            <RouterLink :to="'user/'">{{ application.user._id }}</RouterLink>
+                                                            <p class="text-xl font-bold">{{ application.user.firstname }} {{ application.user.lastname }}</p>
+                                                            <p class="text-gray-400">{{ application.user.profile.title }}</p>
                                                         </div>
-                                                        <span class="rounded-lg bg-orange-100 text-orange-700 p-2">counter offer</span>
+                                                        <span class="rounded-lg bg-orange-100 text-orange-700 p-2" v-if="application.counter_offer">counter offer</span>
                                                     </div>
                                                     <div>
-                                                        <p>Cover Letter: lorem ipsum dolor sit amet..</p>
-                                                        <p>Attachments: book1.pdf</p>
-                                                        <p>Counter offer: 50000</p>
-                                                        <p>Reason: abeg bros</p>
+                                                        <p><b>Cover Letter:</b> {{ application.cover_letter }}</p>
+                                                        <p><b>Attachments({{ application.attachments.length }}):</b> 
+                                                            <!-- {{ application.attachments }} -->
+                                                            <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
+
+                                                            <div v-for="attachment in application.attachments">
+                                                                <a :href="'http://localhost:8000/' + attachment" target="_blank">{{ attachment }}</a>
+                                                            </div>
+                                                        </p>
+                                                        <p><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
+                                                        <p><b>Reason:</b> {{ application.reason_for_co }}</p>
+                                                    </div>
+                                                    <div class="flex flex-row gap-3 mt-3">
+                                                        <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save</button>
+                                                        <button class="bg-white border border-blue p-3 rounded-md hover:bg-slate-100">Interview</button>
+                                                        <button class="btn">Send Contract Offer & Hire</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,21 +94,22 @@
                                 <div v-else>You have not posted any job yet. Post now</div>
                             </div>
                             <div v-if="current_tab == 'saved'" class="p-3 bg-white rounded-lg mt-3 flex flex-col gap-3">
-                                Saved Freelancers here...
-                                <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="user in 3">
-                                    <div class=" h-16 w-20 bg-blue rounded-lg"></div>
+                                <div v-if="saved_users" class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(user, user_id) in saved_users" :key="user_id">
+                                    <div class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
+                                        <img :src="user.profile.image_url">
+                                    </div>
                                     <div class="flex flex-col text-start w-full">
                                         <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
                                             <div>
-                                                <p class="text-xl font-bold">Odii Daniel</p>
-                                                <p class="text-gray-400">web Developer</p>
+                                                <p class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</p>
+                                                <p class="text-gray-400">{{ user.profile.title }}</p>
                                                 <p class="text-gray-400">Rating *****</p>
                                                 <p class="text-gray-400">Earned: $5000000</p>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <button class="bg-white border-blue p-3 border rounded-md hover:bg-slate-100">Message</button>
                                                 <button class="btn">Assign Job</button>
-                                                <button class="border p-3 rounded-md">
+                                                <button @click="saveUser(user._id)" class="border p-3 rounded-md">
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </div>
@@ -99,6 +117,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div v-if="saved_users.length <= 0">You have no saved users yet</div>
                             </div>
                         </div>
                     </div>
@@ -112,6 +131,8 @@ import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import { formatToRelativeTime } from '@/utils/dateFormat';
+
 
 export default {
     name: "ClientDashboardPage",
@@ -127,23 +148,31 @@ export default {
             jobs: '',
 
             current_tab: 'jobs',
+            applicants: [],
+            saved_users: '',
         }
         
     },
     methods:{
         switchTab(tab){
             this.current_tab = tab;
+            if(tab == 'saved'){
+                this.getSavedUsers();
+            }
         },
+
         getUser(){
             this.store.dispatch('fetchUserData');
             // this.user = this.store.getters.getUserData.user;
         },
+
         formattedDate(dateToFormat) {
-        return formatToRelativeTime(dateToFormat);
+            return formatToRelativeTime(dateToFormat);
         },
 
-        show_applicants(index) {
+        show_applicants(index, job_id) {
             this.jobs[index].show_applicants = !this.jobs[index].show_applicants;
+            this.getJobApplicants(job_id, index);
         },
 
         async getJobsByEmployer(){
@@ -151,21 +180,64 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/employer/jobs`, { headers });
                 // console.log(response)
-                this.jobs = response.data.jobs;
+                this.jobs = response.data.jobs.reverse();
                 this.jobs.forEach(job => {
                     job.show_applicants = false;
-                    // job.showDetails = false;
                 });
             }catch(error){
                 console.log(error)
             }
+        },
+
+        async getJobApplicants(job_id, index){
+            const headers = this.headers;
+            try{
+                const response  = await axios.get(`${this.api_url}/employer/jobs/${job_id}/applications`, { headers });
+                console.log("application for current job: ", response.data)
+                const applications = response.data.applications;
+                this.applicants[index] = applications;
+            }catch(error){
+                console.log(error)
+            }
+        },
+
+        async saveUser(user_id){
+            const headers = this.headers;
+            try{
+                const res = await axios.post(`${this.api_url}/employer/${user_id}/save-user`, {}, { headers });
+                // console.log(res);
+                alert(res.data.message);
+                this.getSavedUsers();
+            }catch(error){ 
+                console.log("user saving error: ", error);
+            }
+        },
+
+        async getSavedUsers(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/employer/users/saved`, { headers });
+                console.log("saved users: ", response.data)
+                this.saved_users = response.data.saved_users;
+            }catch(error){
+                console.log("get saved users error: ", error);
+            }
+        },
+
+        
+        userIsSaved(user_id){
+            if(this.getUserData){
+                return this.getUserData.user.saved_users.includes(user_id);
+            }
         }
+    
 
     },
     computed: {
         getUserData(){
             return this.store.getters.getUserData
         },
+
     },
 
     mounted(){

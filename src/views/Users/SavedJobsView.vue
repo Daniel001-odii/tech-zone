@@ -36,7 +36,7 @@
                             </span>
                         </div>
                         <div>
-                            {{ job.description }}
+                            {{ job.description.substring(0, 300) }}...
                             
                         </div>
                     </div>
@@ -62,6 +62,7 @@ export default {
             loading: false,
             store: useStore(),
             user: '',
+            savedJobs: '',
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
@@ -70,9 +71,18 @@ export default {
         }
     },
     methods:{
-        getUser(){
-            this.store.dispatch('fetchUserData')
+        async getUserData(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/user`, { headers });
+                console.log("user data from saved jobs: ", response);
+                this.user = response.data.user;
+                this.savedJobs = response.data.user.saved_jobs;
+            }catch(error){
+                console.log(error)
+            }
         },
+
         async getSavedJobs(){
             this.loading = true;
             const headers = this.headers;
@@ -86,7 +96,6 @@ export default {
         },
 
         async addJobToSaves(job_id){
-          
           try{
                const headers = this.headers;
                const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
@@ -103,18 +112,15 @@ export default {
 
         // function to check if the job with arg id is saved... 
         checkIfJobIsSaved(job_id){
-            return this.getUserData.saved_jobs.includes(job_id)
-            // console.log(this.getUserData)
+            return this.savedJobs.includes(job_id)
         }
     },
     computed: {
-        getUserData(){
-            return this.store.getters.getUserData.user
-        },
+
     },
 
     mounted(){
-        this.getUser();
+        this.getUserData();
         this.getSavedJobs();
     }
 }

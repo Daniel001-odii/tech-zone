@@ -45,8 +45,9 @@
                 </slot>
             </div>
 
-            <div class="text-sm text-blue">
+            <div class="text-sm text-blue flex flex-row justify-between items-center">
                 <slot name="job-posting-time">Posted 1 hour ago</slot>
+                <span v-if="is_applied" class="px-3 py-1 bg-green rounded-lg text-white">applied</span>
             </div>
         </div>
     </div>
@@ -67,7 +68,7 @@ export default {
         company: String,
         rating: Number,
         remote: Boolean,
-
+        is_applied: Boolean,
         job_is_saved: Boolean,
        
     },

@@ -1,10 +1,15 @@
 <template>
     <div>
+
+        <FullPageModal v-if="application_sent" :type="'success'" />
+        
         <TemplateView :leftNav="true">
             <template #page-title>Application</template>
             <template #page-contents>
 
-                <div class="flex flex-col md:flex-row px-5 py-3" >
+                <div v-if="!job">Loading Job...</div>
+
+                <div v-if="job" class="flex flex-col md:flex-row px-5 py-3" >
                     <div class=" md:w-2/4">
                         <div v-if="is_application" class=" bg-[#e0ffec] p-4 rounded-lg border text-[#0d8f3f]  mb-3 text-start flex flex-row gap-4">
                             <i class="bi bi-exclamation-circle-fill"></i>
@@ -13,7 +18,9 @@
                             </span>
                         </div>
 
-                        <div v-if="job">
+                        
+
+                        <div>
                             <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md">
                                 <div class="flex flex-col gap-3">
                                     <div class="flex flex-row justify-between items-center">
@@ -29,24 +36,21 @@
                                         <span>Rating here...</span>
                                     </div>
                                     <div class="flex flex-row gap-3 flex-wrap">
-
                                         <div>
                                             <i class="bi bi-geo-alt mr-3"></i> 
-                                            <span v-if="job.location.remote">remote</span>
-                                            <span v-else>{{ job.location }}</span>
+                                            <span v-if="job.location.remote == 'true'">remote</span>
+                                            <span v-else>{{ job.location.address }}, {{ job.location.state }}</span>
                                         </div>
                                         <div>
-                                            <i class="bi bi-arrow-clockwise"></i> <span>{{ job.created }}</span>
+                                            <i class="bi bi-arrow-clockwise"></i> <span>{{ formatTimeFormat(job.created) }}</span>
                                         </div>
                                         <div>
                                             <i class="bi bi-wallet"></i> <span>N{{ job.budget.toLocaleString()}}</span>
                                         </div>
                                         <div>
-                                            <i class="bi bi-briefcase"></i> <span>{{ job.period}}</span>
+                                            <i class="bi bi-briefcase"></i> <span>{{ job.period }}</span>
                                         </div>
-                                        
                                     </div>
-                                    
                                 </div>
                                 <div class="font-bold">
                                     Job Description
@@ -58,7 +62,6 @@
                                 </div>
 
                                 <div>
-                                    <!-- <span class="font-bold">{{  job.skills }}</span> -->
                                     <div class="flex flex-row flex-wrap gap-3">
                                         <span v-for="(tag, tag_index) in job.skills
                                         " class="bg-light_blue text-blue px-3 py-2 rounded-md">{{ tag }}</span>
@@ -67,7 +70,12 @@
 
                                 <div>
                                     <span class="font-bold">Project Type</span>
-                                    <div>Medium [a period of 30 months]</div>
+                                    <div>{{ job.type }}</div>
+                                </div>
+
+                                <div>
+                                    <span class="font-bold">Project Duration</span>
+                                    <div>{{ job.period }}</div>
                                 </div>
 
                                 <div>
@@ -104,9 +112,6 @@
                                     <div class="bg-light_blue p-3 border rounded-md w-fit cursor-not-allowed">{{ this.$route.path }}</div>
                                     <button>copy link</button>
                                 </div>
-
-                                
-
                             </div>
                         </div>
                     </div>
@@ -115,7 +120,6 @@
                             <span class="font-bold text-2xl">Cover Letter</span>
                             <textarea class=" h-52 max-h-96 p-4 border rounded-md disabled:text-gray-400" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" :disabled="is_application" required></textarea>
                          </div>
-
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Attachments</span>
                             <div class=" h-fit border border-dotted rounded-md flex flex-col justify-center items-center py-4">
@@ -146,13 +150,11 @@
                                 </div>
                             </div>
                          </div>
-
                          <div class="flex flex-col text-left gap-3">
                             <div class="flex flex-row gap-3">
                                 <input type="checkbox" name="counterOffer" id="counterOffer" @change="hasCounterOffer = !hasCounterOffer" :checked="is_application && hasCounterOffer" :disabled="is_application">
                                 <label for="counterOffer">Counter budget/offer</label>
                             </div>
-                          
                             <div v-if="hasCounterOffer">
                                 <span class="font-bold text-2xl">Counter Offer</span>
                                 <div class="flex flex-col justify-center gap-5 mt-3">
@@ -161,20 +163,20 @@
                                             <input type="text" placeholder="100,000.00" class="border rounded-md p-5" v-model="application_form.counter_offer" :disabled="is_application">
                                             <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
-
                                     <div class="flex flex-col">
-                                            <span class="text-xl">Reason</span>
-                                            <textarea type="text" placeholder="a good reason for the counter offer" class="border rounded-md p-5 disabled:text-gray-400" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
-                                            <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
+                                        <span class="text-xl">Reason</span>
+                                        <textarea type="text" placeholder="a good reason for the counter offer" class="border rounded-md p-5 disabled:text-gray-400" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
+                                        <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
                                 </div>
                             </div>
-                           
                          </div>
                          <div class="flex ">
-                            <button type="submit" class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue disabled:bg-gray-300" :disabled="is_application">Submit Application</button>
+                            <button type="submit" class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue disabled:bg-gray-300" :disabled="is_application">
+                                <span v-if="loading">Loading...</span>
+                                <span v-else>Submit Application</span>
+                            </button>
                          </div>
-                         
                     </form>
 
                    
@@ -187,10 +189,12 @@
 import JobDetailCard from '@/components/JobDetailCard.vue';
 import TemplateView from '../TemplateView.vue';
 import axios from 'axios'
+import { formatToRelativeTime } from '@/utils/dateFormat';
+import FullPageModal from '@/components/FullPageModal.vue'
 
 export default {
     name: "ApplicationPageView",
-    components: { TemplateView, JobDetailCard },
+    components: { TemplateView, JobDetailCard, FullPageModal },
     data(){
         return{
             loading: false,
@@ -211,6 +215,8 @@ export default {
             upload_progress: '',
             application_attachments: '',
             selectedFiles: [],
+
+            application_sent: false,
         }
     },
     methods: {
@@ -223,9 +229,12 @@ export default {
             }
         },
 
-
         removeFile(index) {
             this.selectedFiles.splice(index, 1);
+        },
+
+        formatTimeFormat(time){
+            return formatToRelativeTime(time)
         },
 
         async getCurrentJobDetails(){
@@ -245,7 +254,7 @@ export default {
         },
 
         async getApplicationDetails(){
-            this.loading = true;
+            // this.loading = true;
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/jobs/${this.$route.params.job_id}/application`, { headers });
@@ -257,8 +266,7 @@ export default {
                     }
                 }
                
-                this.loading = false;
-                
+                // this.loading = false;
                 if(this.application_form.job === this.$route.params.job_id){
                     this.is_application = true;
                 }
@@ -271,43 +279,29 @@ export default {
             }
         },
 
-        // async sumbitApplication(){
-        //     const headers = this.headers;
-        //     try{
-        //         const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form,  { headers });
-        //         console.log(response)
-        //         // show custom alert and redirect user to jobs page...
-        //         alert(response.data.message);
-        //         this.$router.push('/jobs')
-        //     } catch(error){
-        //         console.log(error);
-        //     }
-        // },
-
         async sumbitApplication(){
+            this.loading = true;
             const formData = new FormData();
             formData.append('cover_letter', this.application_form.cover_letter);
             formData.append('counter_offer', this.application_form.counter_offer);
             formData.append('reason_for_co', this.application_form.reason_for_co);
-
             for (let i = 0; i < this.application_attachments.length; i++) {
                 formData.append('attachments', this.application_attachments[i]);
             }
-
 
             const config = {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
                 },
-
                 onUploadProgress: (progressEvent) => {
                         this.upload_progress = Math.round((progressEvent.loaded / progressEvent.total ) * 100);
                 }
             };
-
             try{
                 const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, formData, config);
-                console.log(response)
+                // console.log(response)
+                this.loading = false;
+                this.application_sent = true;
             } catch(error){
                 console.log(error);
             }
@@ -323,5 +317,6 @@ export default {
 }
 </script>
 <style scoped>
-    
+
+
 </style>

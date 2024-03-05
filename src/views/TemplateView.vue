@@ -1,5 +1,5 @@
 <template>
-    <div class=" h-screen">
+    <div class=" h-[93vh]">
         <!-- <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/> -->
         <div class=" h-full flex flex-col md:flex-row">
             <LeftNavBar  :class="nav_active ? 'block':'hidden'" class="md:block" v-if="leftNav == true"/>
@@ -14,7 +14,7 @@
                     </span>
                 </div>
 
-                <div class="flex flex-col h-full ">
+                <div class="flex flex-col h-full  overflow-y-scroll">
                     <slot name="page-contents">
                          Page contents here...
                     </slot>

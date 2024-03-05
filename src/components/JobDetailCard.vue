@@ -10,7 +10,10 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="bg-blue text-white px-5 py-2 rounded-md hover:bg-dark_blue" @click="openJob">Apply here</button>
+                        <button class="bg-blue text-white px-5 py-2 rounded-md hover:bg-dark_blue" @click="openJob">
+                            <span v-if="is_applied">View Application</span>
+                            <span v-else>Apply here</span>
+                        </button>
                     </div>
                 </div>
                 <div class=" capitalize flex flex-row gap-3">
@@ -65,6 +68,7 @@ export default {
         period: String,
         skills: Array,
         remote: Boolean,
+        is_applied: Boolean,
     },
     components: { RouterLink },
     methods: {

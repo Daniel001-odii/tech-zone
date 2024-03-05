@@ -1,4 +1,10 @@
 <template>
+    <FullPageModal v-if="job_is_posted" :type="'success'">
+        <RouterLink to="/client/dashboard">
+            <button class="btn">Return to home</button>
+        </RouterLink>
+    </FullPageModal>
+
     <div class="flex flex-row justify-center items-center">
         {{ form_errors }}
             <!-- FOR SECTION 1 JOB TITLE -->
@@ -10,7 +16,7 @@
                         <span>Giving a descriptive name helps attract the right talent and save you time</span>
                     </div>
                     <div class="border"></div>
-                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="job_title">
                         <p>Write a name for your job posting</p>
                         <textarea class="border rounded-lg p-3 h-40" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
                         <span class="text-sm text-gray-400">Examples : Product Designer, Web Designer, Flutter Developer</span>
@@ -27,7 +33,7 @@
                         <span>Skills, qualifications, necessary tools required should be listed here,  For more reach and better result, input 3 or more skills..</span>
                     </div>
                     <div class="border"></div>
-                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="skills">
                         <p>Search Skill here or Manually add your own</p>
                         <!-- {{ job_post.skills }} -->
                         
@@ -50,7 +56,7 @@
                         <p class="text-2xl font-bold">Estimate the period the work will last for.</p>
                     </div>
                     <div class="border"></div>
-                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="period">
                         <p>How long will the job last?</p>
                         <select class="border rounded-lg p-3" placeholder="Product Designer" v-model="job_post.period">
                             <option>Less than a month</option>
@@ -70,7 +76,7 @@
                         <p class="text-2xl font-bold">What is your budget for the job?</p>
                     </div>
                     <div class="border"></div>
-                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="budget">
                         <p>Select the budget type</p>
                         <div class="flex flex-row gap-6">
                             <label for="fixed-price" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'fixed-price' ? 'bg-light_blue border-blue':''">
@@ -104,7 +110,7 @@
                         <!-- <span>Giving a descriptive name helps attract the right talent and save you time</span> -->
                     </div>
                     <div class="border"></div>
-                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="location">
                         <p>write a correct and exisitng location, dont stress the talents...</p>
                         <div class="flex flex-row gap-6">
                             <!-- {{ job_post.location.remote }} -->
@@ -145,7 +151,7 @@
                         <p class="text-2xl font-bold">Final Step, Write a clear description of the job, including deliverables, skills, experience and other necessary details..</p>
                     </div>
                     <div class="border"></div>
-                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="description">
                         <p>Describe your job</p>
                         <textarea class="border rounded-lg p-3 h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
                     </div>
@@ -157,7 +163,7 @@
                 <div v-if="currentIndex === 6" class="form_section">
                 
                     <!-- LEFT -->
-                    <div class=" flex flex-col text-left w-full md:w-3/6">
+                    <div class=" flex flex-col text-left w-full md:w-3/6 overflow-y-scroll h-[600px]">
                         <h1>Job Review</h1>
                         <div class="w-full flex flex-col gap-2">
                             <!-- REVIEW ESCTION 1 -->
@@ -169,23 +175,10 @@
                                 </div>
                                 <div v-if="prev_title" class=" w-full p-2 text-start gap-3 flex flex-col">
                                     <p>Write a name for your job posting</p>
-                                    <textarea class="border rounded-lg p-3 h-40" placeholder="A very descriptive title" v-model="job_post.title"></textarea>
+                                    <textarea class="border rounded-lg p-3 h-40" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
                                     <span class="text-sm text-gray-400">Examples : Product Designer, Web Designer, Flutter Developer</span>
                                 </div>
                             </div>
-
-                            <!-- REVIEW SECTION 2 -->
-                            <!-- <div class="border p-2">
-                                <div class="w-full flex flex-row justify-between p-3">
-                                    <span  class="font-bold text-lg">Skills</span>
-                                    <button type="button" @click="prev_skills = !prev_skills"><i class="bi bi-pen"></i></button>
-                                </div>
-                                <div v-if="prev_skills" class=" w-full h-full p-2 text-start gap-3 flex flex-col">
-                                    <p>Search Skill here or Manually add your own</p>
-                                    <input class="border rounded-lg p-3" placeholder="Product Designer" v-model="job_post.skills">
-                                    <span class="text-sm text-gray-400">Selected Skills : Product Designer, Web Designer, Flutter Developer</span>
-                                </div>
-                            </div> -->
 
                             <!-- REVIEW SECTION 3 -->
                             <div class="border p-2">
@@ -196,10 +189,10 @@
                                 <div v-if="prev_period" class=" w-full h-full p-5 text-start gap-3 flex flex-col">
                                     <p>How long will the job last?</p>
                                     <select class="border rounded-lg p-3" placeholder="Product Designer" v-model="job_post.period">
-                                        <option>Less than a month</option>
-                                        <option>1 to 3 months</option>
-                                        <option>3 to 6 months</option>
-                                        <option>6 months plus</option>
+                                        <option value="less than a month">Less than a month</option>
+                                        <option value="1 to 3 months">1 to 3 months</option>
+                                        <option value="3 to 6 months">3 to 6 months</option>
+                                        <option value="6 months plus">6 months plus</option>
                                     </select>
                                 </div>
                             </div>
@@ -304,7 +297,7 @@
                                 {{ job_post.title }}
                             </template>
                             <template #job-description>
-                                {{ job_post.description }}
+                                {{ job_post.description.substring(0, 500) }}...
                             </template>
                             <!-- :skills="job_post.skills"  -->
                         </JobDetailCard>
@@ -314,7 +307,7 @@
     
 
     </div>
-    <div class="flex p-4 flex-col justify-center  items-center gap-6 w-full">
+    <div class="flex p-4 flex-col justify-center  items-center gap-6 w-full fixed bottom-0">
         <div class=" w-4/5 h-4 bg-blue rounded-lg"></div>
         <div class="w-full justify-between flex flex-row">
             <button type="button" class="bg-blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex === 0">Previous</button>
@@ -327,15 +320,16 @@
 </template>
 
 <script>
+import FullPageModal from '@/components/FullPageModal.vue';
 import JobDetailCard from '@/components/JobDetailCard.vue';
 import axios from 'axios'
 
     export default {
         name: "ClientPostJobView",
-        components: { JobDetailCard },
+        components: { JobDetailCard, FullPageModal },
         data(){
             return{
-                currentIndex: 1,
+                currentIndex: 6,
                 prev_title: false,
                 prev_skills: false,
                 prev_period: false,
@@ -371,6 +365,11 @@ import axios from 'axios'
                 inputValue: '',
                 form_errors: '',
                 added_skills: [],
+                job_is_posted: false,
+
+                preview: {
+                    title: '',
+                }
             }
         },
         methods:{
@@ -408,11 +407,20 @@ import axios from 'axios'
                 try{
                     const response = await axios.post(`${this.api_url}/jobs`, this.job_post, { headers })
                     console.log(response);
+                    this.job_is_posted = true;
                 }catch(error){
                     // handle error..
                     this.form_errors = error;
                 }
-            }
+            },
+
+            
+        },
+        mounted(){
+            
+        },
+        computed:{
+
         }
     }
 </script>

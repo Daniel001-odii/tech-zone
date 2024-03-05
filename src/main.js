@@ -17,6 +17,6 @@ app.use(vue3GoogleLogin, {
 })
 
 // Declare a global variable
-app.config.globalProperties.api_url = 'http://127.0.0.1:8000/api';
+app.config.globalProperties.api_url = 'http://localhost:8000/api';
 
 app.use(store).use(router).mount('#app');

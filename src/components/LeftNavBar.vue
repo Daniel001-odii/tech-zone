@@ -44,6 +44,13 @@
                         <span class="md:hidden lg:inline-block">Saved Jobs</span>
                     </div>
                 </RouterLink>
+                <RouterLink to="/messages" >
+                    <div class="nav_item" :class="{ 'active': isMessages }">
+                        <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
+                        <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
+                        <span class="md:hidden lg:inline-block">Messages</span>
+                    </div>
+                </RouterLink>
                 <RouterLink to="/contracts" >
                     <div class="nav_item" :class="{ 'active': isContracts }">
                         <i class="bi bi-gift" v-if="!isContracts"></i> 

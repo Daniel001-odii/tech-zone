@@ -32,7 +32,7 @@
                             </span>
                         </div>
                         <div>
-                            {{ application.description }}
+                            {{ application.description.substring(0, 200) }}
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user/jobs/applied`, { headers });
                 console.log(response.data)
-                this.applications = response.data.applications;
+                this.applications = response.data.applications.reverse();
                 this.loading = false;
             } catch(error){
                 // handle error here...

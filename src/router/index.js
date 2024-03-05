@@ -114,7 +114,7 @@ const routes = [
     path: '/contracts/:contract_id',
     name: 'contract',
     component: ContractPageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
+    // meta: { requiresAuth: true, role: 'user' }
   },
 
 
@@ -168,7 +168,21 @@ const routes = [
   name: "my jobs",
   component: ClientDashBoardPage,
   meta: { requiresAuth: true, role: 'employer' }
-}
+},
+
+{
+  path: '/client/contracts',
+  name: 'client contracts',
+  component: ContractsListPageViewVue,
+  meta: { requiresAuth: true, role: 'employer' }
+},
+
+{
+  path: '/client/profile',
+  name: 'client profile',
+  component: ProfilePageViewVue,
+  meta: { requiresAuth: true, role: 'employer' }
+},
 
 ]
 
@@ -188,7 +202,6 @@ let requestedRoute = null; // Initialize a variable to store the requested route
 
 // Create a navigation guard that prevents loggedn in users from visiting irrelevant routes when logged in...
 // this is ensured via the user roles present in the token...
-
 router.beforeEach((to, from, next) => {
   // Check if the user is logged in (you should replace this condition)
   const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
@@ -198,7 +211,7 @@ router.beforeEach((to, from, next) => {
     // Redirect users to /jobs
     next('/jobs')
 
-  } else if(userRole && userRole == 'employer' && to.path === '/') {
+  } else if(userRole && userRole == 'employer' && to.path === '/' || userRole && userRole == 'employer'&& to.path === '/login') {
     // redirect clients to their dashboard
     next('/client/dashboard');
   }
@@ -206,8 +219,21 @@ router.beforeEach((to, from, next) => {
       // Otherwise, proceed with the navigation
       next()
     }
+});
 
-})
+// navigation gaurd to allow only loggedin users to view certain pages..
+router.beforeEach((to, from, next) => {
+  const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
+
+  // Check if the route has a "requiresAuth" meta field and matches the user's role
+  if (to.meta.requiresAuth && to.meta.role !== userRole) {
+    redirectToLogin = true; // Set the flag to true
+    requestedRoute = to.fullPath; // Store the requested route
+    next('/login'); // Redirect to login for unauthorized access
+  } else {
+    next(); // Proceed to the route
+  }
+});
 
 
 export default router

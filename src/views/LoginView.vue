@@ -91,7 +91,7 @@ export default {
                    
                 }else if(response.data.user.role == "employer"){
                     window.location.reload();
-                    this.$router.push('/dashboard');
+                    this.$router.push('/client/dashboard');
                 }
                 
                 this.loading = false;

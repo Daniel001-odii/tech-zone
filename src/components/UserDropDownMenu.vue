@@ -1,15 +1,18 @@
 <template>
     <div>
-        <div class=" w-fit border absolute bg-white top-10 right-0 rounded-lg p-1 hidden group-hover:block z-10">
+        <div class=" w-fit border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-10">
             <div class="flex flex-col text-left gap-1">
                 <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-evenly px-1">
                     <div class="flex flex-col">
                         <span>{{ username }}</span>
                         <span class="text-blue text-sm">{{ email }}</span>
+                        <span class="text-slate-400 capitalize">{{ user_type }}</span>
                     </div>
                     <i :class="sub_items ? 'bi bi-caret-up-fill':'bi bi-caret-down-fill'" class=""></i>
                 </div>
-                <div v-if="sub_items">
+
+                <!-- MENU FOR USER ... -->
+                <div v-if="sub_items && user_type == 'user'">
                     <RouterLink to="/profile">
                         <div class="menu_item"><i class="bi bi-person"></i>My Profile</div>
                     </RouterLink>
@@ -22,6 +25,21 @@
                     <div class="menu_item"><i class="bi bi-cash-stack"></i> Earnings</div>
                     <div class="menu_item"><i class="bi bi-gear"></i> Settings</div>
                 </div>
+
+
+                <!-- MENU FOR EMPLOYERS>... -->
+                <div v-if="sub_items && user_type == 'employer'">
+                    <RouterLink to="/client/profile">
+                        <div class="menu_item"><i class="bi bi-person"></i> Profile</div>
+                    </RouterLink>
+
+                    <RouterLink to="/client/contracts">
+                        <div class="menu_item"><i class="bi bi-sticky"></i> Contracts & Hires</div>
+                    </RouterLink>
+                    
+                    <div class="menu_item text-slate-300"><i class="bi bi-compass"></i> Overview</div>
+                    <div class="menu_item text-slate-300"><i class="bi bi-gear"></i> Settings</div>
+                </div>
               
                 <div class="menu_item"><i class="bi bi-question-circle"></i> Help & Support</div>
                 <button @click="logout" class="menu_item"><i class="bi bi-box-arrow-right"></i> Logout</button>
@@ -30,6 +48,10 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
+
+
 export default {
     name: "UserDropDownMenu",
     props: {
@@ -39,6 +61,11 @@ export default {
     data(){
         return{
             sub_items: false,
+            user_type: '',
+            user: '',
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+            },
         }
     },
     methods:{
@@ -46,7 +73,21 @@ export default {
             localStorage.removeItem("life-gaurd");
             this.$router.push('/');
             window.location.reload();
-        }
+        },
+
+        async getUserData(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/user`,  { headers });
+                this.user = response.data.user;
+                this.user_type =response.data.user.role;
+            }catch(error){
+                console.log("user data error from drop down menu:", error)
+            }
+        },
+    },
+    mounted(){
+        this.getUserData()
     }
 }
 </script>
