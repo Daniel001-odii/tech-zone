@@ -32,6 +32,12 @@ const routes = [
   },
 
   {
+    path: '/users/:user_id',
+    name: 'Public profile',
+    component: ProfilePageViewVue
+  },
+
+  {
     path: '/about',
     name: 'about',
     component: AboutPageViewVue

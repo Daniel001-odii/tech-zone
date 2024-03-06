@@ -61,7 +61,7 @@
                                                 <div class="flex flex-col text-start w-full">
                                                     <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
                                                         <div>
-                                                            <!-- {{  application }} -->
+                                                            <!-- {{  application.job }} -->
                                                             <RouterLink :to="'user/'">{{ application.user._id }}</RouterLink>
                                                             <p class="text-xl font-bold">{{ application.user.firstname }} {{ application.user.lastname }}</p>
                                                             <p class="text-gray-400">{{ application.user.profile.title }}</p>
@@ -84,7 +84,7 @@
                                                     <div class="flex flex-row gap-3 mt-3">
                                                         <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save</button>
                                                         <button class="bg-white border border-blue p-3 rounded-md hover:bg-slate-100">Interview</button>
-                                                        <button class="btn">Send Contract Offer & Hire</button>
+                                                        <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer & Hire</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,8 +103,8 @@
                                             <div>
                                                 <p class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</p>
                                                 <p class="text-gray-400">{{ user.profile.title }}</p>
-                                                <p class="text-gray-400">Rating *****</p>
-                                                <p class="text-gray-400">Earned: $5000000</p>
+                                                <p class="text-sm flex flex-row gap-1 text-orange-500" v-html="userStars(user.ratings)"></p>
+                                                <p class="text-gray-400">Earned: ${{ user.earned }}</p>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <button class="bg-white border-blue p-3 border rounded-md hover:bg-slate-100">Message</button>
@@ -132,7 +132,7 @@ import axios from 'axios';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import { formatToRelativeTime } from '@/utils/dateFormat';
-
+import { generateStarRating } from '@/utils/ratingStars';
 
 export default {
     name: "ClientDashboardPage",
@@ -224,11 +224,26 @@ export default {
             }
         },
 
+        async sendContractAndHired(user_id, job_id){
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/send`, {}, { headers });
+                // console.log("res from sending contract: ", response)
+                alert(response.data.message)
+            }catch(error){
+                console.log("error sending Contract:", error)
+            }
+        },
+
         
         userIsSaved(user_id){
             if(this.getUserData){
                 return this.getUserData.user.saved_users.includes(user_id);
             }
+        },
+
+        userStars(ratings){
+            return generateStarRating(ratings);
         }
     
 

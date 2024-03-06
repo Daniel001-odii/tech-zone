@@ -13,7 +13,7 @@
 
                 <!-- MENU FOR USER ... -->
                 <div v-if="sub_items && user_type == 'user'">
-                    <RouterLink to="/profile">
+                    <RouterLink :to="'/users/' + user._id">
                         <div class="menu_item"><i class="bi bi-person"></i>My Profile</div>
                     </RouterLink>
 

@@ -88,6 +88,10 @@
                                     <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
                                     <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                                     <p>{{ user.email }}</p>
+                                    <div clas="flex flex-row">
+                                        <p v-html="userStars(user.ratings)"></p>
+                                    </div>
+                                  
                                 </div>
                             </div>
                             <div class="border"></div>
@@ -99,8 +103,8 @@
                                 <p>Joined: {{ user.created }}</p>
                                 <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
                                 <div class="flex flex-row flex-wrap gap-3 mt-3">
-                                    <button class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
-                                    <button class="btn_white">Resume</button>
+                                    <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
+                                    <button class="btn_white">View Resume</button>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +125,7 @@
 
                                 <div class="profile_section">
                                     <h2 class="font-bold">Skills</h2>
-                                    <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 mt-3">
+                                    <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 gap-y-4 mt-3">
                                         <div v-for="skill in user.profile.skills.split(',')" >
                                             <span class=" bg-light_blue p-2 rounded-md text-blue">{{ skill }}</span>
                                         </div>
@@ -168,30 +172,26 @@
                             <div class="profile_section">
                                 <h2 class="font-bold">Completed Jobs</h2>
                                 <div>
-                                    <div class="flex flex-col gap-3 overscroll-y-scroll" v-for="saved in 2">
-                                        <JobReviewCard/>
+                                    <SkeletonLoader v-if="!contracts"/>
+                                    <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
+                                        <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
+                                            <template #feedback>{{ contract.user_feedback.review }}</template>
+                                            <template #star-rating>{{ contract.employer_feedback.rating }}</template>
+                                            <template #date>{{ contract.created }}</template>
+                                            <template #status>
+                                                <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                :class="[contract.status == 'open'?'bg-blue':'', 
+                                                        contract.status == 'paused'?'bg-orange-500':'',
+                                                        contract.status == 'completed'?'bg-green':'',
+                                                        contract.status == 'closed'?'bg-gray-500':''
+                                                        ]">
+                                                    {{ contract.status }}
+                                                </span>
+                                            </template>
+                                        </JobReviewCard>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="profile_section">
-                                <h2 class="font-bold">Assgined Jobs</h2>
-                                <div>
-                                    <div class="flex flex-col overscroll-y-scroll" v-for="saved in 1">
-                                        <JobReviewCard/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="profile_section">
-                                <h2 class="font-bold">Declined Jobs</h2>
-                                <div>
-                                    <div class="flex flex-col overscroll-y-scroll" v-for="saved in 2">
-                                        <JobReviewCard/>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                         
                     </div>
@@ -207,10 +207,12 @@ import JobReviewCard from '@/components/JobReviewCard.vue';
 import Modal from '@/components/Modal.vue';
 import axios from 'axios';
 import LoaderButton from '@/components/LoaderButton.vue';
+import { generateStarRating } from '@/utils/ratingStars';
+import SkeletonLoader from '@/components/SkeletonLoader.vue';
 
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton },
+    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader },
     data(){
         return{
             user: null,
@@ -234,13 +236,26 @@ export default {
                     },
                 },
 
+                contracts: '',
+
                 websiteUrl: '',
                 logoUrl: '',
+                isAllowed: false,
 
             headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
         }
     },
     methods: {
+        async getPublicUserData(){
+            try{
+                const response = await axios.get(`${this.api_url}/user/${this.$route.params.user_id}`);
+                this.user = response.data.user;
+                console.log("pulic user: ", response)
+            }catch(error){
+                console.log("error fetching public user data", error)
+            }
+        },
+
         async getUserData(){
             try{
                  // Get the token from localStorage
@@ -273,10 +288,53 @@ export default {
             }
         },
 
+        async getActiveAndCompletedContracts(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/contracts/good/${this.$route.params.user_id}`, { headers });
+                // console.log("good contracts: ", response);
+                this.contracts = response.data.contracts;
+            }catch(error){
+                console.log(error)
+            }
+        },
+
+        userRating(ratings){
+            const sum = ratings.reduce((acc, rating) => acc + rating, 0);
+            return sum / ratings.length;
+        },
+
+        userStars(ratings){
+            return generateStarRating(ratings);
+        },
+
+        checkCurrentViewer(){
+            const token = localStorage.getItem('life-gaurd');
+            const user_id = token ? JSON.parse(atob(token.split('.')[1])).id : null;
+            console.log("user roleeee: ", user_id);
+            if(user_id == this.$route.params.user_id){
+                this.isAllowed = true;
+            }
+            else{this.isAllowed = false};
+        },
+
+       
+
 
     },
     mounted(){
-        this.getUserData();
+        if(this.$route.params.user_id){
+            this.getPublicUserData();
+        } else{
+            this.getUserData();
+        }
+      
+        this.getActiveAndCompletedContracts();
+        this.checkCurrentViewer();
+    },
+
+    computed:{
+        
     }
 }
 </script>

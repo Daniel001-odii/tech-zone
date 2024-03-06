@@ -69,7 +69,7 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/contracts`,  { headers } );
                 console.log("contracts :", response);
-                this.contracts = response.data.contracts;
+                this.contracts = response.data.contracts.reverse();
             }catch(error){
                 console.log("contracts :", error);
             }

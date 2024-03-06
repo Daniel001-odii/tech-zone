@@ -3,7 +3,7 @@
         <div class="flex flex-col text-left gap-3 border-b p-2 md:p-4 hover:bg-light_blue">
             <div class="flex flex-row justify-between items-center gap-3">
                 <RouterLink to="#">
-                    <div class="text-xl font-bold text-blue underline">Developer needed to build a custom website/app</div>
+                    <div class="text-xl font-bold text-blue underline">{{ title }}</div>
                 </RouterLink>
                 <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">
                     <i class="bi bi-share"></i>
@@ -12,21 +12,15 @@
             <div>
                 
                 <div>
-                    "I would highly recommend this freelancer. Design work is excellent and follows instructions well. Fast, catchy designs. Well done, Odii; I would use you again for sure."
+                    "<slot name="feedback"></slot>"
                 </div>
-                <div class="font-bold">
-                    <span v-for="star in 5" class="">
-                        <i class="bi bi-star"></i>
-                    </span>
-                        |
-                    <span> Dec 9, 2022 - Dec 13, 2022</span>
+                <div class="font-bold flex flex-row">
+                   <slot name="star-rating"></slot><slot name="date"></slot>
                 </div>
-                <div class="mt-3">$500 paid</div>
+                <div class="mt-3">${{ budget }} paid</div>
             </div>
             <div class="flex flex-row gap-3">
-                <ContractStatus :type="'active'"/>
-                <ContractStatus :type="'ended'"/>
-                <!-- <ContractStatus :type="'paused'"/> -->
+                <slot name="status"></slot>
             </div>
         </div>
     </div>
@@ -37,7 +31,8 @@ import ContractStatus from './ContractStatus.vue';
 export default {
     name: "JobReviewCard",
     props:{
-        
+        title: String,
+        budget: Number,
     },
     components: { ContractStatus }
 }

@@ -1,4 +1,22 @@
 <template>
+    <Modal :title="'Submit a review'" :modal_active="feedbackModal">
+        <template #body>
+            <form @submit.prevent="submitFeedback">
+                <div class="flex flex-col gap-3 text-2xl">
+                    <p>Rate the user or client</p>
+                    <input type="number" max="5" min="0"  step="0.1" v-model="feedback.rating" placeholder="your rating here">
+                    <br/>
+                    <p>Send an honest review to the user or client</p>
+                    <textarea v-model="feedback.review" placeholder="a very honest review about your experience working with this person"></textarea>
+                </div>
+            </form>
+        </template>
+        <template #footer>
+            <button type="button" class="btn" @click="submitFeedback">Submit Feedback</button>
+        </template>
+    </Modal>
+
+    <!-- <<<<<<<<<>>>>>>>>> -->
     <div>
         <TemplateView :leftNav="true">
             <template #page-title>Contract</template>
@@ -54,8 +72,12 @@
                            <i class="bi bi-exclamation-circle"></i> Feedback submission will only be available when contract is completed.
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="markAsComplete" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed'">Send Feedback</button>
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.user_feedback">
+                                <span v-if="contract.user_feedback">Feedback sent</span>
+                                <span v-else>Send Freelancer Feedback</span>
+                            </button>
                         </div>
+                        
                     </div>
                    </div>
                 </div>
@@ -95,7 +117,10 @@
                            <i class="bi bi-exclamation-circle"></i>  Feedback submission will only be available when contract is completed.
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="markAsComplete" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed'">Send Feedback</button>
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback">
+                                <span v-if="contract.employer_feedback">Feedback sent</span>
+                                <span v-else>Send Freelancer Feedback</span>
+                            </button>
                         </div>
                     </div>
                    </div>
@@ -111,11 +136,11 @@ import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
-
+import Modal from '@/components/Modal.vue';
 
 export default {
     name: "ContractsListPageView",
-    components: { TemplateView, SkeletonLoader },
+    components: { TemplateView, SkeletonLoader, Modal },
     data(){
         return{
             user: '',
@@ -123,6 +148,13 @@ export default {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`,
             },
+
+            feedback: {
+                rating: 0,
+                review: '',
+            },
+
+            feedbackModal: false,
         }
     },
     methods: {
@@ -223,6 +255,29 @@ export default {
                 console.log("close contract error: ", error)
             }
         },
+
+        async submitFeedback(){
+            const headers = this.headers;
+            console.log(this.user.role, this.feedback)
+            // LOGGED IN AS USER AND RATING THE EMPLOYER >>>>>>>>>
+            if(this.user.role == 'user'){
+                try{
+                    const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/user-feedback`, this.feedback, { headers });
+                    console.log(response)
+                }catch(error){
+                    console.log(error)
+                }
+            } 
+            // LOGGED IN AS EMPLOYER AND RATING THE USER >>>>>>>>>>
+            if(this.user.role == 'employer'){
+                try{
+                    const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/employer-feedback`, this.feedback, { headers });
+                    console.log(response)
+                }catch(error){
+                    console.log(error)
+                }
+            }
+        }
     },
     computed(){
 
