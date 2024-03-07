@@ -15,7 +15,16 @@
                     "<slot name="feedback"></slot>"
                 </div>
                 <div class="font-bold flex flex-row">
-                   <slot name="star-rating"></slot><slot name="date"></slot>
+                    <div class="flex flex-col">
+                        <span>
+                            <slot name="star-rating"></slot>
+                        </span>
+                        <span>
+                            <slot name="date"></slot>
+                        </span>
+                    </div>
+                  
+                 
                 </div>
                 <div class="mt-3">${{ budget }} paid</div>
             </div>

@@ -88,8 +88,9 @@
                                     <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
                                     <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                                     <p>{{ user.email }}</p>
-                                    <div clas="flex flex-row">
-                                        <p v-html="userStars(user.ratings)"></p>
+                                    <div clas="flex flex-row gap-3">
+                                        <p class="inline-block mr-2 text-blue" v-html="userStars(user.ratings)"></p>
+                                        <span>({{ userRating(user.ratings) }}) {{ user.ratings.length }} reviews</span>
                                     </div>
                                   
                                 </div>
