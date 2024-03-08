@@ -22,7 +22,7 @@
                         Find Job
                     </RouterLink>
 
-                    <RouterLink to="/" class="nav_link">
+                    <RouterLink to="/register/decide" class="nav_link">
                         Post Job
                     </RouterLink>
 
@@ -35,7 +35,7 @@
                     <RouterLink to="/login">
                         <button class="btn rounded-md text-blue hover:text-blue hover:bg-light_blue">Login</button>
                     </RouterLink>
-                   <RouterLink to="/login">
+                   <RouterLink to="/register/decide">
                         <button class="btn rounded-md bg-blue hover:bg-dark_blue text-white">Sign Up</button>
                     </RouterLink>
                 </div>

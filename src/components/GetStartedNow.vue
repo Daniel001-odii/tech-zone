@@ -1,7 +1,7 @@
 <template>
     <div>
         <div  class="flex flex-col w-fit gap-4">
-            <RouterLink to="/register">
+            <RouterLink to="/register/decide">
                 <button class="btn w-full">Get Started Now</button>
             </RouterLink>
             <div class="flex justify-between gap-6">
