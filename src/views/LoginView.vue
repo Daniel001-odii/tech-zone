@@ -9,7 +9,10 @@
                         <h1 class="text-3xl font-bold">Welcome back</h1>
                         <span>Please enter your login details</span>
                     </div>
-                    <Alert :type="'danger'" :message="error" v-if="error"/>
+                    <!-- <Alert :type="'danger'" :message="`${error}`" v-if="error"/> -->
+                    <span v-if="error">
+                        {{ error }}
+                    </span>
                     <form class="flex flex-col gap-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
                             <div class="tz_form_control">
