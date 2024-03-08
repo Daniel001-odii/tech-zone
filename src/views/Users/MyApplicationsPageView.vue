@@ -4,7 +4,7 @@
             <template #page-title>My Applications</template>
             <template #page-contents>
                 <SkeletonLoader v-if="loading"/>
-                <div class="p-5" v-if="applications.length <= 0">You have no applied jobs</div>
+                <div class="p-5" v-if="!loading && applications.length <= 0">You haven't applied for any job yet</div>
                 <div v-if="!loading && applications " class="flex flex-col overscroll-y-scroll" v-for="application in applications">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
                         <div>{{ formattedTime(application.created) }}</div>

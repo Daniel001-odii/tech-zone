@@ -238,9 +238,6 @@ export default {
                 },
 
                 contracts: '',
-
-                websiteUrl: '',
-                logoUrl: '',
                 isAllowed: false,
 
             headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
@@ -251,7 +248,8 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user/${this.$route.params.user_id}`);
                 this.user = response.data.user;
-                console.log("pulic user: ", response)
+                console.log("pulic user: ", response);
+                this.checkCurrentViewer();
             }catch(error){
                 console.log("error fetching public user data", error)
             }
@@ -270,6 +268,7 @@ export default {
                 // push to user variable..
                 this.user = response.data.user;
                 this.user_form = response.data.user;
+                
             }
             catch(error){
                 console.error(error)
@@ -301,8 +300,13 @@ export default {
         },
 
         userRating(ratings){
-            const sum = ratings.reduce((acc, rating) => acc + rating, 0);
-            return sum / ratings.length;
+            if(ratings > 0){
+                const sum = ratings.reduce((acc, rating) => acc + rating, 0);
+                return sum / ratings.length;
+            } else {
+                return 0
+            }
+            
         },
 
         userStars(ratings){
@@ -311,9 +315,9 @@ export default {
 
         checkCurrentViewer(){
             const token = localStorage.getItem('life-gaurd');
-            const user_id = token ? JSON.parse(atob(token.split('.')[1])).id : null;
-            console.log("user roleeee: ", user_id);
-            if(user_id == this.$route.params.user_id){
+            const user = token ? JSON.parse(atob(token.split('.')[1])) : null;
+            // console.log("user roleeee: ", user_id, "parsed data: ", parsed_item);
+            if(user.id == this.$route.params.user_id || user.googleId == this.user.googleId){
                 this.isAllowed = true;
             }
             else{this.isAllowed = false};
@@ -331,7 +335,8 @@ export default {
         }
       
         this.getActiveAndCompletedContracts();
-        this.checkCurrentViewer();
+        
+       
     },
 
     computed:{

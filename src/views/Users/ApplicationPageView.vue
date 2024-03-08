@@ -247,7 +247,7 @@ export default {
             }
             catch(error){
                 // handle response here....
-                if(error.response.status === 400){
+                if(error.response.status === 404){
                     this.$router.push('/404');
                 }
             }
@@ -273,7 +273,7 @@ export default {
                 
             } catch(error){
                 // handle error here...
-                if(error.response.status === 400){
+                if(error.response.status === 404){
                     this.$router.push('/404');
                 }
             }

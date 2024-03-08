@@ -41,6 +41,12 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="contracts && contracts.length <= 0">
+                    <div class="flex flex-col justify-center items-center w-full mt-6">
+                        <img class=" h-40 w-40" src="../../assets/images/empty open mailbox.svg">
+                        <span class="font-bold mt-4 text-gray-400">You Have No Contracts Yet</span>
+                    </div>
+                </div>
             </template>
         </TemplateView>
     </div>

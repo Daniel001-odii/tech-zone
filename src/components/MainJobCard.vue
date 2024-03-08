@@ -33,7 +33,7 @@
            
             <div class="flex flex-row gap-2">
                 <span class=" bg-light_blue p-2 rounded-md">
-                    <i class="bi bi-wallet"></i> <span>#{{ budget.toLocaleString() }}</span>
+                    <i class="bi bi-wallet"></i> <span>#{{ budget }}</span>
                 </span>
                 <span class=" bg-blue p-2 rounded-md text-white">
                     <i class="bi bi-briefcase"></i> <span>{{ period }}</span>

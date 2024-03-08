@@ -30,19 +30,23 @@
                         
                         <div v-if="showTab == 'tab-1'" class="h-full">
 
-                            <div class="flex flex-col md:flex-row gap-3 h-full">
-                                <div class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
-                                    <div v-if="loading" class="w-full">
-                                        <SkeletonLoader />
-                                        <SkeletonLoader />
-                                        <SkeletonLoader />
-                                    </div>
-                                   
-                                    <!-- :job_is_saved="checkIfJobIsSaved(job._id)" -->
-                                   
+                            <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                <img class=" h-40 w-40" src="../assets/images/empty open mailbox.svg">
+                                <span class="font-bold mt-4 text-gray-400">No Jobs Available</span>
+                            </div>
+                            <div v-if="loading" class="w-full">
+                                <SkeletonLoader />
+                                <SkeletonLoader />
+                                <SkeletonLoader />
+                            </div>
+                            <div v-if="jobs.length > 0" class="flex flex-col md:flex-row gap-3 h-full">
+                               
+                                <div  class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
+                                    
+                                            
                                     <div v-for="(job, job_index) in jobs" :key="job_index">
                                         <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
-                                        <MainJobCard v-if="job" @click="showJobDetail(job_index)"
+                                        <MainJobCard @click="showJobDetail(job_index)"
                                         :class="selectedJob == job_index ? 'bg-light_blue':''" 
                                         @saveJob="addJobToSaves(job._id)" 
                                         :job_is_saved="checkIfJobIsSaved(job._id)" 
@@ -54,13 +58,13 @@
                                         :is_applied="checkIfJobIsApplied(job._id)"
                                         >
                                             <template #job-title>
-                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}job title</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="job.location.remote == 'true'">remote</span>
                                                 <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
                                             </template>
-                                            <template #job-description>{{  job.description.substring(0, 300) }}...
+                                            <template v-if="job.decription" #job-description>{{  job.description.substring(0, 300) }}...
                                             </template>
                                             <template #job-posting-time>{{  formattedDate(job.created) }}</template>
                                         </MainJobCard>
@@ -69,7 +73,7 @@
                                 </div>
 
                                 <div class="hidden lg:flex lg:w-10/12 h-full">
-                                   <JobDetailCard v-if="jobs" class="h-full"
+                                   <JobDetailCard class="h-full"
                                    @visitJobPost="this.$router.push('/jobs/' + jobs[selectedJob]._id + '/application')"
                                    :company="jobs[selectedJob].employer.profile.company_name" 
                                    :remote="jobs[selectedJob].location.remote"
@@ -86,7 +90,9 @@
                                             {{ jobs[selectedJob].description }}
                                         </template>
                                    </JobDetailCard>
+
                                 </div>
+
                             </div>
                         </div>
 
@@ -94,20 +100,29 @@
                         <!-- ---------------------- -->
                         <div v-if="showTab == 'tab-2'">
                             <div class="flex flex-row gap-3">
-                                <p> Tab 2 contents</p>
+                                <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                    <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
+                                    <span class="font-bold mt-4 text-gray-400">Assigned Jobs Not Available</span>
+                                </div>
                             </div>
                         </div>
                         <!-- --------------------- -->
                         <div v-if="showTab == 'tab-3'">
                             <div class="flex flex-row gap-3">
-                                <p> Tab 3 contents</p>
+                                <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                    <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
+                                    <span class="font-bold mt-4 text-gray-400">Completed Jobs Not Available</span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- ------------------- -->
                         <div v-if="showTab == 'tab-4'">
                             <div class="flex flex-row gap-3">
-                                <p> Tab 4 contents</p>
+                                <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                    <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
+                                    <span class="font-bold mt-4 text-gray-400">Declined Jobs Not Available</span>
+                                </div>
                             </div>
                         </div>
                     </div>

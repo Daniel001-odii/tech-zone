@@ -4,8 +4,11 @@
             <template #page-title>Page Not Found</template>
             <template #page-contents>
                 <div class="h-screen flex flex-col gap-4">
-                    <h1 class="text-4xl mt-10">404</h1>
-                    <p>Sorry the Resource you requested was not found</p>
+                    <div class="flex flex-col justify-center items-center w-full mt-6">
+                        <img class=" h-40 w-40" src="../assets/images/404 error in laptop.svg">
+                        <p>Sorry the Resource you requested was not found</p>
+                    </div>
+                    
 
                     <RouterLink to="/">
                         <button class="btn w-fit">Go back</button>
