@@ -81,7 +81,7 @@ export default {
         async login() {
             this.loading = true;
             try {
-                const response = await axios.post("http://localhost:8000/api/login", this.form_data);
+                const response = await axios.post(`${this.api_url}/login`, this.form_data);
                 console.log(response);
                 localStorage.setItem('life-gaurd', response.data.accessToken);
                 // alert('login successful!');
@@ -139,7 +139,7 @@ export default {
                 const response = await googleAuthCodeLogin();
                 console.log("response from google: ", response);
                 const auth_code = { code: response.code }
-                const res = await axios.post(`http://localhost:8000/api/google-auth`, auth_code );
+                const res = await axios.post(`${this.api_url}/google-auth`, auth_code );
                 if(res.data.message == "Sign-in successful"){
                     // alert user of successful sign login..
                     alert("Login Successfull");
