@@ -119,7 +119,7 @@ export default {
                 const response = await googleAuthCodeLogin();
                 console.log("response from google: ", response);
                 const auth = { code: response.code, role: "employer" }
-                const res = await axios.post(`http://localhost:8000/api/google-auth`, auth );
+                const res = await axios.post(`${this.api_url}/google-auth`, auth );
                 if(res.data.message == "Sign-in successful"){
                     // alert user of successful sign login..
                     alert("Login Successfull");
