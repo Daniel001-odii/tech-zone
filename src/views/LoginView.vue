@@ -10,7 +10,7 @@
                         <span>Please enter your login details</span>
                     </div>
                     <!-- <Alert :type="'danger'" :message="`${error}`" v-if="error"/> -->
-                    <span v-if="error">
+                    <span v-if="error" class="p-3 rounded-lg bg-red-100 text-red-700">
                         {{ error }}
                     </span>
                     <form class="flex flex-col gap-4" @submit.prevent="login">
@@ -101,6 +101,7 @@ export default {
 
             }
             catch (error) {
+                console.log("Login error: ", error.response)
                 this.error = error.response.data.message;
                 this.loading = false;
             }
