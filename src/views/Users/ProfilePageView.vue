@@ -279,7 +279,7 @@ export default {
             this.user_form.loading = true;
             const headers = this.headers;
             try{
-                const response = await axios.post(`${this.api_url}/user/profile`, this.user_form, { headers });
+                const response = await axios.patch(`${this.api_url}/user/profile`, this.user_form, { headers });
                 console.log(response)
                 this.user_form.loading = false;
             }

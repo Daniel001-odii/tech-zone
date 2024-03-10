@@ -273,9 +273,10 @@ export default {
                 
             } catch(error){
                 // handle error here...
-                if(error.response.status === 404){
-                    this.$router.push('/404');
-                }
+                console.log("error getting applications for job: ", error)
+                // if(error.response.status === 404){
+                //     this.$router.push('/404');
+                // }
             }
         },
 

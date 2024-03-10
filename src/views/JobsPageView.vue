@@ -199,7 +199,7 @@ export default {
                 try{
                     const response = await axios.get(`${this.api_url}/jobs`);
                     // console.log(response)
-                    this.jobs = response.data.jobs;
+                    this.jobs = response.data.jobs.reverse();
                     this.loading = false;
                 }catch(error){
                     // handle error here...

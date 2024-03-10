@@ -59,7 +59,7 @@
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="period">
                         <p>How long will the job last?</p>
                         <select class="border rounded-lg p-3" placeholder="Product Designer" v-model="job_post.period">
-                            <option>Less than a month</option>
+                            <option>less than a month</option>
                             <option>1 to 3 months</option>
                             <option>3 to 6 months</option>
                             <option>6 months plus</option>
