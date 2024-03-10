@@ -18,6 +18,6 @@ app.use(vue3GoogleLogin, {
 
 // Declare a global variable
 // app.config.globalProperties.api_url = 'http://localhost:8000/api';
-app.config.globalProperties.api_url = 'https://techzone-backend-c28bd32b1555.herokuapp.com/api';
+app.config.globalProperties.api_url = 'https://apex-tek-api-538226b9f04c.herokuapp.com/api';
 
 app.use(store).use(router).mount('#app');
