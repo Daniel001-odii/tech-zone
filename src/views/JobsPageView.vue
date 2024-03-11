@@ -20,13 +20,13 @@
                     <div class="flex flex-row h-14 pl-5 border-b items-end">
                         <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full">
                             <button @click="showTab = 'tab-1'" :class="{ 'active_tab': showTab == 'tab-1' }" class="p-2 border-b-4 border-b-transparent">Available</button>
-                            <button @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
-                            <button @click="showTab = 'tab-3'" :class="{ 'active_tab': showTab == 'tab-3' }" class="p-2 border-b-4 border-b-transparent">Completed</button>
-                            <button @click="showTab = 'tab-4'" :class="{ 'active_tab': showTab == 'tab-4' }" class="p-2 border-b-4 border-b-transparent">Declined</button>
+                            <button v-if="user" @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
+                            <button v-if="user" @click="showTab = 'tab-3'" :class="{ 'active_tab': showTab == 'tab-3' }" class="p-2 border-b-4 border-b-transparent">Completed</button>
+                            <button v-if="user" @click="showTab = 'tab-4'" :class="{ 'active_tab': showTab == 'tab-4' }" class="p-2 border-b-4 border-b-transparent">Declined</button>
                         </div>
                     </div>
 
-                    <div class="flex flex-col justify-start p-3 h-full">
+                    <div class="flex flex-col justify-start p-3 h-full ">
                         
                         <div v-if="showTab == 'tab-1'" class="h-full">
 
@@ -43,7 +43,6 @@
                                
                                 <div  class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
                                     
-                                            
                                     <div v-for="(job, job_index) in jobs" :key="job_index">
                                         <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
                                         <MainJobCard @click="showJobDetail(job_index)"
@@ -100,7 +99,7 @@
                         <!-- ---------------------- -->
                         <div v-if="showTab == 'tab-2'">
                             <div class="flex flex-row gap-3">
-                                <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                <div class="flex flex-col justify-center items-center w-full mt-6">
                                     <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
                                     <span class="font-bold mt-4 text-gray-400">Assigned Jobs Not Available</span>
                                 </div>
@@ -109,7 +108,7 @@
                         <!-- --------------------- -->
                         <div v-if="showTab == 'tab-3'">
                             <div class="flex flex-row gap-3">
-                                <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                <div class="flex flex-col justify-center items-center w-full mt-6">
                                     <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
                                     <span class="font-bold mt-4 text-gray-400">Completed Jobs Not Available</span>
                                 </div>
@@ -119,7 +118,7 @@
                         <!-- ------------------- -->
                         <div v-if="showTab == 'tab-4'">
                             <div class="flex flex-row gap-3">
-                                <div class="flex flex-col justify-center items-center w-full mt-6" v-if="!loading && jobs.length <= 0">
+                                <div class="flex flex-col justify-center items-center w-full mt-6">
                                     <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
                                     <span class="font-bold mt-4 text-gray-400">Declined Jobs Not Available</span>
                                 </div>

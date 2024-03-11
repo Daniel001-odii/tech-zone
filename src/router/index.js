@@ -22,6 +22,9 @@ import MissionPageViewVue from '@/views/MissionPageView.vue'
 import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 import ClientDashBoardPage from '@/views/Employers/ClientDashboardPage.vue'
 import ClientPostJobView from '@/views/Employers/ClientPostJobPageView.vue'
+import EarningsPageView from '@/views/Users/EarningsPageView.vue'
+import SettingsPageView from '@/views/Users/SettingsPageView.vue'
+import OverviewPageView from '@/views/Users/OverviewPageView.vue'
 
 
 const routes = [
@@ -137,6 +140,30 @@ const routes = [
     component: SavedJobsViewVue,
     meta: { requiresAuth: true, role: 'user' }
   },
+
+  {
+    path: '/earnings',
+    name: 'earnings',
+    component: EarningsPageView,
+    meta: { requiresAuth: true, role: 'user' }
+  },
+
+  {
+    path: '/settings',
+    name: 'settings',
+    component: SettingsPageView,
+    meta: { requiresAuth: true, role: 'user' }
+  },
+
+  {
+    path: '/overview',
+    name: 'overview',
+    component: OverviewPageView,
+    meta: { requiresAuth: true, role: 'user' }
+  },
+
+
+
 
   // 404 PAGES CONFIG...
   {

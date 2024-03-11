@@ -1,41 +1,26 @@
 <script>
+import LeftNavBar from './components/LeftNavBar.vue';
 import Navbar from './components/Navbar.vue';
 
 export default {
   components: {
-    Navbar
+    Navbar, LeftNavBar
   }
 }
 </script>
 
 <template>
-  <!-- <Navbar/> -->
-  <!-- <div class=" h-screen border border-red-500"> -->
+  <div class="flex flex-col h-screen">
     <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
-    <router-view/>
-  <!-- </div> -->
-  
+    <div class=" flex flex-row w-screen">
+      <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
+      <router-view></router-view>
+    </div>
+  </div>
+    
+    
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

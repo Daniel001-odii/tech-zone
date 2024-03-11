@@ -74,8 +74,8 @@
                                                             <!-- {{ application.attachments }} -->
                                                             <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
 
-                                                            <div v-for="attachment in application.attachment">
-                                                                <RouterLink class=" text-blue" :to="attachment.url" target="_blank">{{ attachment.name }}</RouterLink>
+                                                            <div v-for="(attachment, attachment_id) in application.attachment" :key="attachment_id">
+                                                                <a class=" text-blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment.name }}</a>
                                                             </div>
                                                         </p>
                                                         <p><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
