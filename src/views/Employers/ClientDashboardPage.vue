@@ -55,10 +55,10 @@
                                             </div>
                                             <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
                                             <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
-                                                <div class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
+                                                <div v-if="application.user" class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
                                                     <img :src="application.user.profile.image_url">
                                                 </div>
-                                                <div class="flex flex-col text-start w-full">
+                                                <div v-if="application.user" class="flex flex-col text-start w-full">
                                                     <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
                                                         <div>
                                                             <!-- {{  application.job }} -->

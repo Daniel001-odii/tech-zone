@@ -58,7 +58,7 @@
                                         :is_applied="checkIfJobIsApplied(job._id)"
                                         >
                                             <template #job-title>
-                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}job title</RouterLink>
+                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="job.location.remote == 'true'">remote</span>
