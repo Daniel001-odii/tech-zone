@@ -70,12 +70,12 @@
                                                     </div>
                                                     <div>
                                                         <p><b>Cover Letter:</b> {{ application.cover_letter }}</p>
-                                                        <p><b>Attachments({{ application.attachments.length }}):</b> 
+                                                        <p><b>Attachments({{ application.attachment.length }}):</b> 
                                                             <!-- {{ application.attachments }} -->
                                                             <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
 
-                                                            <div v-for="attachment in application.attachments">
-                                                                <a :href="'http://localhost:8000/' + attachment" target="_blank">{{ attachment }}</a>
+                                                            <div v-for="attachment in application.attachment">
+                                                                <RouterLink class=" text-blue" :to="attachment.url" target="_blank">{{ attachment.name }}</RouterLink>
                                                             </div>
                                                         </p>
                                                         <p><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
