@@ -98,8 +98,38 @@
 
                         <!-- ---------------------- -->
                         <div v-if="showTab == 'tab-2'">
-                            <div class="flex flex-row gap-3">
-                                <div class="flex flex-col justify-center items-center w-full mt-6">
+                            <div class="flex flex-col gap-3">
+                                <div v-for="contract in contracts" :key="contract._id">
+                                    <div v-if="contract.type == 'assigned'">
+                                        <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                           
+                                            <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                                                <div class="flex flex-row justify-between items-center">
+                                                    <RouterLink :to="'/contracts/' + contract._id">
+                                                        <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                                    </RouterLink>
+                                                </div>
+                                                <div>
+                                                    <div>{{ contract.employer.company_name }}</div>
+                                                    <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                                </div>
+                                                <div class="flex flex-row gap-3">
+                                                    <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                    :class="[contract.status == 'open'?'bg-blue':'', 
+                                                            contract.status == 'paused'?'bg-orange-500':'',
+                                                            contract.status == 'completed'?'bg-green':'',
+                                                            contract.status == 'closed'?'bg-gray-500':''
+                                                            ]">
+                                                        {{ contract.status }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div v-if="!contracts" class="flex flex-col justify-center items-center w-full mt-6">
                                     <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
                                     <span class="font-bold mt-4 text-gray-400">Assigned Jobs Not Available</span>
                                 </div>
@@ -107,20 +137,70 @@
                         </div>
                         <!-- --------------------- -->
                         <div v-if="showTab == 'tab-3'">
-                            <div class="flex flex-row gap-3">
-                                <div class="flex flex-col justify-center items-center w-full mt-6">
-                                    <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
-                                    <span class="font-bold mt-4 text-gray-400">Completed Jobs Not Available</span>
+                            <div class="flex flex-col gap-3">
+                                <div v-for="contract in contracts" :key="contract._id">
+                                    <div v-if="contract.status == 'completed'">
+                                        <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                           
+                                           <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                                               <div class="flex flex-row justify-between items-center">
+                                                   <RouterLink :to="'/contracts/' + contract._id">
+                                                       <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                                   </RouterLink>
+                                               </div>
+                                               <div>
+                                                   <div>{{ contract.employer.company_name }}</div>
+                                                   <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                               </div>
+                                               <div class="flex flex-row gap-3">
+                                                   <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                   :class="[contract.status == 'open'?'bg-blue':'', 
+                                                           contract.status == 'paused'?'bg-orange-500':'',
+                                                           contract.status == 'completed'?'bg-green':'',
+                                                           contract.status == 'closed'?'bg-gray-500':''
+                                                           ]">
+                                                       {{ contract.status }}
+                                                   </span>
+                                               </div>
+                                           </div>
+
+                                       </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ------------------- -->
                         <div v-if="showTab == 'tab-4'">
-                            <div class="flex flex-row gap-3">
-                                <div class="flex flex-col justify-center items-center w-full mt-6">
-                                    <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
-                                    <span class="font-bold mt-4 text-gray-400">Declined Jobs Not Available</span>
+                            <div class="flex flex-col gap-3">
+                                <div v-for="contract in contracts" :key="contract._id">
+                                    <div v-if="contract.action == 'declined'">
+                                        <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                           
+                                           <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                                               <div class="flex flex-row justify-between items-center">
+                                                   <RouterLink :to="'/contracts/' + contract._id">
+                                                       <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                                   </RouterLink>
+                                               </div>
+                                               <div>
+                                                   <div>{{ contract.employer.company_name }}</div>
+                                                   <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                               </div>
+                                               <div class="flex flex-row gap-3">
+                                                   <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                   :class="[contract.status == 'open'?'bg-blue':'', 
+                                                           contract.status == 'paused'?'bg-orange-500':'',
+                                                           contract.status == 'completed'?'bg-green':'',
+                                                           contract.status == 'closed'?'bg-gray-500':''
+                                                           ]">
+                                                       {{ contract.status }}
+                                                   </span>
+                                               </div>
+                                           </div>
+
+                                       </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -157,6 +237,7 @@ export default {
             jobs: '',
             saved_jobs: '',
             applied_jobs: '',
+            contracts: '',
         }
         
     },
@@ -233,6 +314,18 @@ export default {
             }
         },
 
+                // get all user contracts...
+        async getContracts(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/contracts`,  { headers } );
+                console.log("contracts :", response);
+                this.contracts = response.data.contracts.reverse();
+            }catch(error){
+                console.log("contracts :", error);
+            }
+        },
+
         formattedDate(dateToFormat) {
             return formatToRelativeTime(dateToFormat);
         },
@@ -261,6 +354,17 @@ export default {
         this.getUserData()
         this.getJobs();
         this.getAllApplications();
+        this.getContracts();
+
+        if(this.$route.params.tab == 'assigned'){
+            this.showTab = 'tab-2';
+        }
+        if(this.$route.params.tab == 'completed'){
+            this.showTab = 'tab-3';
+        }
+        if(this.$route.params.tab == 'declined'){
+            this.showTab = 'tab-4';
+        }
         
     }
 

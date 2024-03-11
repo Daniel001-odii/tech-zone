@@ -1,4 +1,24 @@
 <template>
+    <!-- Job assignment modal... -->
+    <Modal :title="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
+        <template #body>
+            <div class=" flex flex-col gap-3">
+                <div class="flex flex-row group hover:bg-gray-100 p-3 items-start justify-between" v-for="(job, job_id) in jobs" :key="job_id">
+                    <div clas="flex flex-col">
+                        <div class=" text-lg font-bold text-blue">{{ job.title }}</div>
+                        <div class=" text-lg">#{{ job.budget.toLocaleString() }}</div>
+                        <p class=" text-sm text-gray-300">posted {{ job.created }}</p>
+                    </div>
+                   <button @click="assignJob(current_user.id, job._id)" class="btn hidden group-hover:block">Assign</button>
+
+                </div>
+            </div>
+          
+        </template>
+        <template #footer></template>
+    </Modal>
+
+
     <div>
         <TemplateView :leftNav="true">
             <template #page-title>Dashboard</template>
@@ -94,6 +114,8 @@
                                 <div v-else>You have not posted any job yet. Post now</div>
                             </div>
                             <div v-if="current_tab == 'saved'" class="p-3 bg-white rounded-lg mt-3 flex flex-col gap-3">
+
+                                <p v-if="!saved_users"> loading your saved users...</p>
                                 <div v-if="saved_users" class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(user, user_id) in saved_users" :key="user_id">
                                     <div class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
                                         <img :src="user.profile.image_url">
@@ -108,7 +130,7 @@
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <button class="bg-white border-blue p-3 border rounded-md hover:bg-slate-100">Message</button>
-                                                <button class="btn">Assign Job</button>
+                                                <button class="btn" @click="jobAssignmentModal(user._id, user.firstname)">Assign Job</button>
                                                 <button @click="saveUser(user._id)" class="border p-3 rounded-md">
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
@@ -117,7 +139,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="saved_users.length <= 0">You have no saved users yet</div>
+                                <div v-if="!saved_users && saved_users.length <= 0">You have no saved users yet</div>
                             </div>
                         </div>
                     </div>
@@ -131,12 +153,13 @@ import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import Modal from '@/components/Modal.vue';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import { generateStarRating } from '@/utils/ratingStars';
 
 export default {
     name: "ClientDashboardPage",
-    components: { TemplateView, SkeletonLoader },
+    components: { TemplateView, SkeletonLoader, Modal },
     data(){
         return{
             store: useStore(),
@@ -150,6 +173,12 @@ export default {
             current_tab: 'jobs',
             applicants: [],
             saved_users: '',
+
+            assign_job_modal: false,
+            current_user: {
+                name: '',
+                id: '',
+            },
         }
         
     },
@@ -173,6 +202,12 @@ export default {
         show_applicants(index, job_id) {
             this.jobs[index].show_applicants = !this.jobs[index].show_applicants;
             this.getJobApplicants(job_id, index);
+        },
+
+        jobAssignmentModal(user_id, user_name){
+            this.assign_job_modal = true;
+            this.current_user.name = user_name;
+            this.current_user.id = user_id;
         },
 
         async getJobsByEmployer(){
@@ -228,6 +263,17 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/send`, {}, { headers });
+                // console.log("res from sending contract: ", response)
+                alert(response.data.message)
+            }catch(error){
+                console.log("error sending Contract:", error)
+            }
+        },
+
+        async assignJob(user_id, job_id){
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/assign`, {}, { headers });
                 // console.log("res from sending contract: ", response)
                 alert(response.data.message)
             }catch(error){

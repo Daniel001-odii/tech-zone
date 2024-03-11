@@ -26,6 +26,9 @@ import EarningsPageView from '@/views/Users/EarningsPageView.vue'
 import SettingsPageView from '@/views/Users/SettingsPageView.vue'
 import OverviewPageView from '@/views/Users/OverviewPageView.vue'
 
+import ClientContractsListPageViewVue from '@/views/Employers/ContractsListPageView.vue'
+import ClientProfilePageViewVue from '@/views/Employers/ProfilePageView.vue'
+
 
 const routes = [
   {
@@ -88,6 +91,12 @@ const routes = [
   {
     path: '/jobs',
     name: 'jobs',
+    component: JobsPageViewVue,
+  },
+
+  {
+    path: '/jobs/:tab',
+    name: `jobs - others`,
     component: JobsPageViewVue,
   },
 
@@ -206,14 +215,14 @@ const routes = [
 {
   path: '/client/contracts',
   name: 'client contracts',
-  component: ContractsListPageViewVue,
+  component: ClientContractsListPageViewVue,
   meta: { requiresAuth: true, role: 'employer' }
 },
 
 {
   path: '/client/profile',
   name: 'client profile',
-  component: ProfilePageViewVue,
+  component: ClientProfilePageViewVue,
   meta: { requiresAuth: true, role: 'employer' }
 },
 

@@ -1,7 +1,7 @@
 <template>
 <div>
-    <div class=" h-[90vh] w-[86vw] flex flex-col">
-        <div class="text-left p-5 text-3xl border-b flex items-center pl-3">
+    <div class=" h-[90vh] flex flex-col">
+        <div class=" w-full bg-red-100 text-left p-5 text-3xl border-b flex items-center pl-3">
             <span class="flex gap-5">
                 <button @click="$router.go(-1)">
                     <i class="bi bi-arrow-left"></i>
