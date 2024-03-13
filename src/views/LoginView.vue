@@ -1,11 +1,9 @@
 <template>
-    <div>
-        <div class="flex flex-row justify-center items-center h-screen">
-
-            <div class="w-full p-5 flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8">
-                <div class="w-full lg:w-96 flex flex-col gap-3">
+    <div class="flex flex-row h-[92vh] justify-center">
+        <div class="p-5 flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8">
+                <div class="lg:w-96 flex flex-col gap-3">
                     
-                    <div class="text-start  w-full">
+                    <div class="text-start">
                         <h1 class="text-3xl font-bold">Welcome back</h1>
                         <span>Please enter your login details</span>
                     </div>
@@ -54,9 +52,9 @@
                     <img src="../assets/images/tech-zone.svg" width="100px">
                 </div>
             </div>
-        </div>
     </div>
- 
+           
+
 </template>
 <script>
 import Alert from '@/components/Alert.vue';
@@ -110,7 +108,7 @@ export default {
         async googleLogin(){
             try{
                 const response = await googleAuthCodeLogin();
-                console.log("response from google: ", response);
+                // console.log("response from google: ", response);
                 const auth_code = { code: response.code }
                 const res = await axios.post(`${this.api_url}/google-auth`, auth_code );
                 if(res.data.message == "Sign-in successful"){
@@ -134,7 +132,7 @@ export default {
                   
                   
                 }
-                console.log("response from backend: ", res)
+                // console.log("response from backend: ", res)
 
             }catch(error){
                 alert(error);

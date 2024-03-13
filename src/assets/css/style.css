@@ -18,3 +18,7 @@
 button:disabled{
     cursor: not-allowed;
 }
+
+nav{
+    @apply w-full
+}

@@ -1,7 +1,7 @@
 <template>
-    <div class="p-8">
+    <div class="p-8 flex flex-col justify-center items-center">
         <SiteLogo/>
-        <div>
+        <div class=" flex flex-col justify-center items-center">
             <h1 class="text-4xl p-4 mt-8">Join as an employer or freelancer</h1>
             <div class="flex flex-row flex-wrap gap-4 justify-center p-4">
                 <label class="selection_box" :class="user_type == 'employer' ? 'active':''">

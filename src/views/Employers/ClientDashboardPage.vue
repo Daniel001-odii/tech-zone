@@ -274,8 +274,9 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/assign`, {}, { headers });
-                // console.log("res from sending contract: ", response)
-                alert(response.data.message)
+                console.log("res from sending contract: ", response)
+                const message = response.data.message
+                alert(message)
             }catch(error){
                 console.log("error sending Contract:", error)
             }

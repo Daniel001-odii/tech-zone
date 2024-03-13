@@ -1,6 +1,7 @@
 <template>
     <!-- <Navbar :type="'wesbite'"/> -->
-    <div class="py-4 mt-12 md:px-4 flex justify-center items-center flex-col">
+    <div class="flex flex-col justify-center items-center max-w-screen-2xl" style="margin: 0 auto;">
+        <div class="py-4 mt-12 md:px-4 flex justify-center items-center flex-col">
         <section>
             <div class="section_container">
                 <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6">
@@ -147,6 +148,8 @@
         </section>
     </div>
     <Footer/>
+    </div>
+    
 </template>
 <script>
 import GetStartedNow from '@/components/GetStartedNow.vue';
@@ -251,6 +254,6 @@ export default {
     }
 
     section{
-        @apply max-w-screen-2xl flex justify-center items-center mx-0 my-auto p-8
+        @apply flex justify-center items-center mx-0 my-auto p-8
     }
 </style>

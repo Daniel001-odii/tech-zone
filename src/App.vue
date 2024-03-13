@@ -10,13 +10,16 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen">
+  <!-- <div class=""> -->
+
     <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
-    <div class=" flex flex-row w-screen">
-      <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
+
+    <!-- <div class=" flex flex"> -->
+ 
       <router-view></router-view>
-    </div>
-  </div>
+    <!-- </div> -->
+
+  <!-- </div> -->
     
     
 </template>

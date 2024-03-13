@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <!-- <nav v-if="type === 'wesbite' || !user" class="bg-white w-full shadow p-2 fixed z-10 top-0" > -->
-        <nav v-if="type === 'wesbite' || !user" class="bg-white w-full shadow p-2" >
-            <div style="margin: 0 auto;" class="flex flex-col justify-between items-start md:items-center text-left md:flex-row max-w-screen-2xl">
-                <div class="flex flex-row justify-between items-center w-full md:w-auto">
+    <div class="flex justify-center items-center p-3 border w-full bg-white" style="margin: 0 auto;">
+        <nav v-if="type === 'wesbite' && !user">
+            <!-- <div style="margin: 0 auto;" class="flex flex-col justify-between items-start md:items-center text-left md:flex-row"> -->
+            <div style="margin: 0 auto;" class=" flex flex-col md:flex-row justify-between border border-red-400">
+                <div class="flex flex-row justify-between items-center w-full md:w-[30%]">
                     <SiteLogo/>
                     <button  @click="nav_visible = !nav_visible" class=" flex font-bold inline-block text-lg md:hidden">
                         <i v-if="!nav_visible" class="bi bi-list"></i>
@@ -12,39 +12,39 @@
                 </div>
 
             
-                <!-- <div  :class="nav_visible ? 'sm:block':'sm:hidden'" class="flex gap-12 flex-col mt-12 md:flex-row md:gap-8 md:mt-0"> -->
-                <div :class="nav_visible ? 'flex':'hidden'" class="md:flex px-8 flex-col mt-8 md:flex-row md:gap-8 md:mt-0 transition-transform transform duration-300 ease-in-out">
-                    <RouterLink to="/" class="nav_link">
-                        Home
-                    </RouterLink>
+                <div  :class="nav_visible ? 'flex':'hidden'" class="md:flex items-center justify-evenly flex-col md:flex-row md:gap-8 border border-red-400 md:w-[90%]">
+                    <div class="flex md:flex-row text-center md:flex px-8 flex-col mt-8 md:flex-row md:gap-8 md:mt-0 transition-transform transform duration-300 ease-in-out">
+                        <RouterLink to="/" class="nav_link">
+                            Home
+                        </RouterLink>
 
-                    <RouterLink to="/jobs" class="nav_link">
-                        Find Job
-                    </RouterLink>
+                        <RouterLink to="/jobs" class="nav_link">
+                            Find Job
+                        </RouterLink>
 
-                    <RouterLink to="/register/decide" class="nav_link">
-                        Post Job
-                    </RouterLink>
+                        <RouterLink to="/register/decide" class="nav_link">
+                            Post Job
+                        </RouterLink>
 
-                    <RouterLink to="/jobs" class="nav_link">
-                        Browse Categories
-                    </RouterLink>
+                        <RouterLink to="/jobs" class="nav_link">
+                            Browse Categories
+                        </RouterLink>
+                    </div>
+
+                    <div class="flex justify-self-end md:flex gap-3 md:m-0">
+                        <RouterLink to="/login">
+                            <button class="btn rounded-md text-blue hover:text-blue hover:bg-light_blue">Login</button>
+                        </RouterLink>
+                        <RouterLink to="/register/decide">
+                            <button class="btn rounded-md bg-blue hover:bg-dark_blue text-white">Sign Up</button>
+                        </RouterLink>
+                    </div>
                 </div>
 
-                <div :class="nav_visible ? 'flex':'hidden'" class="mt-5 mb-8 px-8 flex justify-self-end md:flex gap-3 md:m-0">
-                    <RouterLink to="/login">
-                        <button class="btn rounded-md text-blue hover:text-blue hover:bg-light_blue">Login</button>
-                    </RouterLink>
-                   <RouterLink to="/register/decide">
-                        <button class="btn rounded-md bg-blue hover:bg-dark_blue text-white">Sign Up</button>
-                    </RouterLink>
-                </div>
             </div>
-            
         </nav>
 
-        <!-- <div v-if="loading">loading...</div> -->
-        <nav v-if="type === 'app' && !loading && user" class="p-2 border">
+        <nav v-if="type === 'app' && !loading && user">
             <div class="flex flex-row w-full justify-between items-center">
                 <SiteLogo/>
                 <div class="border rounded-md hidden md:block">
@@ -55,7 +55,7 @@
                     <div class="border border-2 rounded-full h-10 w-10 flex justify-center items-center relative group">
                         <i class="bi bi-bell"></i>
                         <div class="menu max-w-[300px] h-24 border absolute bg-white top-9 right-0 rounded-lg p-5 hidden group-hover:block">
-                            notifications
+                           notifications: {{ notifications }}
                         </div>
                     </div>
                     
@@ -80,12 +80,14 @@
             
         </nav>
     </div>
+
+
 </template>
 <script>
 import SiteLogo from './SiteLogo.vue';
 import UserDropDownMenu from './UserDropDownMenu.vue';
 import axios from 'axios'
-
+import { io } from 'socket.io-client';
 
 export default {
     name: "Navbar",
@@ -99,6 +101,8 @@ export default {
 
             user: null,
             loading: null,
+
+            notifications: '',
         };
     },
     components: { SiteLogo, UserDropDownMenu },
@@ -126,6 +130,11 @@ export default {
     },
     mounted(){
         this.getUserData();
+        const socket = io(`http://localhost:8000`);
+        socket.on('notification', (data) => {
+            this.notifications = data;
+            console.log("received notification", data)
+        })
     }
 }
 </script>
