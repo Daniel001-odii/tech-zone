@@ -108,32 +108,19 @@ export default {
         async googleLogin(){
             try{
                 const response = await googleAuthCodeLogin();
-                // console.log("response from google: ", response);
+                console.log("response from google: ", response);
                 const auth_code = { code: response.code }
-                const res = await axios.post(`${this.api_url}/google-auth`, auth_code );
-                if(res.data.message == "Sign-in successful"){
-                    // alert user of successful sign login..
-                    alert("Login Successfull");
-                    // save user token...
-                    localStorage.setItem("life-gaurd", res.data.token);
-
-                    // redirect to respective user or employer profile...
-
-                    if(res.data.user.model == "User"){
-                        window.location.reload();
-                        this.$router.push("/jobs")
-                    } else if(res.data.user.model == "Employer"){
-                        window.location.reload();
-                        this.$router.push("/client/dashboard")
-                    }
-
-                } else if(res.data.message == "User registered successfully"){
-                    alert("Registration successful!");
-                  
-                  
+                const newResponse = await axios.post(`${this.api_url}/google-auth`, auth_code );
+                console.log("response from backend: ", newResponse.data);
+                
+                localStorage.setItem("life-gaurd", newResponse.data.token);
+                if(newResponse.data.role == "user"){
+                    this.$router.push("/jobs")
                 }
-                // console.log("response from backend: ", res)
-
+                
+                if(newResponse.data.role == "employer"){
+                    this.$router.push("/client/dashboard");
+                }
             }catch(error){
                 alert(error);
             }

@@ -45,7 +45,7 @@
                                     
                                     <div v-for="(job, job_index) in jobs" :key="job_index">
                                         <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
-                                        <MainJobCard @click="showJobDetail(job_index)"
+                                        <MainJobCard v-if="job.employer" @click="showJobDetail(job_index)"
                                         :class="selectedJob == job_index ? 'bg-light_blue':''" 
                                         @saveJob="addJobToSaves(job._id)" 
                                         :job_is_saved="checkIfJobIsSaved(job._id)" 

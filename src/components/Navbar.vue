@@ -1,8 +1,8 @@
 <template>
     <div class="flex justify-center items-center p-3 border w-full bg-white" style="margin: 0 auto;">
-        <nav v-if="type === 'wesbite' && !user">
+        <nav v-if="type === 'wesbite' || !user">
             <!-- <div style="margin: 0 auto;" class="flex flex-col justify-between items-start md:items-center text-left md:flex-row"> -->
-            <div style="margin: 0 auto;" class=" flex flex-col md:flex-row justify-between border border-red-400">
+            <div style="margin: 0 auto;" class=" flex flex-col md:flex-row justify-between">
                 <div class="flex flex-row justify-between items-center w-full md:w-[30%]">
                     <SiteLogo/>
                     <button  @click="nav_visible = !nav_visible" class=" flex font-bold inline-block text-lg md:hidden">
@@ -12,7 +12,7 @@
                 </div>
 
             
-                <div  :class="nav_visible ? 'flex':'hidden'" class="md:flex items-center justify-evenly flex-col md:flex-row md:gap-8 border border-red-400 md:w-[90%]">
+                <div  :class="nav_visible ? 'flex':'hidden'" class="md:flex items-center justify-evenly flex-col md:flex-row md:gap-8 md:w-[90%]">
                     <div class="flex md:flex-row text-center md:flex px-8 flex-col mt-8 md:flex-row md:gap-8 md:mt-0 transition-transform transform duration-300 ease-in-out">
                         <RouterLink to="/" class="nav_link">
                             Home
