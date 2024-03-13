@@ -28,6 +28,7 @@ import OverviewPageView from '@/views/Users/OverviewPageView.vue'
 
 import ClientContractsListPageViewVue from '@/views/Employers/ContractsListPageView.vue'
 import ClientProfilePageViewVue from '@/views/Employers/ProfilePageView.vue'
+import NotifcationsPageView from '@/views/NotifcationsPageView.vue'
 
 
 const routes = [
@@ -168,6 +169,13 @@ const routes = [
     path: '/overview',
     name: 'overview',
     component: OverviewPageView,
+    meta: { requiresAuth: true, role: 'user' }
+  },
+
+  {
+    path: '/notifications',
+    name: 'notifications',
+    component: NotifcationsPageView,
     meta: { requiresAuth: true, role: 'user' }
   },
 

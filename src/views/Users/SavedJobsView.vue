@@ -5,6 +5,11 @@
             <template #page-contents>
                 <!-- {{ jobs }} -->
                 <!-- {{  getUserData }} -->
+                <div class="gap-2 flex flex-row px-8 py-2 border-b">
+                    <input type="search" class=" min-w-28 px-4 py-2 bg-light_blue rounded-md" placeholder="Search all types of jobs" v-model="search_term">
+                </div>
+
+
                 <SkeletonLoader v-if="loading"/>
                 <div class="p-8" v-if="!loading && jobs.length <= 0">
                     <div class="flex flex-col justify-center items-center w-full mt-6">
@@ -13,7 +18,7 @@
                     </div>
                 </div>
 
-                <div v-if="!loading" class="flex flex-col overscroll-y-scroll" v-for="(job, job_index) in jobs" :key="job_index">
+                <div v-if="!loading" class="flex flex-col overscroll-y-scroll" v-for="(job, job_index) in job_list()" :key="job_index">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
                         <div>posted {{ formatTime(job.created) }}</div>
                         <div class="flex flex-row justify-between items-center">
@@ -45,9 +50,9 @@
                             
                         </div>
                     </div>
-                    
-                    
                 </div>
+
+                <div v-if="search_term && !job_list().length" class=" p-8 text-center text-red-400">No matches found!</div>
             </template>
         </TemplateView>
     </div>
@@ -73,9 +78,20 @@ export default {
             },
             jobs: '',
             is_saved: false,
+
+            search_term: '',
         }
     },
     methods:{
+        job_list() {
+            if(this.jobs){
+                return this.jobs.filter((job) => 
+                job.title.toLowerCase().includes(this.search_term.toLowerCase())
+                || job.description.toLowerCase().includes(this.search_term.toLowerCase())
+                );
+            }
+        },
+
         async getUserData(){
             const headers = this.headers;
             try{

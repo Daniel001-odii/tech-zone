@@ -9,6 +9,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import vue3GoogleLogin from 'vue3-google-login';
 
+import clickOutside from './utils/clickOutside'
+
+
+
+
+
 const app = createApp(App);
 
 
@@ -17,8 +23,10 @@ app.use(vue3GoogleLogin, {
 })
 
 // Declare a global variable
-// app.config.globalProperties.api_url = 'http://localhost:8000/api';
+app.config.globalProperties.api_url = 'http://localhost:8000/api';
 // app.config.globalProperties.api_url = 'https://apex-tek-api-538226b9f04c.herokuapp.com/api';
-app.config.globalProperties.api_url = 'https://apek-tek-api.onrender.com/api';
+// app.config.globalProperties.api_url = 'https://apek-tek-api.onrender.com/api';
 
 app.use(store).use(router).mount('#app');
+
+app.directive('click-outside', clickOutside)

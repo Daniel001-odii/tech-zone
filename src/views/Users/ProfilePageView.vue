@@ -249,6 +249,8 @@ export default {
                 const response = await axios.get(`${this.api_url}/user/${this.$route.params.user_id}`);
                 this.user = response.data.user;
                 console.log("pulic user: ", response);
+
+                this.user_form = response.data.user;
                 this.checkCurrentViewer();
             }catch(error){
                 console.log("error fetching public user data", error)
@@ -267,7 +269,8 @@ export default {
                 console.log("profile page :", response);
                 // push to user variable..
                 this.user = response.data.user;
-                this.user_form = response.data.user;
+                // this.user_form = response.data.user;
+                this.user_form.profile = response.data.user.profile;
                 
             }
             catch(error){

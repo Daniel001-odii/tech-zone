@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <div v-if="modal_active" class=" bg-[rgb(0,0,0,20%)] h-screen w-screen fixed z-20 flex flex-col justify-center items-center fixed top-0">
-            <div class=" w-11/12 md:w-5/6 lg:w-3/4 bg-white rounded-lg text-left flex flex-col h-fit max-h-5/6">
+            <div class=" w-11/12 md:w-5/6 lg:w-3/4 bg-white rounded-lg text-left flex flex-col h-fit max-h-[80vh]">
                 <div class="text-3xl font-bold px-4 py-5 flex flex-row justify-between items-center">
                     <span>{{ title }}</span>
                     <button @click="modal_active = !modal_active" class="">&times;</button>
