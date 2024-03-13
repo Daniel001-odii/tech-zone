@@ -44,6 +44,58 @@
             </div>
         </nav>
 
+        <!-- this navbar here displays only on mobile views. -->
+        <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden p-8">
+            <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
+                <span class="">&times;</span>
+            </button>
+        
+            <div class="flex flex-col gap-2 mt-8 w-full p-5" @click="mobile_nav = !mobile_nav">
+                <!-- <div> -->
+                    <!-- <span>Overview</span> -->
+                    <!-- <div class="flex flex-col gap-8"> -->
+                <RouterLink to="/" class="nav_link">
+                    Work Explorer
+                </RouterLink>
+
+                <RouterLink to="/saved-jobs" class="nav_link">
+                    Saved Jobs
+                </RouterLink>
+
+                <RouterLink to="/messages" class="nav_link">
+                    Messages
+                </RouterLink>
+
+                <RouterLink to="/contracts" class="nav_link">
+                    Contracts
+                </RouterLink>
+
+                <RouterLink to="/" class="nav_link">
+                Notifications
+                </RouterLink>
+
+                <RouterLink :to="'/users/' + user._id" class="nav_link">
+                    My Profile
+                </RouterLink>
+
+                <RouterLink to="/jobs/applications" class="nav_link">
+                    My Applications
+                </RouterLink>
+
+                <RouterLink to="/settings" class="nav_link">
+                    Settings
+                </RouterLink>
+
+                <RouterLink to="/" class="nav_link">
+                    Help & Support
+                </RouterLink>
+
+                <button @click="logout" class="menu_item"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                
+            
+            </div>
+        </div>
+
         <nav v-if="type === 'app' && !loading && user">
             <div class="flex flex-row w-full justify-between items-center">
                 <SiteLogo/>
@@ -52,29 +104,24 @@
                 </div>
                 <div v-if="!user">Loading...</div>
                 <div  v-if="user" class="flex flex-row items-center gap-1">
+
                     <div class="border border-2 rounded-full h-10 w-10 flex justify-center items-center relative group">
                         <i class="bi bi-bell"></i>
-                        <div class="menu max-w-[300px] h-24 border absolute bg-white top-9 right-0 rounded-lg p-5 hidden group-hover:block">
+                        <div class=" max-w-[300px] h-24 border absolute bg-white top-9 right-0 rounded-lg p-5 hidden group-hover:block">
                            notifications: {{ notifications }}
                         </div>
                     </div>
                     
                     <i class="bi bi-three-dots-vertical"></i>
                     <div class="flex flex-row items-center gap-3 relative group ">
-                        <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
-                        <!-- <div class=" h-10 w-10 bg-slate-300 rounded-full flex justify-center items-center text-2xl">{{ user.firstname[0] }}</div> -->
-                        <!-- I HAVE DELIBERATELY REMOVED THE USERNAME AND EMAIL HERE -->
-                        <!-- <div class="flex flex-col text-left">
-                            <span>Odii Daniel</span>
-                            <span class="text-blue">odiidaniel@gmail.com</span>
-                        </div> -->
-                        <UserDropDownMenu :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
+                        <img @click="mobile_nav = !mobile_nav" v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
+                        <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
                     </div>
-                    <button @click="toggleNavbar" class="border border-2 rounded-full h-10 w-10 flex justify-center items-center md:hidden">
+                    <!-- <button @click="toggleNavbar" class="border border-2 rounded-full h-10 w-10 flex justify-center items-center md:hidden">
                         <i v-if="!left_nav_open" class="bi bi-ui-checks-grid"></i>
                         <i v-if="left_nav_open" class="bi bi-x-lg"></i>
                     </button>
-                   
+                    -->
                 </div>
             </div>
             
@@ -103,6 +150,7 @@ export default {
             loading: null,
 
             notifications: '',
+            mobile_nav: false,
         };
     },
     components: { SiteLogo, UserDropDownMenu },
@@ -127,6 +175,13 @@ export default {
                 // console.log("error from navbar :", error);
             }
         },
+
+        logout(){
+            localStorage.removeItem("life-gaurd");
+            this.$router.push('/');
+            window.location.reload();
+        },
+
     },
     mounted(){
         this.getUserData();
