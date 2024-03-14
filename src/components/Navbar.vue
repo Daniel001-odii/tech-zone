@@ -1,49 +1,44 @@
 <template>
-    <div class="flex justify-center items-center p-3 border w-full bg-white" style="margin: 0 auto;">
-        <nav v-if="type === 'wesbite' || !user">
-            <!-- <div style="margin: 0 auto;" class="flex flex-col justify-between items-start md:items-center text-left md:flex-row"> -->
-            <div style="margin: 0 auto;" class=" flex flex-col md:flex-row justify-between">
-                <div class="flex flex-row justify-between items-center w-full md:w-[30%]">
-                    <SiteLogo/>
-                    <button  @click="nav_visible = !nav_visible" class=" flex font-bold inline-block text-lg md:hidden">
-                        <i v-if="!nav_visible" class="bi bi-list"></i>
-                        <i v-if="nav_visible" class="bi bi-x-lg"></i>
-                    </button>
+    <div>
+        <nav v-if="type === 'wesbite' || !user" class="bg-white dark:bg-gray-900 start-0 border-b border-gray-200 dark:border-gray-600">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <SiteLogo/>
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <div class="flex justify-self-end md:flex gap-3 md:m-0">
+                    <RouterLink to="/login">
+                        <button class="btn rounded-md text-tz_blue hover:text-tz_blue hover:bg-tz_light_blue">Login</button>
+                    </RouterLink>
+                    <RouterLink to="/register/decide">
+                        <button class="btn rounded-md bg-tz_blue hover:bg-tz_dark_blue text-white">Sign Up</button>
+                    </RouterLink>
                 </div>
+                <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+            </div>
 
-            
-                <div  :class="nav_visible ? 'flex':'hidden'" class="md:flex items-center justify-evenly flex-col md:flex-row md:gap-8 md:w-[90%]">
-                    <div class="flex md:flex-row text-center md:flex px-8 flex-col mt-8 md:flex-row md:gap-8 md:mt-0 transition-transform transform duration-300 ease-in-out">
-                        <RouterLink to="/" class="nav_link">
-                            Home
-                        </RouterLink>
-
-                        <RouterLink to="/jobs" class="nav_link">
-                            Find Job
-                        </RouterLink>
-
-                        <RouterLink to="/register/decide" class="nav_link">
-                            Post Job
-                        </RouterLink>
-
-                        <RouterLink to="/jobs" class="nav_link">
-                            Browse Categories
-                        </RouterLink>
-                    </div>
-
-                    <div class="flex justify-self-end md:flex gap-3 md:m-0">
-                        <RouterLink to="/login">
-                            <button class="btn rounded-md text-blue hover:text-blue hover:bg-light_blue">Login</button>
-                        </RouterLink>
-                        <RouterLink to="/register/decide">
-                            <button class="btn rounded-md bg-blue hover:bg-dark_blue text-white">Sign Up</button>
-                        </RouterLink>
-                    </div>
-                </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li>
+                        <RouterLink to="/" class="block py-2 px-3 text-white bg-tz_blue-700 rounded md:bg-transparent md:text-tz_blue-700 md:p-0 md:dark:text-tz_blue-500" aria-current="page">Home</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/jobs" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-tz_blue-700 md:p-0 md:dark:hover:text-tz_blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Find Job</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/register/decide" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-tz_blue-700 md:p-0 md:dark:hover:text-tz_blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Post Job</RouterLink>
+                    </li>
+                </ul>
+            </div>
 
             </div>
         </nav>
+    </div>
 
+    <div class="flex justify-center items-center border w-full bg-white" style="margin: 0 auto;">
         <!-- this navbar here displays only on mobile views. -->
         <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4">
             <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
@@ -97,34 +92,51 @@
         </div>
 
         <nav v-if="type === 'app' && !loading && user">
-            <div class="flex flex-row w-full justify-between items-center">
+            <div class="flex flex-row w-full justify-between p-3 items-center">
                 <SiteLogo/>
-                <div class="border rounded-md hidden md:block">
-                    <input type="search" placeholder="saerch for jobs" class="p-3">
+
+                <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
+                <div class="border-2 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden">
+                    <input type="search" placeholder="saerch for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none">
+                    <button @click="handleSearch" class="flex flex-row gap-2 border-l h-full px-3 items-center hover:bg-slate-50">
+                        <i class="bi bi-search"></i>
+                        <span>Search</span>
+                    </button>
                 </div>
+
                 <div v-if="!user">Loading...</div>
                 <div  v-if="user" class="flex flex-row items-center gap-1">
 
-                    <div class="border-2 rounded-full h-10 w-10 flex justify-center items-center relative group/notifications " v-click-outside="closeDropdown">
-                        <div class=" h-4 w-4 flex justify-center items-center text-white border-2 border-white rounded-full bg-red-500 absolute right-0 -top-2"></div>
-                        <i class="bi bi-bell" @click="notify_menu = !notify_menu"></i>
+                    <div class="relative" v-click-outside="closeDropdown" >
+                        <div class=" h-4 w-4 flex justify-center items-center text-white border-2 border-white rounded-full bg-red-500 absolute right-[0] -top-1 z-10" v-if="notifications && notifications.length > 0"></div>
                         
-                        <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 right-0 rounded-lg p-1 flex  flex-col gap-2">
-                           <span class="text-center rounded-lg p-2 bg-slate-50 w-full">Notifications</span>
+                        <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
+                        
+                        <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-10">
+                           <span class="text-center p-2 border-b w-full">Notifications</span>
                            <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="p-3 hover:bg-slate-50 rounded-md flex flex-row gap-3 justify-between items-start group/notify">
                             <div class="flex flex-col">
                                 <span class="text-sm font-bold">{{  notification.message }}</span>
                                 <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
                             </div>
-                            <button class="text-lg font-bold hidden group-hover/notify:block">
+                            <button @click="markNotificationAsRead(notification._id)" class="text-lg font-bold hidden group-hover/notify:block">
                                 <span>&times;</span>
                             </button>
                             
                            </div>
-                           <RouterLink to="/notifications" class="text-center mb-3">
-                                <span class="text-center text-blue">see all notifications</span>
+
+                            <div class=" text-center text-gray-400 h-[150px] flex flex-col justify-center items-center" v-if="notifications.length == 0">
+                                <i class="bi bi-bell text-3xl"></i>
+                                <p class="text-xl font-bold">You are all caught up</p>
+                                <span>No new notifications</span>
+                            </div>
+
+                           <RouterLink to="/notifications" class="text-center mb-3 border-t">
+                                <span class="text-center text-tz_blue">see all notifications</span>
                            </RouterLink>
                         </div>
+
+                        
 
                     </div>
                     
@@ -133,11 +145,8 @@
                         <img @click="mobile_nav = !mobile_nav" v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
                         <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
                     </div>
-                    <!-- <button @click="toggleNavbar" class="border border-2 rounded-full h-10 w-10 flex justify-center items-center md:hidden">
-                        <i v-if="!left_nav_open" class="bi bi-ui-checks-grid"></i>
-                        <i v-if="left_nav_open" class="bi bi-x-lg"></i>
-                    </button>
-                    -->
+                
+
                 </div>
             </div>
             
@@ -159,6 +168,7 @@ export default {
     name: "Navbar",
     props: {
         type: String,
+        jobs_from_search: '',
     },
     data() {
         return {
@@ -166,6 +176,7 @@ export default {
             left_nav_open: false,
 
             notify_menu: false,
+            user_menu: false,
 
             user: null,
             loading: null,
@@ -174,7 +185,10 @@ export default {
             mobile_nav: false,
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
-            }
+            },
+            job_search: '',
+
+            
         };
     },
     components: { SiteLogo, UserDropDownMenu },
@@ -186,6 +200,19 @@ export default {
 
         closeDropdown(){
             this.notify_menu = false;
+        },
+
+        formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const options = {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true, // Use 12-hour format
+            };
+            return date.toLocaleDateString(undefined, options);
         },
 
         async getUserData(){
@@ -207,7 +234,7 @@ export default {
         async getNotifications(){
             const headers = this.headers;
             try{
-                const response = await axios.get(`${this.api_url}/notifications`, { headers } )
+                const response = await axios.get(`${this.api_url}/notifications/unread`, { headers } )
                 console.log("user notifications: ", response);
                 this.notifications = response.data.notifications.reverse();
 
@@ -215,6 +242,39 @@ export default {
                 console.log(error);
             }
         },
+
+        async markNotificationAsRead(notification_id){
+            console.log(notification_id)
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/notifications/${notification_id}/read`, {}, { headers });
+                console.log(response);
+                this.getNotifications();
+            }catch(error){
+                console.log("error marking notification as read...", error)
+            }
+        },
+
+        async searchJob(){
+            try{
+                const response = await axios.get(`${this.api_url}/jobs/search`, {
+                params: {
+                    keywords: this.job_search,
+                }});
+
+                console.log(response);
+                this.jobs_from_search = response.data.jobs;
+                this.$router.push('/jobs');
+
+            }catch(error){
+                console.log(error)
+            }
+        },
+
+        handleSearch() {
+            this.$emit('search', {
+                keywords: this.job_search
+        })},
 
         logout(){
             localStorage.removeItem("life-gaurd");
@@ -240,13 +300,7 @@ export default {
     }
 
     .nav_link{
-        @apply p-3 rounded-md hover:bg-light_blue text-black font-medium hover:font-bold;
+        @apply p-3 rounded-md hover:bg-tz_light_blue text-black font-medium hover:font-bold;
     }
-
-    .notification::after{
-        content: '';
-        height: 10px;
-        width: 10px;
-        background: red;
-    }
+    
 </style>

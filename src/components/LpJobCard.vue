@@ -26,7 +26,7 @@
                
                 <div class="mt-3 font-bold flex justify-between items-center">
                     <RouterLink :to="job_url">
-                        <button class=" text-white bg-black hover:bg-blue px-5 py-3 rounded-md">Apply here</button>
+                        <button class=" text-white bg-black hover:bg-tz_blue px-5 py-3 rounded-md">Apply here</button>
                     </RouterLink>
                     <span class="text-2xl">#{{budget}}</span>
                 </div>

@@ -6,7 +6,7 @@
                 <SkeletonLoader v-if="loading"/>
                 <div class="p-5" v-if="!loading && applications.length <= 0">You haven't applied for any job yet</div>
                 <div v-if="!loading && applications " class="flex flex-col overscroll-y-scroll" v-for="application in applications">
-                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                         <div>{{ formattedTime(application.created) }}</div>
                         <div class="flex flex-row justify-between items-center">
                             <div class="text-2xl font-bold">
@@ -24,10 +24,10 @@
                             </div> -->
                         </div>
                         <div class="flex flex-row gap-2">
-                            <span class=" bg-light_blue p-2 rounded-md">
+                            <span class=" bg-tz_light_blue p-2 rounded-md">
                                 <i class="bi bi-wallet"></i> <span>#{{ application.budget.toLocaleString() }}</span>
                             </span>
-                            <span class=" bg-blue p-2 rounded-md text-white">
+                            <span class=" bg-tz_blue p-2 rounded-md text-white">
                                 <i class="bi bi-briefcase"></i> <span>{{ application.period }}</span>
                             </span>
                         </div>

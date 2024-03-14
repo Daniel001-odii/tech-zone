@@ -6,7 +6,7 @@
             </RouterLink>
             <div class="flex justify-between gap-6">
                 <span class="text-sm"> Already have an account?</span>
-                <RouterLink to="/login" class="text-blue text-sm">Login here</RouterLink>
+                <RouterLink to="/login" class="text-tz_blue text-sm">Login here</RouterLink>
             </div>
         </div>
     </div>
@@ -18,6 +18,6 @@ export default {
 </script>
 <style scoped>
       .btn{
-        @apply bg-blue hover:bg-dark_blue text-white py-3 px-5 rounded-md font-bold border border-transparent
+        @apply bg-tz_blue hover:bg-tz_dark_blue text-white py-3 px-5 rounded-md font-bold border border-transparent
     }
 </style>

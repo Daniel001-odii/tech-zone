@@ -5,7 +5,7 @@
         <section>
             <div class="section_container">
                 <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6">
-                    <div class="text-sm bg-light_blue p-2 text-center text-blue rounded-md w-fit">
+                    <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
                         <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
                     </div>
                     <div class=" text-7xl font-bold">
@@ -106,7 +106,7 @@
                         <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
                             <h2 class="section_subtitle text-white">Get access to high in-demand jobs in realtime</h2>
                             <RouterLink to="/jobs">
-                                <button class="btn bg-white text-blue hover:text-white flex flex-row gap-1">
+                                <button class="btn bg-white text-tz_blue hover:text-white flex flex-row gap-1">
                                     Browse All jobs <i class="bi bi-arrow-right"></i> 
                                 </button>
                             </RouterLink>
@@ -231,7 +231,7 @@ export default {
         font-size: 12px !important;
     }
     .btn{
-        @apply bg-blue hover:bg-dark_blue text-white py-3 px-5 rounded-md font-bold w-52 border border-transparent
+        @apply bg-tz_blue hover:bg-tz_dark_blue text-white py-3 px-5 rounded-md font-bold w-52 border border-transparent
     }
     .slide_btn{
         @apply border border-yellow-400 p-3 rounded-md text-yellow-400 font-bold text-xl hover:bg-yellow-400 hover:text-black;

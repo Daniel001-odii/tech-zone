@@ -4,20 +4,17 @@
             <template #page-title>All Contracts</template>
             <template #page-contents>
                 <div>
-                    <div class="flex flex-row gap-2 p-5 border-b">
-                        <input type="search" class="px-4 py-2 bg-light_blue rounded-md" placeholder="Search all types of jobs">
-                        <button class="bg-light_blue text-blue px-4 py-2 rounded-md hover:bg-blue hover:text-white">
-                            <i class="bi bi-search"></i> <span>Search</span>
-                        </button>
+                    <div class="gap-2 flex flex-row p-2 md:p-5  border-b">
+                        <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md" placeholder="Search all types of jobs" v-model="search_term">
                     </div>
                 </div>
 
                 <div v-if="!contracts">Loading Contracts...</div>
-                <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contracts">
-                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contract_list()">
+                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                         <div class="flex flex-row justify-between items-center">
                             <RouterLink :to="'/contracts/' + contract._id">
-                                <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                             </RouterLink>
                             <!-- <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">
                                 <i class="bi bi-three-dots"></i>
@@ -31,9 +28,9 @@
                         </div>
                         <div class="flex flex-row gap-3">
                             <span class="px-4 py-1 text-white rounded-md text-xl" 
-                            :class="[contract.status == 'open'?'bg-blue':'', 
+                            :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                     contract.status == 'paused'?'bg-orange-500':'',
-                                    contract.status == 'completed'?'bg-green':'',
+                                    contract.status == 'completed'?'bg-green-500':'',
                                     contract.status == 'closed'?'bg-gray-500':''
                                     ]">
                                 {{ contract.status }}
@@ -47,6 +44,7 @@
                         <span class="font-bold mt-4 text-gray-400">You Have No Contracts Yet</span>
                     </div>
                 </div>
+                <div v-if="search_term && !contract_list().length" class=" p-8 text-center text-red-400">No matches found!</div>
             </template>
         </TemplateView>
     </div>
@@ -66,9 +64,18 @@ export default {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
+            search_term: '',
         }
     },
     methods:{
+        contract_list() {
+            if(this.contracts){
+                return this.contracts.filter((contract) => 
+                contract.job.title.toLowerCase().includes(this.search_term.toLowerCase())
+                || contract.job.description.toLowerCase().includes(this.search_term.toLowerCase())
+                );
+            }
+        },
         // get all user contracts...
         async getContracts(){
             const headers = this.headers;

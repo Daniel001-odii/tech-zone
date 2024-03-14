@@ -1,5 +1,5 @@
 <template>
-    <div class="p-8 flex flex-col justify-center items-center">
+    <div class="p-8 flex flex-col justify-center items-center mx-auto text-center">
         <SiteLogo/>
         <div class=" flex flex-col justify-center items-center">
             <h1 class="text-4xl p-4 mt-8">Join as an employer or freelancer</h1>
@@ -17,7 +17,7 @@
                 <label class="selection_box"  :class="user_type == 'freelancer' ? 'active':''">
                     <input name="userType" type="radio" id="freelancer" value="freelancer" v-model="user_type"  class=" h-5 w-5">
                     <p class=" box_title">
-                        <i class="bi bi-person-up"></i>
+                        <i class="bi bi-person-down"></i>
                         <span>
                             I'm a freelancer looking for work
                         </span>
@@ -67,6 +67,6 @@ import SiteLogo from '@/components/SiteLogo.vue';
         @apply flex flex-col w-52 text-left text-3xl
     }
     .active{
-        @apply bg-light_blue border-blue
+        @apply bg-tz_light_blue border-tz_blue
     }
 </style>

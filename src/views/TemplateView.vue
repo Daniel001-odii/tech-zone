@@ -1,25 +1,29 @@
 <template>
-    <div class=" flex flex-row">
-        <LeftNavBar v-if="leftNav" :class="nav_active ? 'block':'hidden'" class="md:block"/>
-        <div class=" h-[90vh] flex flex-col h-screen w-screen">
-            <div class=" w-full text-left p-5 text-3xl border-b flex items-center pl-3">
-                <span class="flex gap-5">
-                    <button @click="$router.go(-1)">
-                        <i class="bi bi-arrow-left"></i>
-                    </button>
-                    
-                    <slot name="page-title">Work Explorer</slot>
-                </span>
-            </div>
 
-            <div class="flex flex-col h-full overflow-y-scroll w-full">
-                <slot name="page-contents">
-                        Page contents here...
-                </slot>
+
+        
+<div class=" h-full w-full fixed top-[80px] flex flex-row">
+    <div class=" flex h-full">
+        <LeftNavBar v-if="leftNav" :class="nav_active ? 'block':'hidden'" class="md:block"/>
+    </div>
+    <div class=" flex w-full relative top-0 h-screen flex-col">
+        <div class=" w-full text-left p-5 text-3xl border-b flex items-center pl-3">
+            <span class="flex gap-5">
+                <button @click="$router.go(-1)">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
                 
-            </div>
+                <slot name="page-title">Work Explorer</slot>
+            </span>
+        </div>
+
+        <div class="flex flex-col h-full overflow-y-scroll w-full">
+            <slot name="page-contents">
+                    Page contents here...
+            </slot>
         </div>
     </div>
+</div>
     
            
         

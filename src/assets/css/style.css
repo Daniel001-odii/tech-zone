@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .btn{
-    @apply bg-blue px-6 py-3  rounded-md text-white hover:bg-dark_blue font-bold;
+    @apply bg-tz_blue px-6 py-3  rounded-md text-white hover:bg-tz_dark_blue font-bold;
 }
 
 .btn:disabled{
@@ -12,7 +12,7 @@
 }
 
 .btn_white{
-    @apply border border-blue px-6 py-3  rounded-md font-bold hover:bg-gray-100;
+    @apply border border-tz_blue px-6 py-3  rounded-md font-bold hover:bg-gray-100;
 }
 
 button:disabled{

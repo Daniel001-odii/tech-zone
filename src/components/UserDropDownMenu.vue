@@ -5,7 +5,7 @@
                 <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-evenly px-1 cursor-pointer">
                     <div class="flex flex-col">
                         <span>{{ username }}</span>
-                        <span class="text-blue text-sm">{{ email }}</span>
+                        <span class="text-tz_blue text-sm">{{ email }}</span>
                         <span class="text-slate-400 capitalize">{{ user_type }}</span>
                     </div>
                     <i :class="sub_items ? 'bi bi-caret-up-fill':'bi bi-caret-down-fill'" class=""></i>
@@ -101,7 +101,7 @@ export default {
 </script>
 <style scoped>
     .menu_item{
-        @apply hover:bg-light_blue p-3 rounded-md text-left
+        @apply hover:bg-tz_light_blue p-3 rounded-md text-left
     }
 
 </style>

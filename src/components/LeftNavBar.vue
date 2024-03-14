@@ -116,10 +116,10 @@ export default {
 </script>
 <style scoped>
     .active{
-        @apply border-l-blue text-blue bg-light_blue font-bold
+        @apply border-l-tz_blue text-tz_blue bg-tz_light_blue font-bold
     }
 
     .nav_item{
-        @apply  h-20 hover:bg-light_blue flex md:justify-center pl-8 md:p-0 lg:pl-8 lg:justify-start justify-start items-center gap-3 border-l-8;
+        @apply  h-20 hover:bg-tz_light_blue flex md:justify-center pl-8 md:p-0 lg:pl-8 lg:justify-start justify-start items-center gap-3 border-l-8;
     }
 </style>

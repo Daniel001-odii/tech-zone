@@ -3,12 +3,15 @@
         <TemplateView :leftNav="true">
             <template #page-title>Notifications</template>
             <template #page-contents>
+                <div class="p-3">
+                    <div class="p-3 border mb-3 hover:bg-gray-50 rounded-lg" v-for="notification in notifications" :key="notification._id">
+                        {{ notification.message }} <br/>
+                        {{ notification.created }} <br/>
+                        <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink>
+                    </div>
+                </div>
                <!-- {{ notifications }} -->
-               <div class="p-3 border mb-3 hover:bg-gray-50" v-for="notification in notifications" :key="notification._id">
-                {{ notification.message }} <br/>
-                {{ notification.created }} <br/>
-                <RouterLink class="text-blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink>
-               </div>
+              
             </template>
         </TemplateView>
     </div>

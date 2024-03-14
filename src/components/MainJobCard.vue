@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-col border p-3 rounded-md text-left gap-3 hover:border-blue">
+        <div class="flex flex-col border p-3 rounded-md text-left gap-3 hover:border-tz_blue">
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between items-center">
                     <span class="font-bold">
@@ -9,8 +9,8 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="icon_btn bg-light_blue" @click="saveJob">
-                            <i v-if="saved || job_is_saved" class="bi bi-bookmark-check-fill text-blue"></i>
+                        <button class="icon_btn bg-tz_light_blue" @click="saveJob">
+                            <i v-if="saved || job_is_saved" class="bi bi-bookmark-check-fill text-tz_blue"></i>
                             <i v-else class="bi bi-bookmark-check"></i>
                         </button>
                         <button class="icon_btn" @click="flagJob">
@@ -32,10 +32,10 @@
             </div>
            
             <div class="flex flex-row gap-2">
-                <span class=" bg-light_blue p-2 rounded-md">
+                <span class=" bg-tz_light_blue p-2 rounded-md">
                     <i class="bi bi-wallet"></i> <span>#{{ budget }}</span>
                 </span>
-                <span class=" bg-blue p-2 rounded-md text-white">
+                <span class=" bg-tz_blue p-2 rounded-md text-white">
                     <i class="bi bi-briefcase"></i> <span>{{ period }}</span>
                 </span>
             </div>
@@ -45,9 +45,9 @@
                 </slot>
             </div>
 
-            <div class="text-sm text-blue flex flex-row justify-between items-center">
+            <div class="text-sm text-tz_blue flex flex-row justify-between items-center">
                 <slot name="job-posting-time">Posted 1 hour ago</slot>
-                <span v-if="is_applied" class="px-3 py-1 bg-green rounded-lg text-white">applied</span>
+                <span v-if="is_applied" class="px-3 py-1 bg-green-500 rounded-lg text-white">applied</span>
             </div>
         </div>
     </div>
@@ -86,6 +86,6 @@ export default {
 </script>
 <style scoped>
     .icon_btn{
-        @apply p-2 hover:bg-light_blue h-10 w-10 rounded-full
+        @apply p-2 hover:bg-tz_light_blue h-10 w-10 rounded-full
     }
 </style>

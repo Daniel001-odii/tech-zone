@@ -5,7 +5,7 @@
             <div class=" flex flex-col gap-3">
                 <div class="flex flex-row group hover:bg-gray-100 p-3 items-start justify-between" v-for="(job, job_id) in jobs" :key="job_id">
                     <div clas="flex flex-col">
-                        <div class=" text-lg font-bold text-blue">{{ job.title }}</div>
+                        <div class=" text-lg font-bold text-tz_blue">{{ job.title }}</div>
                         <div class=" text-lg">#{{ job.budget.toLocaleString() }}</div>
                         <p class=" text-sm text-gray-300">posted {{ job.created }}</p>
                     </div>
@@ -23,8 +23,8 @@
         <TemplateView :leftNav="true">
             <template #page-title>Dashboard</template>
             <template #page-contents>
-                <div class="bg-light_blue p-3 flex flex-col gap-3">
-                    <div class="p-8 py-12 rounded-lg bg-light_blue flex flex-row justify-between items-center flex-wrap">
+                <div class="bg-tz_light_blue p-3 flex flex-col gap-3">
+                    <div class="p-8 py-12 rounded-lg bg-tz_light_blue flex flex-row justify-between items-center flex-wrap">
                         <div class="text-left">
                             <p>Welcome back,</p>
                             <!-- {{ getUserData }} -->
@@ -55,7 +55,7 @@
                                     <div class=" bg-white p-2 rounded-2xl mb-4" v-for="(job, job_id) in jobs" :key="job_id">
                                         <!-- {{ showApplicants(job._id) }} -->
                                         <div class="w-full p-3 bg-slate-50 rounded-lg text-left flex flex-row-reverse justify-start items-center">
-                                            <button @click="show_applicants(job_id, job._id)" class=" text-blue bg-light_blue p-2 rounded-full ml-3 flex justify-center items-center h-10 w-10">
+                                            <button @click="show_applicants(job_id, job._id)" class=" text-tz_blue bg-tz_light_blue p-2 rounded-full ml-3 flex justify-center items-center h-10 w-10">
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </button>
                                             <div class="flex flex-row justify-between flex-wrap w-full">
@@ -75,7 +75,7 @@
                                             </div>
                                             <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
                                             <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
-                                                <div v-if="application.user" class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
+                                                <div v-if="application.user" class=" h-16 w-20 bg-tz_blue rounded-lg overflow-hidden">
                                                     <img :src="application.user.profile.image_url">
                                                 </div>
                                                 <div v-if="application.user" class="flex flex-col text-start w-full">
@@ -95,7 +95,7 @@
                                                             <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
 
                                                             <div v-for="(attachment, attachment_id) in application.attachment" :key="attachment_id">
-                                                                <a class=" text-blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment.name }}</a>
+                                                                <a class=" text-tz_blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment.name }}</a>
                                                             </div>
                                                         </p>
                                                         <p><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
@@ -103,7 +103,7 @@
                                                     </div>
                                                     <div class="flex flex-row gap-3 mt-3">
                                                         <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save</button>
-                                                        <button class="bg-white border border-blue p-3 rounded-md hover:bg-slate-100">Interview</button>
+                                                        <button class="bg-white border border-tz_blue p-3 rounded-md hover:bg-slate-100">Interview</button>
                                                         <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer & Hire</button>
                                                     </div>
                                                 </div>
@@ -117,7 +117,7 @@
 
                                 <p v-if="!saved_users"> loading your saved users...</p>
                                 <div v-if="saved_users" class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(user, user_id) in saved_users" :key="user_id">
-                                    <div class=" h-16 w-20 bg-blue rounded-lg overflow-hidden">
+                                    <div class=" h-16 w-20 bg-tz_blue rounded-lg overflow-hidden">
                                         <img :src="user.profile.image_url">
                                     </div>
                                     <div class="flex flex-col text-start w-full">
@@ -129,7 +129,7 @@
                                                 <p class="text-gray-400">Earned: ${{ user.earned }}</p>
                                             </div>
                                             <div class="flex flex-row gap-3">
-                                                <button class="bg-white border-blue p-3 border rounded-md hover:bg-slate-100">Message</button>
+                                                <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100">Message</button>
                                                 <button class="btn" @click="jobAssignmentModal(user._id, user.firstname)">Assign Job</button>
                                                 <button @click="saveUser(user._id)" class="border p-3 rounded-md">
                                                     <i class="bi bi-trash-fill"></i>
@@ -314,6 +314,6 @@ export default {
     @apply p-3 rounded-lg w-64 text-start flex flex-row gap-3 hover:bg-slate-50 items-center
 }
 .active_tab{
-    @apply bg-blue text-white hover:bg-dark_blue;
+    @apply bg-tz_blue text-white hover:bg-tz_dark_blue;
 }
 </style>

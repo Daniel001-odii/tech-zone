@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-row h-[92vh] justify-center">
-        <div class="p-5 flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8">
-                <div class="lg:w-96 flex flex-col gap-3">
+     <div class="flex flex-row justify-center items-center w-screen mt-20">
+            <!-- <div class="p-5 flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8 border"> -->
+                <div class="w-full lg:w-96 flex flex-col gap-3 p-4">
                     
                     <div class="text-start">
                         <h1 class="text-3xl font-bold">Welcome back</h1>
@@ -15,7 +15,7 @@
                         <div class="flex flex-col gap-3">
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
-                                <input class="border p-3 rounded-md outline:blue" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
+                                <input class="border p-3 rounded-md outline:tz_blue" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
                             </div>
 
                             <div class="tz_form_control">
@@ -40,14 +40,13 @@
                             
                         </div>
                         <div class="text-center">
-                            <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-blue">Sign up</RouterLink> </p>
+                            <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-tz_blue">Sign up</RouterLink> </p>
                         </div>                      
                     </form>
                 </div>
-                
-            </div>
+            <!-- </div> -->
 
-            <div class=" bg-light_blue hidden lg:flex flex-col justify-center items-center w-3/6  h-full">
+            <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6">
                 <div>
                     <img src="../assets/images/tech-zone.svg" width="100px">
                 </div>

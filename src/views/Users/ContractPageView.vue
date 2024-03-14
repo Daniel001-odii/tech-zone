@@ -34,7 +34,7 @@
                 <p class="text-left pt-5 pl-8 text-gray-400">contract status: {{ contract.status }}</p>
                 <div v-if="contract && user.role == 'user'" class="flex flex-col p-5 text-left">
                     
-                    <span v-if="contract.action == 'accepted'" class=" bg-[#d9ffcc] text-[#2b860c] p-5 rounded-lg m-3"> You accepted this offer </span>
+                    <span v-if="contract.action == 'accepted'" class=" bg-green-100 text-green-700 p-5 rounded-lg m-3"> You accepted this offer </span>
                     <span v-if="contract.action == 'declined'" class=" bg-red-100 text-red-700 p-5 rounded-lg m-3"> You declined this offer </span>
 
                     <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">{{ user.firstname }} you received a job contract offer!</h1>
@@ -63,16 +63,16 @@
                         <p class="text-gray-600">Once you accept the offer you can begin working on the contract right away</p>
                         <div class="flex flex-row gap-5 justify-start mt-3">
                             <button @click="declineOffer" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.action != 'pending'">Decline Offer</button>
-                            <button @click="acceptOffer" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action != 'pending'">Accept Offer</button>
+                            <button @click="acceptOffer" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action != 'pending'">Accept Offer</button>
                         </div>
                     </div>
                     <div v-if="contract.action == 'accepted'" class="mt-6">
                         <h2 class="font-bold text-xl">Feedback & Review</h2>
-                        <p class="text-gray-600 mt-3 bg-light_blue p-3 rounded-lg text-blue">
+                        <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
                            <i class="bi bi-exclamation-circle"></i> Feedback submission will only be available when contract is completed.
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.user_feedback">
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.user_feedback">
                                 <span v-if="contract.user_feedback">Feedback sent</span>
                                 <span v-else>Send Freelancer Feedback</span>
                             </button>
@@ -99,11 +99,11 @@
                     
                     <div class="mt-6">
                         <h2 class="font-bold text-xl">Contract Actions</h2>
-                        <p class="text-gray-600 mt-3 bg-light_blue p-3 rounded-lg text-blue">
+                        <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
                            <i class="bi bi-exclamation-circle"></i> The Freelancer will be notified for any action you perform on the contract
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
+                            <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
                             <button v-if="contract.action == 'accepted'" @click="pauseContract" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed' ">Pause contract</button>
                             <button v-if="contract.action == 'accepted' && contract.status == 'paused'" @click="resumeContract" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume contract</button>
                             <button @click="closeContract" class="font-bold border border-red-500 text-red-500 rounded-2xl px-6 py-3 hover:bg-red-500 hover:text-white disabled:bg-gray-200 disabled:text-gray-400 disabled:border-none" :disabled="contract.action == 'declined' || contract.status == 'completed' || contract.status == 'closed'">Close</button>
@@ -113,11 +113,11 @@
 
                     <div v-if="contract.action == 'accepted'" class="mt-6">
                         <h2 class="font-bold text-xl">Feedback & Review</h2>
-                        <p class="text-gray-600 mt-3 bg-light_blue p-3 rounded-lg text-blue">
+                        <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
                            <i class="bi bi-exclamation-circle"></i>  Feedback submission will only be available when contract is completed.
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-blue text-white hover:bg-dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback">
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback">
                                 <span v-if="contract.employer_feedback">Feedback sent</span>
                                 <span v-else>Send Freelancer Feedback</span>
                             </button>
@@ -126,6 +126,61 @@
                    </div>
                     
                 </div>
+
+                <!-- contract tracker -->
+                <ol v-if="false" class="flex items-center">
+                    <li class="relative w-full mb-6">
+                        <div class="flex items-center">
+                            <div class="z-10 flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
+                                <svg class="w-2.5 h-2.5 text-blue-100 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </div>
+                            <div class="flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+                        </div>
+                        <div class="mt-3">
+                            <h3 class="font-medium text-gray-900 dark:text-white">Step 1</h3>
+                        </div>
+                    </li>
+                    <li class="relative w-full mb-6">
+                        <div class="flex items-center">
+                            <div class="z-10 flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
+                                <svg class="w-2.5 h-2.5 text-blue-100 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </div>
+                            <div class="flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+                        </div>
+                        <div class="mt-3">
+                            <h3 class="font-medium text-gray-900 dark:text-white">Step 2</h3>
+                        </div>
+                    </li>
+                    <li class="relative w-full mb-6">
+                        <div class="flex items-center">
+                            <div class="z-10 flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
+                                <svg class="w-2.5 h-2.5 text-blue-100 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </div>
+                            <div class="flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+                        </div>
+                        <div class="mt-3">
+                            <h3 class="font-medium text-gray-900 dark:text-white">Step 2</h3>
+                        </div>
+                    </li>
+                    <li class="relative w-full mb-6">
+                        <div class="flex items-center">
+                            <div class="z-10 flex items-center justify-center w-6 h-6 bg-gray-200 rounded-full ring-0 ring-white dark:bg-gray-700 sm:ring-8 dark:ring-gray-900 shrink-0">
+                                <svg class="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h3 class="font-medium text-gray-900 dark:text-white">Step 3</h3>
+                        </div>
+                    </li>
+                </ol>
                 
             </template>
         </TemplateView>

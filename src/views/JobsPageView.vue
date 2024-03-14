@@ -3,14 +3,15 @@
         <TemplateView :leftNav="true">
             <template #page-title>Work Explorer</template>
             <template #page-contents>
+                <DismissableAlert></DismissableAlert>
                 <!-- <div class="border border-red-200 h-full"> -->
                     <div class="flex flex-row gap-2 p-2 md:p-5 border-b">
-                        <div class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
-                            <input type="search" class=" min-w-28 px-4 py-2 bg-light_blue rounded-md" placeholder="Search all types of jobs">
-                            <button class="bg-light_blue text-blue px-4 py-2 rounded-md hover:bg-blue hover:text-white">
+                        <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
+                            <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md" placeholder="Search all types of jobs">
+                            <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white">
                                 <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
                             </button>
-                        </div>
+                        </form>
                         <button class="border text-black px-4 py-2 rounded-md ">
                             <i class="bi bi-funnel"></i> <span class="hidden md:inline-block">Filters</span>
                         </button>
@@ -46,7 +47,7 @@
                                     <div v-for="(job, job_index) in jobs" :key="job_index">
                                         <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
                                         <MainJobCard v-if="job.employer" @click="showJobDetail(job_index)"
-                                        :class="selectedJob == job_index ? 'bg-light_blue':''" 
+                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
                                         @saveJob="addJobToSaves(job._id)" 
                                         :job_is_saved="checkIfJobIsSaved(job._id)" 
                                         :company="job.employer.profile.company_name" :rating="5" 
@@ -103,10 +104,10 @@
                                     <div v-if="contract.type == 'assigned'">
                                         <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                            
-                                            <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                                            <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                                                 <div class="flex flex-row justify-between items-center">
                                                     <RouterLink :to="'/contracts/' + contract._id">
-                                                        <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                                        <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                                                     </RouterLink>
                                                 </div>
                                                 <div>
@@ -115,7 +116,7 @@
                                                 </div>
                                                 <div class="flex flex-row gap-3">
                                                     <span class="px-4 py-1 text-white rounded-md text-xl" 
-                                                    :class="[contract.status == 'open'?'bg-blue':'', 
+                                                    :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                             contract.status == 'paused'?'bg-orange-500':'',
                                                             contract.status == 'completed'?'bg-green':'',
                                                             contract.status == 'closed'?'bg-gray-500':''
@@ -135,6 +136,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- --------------------- -->
                         <div v-if="showTab == 'tab-3'">
                             <div class="flex flex-col gap-3">
@@ -142,10 +144,10 @@
                                     <div v-if="contract.status == 'completed'">
                                         <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                            
-                                           <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                                           <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                                                <div class="flex flex-row justify-between items-center">
                                                    <RouterLink :to="'/contracts/' + contract._id">
-                                                       <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                                       <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                                                    </RouterLink>
                                                </div>
                                                <div>
@@ -154,7 +156,7 @@
                                                </div>
                                                <div class="flex flex-row gap-3">
                                                    <span class="px-4 py-1 text-white rounded-md text-xl" 
-                                                   :class="[contract.status == 'open'?'bg-blue':'', 
+                                                   :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                            contract.status == 'paused'?'bg-orange-500':'',
                                                            contract.status == 'completed'?'bg-green':'',
                                                            contract.status == 'closed'?'bg-gray-500':''
@@ -177,10 +179,10 @@
                                     <div v-if="contract.action == 'declined'">
                                         <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                            
-                                           <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                                           <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                                                <div class="flex flex-row justify-between items-center">
                                                    <RouterLink :to="'/contracts/' + contract._id">
-                                                       <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                                       <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                                                    </RouterLink>
                                                </div>
                                                <div>
@@ -189,7 +191,7 @@
                                                </div>
                                                <div class="flex flex-row gap-3">
                                                    <span class="px-4 py-1 text-white rounded-md text-xl" 
-                                                   :class="[contract.status == 'open'?'bg-blue':'', 
+                                                   :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                            contract.status == 'paused'?'bg-orange-500':'',
                                                            contract.status == 'completed'?'bg-green':'',
                                                            contract.status == 'closed'?'bg-gray-500':''
@@ -220,10 +222,11 @@ import axios from 'axios';
 import { formatToRelativeTime } from '../utils/dateFormat'
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import DismissableAlert from '@/components/DismissableAlert.vue';
 
 export default {
     name: "JobsPageView",
-    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader },
+    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert },
     data(){
         return{
             store: useStore(),
@@ -326,6 +329,24 @@ export default {
             }
         },
 
+        async searchJob(){
+            this.loading = true;
+            try{
+                const response = await axios.get(`${this.api_url}/jobs/search`, {
+                params: {
+                    keywords: this.job_search,
+                }});
+
+                console.log(response);
+                // this.jobs = response.data.jobs;
+                this.loading = false;
+                // this.$router.push('/jobs');
+
+            }catch(error){
+                console.log(error)
+            }
+        },
+
         formattedDate(dateToFormat) {
             return formatToRelativeTime(dateToFormat);
         },
@@ -372,6 +393,6 @@ export default {
 </script>
 <style scoped>
     .active_tab{
-        @apply border-b-4 rounded-sm border-b-blue
+        @apply border-b-4 rounded-sm border-b-tz_blue
     }
 </style>

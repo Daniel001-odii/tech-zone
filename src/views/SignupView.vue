@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="flex flex-row justify-center items-center h-screen">
+        <div class="flex flex-row justify-center items-center w-screen  mt-20">
 
-            <div class="flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8">
+            <!-- <div class="flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8"> -->
                 <div class="w-full lg:w-96 flex flex-col gap-3 p-4">
                     <div class="text-start  w-full">
                         <h1 class="text-3xl font-bold">Welcome</h1>
@@ -15,17 +15,17 @@
                         <div class="flex flex-col gap-3">
                             <div class="tz_form_control">
                                 <label for="firstname">First Name</label>
-                                <input class="border p-3 rounded-md outline:blue" type="text" name="firstname" id="firstname" placeholder="John" v-model="form_data.firstname" required>
+                                <input class="border p-3 rounded-md outline:tz_blue" type="text" name="firstname" id="firstname" placeholder="John" v-model="form_data.firstname" required>
                             </div>
 
                             <div class="tz_form_control">
                                 <label for="lastname">Last Name</label>
-                                <input class="border p-3 rounded-md outline:blue" type="text" name="lastname" id="lastname" placeholder="Doe" v-model="form_data.lastname" required>
+                                <input class="border p-3 rounded-md outline:tz_blue" type="text" name="lastname" id="lastname" placeholder="Doe" v-model="form_data.lastname" required>
                             </div>
 
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
-                                <input class="border p-3 rounded-md outline:blue" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
+                                <input class="border p-3 rounded-md outline:tz_blue" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
                             </div>
 
                             <div v-if='passHint && passwordValidation.errors.length > 0' class='hints'>
@@ -49,8 +49,8 @@
                                 <input type="checkbox" id="agreeWithTOS" v-model="acceptedTOS"> 
                                 <p class="p-0 m-0">
                                     By clicking Sign up or continue with google I agree to  
-                                    <RouterLink class="text-blue" to="#">Tech-zone Terms and Conditions</RouterLink> and
-                                    <RouterLink class="text-blue" to="#">Privacy Policy</RouterLink>
+                                    <RouterLink class="text-tz_blue" to="#">Tech-zone Terms and Conditions</RouterLink> and
+                                    <RouterLink class="text-tz_blue" to="#">Privacy Policy</RouterLink>
                                 </p>
                             </label>
                         </div>
@@ -61,9 +61,9 @@
                     </form>
                 </div>
                 
-            </div>
+            <!-- </div> -->
 
-            <div class=" bg-light_blue hidden lg:flex flex-col justify-center items-center w-3/6  h-full">
+            <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6  h-full">
                 <div>
                     <img src="../assets/images/tech-zone.svg">
                 </div>

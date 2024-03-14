@@ -5,8 +5,8 @@
             <template #page-contents>
                 <div>
                     <div class="flex flex-row gap-2 p-5 border-b">
-                        <input type="search" class="px-4 py-2 bg-light_blue rounded-md" placeholder="Search all types of jobs">
-                        <button class="bg-light_blue text-blue px-4 py-2 rounded-md hover:bg-blue hover:text-white">
+                        <input type="search" class="px-4 py-2 bg-tz_light_blue rounded-md" placeholder="Search all types of jobs">
+                        <button class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white">
                             <i class="bi bi-search"></i> <span>Search</span>
                         </button>
                     </div>
@@ -20,10 +20,10 @@
                    {{ contract }}
                 </div> -->
                 <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contracts">
-                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-light_blue">
+                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                         <div class="flex flex-row justify-between items-center">
                             <RouterLink :to="'/contracts/' + contract._id">
-                                <div class="text-2xl font-bold text-blue underline">{{ contract.job.title }}</div>
+                                <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                             </RouterLink>
                             <!-- <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">
                                 <i class="bi bi-three-dots"></i>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="flex flex-row gap-3">
                             <span class="px-4 py-1 text-white rounded-md text-xl" 
-                            :class="[contract.status == 'open'?'bg-blue':'', 
+                            :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                     contract.status == 'paused'?'bg-orange-500':'',
                                     contract.status == 'completed'?'bg-green':'',
                                     contract.status == 'closed'?'bg-gray-500':''

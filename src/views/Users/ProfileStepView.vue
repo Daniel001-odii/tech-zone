@@ -10,11 +10,11 @@
                             <form @submit.prevent="updateUserProfile">
                                 <div class="flex flex-col h-96">
                                     <div class="flex flex-row mb-5 justify-between items-center">
-                                        <span class=" h-14 w-14 border rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 0 ? 'bg-blue text-white':'bg-gray-200'">1</span>
-                                            <span class=" h-2 w-20 rounded-xl" :class="step >= 1 ? 'bg-blue':' bg-gray-200'"></span>
-                                        <span class=" h-14 w-14 border rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 1 ? 'bg-blue text-white':'bg-gray-200'">2</span>
-                                            <span class=" h-2 w-20 rounded-xl" :class="step >= 2 ? 'bg-blue':'bg-gray-200'"></span>
-                                        <span class=" h-14 w-14 border rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 2 ? 'bg-blue text-white':'bg-gray-200'">3</span>
+                                        <span class=" h-14 w-14 border rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 0 ? 'bg-tz_blue text-white':'bg-gray-200'">1</span>
+                                            <span class=" h-2 w-20 rounded-xl" :class="step >= 1 ? 'bg-tz_blue':' bg-gray-200'"></span>
+                                        <span class=" h-14 w-14 border rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 1 ? 'bg-tz_blue text-white':'bg-gray-200'">2</span>
+                                            <span class=" h-2 w-20 rounded-xl" :class="step >= 2 ? 'bg-tz_blue':'bg-gray-200'"></span>
+                                        <span class=" h-14 w-14 border rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 2 ? 'bg-tz_blue text-white':'bg-gray-200'">3</span>
                                        
                                     </div>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" hidden md:flex flex-col md:border h-full p-3 rounded-md text-left gap-3 hover:border-blue bg-white">
+        <div class=" hidden md:flex flex-col md:border h-full p-3 rounded-md text-left gap-3 hover:border-tz_blue bg-white">
             <div class="flex flex-col gap-3">
                 
                 <div class="flex flex-row justify-between items-center flex-wrap gap-3">
@@ -10,7 +10,7 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="bg-blue text-white px-5 py-2 rounded-md hover:bg-dark_blue" @click="openJob">
+                        <button class="bg-tz_blue text-white px-5 py-2 rounded-md hover:bg-tz_dark_blue" @click="openJob">
                             <span v-if="is_applied">View Application</span>
                             <span v-else>Apply here</span>
                         </button>
@@ -41,7 +41,7 @@
                     
                 </div>
                 <div class="flex flex-row flex-wrap gap-3">
-                    <span v-for="skill in skills" class="bg-light_blue text-blue px-3 py-2 rounded-md">{{ skill }}</span>
+                    <span v-for="skill in skills" class="bg-tz_light_blue text-tz_blue px-3 py-2 rounded-md">{{ skill }}</span>
                 </div>
             </div>
             <div class="font-bold">
@@ -80,6 +80,6 @@ export default {
 </script>
 <style scoped>
     .icon_btn{
-        @apply p-2 bg-transparent hover:bg-light_blue h-10 w-10 rounded-full
+        @apply p-2 bg-transparent hover:bg-tz_light_blue h-10 w-10 rounded-full
     }
 </style>

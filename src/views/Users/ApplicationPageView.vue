@@ -11,15 +11,6 @@
 
                 <div v-if="job" class="flex flex-col md:flex-row px-5 py-3" >
                     <div class=" md:w-2/4">
-                        <div v-if="is_application" class=" bg-[#e0ffec] p-4 rounded-lg border text-[#0d8f3f]  mb-3 text-start flex flex-row gap-4">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            <span>
-                                You already submitted an application for this job
-                            </span>
-                        </div>
-
-                        
-
                         <div>
                             <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md">
                                 <div class="flex flex-col gap-3">
@@ -64,7 +55,7 @@
                                 <div>
                                     <div class="flex flex-row flex-wrap gap-3">
                                         <span v-for="(tag, tag_index) in job.skills
-                                        " class="bg-light_blue text-blue px-3 py-2 rounded-md">{{ tag }}</span>
+                                        " class="bg-tz_light_blue text-tz_blue px-3 py-2 rounded-md">{{ tag }}</span>
                                     </div>
                                 </div>
 
@@ -97,7 +88,7 @@
 
                                 <div>
                                     <span class="font-bold">Job Location in Map</span>
-                                    <div class=" h-80 w-80 bg-light_blue"></div>
+                                    <div class=" h-80 w-80 bg-tz_light_blue"></div>
                                 </div>
 
                                 <div>
@@ -109,40 +100,57 @@
 
                                 <div>
                                     <span class="font-bold">Share this job</span>
-                                    <div class="bg-light_blue p-3 border rounded-md w-fit cursor-not-allowed">{{ this.$route.path }}</div>
+                                    <div class="bg-tz_light_blue p-3 border rounded-md w-fit cursor-not-allowed">{{ this.$route.path }}</div>
                                     <button>copy link</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <form @submit.prevent="sumbitApplication" class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
+                        <div v-if="is_application" class=" bg-green-100 p-4 rounded-lg text-green-700  mb-3 text-start flex flex-row gap-4">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            <span>
+                                Application sent!
+                            </span>
+                        </div>
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Cover Letter</span>
                             <textarea class=" h-52 max-h-96 p-4 border rounded-md disabled:text-gray-400" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" :disabled="is_application" required></textarea>
                          </div>
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Attachments</span>
-                            <div class=" h-fit border border-dotted rounded-md flex flex-col justify-center items-center py-4">
+                            <div class=" h-fit rounded-md flex flex-col justify-center items-center py-4">
                                 <!-- <div v-if="upload_progress !== ''">
                                     <p>Upload Progress: {{ upload_progress }}%</p>
                                 </div> -->
+                                <div  v-if="!is_application" class="flex items-center justify-center w-full">
+                                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                            </svg>
+                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                        </div>
+                                        <input id="dropzone-file" type="file" class="hidden" multiple @change="handleFileChange"/>
+                                    </label>
+                                </div> 
                                 <div v-if="!is_application" class="flex flex-col justify-center items-center">
-                                    <i class="bi bi-cloud-arrow-up-fill text-4xl text-black"></i>
+                                    <!-- <i class="bi bi-cloud-arrow-up-fill text-4xl text-black"></i>
                                     <span>Drag & Drop files here</span>
-                                    <input type="file" class="bg-black w-72 rounded-md px-12 py-2 text-white" multiple @change="handleFileChange">
-                                    <!-- <button class="bg-black w-72 rounded-md px-12 py-2 text-white">
-                                      <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                                    </button> -->
-                                    <div class=" p-3" v-if="selectedFiles.length > 0">
+                                    <input type="file" class="bg-black w-72 rounded-md px-12 py-2 text-white" multiple @change="handleFileChange"> -->
+
+                                    <div class="" v-if="selectedFiles.length > 0">
                                         <p>Selected Files:</p>
-                                        <ul class="flex flex-row flex-wrap justify-start gap-2">
-                                            <li class=" text-blue bg-light_blue p-3 rounded-lg hover:bg-blue hover:text-white" v-for="(file, index) in selectedFiles" :key="index">
+                                        <ul class="flex flex-row flex-wrap justify-start gap-2 text-sm">
+                                            <li class=" text-tz_blue flex flex-row items-center justify-between bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white" v-for="(file, index) in selectedFiles" :key="index">
                                                 {{ file.name }} 
                                                 <button type="button" @click="removeFile(index)" class="p-2"><i class="bi bi-x-lg"></i></button>
                                                 
                                             </li>
                                         </ul>
                                     </div>
+
                                 </div>
                                 <div v-if="is_application">
                                     <span v-if="application_form.attachments.length > 0">you attached files are secured..</span>
@@ -172,7 +180,7 @@
                             </div>
                          </div>
                          <div class="flex ">
-                            <button type="submit" class="bg-blue py-3 px-6 text-white rounded-md hover:bg-dark_blue disabled:bg-gray-300" :disabled="is_application">
+                            <button type="submit" class="bg-tz_blue py-3 px-6 text-white rounded-md hover:bg-tz_dark_blue disabled:bg-gray-300" :disabled="is_application">
                                 <span v-if="loading">Loading...</span>
                                 <span v-else>Submit Application</span>
                             </button>

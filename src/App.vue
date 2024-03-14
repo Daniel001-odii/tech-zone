@@ -1,26 +1,27 @@
 <script>
 import LeftNavBar from './components/LeftNavBar.vue';
 import Navbar from './components/Navbar.vue';
+import { initFlowbite } from 'flowbite'
 
 export default {
   components: {
     Navbar, LeftNavBar
+  },
+
+  mounted(){
+    initFlowbite();
   }
 }
 </script>
 
 <template>
-  <!-- <div class=""> -->
 
-    <Navbar :type="'app'" @toggle-nav="nav_active = !nav_active"/>
 
-    <!-- <div class=" flex flex"> -->
- 
-      <router-view></router-view>
-    <!-- </div> -->
+<Navbar :type="'app'"/>
+<div class="relative flex">
+  <router-view></router-view>
+</div>
 
-  <!-- </div> -->
-    
     
 </template>
 

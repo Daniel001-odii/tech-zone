@@ -80,8 +80,8 @@
 
                         <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border">
                             <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
-                                <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover"></div> -->
-                                <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-blue bg-cover"></div> -->
+                                <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
+                                <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
                                     <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
                                
                                 <div class="flex flex-col items-start text-start">
@@ -89,7 +89,7 @@
                                     <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                                     <p>{{ user.email }}</p>
                                     <div clas="flex flex-row gap-3">
-                                        <p class="inline-block mr-2 text-blue" v-html="userStars(user.ratings)"></p>
+                                        <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.ratings)"></p>
                                         <span>({{ userRating(user.ratings) }}) {{ user.ratings.length }} reviews</span>
                                     </div>
                                   
@@ -128,7 +128,7 @@
                                     <h2 class="font-bold">Skills</h2>
                                     <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 gap-y-4 mt-3">
                                         <div v-for="skill in user.profile.skills.split(',')" >
-                                            <span class=" bg-light_blue p-2 rounded-md text-blue">{{ skill }}</span>
+                                            <span class=" bg-tz_light_blue p-2 rounded-md text-tz_blue">{{ skill }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
 
                                 <div class="profile_section">
                                     <h2 class="font-bold">Connected Accounts</h2>
-                                    <a :href="user.profile.social" class="text-blue">
+                                    <a :href="user.profile.social" class="text-tz_blue">
                                        {{ user.profile.social }}
                                     </a>
                                 </div>
@@ -181,7 +181,7 @@
                                             <template #date>{{ contract.created }}</template>
                                             <template #status>
                                                 <span class="px-4 py-1 text-white rounded-md text-xl" 
-                                                :class="[contract.status == 'open'?'bg-blue':'', 
+                                                :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                         contract.status == 'paused'?'bg-orange-500':'',
                                                         contract.status == 'completed'?'bg-green':'',
                                                         contract.status == 'closed'?'bg-gray-500':''

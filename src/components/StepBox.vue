@@ -2,7 +2,7 @@
     <!-- <div> -->
         <div class=" bg-white border scale-90 group opacity-50 hover:opacity-100 hover:scale-100 p-4 text-black rounded-lg w-fit min-w-72 text-left flex flex-col gap-2">
             <div class="flex flex-row justify-between items-center text-5xl">
-                <i class="bi bi-person-check bg-slate-900 group-hover:bg-blue p-2 text-white rounded-md flex justify-center items-center"></i>
+                <i class="bi bi-person-check bg-slate-900 group-hover:bg-tz_blue p-2 text-white rounded-md flex justify-center items-center"></i>
                 <span class="font-bold">{{number}}</span>
             </div>
             <h4 class="font-bold text-2xl">

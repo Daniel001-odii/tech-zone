@@ -39,7 +39,7 @@
                         
                         <input class="border rounded-lg p-3" placeholder="Skill seperated by comma e.g HTML, CSS, JavaScript" v-model="inputValue" @keyup.enter="addTag">
                         <div class="flex flex-row flex-wrap gap-2">
-                            <div v-for="(tag, index) in tags" :key="index" class="p-3 rounded-xl bg-light_blue">
+                            <div v-for="(tag, index) in tags" :key="index" class="p-3 rounded-xl bg-tz_light_blue">
                                 {{ tag }}<span class="ml-3" @click="removeTag(index)">&times;</span>
                             </div>
                         </div>
@@ -79,13 +79,13 @@
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="budget">
                         <p>Select the budget type</p>
                         <div class="flex flex-row gap-6">
-                            <label for="fixed-price" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'fixed-price' ? 'bg-light_blue border-blue':''">
+                            <label for="fixed-price" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'fixed-price' ? 'bg-tz_light_blue border-tz_blue':''">
                                 <input type="radio" value="fixed-price" id="fixed-price" name="budget-type" v-model="job_post.budget_type">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-receipt"></i> <span>Fixed Price</span>
                                 </div>
                             </label>
-                            <label for="hourly" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'hourly' ? 'bg-light_blue border-blue':''">
+                            <label for="hourly" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'hourly' ? 'bg-tz_light_blue border-tz_blue':''">
                                 <input type="radio" value="hourly" id="hourly" name="budget-type" v-model="job_post.budget_type">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-clock"></i> <span>Hourly Rate</span>
@@ -114,13 +114,13 @@
                         <p>write a correct and exisitng location, dont stress the talents...</p>
                         <div class="flex flex-row gap-6">
                             <!-- {{ job_post.location.remote }} -->
-                            <label for="remote" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote === 'true' ? 'bg-light_blue border-blue':''">
+                            <label for="remote" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote === 'true' ? 'bg-tz_light_blue border-tz_blue':''">
                                 <input type="radio" value="true" id="remote" name="job-location" v-model="job_post.location.remote">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-geo-alt-fill"></i> <span>Remote</span>
                                 </div>
                             </label>
-                            <label for="on-site" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote == 'false' ? 'bg-light_blue border-blue':''">
+                            <label for="on-site" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote == 'false' ? 'bg-tz_light_blue border-tz_blue':''">
                                 <input type="radio" value="false" id="on-site" name="job-location" v-model="job_post.location.remote">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-buildings"></i> <span>On Site</span>
@@ -206,13 +206,13 @@
                                 <div v-if="prev_budget" class=" w-full h-full p-5 text-start gap-3 flex flex-col">
                                     <p>Select the budget type</p>
                                     <div class="flex flex-row gap-6">
-                                        <label for="fixed-price" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'fixed-price' ? 'bg-light_blue border-blue':''">
+                                        <label for="fixed-price" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'fixed-price' ? 'bg-tz_light_blue border-tz_blue':''">
                                             <input type="radio" value="fixed-price" id="fixed-price" name="budget-type" v-model="job_post.budget_type">
                                             <div class="flex flex-row gap-3">
                                                 <i class="bi bi-receipt"></i> <span>Fixed Price</span>
                                             </div>
                                         </label>
-                                        <label for="hourly" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'hourly' ? 'bg-light_blue border-blue':''">
+                                        <label for="hourly" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'hourly' ? 'bg-tz_light_blue border-tz_blue':''">
                                             <input type="radio" value="hourly" id="hourly" name="budget-type" v-model="job_post.budget_type">
                                             <div class="flex flex-row gap-3">
                                                 <i class="bi bi-clock"></i> <span>Hourly Rate</span>
@@ -237,13 +237,13 @@
                                         <p>write a correct and exisitng location, dont stress the talents...</p>
                                         <div class="flex flex-row gap-6">
                                             <!-- {{ job_post.location.remote }} -->
-                                            <label for="remote" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote === 'true' ? 'bg-light_blue border-blue':''">
+                                            <label for="remote" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote === 'true' ? 'bg-tz_light_blue border-tz_blue':''">
                                                 <input type="radio" value="true" id="remote" name="job-location" v-model="job_post.location.remote">
                                                 <div class="flex flex-row gap-3">
                                                     <i class="bi bi-geo-alt-fill"></i> <span>Remote</span>
                                                 </div>
                                             </label>
-                                            <label for="on-site" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote == 'false' ? 'bg-light_blue border-blue':''">
+                                            <label for="on-site" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote == 'false' ? 'bg-tz_light_blue border-tz_blue':''">
                                                 <input type="radio" value="false" id="on-site" name="job-location" v-model="job_post.location.remote">
                                                 <div class="flex flex-row gap-3">
                                                     <i class="bi bi-buildings"></i> <span>On Site</span>
@@ -308,10 +308,10 @@
 
     </div>
     <div class="flex p-4 flex-col justify-center  items-center gap-6 w-full fixed bottom-0">
-        <div class=" w-4/5 h-4 bg-blue rounded-lg"></div>
+        <div class=" w-4/5 h-4 bg-tz_blue rounded-lg"></div>
         <div class="w-full justify-between flex flex-row">
-            <button type="button" class="bg-blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex === 0">Previous</button>
-            <button type="button" class="bg-blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="next" :disabled="currentIndex === 6" >Next</button>
+            <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex === 0">Previous</button>
+            <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="next" :disabled="currentIndex === 6" >Next</button>
           
         </div>
     </div>
@@ -384,7 +384,7 @@ import axios from 'axios'
                 const input = document.getElementById("skill_box");
                 const tag = input.innerHTML;
                 console.log(tag);
-                input.innerHTML += `<span class='p-3 rounded-xl bg-light_blue'>${tag}</span>`
+                input.innerHTML += `<span class='p-3 rounded-xl bg-tz_light_blue'>${tag}</span>`
             },
 
             addTag(){

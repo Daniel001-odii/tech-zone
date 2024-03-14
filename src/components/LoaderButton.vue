@@ -3,7 +3,7 @@
     :disabled="loading"
       :class="{ 'opacity-50 cursor-not-allowed': loading }"
       @click="handleClick"
-      class="btn hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      class="btn hover:bg-tz_blue-700 text-white font-bold py-2 px-4 rounded"
     >
       <span v-if="!loading">{{ buttonText }}</span>
       <span v-if="loading">loading...</span>
