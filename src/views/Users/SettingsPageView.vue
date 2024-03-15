@@ -4,18 +4,19 @@
             <template #page-title>Settings</template>
             <template #page-contents>
 
-                <div class=" tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36]">
+                <div class=" tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500">
                     <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button>
                     <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
                     <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
-                    <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Payments</button>
+                    <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
+                    <button @click="active_tab = 5" :class="active_tab == 5 ? 'active_tab':''" class="tab_button">ID & Verification</button>
                 </div>
 
 
                 <div class=" flex flex-col p-3 gap-5">
                     
                     <div v-if="active_tab == 1" class="section">
-                        <h1 class="font-bold mb-3 text-lg">Appearance & theme</h1>
+                        <h1 class="font-bold mb-3 text-lg">Select Preffered theme</h1>
                         
                         <div class="  flex flex-row gap-5">
                             <button @click="system_mode" :class="!current_mode ? 'active_theme':''" class="theme-toggle">System</button>
@@ -48,11 +49,35 @@
                                     <div class="form_input">{{ user.lastname }}</div>
                                 </div>
                             </div>
-                            <div class="flex flex-col max-w-sm">
+                            <div class="flex flex-col w-full">
                                 <label for="email">Email</label>
                                 <input class="form_input" type="email" name="email" id="email" :value="user.email">
                             </div>
+                            <div class="flex flex-col w-full mt-3">
+                                <label for="email">Phone Number</label>
+                                <input class="form_input" type="phone" name="phone" id="phone" :value="user.contact">
+                            </div>
                             <button class="btn mt-3">Update</button>
+                        </div>
+
+                        <div class="mt-3">
+                            <h1 class="font-bold mb-3 text-lg">Profile visibility</h1>
+                            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Info</span>
+                                <div>In case of account inactivity your profile is automaitcally set private</div>
+                            </div>
+                            <div class="flex items-center">
+                                <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="default-radio-2" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Private</label>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="default-radio-1" class="ms-2 text-lg  font-medium text-gray-900 dark:text-gray-300">Public</label>
+                            </div>
+                            
                         </div>
                         
                         <div class="">
@@ -68,7 +93,7 @@
                             <button type="submit" class="btn mt-3">Change Account Password</button>
                         </div>
 
-                        <div class="   mt-3">
+                        <div class=" mt-3">
                             <h1 class="font-bold mb-3 text-lg mt-3">Account & Profile</h1>
                            <p class=" text-red-700 bg-red-100 rounded-lg p-3">
                             <strong>Warning</strong><br/>
@@ -120,34 +145,47 @@
                     <div  v-if="active_tab == 4" class="section mb-3">
                         
                         <div class="  mt-3">
-                            <h1 class="font-bold mb-3 text-lg">Payment Information</h1>
-                            <p>Your Card details..</p>
-                            <form class="max-w-sm">
-                                <label for="card-number-input" class="sr-only">Card number:</label>
-                                <div class="relative">
-                                    <input type="text" id="card-number-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pe-10 p-3  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="4242 4242 4242 4242" pattern="^4[0-9]{12}(?:[0-9]{3})?$" required />
-                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                        <svg fill="none" class="h-6 text-[#1434CB] dark:text-white" viewBox="0 0 36 21"><path fill="currentColor" d="M23.315 4.773c-2.542 0-4.813 1.3-4.813 3.705 0 2.756 4.028 2.947 4.028 4.332 0 .583-.676 1.105-1.832 1.105-1.64 0-2.866-.73-2.866-.73l-.524 2.426s1.412.616 3.286.616c2.78 0 4.966-1.365 4.966-3.81 0-2.913-4.045-3.097-4.045-4.383 0-.457.555-.957 1.708-.957 1.3 0 2.36.53 2.36.53l.514-2.343s-1.154-.491-2.782-.491zM.062 4.95L0 5.303s1.07.193 2.032.579c1.24.442 1.329.7 1.537 1.499l2.276 8.664h3.05l4.7-11.095h-3.043l-3.02 7.543L6.3 6.1c-.113-.732-.686-1.15-1.386-1.15H.062zm14.757 0l-2.387 11.095h2.902l2.38-11.096h-2.895zm16.187 0c-.7 0-1.07.37-1.342 1.016L25.41 16.045h3.044l.589-1.68h3.708l.358 1.68h2.685L33.453 4.95h-2.447zm.396 2.997l.902 4.164h-2.417l1.515-4.164z"/></svg>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-3 gap-4 my-4">
-                                    <div class="relative max-w-sm col-span-2">
-                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                            </svg>
-                                        </div>
-                                        <label for="card-expiration-input" class="sr-only">Card expiration date:</label>
-                                        <input datepicker datepicker-format="mm/yy" id="card-expiration-input" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="12/23" required />
-                                    </div>
-                                    <div class="col-span-1">
-                                        <label for="cvv-input" class="sr-only">Card CVV code:</label>
-                                        <input type="number" id="cvv-input" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="CVV" required />
-                                    </div>
-                                </div>
-                                <!-- <button type="submit" class="text-white bg-tz_blue hover:bg-tz_dark_blue focus:ring-4 focus:ring-tz_light_blue font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-tz_blue dark:hover:bg-tz_blue focus:outline-none dark:focus:ring-tz_dark_blue">save</button> -->
-                                <button type="submit" class="btn">save</button>
-                            </form>
+                            <h1 class="font-bold mb-3 text-lg">Withdrawal Information</h1>
+                            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Info</span>
+                                <div>Available funds will be sent to the provided bank account details when withdrawal is initiated</div>
+                            </div>
+                            <div class="flex flex-col max-w-sm">
+                                <label for="bank-name">Bank name</label>
+                                <input class="form_input" type="text" name="bank-name" id="bank_name" :value="settings.bank.name">
+                            </div>
+                            <div class="flex flex-col max-w-sm mt-5">
+                                <label for="sort-code">Bank Sort code</label>
+                                <input class="form_input" type="number" name="sort-code" id="sort_code" :value="settings.bank.sort_code">
+                            </div>
+                            <div class="flex flex-col max-w-sm mt-5">
+                                <label for="account-number">Account number</label>
+                                <input class="form_input" type="number" name="account-number" id="account_number" :value="settings.bank.account_number">
+                            </div>
+                        </div>
+                        <button class="btn mt-3 w-fit">Save bank info</button>
+                    </div>
+
+                    <div  v-if="active_tab == 5" class="section mb-3">
+                        
+                        <div class="  mt-3">
+                            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Info</span>
+                                <div>Your NIN number would be used for verifying your account once provided..</div>
+                            </div>
+                            
+                            <h1 class="font-bold mb-3 text-lg">NIMC Information</h1>
+                            <div class="flex flex-col w-full">
+                                <label for="nin-number">NIN Number</label>
+                                <input class="form_input" type="number" name="nin-number" id="nin-number" :value="user.email">
+                            </div>
+                            <button class="btn mt-3">Verify now</button>
                         </div>
                     </div>
 
@@ -177,6 +215,11 @@ export default {
 
             user: {},
             settings:{
+                bank: {
+                    name: '',
+                    sort_code: '',
+                    account_number: '',
+                },
                 card: {
                     number: '',
                     date: '',

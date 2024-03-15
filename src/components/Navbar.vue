@@ -42,7 +42,7 @@
         </nav>
     </div>
 
-    <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white  border-gray-200  dark:border-gray-600" style="margin: 0 auto;">
+    <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white " style="margin: 0 auto;">
         <!-- this navbar here displays only on mobile views. -->
         <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4 dark:bg-[#1F2A36] dark:text-white">
             <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
@@ -96,7 +96,7 @@
         </div>
 
         <nav v-if=" !loading && user">
-            <div class="flex flex-row w-full justify-between p-3 items-center">
+            <div class="flex flex-row w-full justify-between p-3 items-center border border-gray-200  dark:border-gray-600">
                 <SiteLogo/>
 
                 <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
