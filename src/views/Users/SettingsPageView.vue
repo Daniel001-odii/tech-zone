@@ -34,7 +34,7 @@
                     </div>
 
                     <div v-if="active_tab == 2" class="section">
-                        <div class=" mt-3">
+                        <form @submit.prevent="updateUserData" class=" mt-3">
                             <h1 class="font-bold mb-3 text-lg">General Information</h1>
                             <div class="flex flex-row gap-3 mb-3">
                                 <div class="w-3/6 flex flex-col">
@@ -58,10 +58,11 @@
                                 <input class="form_input" type="phone" name="phone" id="phone" :value="user.contact">
                             </div>
                             <button class="btn mt-3">Update</button>
-                        </div>
+                        </form>
 
-                        <div class="mt-3">
+                        <form @submit.prevent="updateUserData" class="mt-3">
                             <h1 class="font-bold mb-3 text-lg">Profile visibility</h1>
+                            settings: {{ user.settings }}
                             <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
                                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -69,18 +70,18 @@
                                 <span class="sr-only">Info</span>
                                 <div>In case of account inactivity your profile is automaitcally set private</div>
                             </div>
-                            <div class="flex items-center">
-                                <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="default-radio-2" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Private</label>
-                            </div>
+                            
                             <div class="flex items-center mb-4">
-                                <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <input id="default-radio-1" type="radio" value="public" name="default-radio" v-model="settings.profile_visibility" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="default-radio-1" class="ms-2 text-lg  font-medium text-gray-900 dark:text-gray-300">Public</label>
                             </div>
-                            
-                        </div>
+                            <div class="flex items-center">
+                                <input id="default-radio-2" type="radio" value="private" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="default-radio-2" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Private</label>
+                            </div>
+                        </form>
                         
-                        <div class="">
+                        <form class="">
                             <h1 class="font-bold mb-3 text-lg mt-3">Password & Security</h1>
                             <div class="flex flex-col max-w-sm">
                                 <label for="email">Current Password</label>
@@ -91,7 +92,7 @@
                                 <input class="form_input" type="password" name="password" id="new_password" :value="settings.new_password">
                             </div>
                             <button type="submit" class="btn mt-3">Change Account Password</button>
-                        </div>
+                        </form>
 
                         <div class=" mt-3">
                             <h1 class="font-bold mb-3 text-lg mt-3">Account & Profile</h1>
@@ -103,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div v-if="active_tab == 3" class="section mb-3">
+                    <form v-if="active_tab == 3" class="section mb-3">
                         <h1 class="font-bold mb-3 text-lg">Notification Settings</h1>
                         <div class=" flex flex-row items-center justify-between justify-center">
                             <div class="flex flex-col">
@@ -140,7 +141,7 @@
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
-                    </div>
+                    </form>
 
                     <div  v-if="active_tab == 4" class="section mb-3">
                         
@@ -171,7 +172,7 @@
 
                     <div  v-if="active_tab == 5" class="section mb-3">
                         
-                        <div class="  mt-3">
+                        <div class="mt-3">
                             <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
                                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -211,7 +212,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             current_mode: '',
-            active_tab: 2,
+            active_tab: 3,
 
             user: {},
             settings:{
@@ -269,8 +270,19 @@ export default {
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 // console.log(response)
                 this.user = response.data.user
+                this.settings = response.data.user.settings
             }catch(error){
                 console.log("error getting user details: ", error)
+            }
+        },
+
+        async updateUserData(){
+            const headers = this.headers;
+            try{
+                const response = await axios.patch(`${this.api_url}/user/profile`, this.user, { headers });
+                console.log(response)
+            }catch(error){
+                console.log("error updating user profile: ", error);
             }
         }
        
