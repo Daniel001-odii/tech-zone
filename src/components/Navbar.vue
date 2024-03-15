@@ -42,14 +42,14 @@
         </nav>
     </div>
 
-    <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white" style="margin: 0 auto;">
+    <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white  border-gray-200  dark:border-gray-600" style="margin: 0 auto;">
         <!-- this navbar here displays only on mobile views. -->
-        <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4">
+        <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4 dark:bg-[#1F2A36] dark:text-white">
             <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
                 <span class="">&times;</span>
             </button>
         
-            <div class="flex flex-col gap-2 mt-8 w-full p-2" @click="mobile_nav = !mobile_nav">
+            <div class="flex flex-col gap-2 mt-8 w-full p-2 " @click="mobile_nav = !mobile_nav">
                 <!-- <div> -->
                     <!-- <span>Overview</span> -->
                     <!-- <div class="flex flex-col gap-8"> -->
@@ -309,7 +309,7 @@ export default {
     }
 
     .nav_link{
-        @apply p-3 rounded-md hover:bg-tz_light_blue text-black font-medium hover:font-bold;
+        @apply p-3 rounded-md hover:bg-tz_light_blue font-medium hover:font-bold;
     }
     
 </style>

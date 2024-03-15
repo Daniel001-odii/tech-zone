@@ -41,7 +41,7 @@
                     </linearGradient>
                     </defs>
                 </svg>
-                <h1 class="hidden md:inline-block text-black dark:text-white">Tech-zone</h1>
+                <h1 class="hidden md:inline-block text-black dark:text-white">Apex-tek</h1>
             </div>
            
         </RouterLink>

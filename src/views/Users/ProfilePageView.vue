@@ -95,7 +95,7 @@
                                   
                                 </div>
                             </div>
-                            <div class="border"></div>
+                            <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
                             <div class=" flex flex-col items-start justify-center text-left p-5">
                                 <div>
                                     <span v-if="user.is_verified">user is verified</span>

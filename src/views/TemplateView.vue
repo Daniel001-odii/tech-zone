@@ -1,8 +1,5 @@
-<template>
-
-
-        
-<div class=" h-full w-full fixed top-[72px] flex flex-row bg-white dark:bg-[#27323F] dark:text-white ">
+<template>        
+<div class=" h-full flex flex-row bg-white dark:bg-[#27323F] dark:text-white ">
     <div class=" flex h-full">
         <LeftNavBar v-if="leftNav" :class="nav_active ? 'block':'hidden'" class="md:block"/>
     </div>

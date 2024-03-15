@@ -16,11 +16,19 @@ export default {
 
 <template>
 
-
-<Navbar/>
-<div class="relative flex">
-  <router-view></router-view>
+<div class=" h-screen w-full">
+  <div>
+    <Navbar/>
+  </div>
+  <div>
+    <router-view></router-view>
+  </div>
 </div>
+
+<!-- <Navbar/>
+<div class="relative flex">
+  
+</div> -->
 
     
 </template>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 h-full dark:border-gray-600">
+        <div class=" md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 dark:border-gray-600 h-screen dark:bg-[#27323F] ">
             <div class=" md:h-20"></div>
             <!-- EMPLOYER -->
             <div v-if="user.role === 'employer'">
@@ -120,6 +120,6 @@ export default {
     }
 
     .nav_item{
-        @apply  h-20 hover:bg-tz_light_blue flex md:justify-center pl-8 md:p-0 lg:pl-8 lg:justify-start justify-start items-center gap-3 border-l-8;
+        @apply  h-20 hover:bg-tz_light_blue flex md:justify-center pl-8 md:p-0 lg:pl-8 lg:justify-start justify-start items-center gap-3  border-l-8 dark:border-l-[#27323F];
     }
 </style>
