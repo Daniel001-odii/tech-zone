@@ -231,7 +231,12 @@ export default {
                 this.user = response.data.user;
             }
             catch(error){
-                // console.log("error from navbar :", error);
+                console.log("error from navbar :", error);
+                if(error.response.status == '401' && localStorage.getItem('life-gaurd')){
+                    alert('Your session expired please login again')
+                    localStorage.removeItem('life-gaurd');
+                    this.$router.push('/login');
+                }
             }
         },
 
