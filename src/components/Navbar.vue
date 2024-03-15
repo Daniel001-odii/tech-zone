@@ -1,6 +1,10 @@
 <template>
+
+<div class="dark:bg-[#27323F]">
+
+
     <div>
-        <nav v-if="type === 'wesbite' || !user" class="bg-white dark:bg-gray-900 start-0 border-b border-gray-200 dark:border-gray-600">
+        <nav v-if="!user" class="bg-white start-0 border-b border-gray-200  dark:border-gray-600 relative z-30 dark:bg-[#1F2A36]">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <SiteLogo/>
             <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -21,9 +25,9 @@
             </div>
 
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
                     <li>
-                        <RouterLink to="/" class="block py-2 px-3 text-white bg-tz_blue-700 rounded md:bg-transparent md:text-tz_blue-700 md:p-0 md:dark:text-tz_blue-500" aria-current="page">Home</RouterLink>
+                        <RouterLink to="/" class="block py-2 px-3 text-gray-900 bg-tz_blue-700 rounded md:bg-transparent md:text-tz_blue-700 md:p-0 md:dark:text-tz_blue-500 dark:text-white">Home</RouterLink>
                     </li>
                     <li>
                         <RouterLink to="/jobs" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-tz_blue-700 md:p-0 md:dark:hover:text-tz_blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Find Job</RouterLink>
@@ -38,7 +42,7 @@
         </nav>
     </div>
 
-    <div class="flex justify-center items-center border w-full bg-white" style="margin: 0 auto;">
+    <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white" style="margin: 0 auto;">
         <!-- this navbar here displays only on mobile views. -->
         <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4">
             <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
@@ -91,14 +95,14 @@
             </div>
         </div>
 
-        <nav v-if="type === 'app' && !loading && user">
+        <nav v-if=" !loading && user">
             <div class="flex flex-row w-full justify-between p-3 items-center">
                 <SiteLogo/>
 
                 <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
-                <div class="border-2 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden">
-                    <input type="search" placeholder="saerch for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none">
-                    <button @click="handleSearch" class="flex flex-row gap-2 border-l h-full px-3 items-center hover:bg-slate-50">
+                <div class="border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
+                    <input type="search" placeholder="saerch for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
+                    <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-500 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
                         <i class="bi bi-search"></i>
                         <span>Search</span>
                     </button>
@@ -112,9 +116,9 @@
                         
                         <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
                         
-                        <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-10">
-                           <span class="text-center p-2 border-b w-full">Notifications</span>
-                           <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="p-3 hover:bg-slate-50 rounded-md flex flex-row gap-3 justify-between items-start group/notify">
+                        <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-10 dark:bg-[#1F2A36] dark:border-gray-600">
+                           <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
+                           <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="p-3 hover:bg-slate-50 rounded-md flex flex-row gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
                             <div class="flex flex-col">
                                 <span class="text-sm font-bold">{{  notification.message }}</span>
                                 <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
@@ -131,7 +135,7 @@
                                 <span>No new notifications</span>
                             </div>
 
-                           <RouterLink to="/notifications" class="text-center mb-3 border-t">
+                           <RouterLink to="/notifications" class="text-center mb-3 border-t p-3 dark:border-gray-600">
                                 <span class="text-center text-tz_blue">see all notifications</span>
                            </RouterLink>
                         </div>
@@ -153,7 +157,7 @@
         </nav>
     </div>
 
-
+</div>
 </template>
 <script>
 import { formatToRelativeTime } from '@/utils/dateFormat';

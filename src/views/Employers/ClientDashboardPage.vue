@@ -3,7 +3,7 @@
     <Modal :title="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
         <template #body>
             <div class=" flex flex-col gap-3">
-                <div class="flex flex-row group hover:bg-gray-100 p-3 items-start justify-between" v-for="(job, job_id) in jobs" :key="job_id">
+                <div class="flex flex-col gap-3 rounded-md group hover:bg-gray-100 p-3 items-start justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
                     <div clas="flex flex-col">
                         <div class=" text-lg font-bold text-tz_blue">{{ job.title }}</div>
                         <div class=" text-lg">#{{ job.budget.toLocaleString() }}</div>
@@ -15,7 +15,9 @@
             </div>
           
         </template>
-        <template #footer></template>
+        <template #footer>
+            <button @click="assign_job_modal = !assign_job_modal" class=" bg-red-500 text-white hover:bg-red-700 py-3 px-6 rounded-md ">close</button>
+        </template>
     </Modal>
 
 
@@ -23,8 +25,8 @@
         <TemplateView :leftNav="true">
             <template #page-title>Dashboard</template>
             <template #page-contents>
-                <div class="bg-tz_light_blue p-3 flex flex-col gap-3">
-                    <div class="p-8 py-12 rounded-lg bg-tz_light_blue flex flex-row justify-between items-center flex-wrap">
+                <div class="bg-tz_light_blue p-3 flex flex-col gap-3 ">
+                    <div class="p-8 py-12 rounded-lg bg-tz_light_blue flex flex-row justify-between items-center flex-wrap  dark:bg-[#1F2A36]">
                         <div class="text-left">
                             <p>Welcome back,</p>
                             <!-- {{ getUserData }} -->
@@ -38,8 +40,8 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <div class="flex flex-row w-full rounded-lg bg-white items-stretch">
-                            <button @click="switchTab('jobs')" :class="{ 'active_tab': current_tab == 'jobs' }" class="tab_btn">
+                        <div class="flex flex-row w-full rounded-lg bg-white items-stretch  dark:border-gray-600  dark:bg-[#1F2A36] ">
+                            <button @click="switchTab('jobs')" :class="{ 'active_tab': current_tab == 'jobs' }" class="tab_btn ">
                                 <i class="bi bi-activity"></i>
                                 <span>Jobs Activity</span>
                             </button>
@@ -52,9 +54,9 @@
                             <div v-if="current_tab == 'jobs'" class="p-3 rounded-lg mt-3">
                                 <div v-if="jobs.length > 0">
                                     <!-- {{ jobs }} -->
-                                    <div class=" bg-white p-2 rounded-2xl mb-4" v-for="(job, job_id) in jobs" :key="job_id">
+                                    <div class=" bg-white p-2 rounded-2xl mb-4  hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]" v-for="(job, job_id) in jobs" :key="job_id">
                                         <!-- {{ showApplicants(job._id) }} -->
-                                        <div class="w-full p-3 bg-slate-50 rounded-lg text-left flex flex-row-reverse justify-start items-center">
+                                        <div class="w-full p-3 bg-slate-50 rounded-lg text-left flex flex-row-reverse justify-start items-center dark:bg-tz_light_blue">
                                             <button @click="show_applicants(job_id, job._id)" class=" text-tz_blue bg-tz_light_blue p-2 rounded-full ml-3 flex justify-center items-center h-10 w-10">
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </button>
@@ -64,12 +66,12 @@
                                             </div>
                                         </div>
                                         <div class="p-3 text-left">{{ job.description.substring(0, 200) }}..</div>
-                                        <div class="flex flex-row justify-end">
-                                            <span class="p-2 rounded-lg bg-slate-200 text-sm">applications: {{ job.no_of_applications }}</span>
+                                        <div class="flex flex-row justify-end mt-3 mb-3">
+                                            <span class="p-2 rounded-lg bg-slate-200 text-sm dark:bg-tz_light_blue">applications: {{ job.no_of_applications }}</span>
                                         </div>
                                         
                                         <div class="flex flex-col gap-3" v-if="job.show_applicants">
-                                            <div class="w-full p-3 bg-slate-50 rounded-lg text-lg font-bold text-left flex flex-row justify-center items-center">
+                                            <div class="w-full p-3 bg-slate-50 rounded-lg text-lg font-bold text-left flex flex-row justify-center items-center dark:bg-tz_light_blue">
                                                 <i class="bi bi-people mr-3"></i>
                                                 <span>Applicants</span>
                                             </div>
@@ -113,10 +115,11 @@
                                 </div>
                                 <div v-else>You have not posted any job yet. Post now</div>
                             </div>
-                            <div v-if="current_tab == 'saved'" class="p-3 bg-white rounded-lg mt-3 flex flex-col gap-3">
+                            <div v-if="current_tab == 'saved'" class="p-3 bg-white rounded-lg mt-3 flex flex-col gap-3 dark:bg-transparent">
 
                                 <p v-if="!saved_users"> loading your saved users...</p>
-                                <div v-if="saved_users" class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(user, user_id) in saved_users" :key="user_id">
+
+                                <div v-if="saved_users" class="p-3 flex flex-row gap-3 rounded-xl w-full border items-start dark:bg-[#1F2A36] dark:border-gray-500 dark:hover:bg-none " v-for="(user, user_id) in saved_users" :key="user_id">
                                     <div class=" h-16 w-20 bg-tz_blue rounded-lg overflow-hidden">
                                         <img :src="user.profile.image_url">
                                     </div>
@@ -129,7 +132,7 @@
                                                 <p class="text-gray-400">Earned: ${{ user.earned }}</p>
                                             </div>
                                             <div class="flex flex-row gap-3">
-                                                <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100">Message</button>
+                                                <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>
                                                 <button class="btn" @click="jobAssignmentModal(user._id, user.firstname)">Assign Job</button>
                                                 <button @click="saveUser(user._id)" class="border p-3 rounded-md">
                                                     <i class="bi bi-trash-fill"></i>
@@ -311,9 +314,9 @@ export default {
 </script>
 <style scoped>
 .tab_btn{
-    @apply p-3 rounded-lg w-64 text-start flex flex-row gap-3 hover:bg-slate-50 items-center
+    @apply p-3 rounded-lg w-64 text-start flex flex-row gap-3 items-center 
 }
 .active_tab{
-    @apply bg-tz_blue text-white hover:bg-tz_dark_blue;
+    @apply bg-tz_blue text-white hover:bg-tz_dark_blue dark:hover:bg-tz_light_blue;
 }
 </style>

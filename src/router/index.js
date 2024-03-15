@@ -29,6 +29,7 @@ import OverviewPageView from '@/views/Users/OverviewPageView.vue'
 import ClientContractsListPageViewVue from '@/views/Employers/ContractsListPageView.vue'
 import ClientProfilePageViewVue from '@/views/Employers/ProfilePageView.vue'
 import NotifcationsPageView from '@/views/NotifcationsPageView.vue'
+import JobsListPageView from '@/views/Employers/JobsListPageView.vue'
 
 
 const routes = [
@@ -216,7 +217,7 @@ const routes = [
 {
   path: "/client/jobs",
   name: "my jobs",
-  component: ClientDashBoardPage,
+  component: JobsListPageView,
   meta: { requiresAuth: true, role: 'employer' }
 },
 

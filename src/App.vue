@@ -17,7 +17,7 @@ export default {
 <template>
 
 
-<Navbar :type="'app'"/>
+<Navbar/>
 <div class="relative flex">
   <router-view></router-view>
 </div>

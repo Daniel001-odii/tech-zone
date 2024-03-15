@@ -5,20 +5,20 @@
             <template #page-contents>
                 <DismissableAlert></DismissableAlert>
                 <!-- <div class="border border-red-200 h-full"> -->
-                    <div class="flex flex-row gap-2 p-2 md:p-5 border-b">
+                    <div class="flex flex-row gap-2 p-2 md:p-5 border-b dark:border-gray-600">
                         <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
-                            <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md" placeholder="Search all types of jobs">
-                            <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white">
+                            <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md form_input" placeholder="Search all types of jobs">
+                            <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white dark:text-white">
                                 <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
                             </button>
                         </form>
-                        <button class="border text-black px-4 py-2 rounded-md ">
-                            <i class="bi bi-funnel"></i> <span class="hidden md:inline-block">Filters</span>
+                        <button class="border text-black px-4 py-2 rounded-md dark:text-white">
+                            <i class="bi bi-funnel"></i> <span class="hidden md:inline-block ">Filters</span>
                         </button>
                     </div>
 
                     <!-- <div class="flex flex-row h-14 gap-4 pl-5 border-b items-end overflow-x-scroll md:overflow-x-visible"> -->
-                    <div class="flex flex-row h-14 pl-5 border-b items-end">
+                    <div class="flex flex-row h-14 pl-5 border-b items-end dark:border-gray-600">
                         <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full">
                             <button @click="showTab = 'tab-1'" :class="{ 'active_tab': showTab == 'tab-1' }" class="p-2 border-b-4 border-b-transparent">Available</button>
                             <button v-if="user" @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
@@ -395,4 +395,6 @@ export default {
     .active_tab{
         @apply border-b-4 rounded-sm border-b-tz_blue
     }
+
+
 </style>

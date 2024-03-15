@@ -4,11 +4,8 @@
             <template #page-title>All Contracts</template>
             <template #page-contents>
                 <div>
-                    <div class="flex flex-row gap-2 p-5 border-b">
-                        <input type="search" class="px-4 py-2 bg-tz_light_blue rounded-md" placeholder="Search all types of jobs">
-                        <button class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white">
-                            <i class="bi bi-search"></i> <span>Search</span>
-                        </button>
+                    <div class="flex flex-row gap-2 p-5 border-b dark:border-gray-500">
+                        <input type="search" class="form_input" placeholder="Search all types of jobs">
                     </div>
                 </div>
 
@@ -20,7 +17,7 @@
                    {{ contract }}
                 </div> -->
                 <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contracts">
-                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
+                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-500">
                         <div class="flex flex-row justify-between items-center">
                             <RouterLink :to="'/contracts/' + contract._id">
                                 <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>

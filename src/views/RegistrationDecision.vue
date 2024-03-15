@@ -1,5 +1,5 @@
 <template>
-    <div class="p-8 flex flex-col justify-center items-center mx-auto text-center">
+    <div class="p-8 flex flex-col justify-center items-center mx-auto text-center w-full h-screen dark:bg-[#27323F] dark:text-white">
         <SiteLogo/>
         <div class=" flex flex-col justify-center items-center">
             <h1 class="text-4xl p-4 mt-8">Join as an employer or freelancer</h1>

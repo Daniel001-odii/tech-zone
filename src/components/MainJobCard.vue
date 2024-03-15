@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-col border p-3 rounded-md text-left gap-3 hover:border-tz_blue">
+        <div class="flex flex-col border p-3 rounded-md text-left gap-3 hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between items-center">
                     <span class="font-bold">

@@ -12,7 +12,7 @@
                 <div v-if="job" class="flex flex-col md:flex-row px-5 py-3" >
                     <div class=" md:w-2/4">
                         <div>
-                            <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md">
+                            <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md dark:border-gray-600">
                                 <div class="flex flex-col gap-3">
                                     <div class="flex flex-row justify-between items-center">
                                         <span class="font-bold text-2xl">
@@ -115,7 +115,7 @@
                         </div>
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Cover Letter</span>
-                            <textarea class=" h-52 max-h-96 p-4 border rounded-md disabled:text-gray-400" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" :disabled="is_application" required></textarea>
+                            <textarea class=" h-52 max-h-96 p-4 border rounded-md disabled:text-gray-400 form_input" placeholder="A very detailed cover letter" v-model="application_form.cover_letter" :disabled="is_application" required></textarea>
                          </div>
                          <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Attachments</span>

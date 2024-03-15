@@ -5,8 +5,8 @@
             <template #page-contents>
                 <!-- {{ jobs }} -->
                 <!-- {{  getUserData }} -->
-                <div class="gap-2 flex flex-row p-2 md:p-5  border-b">
-                    <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md" placeholder="Search all types of jobs" v-model="search_term">
+                <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
+                    <input type="search" class=" form_input" placeholder="Search all types of jobs" v-model="search_term">
                 </div>
 
 
@@ -19,7 +19,7 @@
                 </div>
 
                 <div v-if="!loading" class="flex flex-col overscroll-y-scroll" v-for="(job, job_index) in job_list()" :key="job_index">
-                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
+                    <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-600">
                         <div>posted {{ formatTime(job.created) }}</div>
                         <div class="flex flex-row justify-between items-center">
                             <div class="text-2xl font-bold">

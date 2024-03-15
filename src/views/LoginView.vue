@@ -1,26 +1,25 @@
 <template>
-     <div class="flex flex-row justify-center items-center w-screen mt-20">
-            <!-- <div class="p-5 flex flex-col justify-center items-center text-start md:w-3/6  h-full md:p-8 border"> -->
-                <div class="w-full lg:w-96 flex flex-col gap-3 p-4">
-                    
-                    <div class="text-start">
+        <div class=" h-screen w-full lg:w-3/6 flex flex-col justify-center items-center dark:bg-[#27323F] dark:text-white">
+            <div class=" w-fit p-8">
+                    <div class="text-start  w-full mb-5">
                         <h1 class="text-3xl font-bold">Welcome back</h1>
                         <span>Please enter your login details</span>
                     </div>
-                    <!-- <Alert :type="'danger'" :message="`${error}`" v-if="error"/> -->
-                    <span v-if="error" class="p-3 rounded-lg bg-red-100 text-red-700">
+                    <Alert :type="'danger'" :message="`${error}`" v-if="error"/>
+                    <!-- <span v-if="error" class="p-3 rounded-lg bg-red-100 text-red-700">
                         {{ error }}
-                    </span>
+                    </span> -->
+
                     <form class="flex flex-col gap-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
-                                <input class="border p-3 rounded-md outline:tz_blue" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
+                                <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
                             </div>
 
                             <div class="tz_form_control">
                                 <label for="password">password</label>
-                                <input class="border p-3 rounded-md" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
+                                <input class="form_input" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                             </div>
                         </div>
                         <div class="flex flex-row justify-between flex-wrap">
@@ -43,15 +42,14 @@
                             <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-tz_blue">Sign up</RouterLink> </p>
                         </div>                      
                     </form>
-                </div>
-            <!-- </div> -->
-
-            <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6">
-                <div>
-                    <img src="../assets/images/tech-zone.svg" width="100px">
-                </div>
             </div>
-    </div>
+        </div>
+
+        <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6 dark:bg-[#1F2A36]">
+            <div>
+                <img src="../assets/images/tech-zone.svg" width="100px">
+            </div>
+        </div>
            
 
 </template>

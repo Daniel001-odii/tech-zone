@@ -4,9 +4,30 @@
             <button class="btn">Return to home</button>
         </RouterLink>
     </FullPageModal>
+<div class="flex flex-col dark:bg-[#27323F] dark:text-white w-full h-screen">
+   <div>
+    <div class=" w-full text-left p-5 text-3xl border-b flex items-center pl-3 dark:border-gray-600">
+            <span class="flex gap-5">
+                <button @click="$router.go(-1)">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                Post Job
+            </span>
+        </div>
+   </div>
+    <div v-if="form_errors" class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 m-8" role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span class="sr-only">Info</span>
+        <div>
+            <span class="font-medium"> {{ form_errors }}</span> 
+        </div>
+    </div>
 
+<div>
     <div class="flex flex-row justify-center items-center">
-        {{ form_errors }}
+       
             <!-- FOR SECTION 1 JOB TITLE -->
             <Transition name="formSlide">
                 <div v-if="currentIndex === 0" class="form_section">
@@ -18,7 +39,7 @@
                     <div class="border"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="job_title">
                         <p>Write a name for your job posting</p>
-                        <textarea class="border rounded-lg p-3 h-40" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
+                        <textarea class="form_input" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
                         <span class="text-sm text-gray-400">Examples : Product Designer, Web Designer, Flutter Developer</span>
                     </div>
                 </div>
@@ -37,7 +58,7 @@
                         <p>Search Skill here or Manually add your own</p>
                         <!-- {{ job_post.skills }} -->
                         
-                        <input class="border rounded-lg p-3" placeholder="Skill seperated by comma e.g HTML, CSS, JavaScript" v-model="inputValue" @keyup.enter="addTag">
+                        <input class="form_input" placeholder="Skill seperated by comma e.g HTML, CSS, JavaScript" v-model="inputValue" @keyup.enter="addTag">
                         <div class="flex flex-row flex-wrap gap-2">
                             <div v-for="(tag, index) in tags" :key="index" class="p-3 rounded-xl bg-tz_light_blue">
                                 {{ tag }}<span class="ml-3" @click="removeTag(index)">&times;</span>
@@ -58,7 +79,7 @@
                     <div class="border"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="period">
                         <p>How long will the job last?</p>
-                        <select class="border rounded-lg p-3" placeholder="Product Designer" v-model="job_post.period">
+                        <select class="form_input" placeholder="Product Designer" v-model="job_post.period">
                             <option>less than a month</option>
                             <option>1 to 3 months</option>
                             <option>3 to 6 months</option>
@@ -93,7 +114,7 @@
                             </label>
                         </div>
                         <p class="mt-3">Project Budget <span v-if="job_post.budget_type == 'hourly'">per hour</span></p>
-                        <input placeholder="$100,000" class="border rounded-lg p-3" v-model="job_post.budget" required>
+                        <input placeholder="$100,000" class="form_input" v-model="job_post.budget" required>
                         <span>
                             After Project is completed  and satisfied, payment will be released to talent.
                         </span>
@@ -128,8 +149,8 @@
                             </label>
                         </div>
                         <div v-if="job_post.location.remote != 'true'" class="flex flex-col gap-3">
-                            <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="border p-3 rounded-lg">
-                            <select @change="whatState" v-model="job_post.location.state" class="p-3 border rounded-md ">
+                            <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="form_input">
+                            <select @change="whatState" v-model="job_post.location.state" class="form_input ">
                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                             </select>
                             <!-- <select class="" @change="whatState" v-model="job_post.location.state" :disabled="isRemote">
@@ -153,7 +174,7 @@
                     <div class="border"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="description">
                         <p>Describe your job</p>
-                        <textarea class="border rounded-lg p-3 h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
+                        <textarea class="form_input h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
                     </div>
                 </div>
             </Transition>
@@ -175,7 +196,7 @@
                                 </div>
                                 <div v-if="prev_title" class=" w-full p-2 text-start gap-3 flex flex-col">
                                     <p>Write a name for your job posting</p>
-                                    <textarea class="border rounded-lg p-3 h-40" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
+                                    <textarea class="form_input h-40" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
                                     <span class="text-sm text-gray-400">Examples : Product Designer, Web Designer, Flutter Developer</span>
                                 </div>
                             </div>
@@ -188,7 +209,7 @@
                                 </div>
                                 <div v-if="prev_period" class=" w-full h-full p-5 text-start gap-3 flex flex-col">
                                     <p>How long will the job last?</p>
-                                    <select class="border rounded-lg p-3" placeholder="Product Designer" v-model="job_post.period">
+                                    <select class="form_input" placeholder="Product Designer" v-model="job_post.period">
                                         <option value="less than a month">Less than a month</option>
                                         <option value="1 to 3 months">1 to 3 months</option>
                                         <option value="3 to 6 months">3 to 6 months</option>
@@ -220,7 +241,7 @@
                                         </label>
                                     </div>
                                     <p class="mt-3">Project Budget</p>
-                                    <input placeholder="$100,000" class="border rounded-lg p-3" v-model="job_post.budget">
+                                    <input placeholder="$100,000" class="form_input" v-model="job_post.budget">
                                     <span>
                                         After Project is completed  and satisfied, payment will be released to talent.
                                     </span>
@@ -251,8 +272,8 @@
                                             </label>
                                         </div>
                                         <div v-if="job_post.location.remote != 'true'" class="flex flex-col gap-3">
-                                            <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="border p-3 rounded-lg">
-                                            <select @change="whatState" v-model="job_post.location.state" class="p-3 border rounded-md ">
+                                            <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="form_input">
+                                            <select @change="whatState" v-model="job_post.location.state" class="form_input ">
                                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                                             </select>
                                             <!-- <select class="" @change="whatState" v-model="job_post.location.state" :disabled="isRemote">
@@ -273,11 +294,11 @@
                                     </div>
                                     <div v-if="prev_description" class=" w-full h-full p-5 text-start gap-3 flex flex-col">
                                         <p>Describe your job</p>
-                                        <textarea class="border rounded-lg p-3 h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description"></textarea>
+                                        <textarea class="form_input h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description"></textarea>
                                     </div>
                                 </div>
 
-                                <button type="button" @click="submitJob" class=" p-3 bg-green text-white rounded-md">Post Job</button>
+                                <button type="button" @click="submitJob" class=" p-3 font-bold bg-green-500 hover:bg-green-700 text-white rounded-md">Post Job</button>
                         </div>
                     </div>
 
@@ -307,6 +328,7 @@
     
 
     </div>
+
     <div class="flex p-4 flex-col justify-center  items-center gap-6 w-full fixed bottom-0">
         <div class=" w-4/5 h-4 bg-tz_blue rounded-lg"></div>
         <div class="w-full justify-between flex flex-row">
@@ -315,7 +337,9 @@
           
         </div>
     </div>
+</div>
 
+</div>
     
 </template>
 
@@ -410,7 +434,8 @@ import axios from 'axios'
                     this.job_is_posted = true;
                 }catch(error){
                     // handle error..
-                    this.form_errors = error;
+                    // console.log(error.response.data.message)
+                    this.form_errors = error.response.data.message;
                 }
             },
 
@@ -438,5 +463,12 @@ import axios from 'axios'
     .formSlide-enter-from, .formSlide-leave-to {
         opacity: 0;
         margin-left: -80%;
+    }
+
+    .border{
+        @apply dark:border-gray-500
+    }
+    button{
+        @apply disabled:bg-tz_light_blue
     }
 </style>

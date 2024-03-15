@@ -1,6 +1,6 @@
 <template>
-    <!-- <Navbar :type="'wesbite'"/> -->
-    <div class="flex flex-col justify-center items-center max-w-screen-2xl" style="margin: 0 auto;">
+    <div class=" w-full dark:bg-[#27323F] dark:text-white">
+        <div class="flex flex-col justify-center items-center max-w-screen-2xl " style="margin: 0 auto;">
         <div class="py-4 mt-12 md:px-4 flex justify-center items-center flex-col">
         <section>
             <div class="section_container">
@@ -150,6 +150,9 @@
     <Footer/>
     </div>
     
+    </div>
+    <!-- <Navbar :type="'wesbite'"/> -->
+
 </template>
 <script>
 import GetStartedNow from '@/components/GetStartedNow.vue';

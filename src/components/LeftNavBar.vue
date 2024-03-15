@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 h-full">
+        <div class=" md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 h-full dark:border-gray-600">
             <div class=" md:h-20"></div>
             <!-- EMPLOYER -->
             <div v-if="user.role === 'employer'">

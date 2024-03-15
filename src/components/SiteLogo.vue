@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dark:text-white">
         <RouterLink to="/" class="">
             <div class="flex flex-row justify-center items-center font-bold text-xl">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="32" viewBox="0 0 70 52" fill="none">
@@ -41,7 +41,7 @@
                     </linearGradient>
                     </defs>
                 </svg>
-                <h1 class="hidden md:inline-block text-black">Tech-zone</h1>
+                <h1 class="hidden md:inline-block text-black dark:text-white">Tech-zone</h1>
             </div>
            
         </RouterLink>

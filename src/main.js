@@ -13,8 +13,6 @@ import clickOutside from './utils/clickOutside'
 
 
 
-
-
 const app = createApp(App);
 
 
