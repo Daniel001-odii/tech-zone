@@ -1,4 +1,5 @@
 <template>
+<div class="flex flex-row">
      <div class=" h-screen w-full lg:w-3/6 flex flex-col justify-center items-center dark:bg-[#27323F] dark:text-white">
         <div class=" w-fit p-8">
             <div class="text-start  w-full mb-5">
@@ -67,7 +68,7 @@
             <img src="../assets/images/tech-zone.svg">
         </div>
     </div>
- 
+</div>
 </template>
 <script>
 import axios from 'axios';
