@@ -305,9 +305,13 @@ export default {
             const headers = this.headers;
             try{    
                 const response = await axios.get(`${this.api_url}/user`, { headers });
-                // console.log(response)
+                console.log(response)
                 this.user = response.data.user;
-                this.settings.profile_visibility = this.user.settings.profile_visibility
+                
+                if(this.user.settings){
+                    this.settings.profile_visibility = this.user.settings.profile_visibility
+                }
+                
                 if(this.user.settings.bank){
                     this.settings.bank = this.user.settings.bank
                 }

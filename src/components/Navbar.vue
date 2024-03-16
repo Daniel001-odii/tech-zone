@@ -96,7 +96,7 @@
         </div>
 
         <nav v-if=" !loading && user">
-            <div class="flex flex-row w-full justify-between p-3 items-center border border-gray-200  dark:border-gray-600">
+            <div class="flex flex-row w-full justify-between p-3 items-center border-b border-gray-200  dark:border-gray-600">
                 <SiteLogo/>
 
                 <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
