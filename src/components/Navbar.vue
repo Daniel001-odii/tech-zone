@@ -45,10 +45,17 @@
 
     <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
     <div v-if="is_authenticated && !user">
-        <nav class="bg-white start-0 border-b border-gray-200  dark:border-gray-600 relative z-30 dark:bg-[#1F2A36]">
+        <nav class="bg-white text-white start-0 border-b border-gray-200  dark:border-gray-600 relative z-30 dark:bg-[#1F2A36]">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
                 <SiteLogo/>
-                <div class="skeleton flex flex-row items-center gap-1">
+                <div class="skeleton text-transparent border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
+                    <input type="search" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
+                    <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-500 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
+                        <i class="bi bi-search"></i>
+                        <span>Search</span>
+                    </button>
+                </div>
+                <div class="skeleton flex flex-row items-center gap-1 mr-2">
                     <div class=" h-10 w-10 bg-white rounded-full"></div>
                     <i class="bi bi-three-dots-vertical"></i>
                     <div class=" h-10 w-10 bg-white rounded-full"></div>
@@ -118,7 +125,7 @@
 
                 <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
                 <div class="border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
-                    <input type="search" placeholder="saerch for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
+                    <input type="search" placeholder="Search for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
                     <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-500 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
                         <i class="bi bi-search"></i>
                         <span>Search</span>
