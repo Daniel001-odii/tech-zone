@@ -7,7 +7,7 @@
                 <!-- <div class="border border-red-200 h-full"> -->
                     <div class="flex flex-row gap-2 p-2 md:p-5 border-b dark:border-gray-600">
                         <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
-                            <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md form_input" placeholder="Search all types of jobs">
+                            <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md form_input" placeholder="Search all types of jobs" v-model="job_search">
                             <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white dark:text-white">
                                 <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
                             </button>
@@ -45,29 +45,33 @@
                                 <div  class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
                                     
                                     <div v-for="(job, job_index) in jobs" :key="job_index">
-                                        <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
-                                        <MainJobCard v-if="job.employer" @click="showJobDetail(job_index)"
-                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
-                                        @saveJob="addJobToSaves(job._id)" 
-                                        :job_is_saved="checkIfJobIsSaved(job._id)" 
-                                        :company="job.employer.profile.company_name" :rating="5" 
-                                        @flagJob="console.log('job flagged')"
-                                        :budget="job.budget" 
-                                        :period="job.period" 
-                                        :remote="job.location.remote"
-                                        :is_applied="checkIfJobIsApplied(job._id)"
-                                        >
-                                            <template #job-title>
-                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
-                                            </template>
-                                            <template #job-location>
-                                                <span v-if="job.location.remote == 'true'">remote</span>
-                                                <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
-                                            </template>
-                                            <template v-if="job.decription" #job-description>{{  job.description.substring(0, 300) }}...
-                                            </template>
-                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
-                                        </MainJobCard>
+                                        <div v-if="!job.is_deleted">
+
+                                        
+                                            <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
+                                            <MainJobCard  @click="showJobDetail(job_index)"
+                                            :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
+                                            @saveJob="addJobToSaves(job._id)" 
+                                            :job_is_saved="checkIfJobIsSaved(job._id)" 
+                                            :company="job.employer.profile.company_name" :rating="5" 
+                                            @flagJob="console.log('job flagged')"
+                                            :budget="job.budget" 
+                                            :period="job.period" 
+                                            :remote="job.location.remote"
+                                            :is_applied="checkIfJobIsApplied(job._id)"
+                                            >
+                                                <template #job-title>
+                                                <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                                </template>
+                                                <template #job-location>
+                                                    <span v-if="job.location.remote == 'true'">remote</span>
+                                                    <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
+                                                </template>
+                                                <template v-if="job.decription" #job-description>{{  job.description.substring(0, 300) }}...
+                                                </template>
+                                                <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                            </MainJobCard>
+                                        </div>
                                     </div>
                                     
                                 </div>
@@ -207,9 +211,6 @@
                             </div>
                         </div>
                     </div>
-
-
-                <!-- </div> -->
             </template>
         </TemplateView>
     </div>
@@ -241,6 +242,8 @@ export default {
             saved_jobs: '',
             applied_jobs: '',
             contracts: '',
+
+            job_search: '',
         }
         
     },
@@ -330,6 +333,7 @@ export default {
         },
 
         async searchJob(){
+            this.showTab = "tab-1";
             this.loading = true;
             try{
                 const response = await axios.get(`${this.api_url}/jobs/search`, {
@@ -338,7 +342,7 @@ export default {
                 }});
 
                 console.log(response);
-                // this.jobs = response.data.jobs;
+                this.jobs = response.data.jobs;
                 this.loading = false;
                 // this.$router.push('/jobs');
 

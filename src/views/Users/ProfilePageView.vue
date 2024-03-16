@@ -74,7 +74,9 @@
             <template #page-title>Profile</template>
             
             <template #page-contents>
-                <div v-if="!user">loading user data...</div>
+                <!-- <div >loading user data...</div> -->
+                <FullPageLoading v-if="!user"/>
+
                 <div class="p-5" v-if="user">
                     <div class=" flex flex-col items-center gap-8">
 
@@ -213,15 +215,19 @@ import axios from 'axios';
 import LoaderButton from '@/components/LoaderButton.vue';
 import { generateStarRating } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import FullPageLoading from '@/components/FullPageLoading.vue';
+    
 
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader },
+    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader, FullPageLoading },
     data(){
         return{
             user: null,
 
             profile_edit_menu: false,
+
+            loading: null,
 
             user_form: {
                 loading: false,
@@ -248,6 +254,7 @@ export default {
     },
     methods: {
         async getPublicUserData(){
+            this.loading = true;
             try{
                 const response = await axios.get(`${this.api_url}/user/${this.$route.params.user_id}`);
                 this.user = response.data.user;
@@ -255,8 +262,10 @@ export default {
 
                 this.user_form = response.data.user;
                 this.checkCurrentViewer();
+                this.loading = false;
             }catch(error){
-                console.log("error fetching public user data", error)
+                console.log("error fetching public user data", error);
+                this.loading = true;
             }
         },
 

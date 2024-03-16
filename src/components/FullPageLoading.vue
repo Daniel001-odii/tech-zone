@@ -14,7 +14,7 @@
 
 <script>
     export default {
-        name: "FullPageLoading",
+        name: "FullPageLoader",
     }
 </script>
 

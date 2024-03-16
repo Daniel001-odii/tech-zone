@@ -56,9 +56,9 @@
                     </button>
                 </div>
                 <div class="skeleton flex flex-row items-center gap-1 md:mr-2">
-                    <div class=" h-10 w-10 bg-white rounded-full"></div>
+                    <div class=" h-10 w-10 bg-gray-300 rounded-full"></div>
                     <i class="bi bi-three-dots-vertical"></i>
-                    <div class=" h-10 w-10 bg-white rounded-full"></div>
+                    <div class=" h-10 w-10 bg-gray-300 rounded-full"></div>
                 </div>
             </div>
         </nav>
