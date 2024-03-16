@@ -2,18 +2,18 @@
 
 <div class="dark:bg-[#27323F]">
 
-
-    <div>
-        <nav v-if="!user" class="bg-white start-0 border-b border-gray-200  dark:border-gray-600 relative z-30 dark:bg-[#1F2A36]">
+    <!-- THE DUMMY NAVBAR BELOW SHOWS ONLY FOR NON AUTHENTCATED USERS, MAJORLY FOR LANDING PAGE -->
+    <div v-if="!is_authenticated">
+        <nav class="bg-white start-0 border-b border-gray-200  dark:border-gray-600 relative z-30 dark:bg-[#1F2A36]">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <SiteLogo/>
             <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <div class="flex justify-self-end md:flex gap-3 md:m-0">
                     <RouterLink to="/login">
-                        <button class="btn rounded-md text-tz_blue hover:text-tz_blue hover:bg-tz_light_blue">Login</button>
+                        <button class="nav_btn rounded-md w-fit text-tz_blue hover:text-tz_blue hover:bg-tz_light_blue">Login</button>
                     </RouterLink>
                     <RouterLink to="/register/decide">
-                        <button class="btn rounded-md bg-tz_blue hover:bg-tz_dark_blue text-white">Sign Up</button>
+                        <button class="nav_btn rounded-md bg-tz_blue hover:bg-tz_dark_blue text-white">Sign Up</button>
                     </RouterLink>
                 </div>
                 <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
@@ -42,8 +42,25 @@
         </nav>
     </div>
 
+
+    <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
+    <div v-if="is_authenticated && !user">
+        <nav class="bg-white start-0 border-b border-gray-200  dark:border-gray-600 relative z-30 dark:bg-[#1F2A36]">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
+                <SiteLogo/>
+                <div class="skeleton flex flex-row items-center gap-1">
+                    <div class=" h-10 w-10 bg-white rounded-full"></div>
+                    <i class="bi bi-three-dots-vertical"></i>
+                    <div class=" h-10 w-10 bg-white rounded-full"></div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- NAVBAR FOR MAIN APPLICATION AND AUTHENTICATED USERS -->
     <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white " style="margin: 0 auto;">
         <!-- this navbar here displays only on mobile views. -->
+       
         <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4 dark:bg-[#1F2A36] dark:text-white">
             <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
                 <span class="">&times;</span>
@@ -95,7 +112,7 @@
             </div>
         </div>
 
-        <nav v-if=" !loading && user">
+        <nav v-if="user">
             <div class="flex flex-row w-full justify-between p-3 items-center border-b border-gray-200  dark:border-gray-600">
                 <SiteLogo/>
 
@@ -107,14 +124,11 @@
                         <span>Search</span>
                     </button>
                 </div>
-
-                <div v-if="!user">Loading...</div>
                 <div  v-if="user" class="flex flex-row items-center gap-1">
-
                     <div class="relative" v-click-outside="closeDropdown" >
-                        <div class=" h-4 w-4 flex justify-center items-center text-white border-2 border-white rounded-full bg-red-500 absolute right-[0] -top-1 z-10" v-if="notifications && notifications.length > 0"></div>
+                        <div class=" h-3 w-3 flex justify-center items-center text-white border border-white  rounded-full bg-red-500 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div>
                         
-                        <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
+                        <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
                         
                         <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-10 dark:bg-[#1F2A36] dark:border-gray-600">
                            <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
@@ -139,9 +153,6 @@
                                 <span class="text-center text-tz_blue">see all notifications</span>
                            </RouterLink>
                         </div>
-
-                        
-
                     </div>
                     
                     <i class="bi bi-three-dots-vertical"></i>
@@ -149,11 +160,8 @@
                         <img @click="mobile_nav = !mobile_nav" v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
                         <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
                     </div>
-                
-
                 </div>
             </div>
-            
         </nav>
     </div>
 
@@ -191,6 +199,8 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             job_search: '',
+
+            is_authenticated: false,
 
             
         };
@@ -287,8 +297,8 @@ export default {
 
         logout(){
             localStorage.removeItem("life-gaurd");
-            this.$router.push('/');
-            window.location.reload();
+            this.$router.push('/login');
+            // window.location.reload();
         },
 
         realTimeFormat(time){
@@ -299,17 +309,36 @@ export default {
     mounted(){
         this.getUserData();
         this.getNotifications();
+        if(localStorage.getItem('life-gaurd')){
+            this.is_authenticated = true;
+        }
         
     },
 }
 </script>
 <style scoped>
-    .btn{
+    .nav_btn{
         @apply px-5 py-2 font-bold;
     }
 
     .nav_link{
         @apply p-3 rounded-md hover:bg-tz_light_blue font-medium hover:font-bold;
+    }
+
+    @keyframes skeletonLoading {
+    0% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.4;
+    }
+    }
+
+    .skeleton {
+    animation: skeletonLoading 1.5s infinite;
     }
     
 </style>

@@ -1,4 +1,6 @@
 <template>
+
+
     <div class=" w-full dark:bg-[#27323F] dark:text-white">
         <div class="flex flex-col justify-center items-center max-w-screen-2xl " style="margin: 0 auto;">
         <div class="py-4 mt-12 md:px-4 flex justify-center items-center flex-col">
@@ -162,7 +164,7 @@ import StatsBox from '@/components/StatsBox.vue';
 import StepBox from '@/components/StepBox.vue';
 import StrikeLineSvg from '@/components/StrikeLineSvg.vue'
 import Footer from '@/components/Footer.vue'
-
+import SiteLogo from '@/components/SiteLogo.vue';
 // animate onscroll library
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -171,7 +173,7 @@ import LpJobCard from '@/components/LpJobCard.vue';
 
 export default {
     name: "LandingPage",
-    components: { Navbar, StatsBox, StepBox, JobCat, StrikeLineSvg, GetStartedNow, Footer, LpJobCard },
+    components: { Navbar, StatsBox, StepBox, JobCat, StrikeLineSvg, GetStartedNow, Footer, LpJobCard, SiteLogo },
     data(){
         return{
             jobPostings: [
@@ -230,6 +232,15 @@ export default {
     *{
         font-family: homeFont;
     }
+
+    .nav_btn{
+        @apply px-5 py-2 font-bold;
+    }
+
+    .nav_link{
+        @apply p-3 rounded-md hover:bg-tz_light_blue font-medium hover:font-bold;
+    }
+
     .text-sm{
         font-size: 12px !important;
     }

@@ -116,7 +116,7 @@ export default {
 </script>
 <style scoped>
     .active{
-        @apply border-l-tz_blue text-tz_blue bg-tz_light_blue font-bold
+        @apply border-l-tz_blue text-tz_blue bg-tz_light_blue font-bold 
     }
 
     .nav_item{
