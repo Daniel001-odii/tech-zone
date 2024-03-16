@@ -307,23 +307,24 @@ export default {
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 console.log(response)
                 this.user = response.data.user;
-                
+
                 if(this.user.settings){
-                    this.settings.profile_visibility = this.user.settings.profile_visibility
+                    this.settings.profile_visibility = this.user.settings.profile_visibility;
+                    if(this.user.settings.bank){
+                        this.settings.bank = this.user.settings.bank
+                    }
+                    if(this.user.settings.card){
+                        this.settings.bank = this.user.settings.bank
+                    }
+                    if(this.user.settings.notifications){
+                        this.settings.notifications = this.user.settings.notifications
+                    }
+                    if(this.user.settings.KYC){
+                        this.settings.KYC = this.user.settings.KYC
+                    }
                 }
                 
-                if(this.user.settings.bank){
-                    this.settings.bank = this.user.settings.bank
-                }
-                if(this.user.settings.card){
-                    this.settings.bank = this.user.settings.bank
-                }
-                if(this.user.settings.notifications){
-                    this.settings.notifications = this.user.settings.notifications
-                }
-                if(this.user.settings.KYC){
-                    this.settings.KYC = this.user.settings.KYC
-                }
+                
                 this.loading = false;
             }catch(error){
                 console.log("error getting user details: ", error);
