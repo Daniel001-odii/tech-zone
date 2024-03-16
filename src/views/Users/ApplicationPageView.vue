@@ -320,7 +320,7 @@ export default {
             const metaTag = document.createElement('meta');
             metaTag.setAttribute('property', property);
             metaTag.setAttribute('content', content);
-            document.head.appendChild(metaTag);
+            window.document.head.appendChild(metaTag);
         }
 
     
@@ -331,8 +331,11 @@ export default {
         this.getApplicationDetails();
 
         // META TAG UPDATE...
-        createMetaTag('og:title', `${this.job.title} Application`);
-        createMetaTag('og:description', `${this.job.description}`);
+        // if(this.job){
+            const ogTitleMetaTag = document.querySelector('meta[property="og:title"]');
+            ogTitleMetaTag.setAttribute('content', `${this.job.title} Application`);
+        // }
+        
         
     }
 }

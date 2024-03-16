@@ -350,6 +350,12 @@ export default {
         }
       
         this.getActiveAndCompletedContracts();
+
+        if(this.user){
+            const ogTitleMetaTag = document.querySelector('meta[property="og:title"]');
+            ogTitleMetaTag.setAttribute('content', `${this.user.firstname}`);
+        }
+        
     },
 
     computed:{
