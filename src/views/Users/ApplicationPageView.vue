@@ -314,6 +314,13 @@ export default {
             } catch(error){
                 console.log(error);
             }
+        },
+
+        createMetaTag(property, content){
+            const metaTag = document.createElement('meta');
+            metaTag.setAttribute('property', property);
+            metaTag.setAttribute('content', content);
+            document.head.appendChild(metaTag);
         }
 
     
@@ -322,6 +329,11 @@ export default {
     mounted(){
         this.getCurrentJobDetails();
         this.getApplicationDetails();
+
+        // META TAG UPDATE...
+        createMetaTag('og:title', `${this.job.title} Application`);
+        createMetaTag('og:description', `${this.job.description}`);
+        
     }
 }
 </script>

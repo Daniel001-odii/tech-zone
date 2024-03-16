@@ -356,18 +356,6 @@ export default {
         
     },
 
-    // META TAGS.....
-    metaInfo(){
-        return {
-            title: `${this.user.firstname} ${this.user.lastname}`,
-            meta: [
-                {property: 'og:title', content: `${this.user.firstname} ${this.user.lastname}'s profile`},
-                {property: 'og:image', content: this.user.profile.image_url },
-                {property: 'og:site_name', content: 'Apex-tek'},
-                {property: 'og:description', content: this.user.profile.title},
-            ]
-        }
-    }
 }
 </script>
 <style>

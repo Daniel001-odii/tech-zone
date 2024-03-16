@@ -11,20 +11,8 @@ import vue3GoogleLogin from 'vue3-google-login';
 
 import clickOutside from './utils/clickOutside'
 
-import * as vue from 'vue';
-
-import VueMeta from 'vue-meta'
-
-
-
 
 const app = createApp(App);
-
-app.use(VueMeta, {
-    // optional pluginOptions
-    refreshOnceOnNavigation: true
-})
-
 
 
 app.use(vue3GoogleLogin, {
