@@ -44,7 +44,7 @@
 
 
     <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
-    <div >
+    <div v-if="is_authenticated && !user">
         <nav>
             <div class="flex flex-row w-full justify-between p-3 items-center border-b border-gray-200  dark:border-gray-600">
                 <SiteLogo/>
