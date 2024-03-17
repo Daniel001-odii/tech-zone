@@ -73,47 +73,38 @@
                 <span class="">&times;</span>
             </button>
         
-            <div class="flex flex-col gap-2 mt-8 w-full p-2 " @click="mobile_nav = !mobile_nav">
-                <!-- <div> -->
-                    <!-- <span>Overview</span> -->
-                    <!-- <div class="flex flex-col gap-8"> -->
-                <RouterLink to="/" class="nav_link">
-                    Work Explorer
-                </RouterLink>
+            <div class="text-center">
+            <div class="flex flex-col text-left gap-2 mt-8 w-full p-2 " @click="mobile_nav = !mobile_nav" v-if="user_type == 'user'">
+                <RouterLink to="/jobs" class="nav_link">Work Explorer</RouterLink>
 
-                <RouterLink to="/saved-jobs" class="nav_link">
-                    Saved Jobs
-                </RouterLink>
+                <RouterLink to="/saved-jobs" class="nav_link">Saved Jobs</RouterLink>
 
-                <RouterLink to="/messages" class="nav_link">
-                    Messages
-                </RouterLink>
+                <RouterLink to="/messages" class="nav_link">Messages</RouterLink>
 
-                <RouterLink to="/contracts" class="nav_link">
-                    Contracts
-                </RouterLink>
+                <RouterLink to="/contracts" class="nav_link">Contracts</RouterLink>
 
-                <RouterLink to="/" class="nav_link">
-                Notifications
-                </RouterLink>
+                <RouterLink to="/notifications" class="nav_link">Notifications</RouterLink>
 
-                <RouterLink :to="'/users/' + user._id" class="nav_link">
-                    My Profile
-                </RouterLink>
+                <RouterLink :to="'/users/' + user._id" class="nav_link">My Profile</RouterLink>
 
-                <RouterLink to="/jobs/applications" class="nav_link">
-                    My Applications
-                </RouterLink>
+                <RouterLink to="/jobs/applications" class="nav_link">My Applications</RouterLink>
 
-                <RouterLink to="/settings" class="nav_link">
-                    Settings
-                </RouterLink>
+                <RouterLink to="/settings" class="nav_link">Settings</RouterLink>
 
-                <RouterLink to="/" class="nav_link">
-                    Help & Support
-                </RouterLink>
+                <RouterLink to="/" class="nav_link">Help & Support</RouterLink>
+            </div>
+            <div class="flex flex-col text-left gap-2 mt-8 w-full p-2 " @click="mobile_nav = !mobile_nav" v-if="user_type == 'employer'">
+                <RouterLink to="/client/dashboard" class="nav_link">Dashboard</RouterLink>
+                <RouterLink to="/client/jobs" class="nav_link">My Jobs</RouterLink>
+                <RouterLink to="/messages" class="nav_link">Messages</RouterLink>
+                <RouterLink to="/client/profile" class="nav_link">My Profile</RouterLink>
+                <RouterLink to="/client/contracts" class="nav_link">Contracts & Hires</RouterLink>
+                <div class="menu_item text-slate-300 nav_link"><i class="bi bi-compass"></i> Billings</div>
+                <div class="menu_item text-slate-300 nav_link"><i class="bi bi-gear"></i> Settings</div>
 
-                <button @click="logout" class="menu_item"><i class="bi bi-box-arrow-right"></i> Logout</button>
+            </div>
+
+                <button @click="logout" class="menu_item mt-5"><i class="bi bi-box-arrow-right"></i> Logout</button>
                 
             
             </div>
@@ -144,7 +135,7 @@
                                 <span class="text-sm font-bold">{{  notification.message }}</span>
                                 <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
                             </div>
-                            <button @click="markNotificationAsRead(notification._id)" class="text-lg font-bold hidden group-hover/notify:block">
+                            <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block">
                                 <span>&times;</span>
                             </button>
                             
@@ -209,6 +200,8 @@ export default {
 
             is_authenticated: false,
 
+            user_type: '',
+
             
         };
     },
@@ -246,6 +239,7 @@ export default {
 
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 this.user = response.data.user;
+                this.user_type = response.data.user.role;
             }
             catch(error){
                 console.log("error from navbar :", error);
@@ -269,8 +263,12 @@ export default {
             }
         },
 
-        async markNotificationAsRead(notification_id){
-            console.log(notification_id)
+        async markNotificationAsRead(notification_id, index){
+            console.log(notification_id);
+
+            this.notifications.splice(index, 1);
+            console.log("removed notifications: ", notification_id, " index: ", index)
+
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/notifications/${notification_id}/read`, {}, { headers });
@@ -305,7 +303,7 @@ export default {
         logout(){
             localStorage.removeItem("life-gaurd");
             this.$router.push('/login');
-            // window.location.reload();
+            window.location.reload();
         },
 
         realTimeFormat(time){
@@ -330,6 +328,10 @@ export default {
 
     .nav_link{
         @apply p-3 rounded-md hover:bg-tz_light_blue font-medium hover:font-bold;
+    }
+
+    .menu_item{
+    
     }
 
     @keyframes skeletonLoading {

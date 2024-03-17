@@ -76,7 +76,7 @@
                                                 <span>Applicants</span>
                                             </div>
                                             <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
-                                            <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
+                                            <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start dark:hover:bg-tz_light_blue dark:border-gray-500" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
                                                 <div v-if="application.user" class=" h-16 w-20 bg-tz_blue rounded-lg overflow-hidden">
                                                     <img :src="application.user.profile.image_url">
                                                 </div>
@@ -84,8 +84,8 @@
                                                     <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
                                                         <div>
                                                             <!-- {{  application.job }} -->
-                                                            <RouterLink :to="'user/'">{{ application.user._id }}</RouterLink>
-                                                            <p class="text-xl font-bold">{{ application.user.firstname }} {{ application.user.lastname }}</p>
+                                                            <!-- <RouterLink :to="'user/'"></RouterLink> -->
+                                                            <p @click="seeUserProfile(application.user._id)" class="text-xl font-bold underline cursor-pointer">{{ application.user.firstname }} {{ application.user.lastname }}</p>
                                                             <p class="text-gray-400">{{ application.user.profile.title }}</p>
                                                         </div>
                                                         <span class="rounded-lg bg-orange-100 text-orange-700 p-2" v-if="application.counter_offer">counter offer</span>
@@ -103,10 +103,10 @@
                                                         <p><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
                                                         <p><b>Reason:</b> {{ application.reason_for_co }}</p>
                                                     </div>
-                                                    <div class="flex flex-row gap-3 mt-3">
+                                                    <div class="flex flex-row flex-wrap gap-3 mt-3">
                                                         <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save</button>
-                                                        <button class="bg-white border border-tz_blue p-3 rounded-md hover:bg-slate-100">Interview</button>
-                                                        <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer & Hire</button>
+                                                        <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md hover:bg-tz_blue">Interview</button>
+                                                        <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,6 +294,16 @@ export default {
 
         userStars(ratings){
             return generateStarRating(ratings);
+        },
+
+        // editJobPost(job_id) {
+        //     const route = this.$router.resolve({name: "Techzone - Edit Job", params: { job_id: job_id } });
+        //     window.open(route.href, '_blank');
+        // },
+
+        seeUserProfile(user_id) {
+            const route = this.$router.resolve({name: "Public profile", params: { user_id: user_id } });
+            window.open(route.href, '_blank');
         }
     
 

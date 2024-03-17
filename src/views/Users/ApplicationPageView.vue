@@ -9,6 +9,8 @@
 
                 <div v-if="!job">Loading Job...</div>
 
+                <FullPageLoading/>
+
                 <div v-if="job" class="flex flex-col md:flex-row px-5 py-3" >
                     <div class=" md:w-2/4">
                         <div>
@@ -135,12 +137,8 @@
                                         <input id="dropzone-file" type="file" class="hidden" multiple @change="handleFileChange"/>
                                     </label>
                                 </div> 
-                                <div v-if="!is_application" class="flex flex-col justify-center items-center">
-                                    <!-- <i class="bi bi-cloud-arrow-up-fill text-4xl text-black"></i>
-                                    <span>Drag & Drop files here</span>
-                                    <input type="file" class="bg-black w-72 rounded-md px-12 py-2 text-white" multiple @change="handleFileChange"> -->
-
-                                    <div class="" v-if="selectedFiles.length > 0">
+                                <div v-if="!is_application" class="flex flex-col w-full">
+                                    <div class="w-full min-h-4 mt-3" >
                                         <p>Selected Files:</p>
                                         <ul class="flex flex-row flex-wrap justify-start gap-2 text-sm">
                                             <li class=" text-tz_blue flex flex-row items-center justify-between bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white" v-for="(file, index) in selectedFiles" :key="index">
@@ -168,12 +166,12 @@
                                 <div class="flex flex-col justify-center gap-5 mt-3">
                                     <div class="flex flex-col">
                                             <span class="text-xl">Requesting Fee</span>
-                                            <input type="text" placeholder="100,000.00" class="border rounded-md p-5" v-model="application_form.counter_offer" :disabled="is_application">
+                                            <input type="text" placeholder="100,000.00" class="form_input" v-model="application_form.counter_offer" :disabled="is_application">
                                             <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
                                     <div class="flex flex-col">
                                         <span class="text-xl">Reason</span>
-                                        <textarea type="text" placeholder="a good reason for the counter offer" class="border rounded-md p-5 disabled:text-gray-400" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
+                                        <textarea type="text" placeholder="a good reason for the counter offer" class="form_input" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
                                         <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
                                 </div>
@@ -330,13 +328,6 @@ export default {
         this.getCurrentJobDetails();
         this.getApplicationDetails();
 
-        // META TAG UPDATE...
-        // if(this.job){
-            const ogTitleMetaTag = document.querySelector('meta[property="og:title"]');
-            ogTitleMetaTag.setAttribute('content', `${this.job.title} Application`);
-        // }
-        
-        
     }
 }
 </script>

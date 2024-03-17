@@ -15,7 +15,7 @@
     "socket.io-client": "^4.7.4",
     "vue": "^3.2.13",
     "vue-animate-onscroll": "^1.0.8",
-    "vue-meta": "^2.4.0",
+    "vue-head": "^2.2.0",
     "vue-router": "^4.0.3",
     "vue3-google-login": "^2.0.25",
     "vuex": "^4.0.0"

@@ -77,6 +77,8 @@
                 <!-- <div >loading user data...</div> -->
                 <FullPageLoading v-if="!user"/>
 
+                <div>User not Found</div>
+
                 <div class="p-5" v-if="user">
                     <div class=" flex flex-col items-center gap-8">
 
@@ -216,7 +218,8 @@ import LoaderButton from '@/components/LoaderButton.vue';
 import { generateStarRating } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
-    
+
+import { head } from 'vue-head'
 
 export default {
     name: "ProfilePage",
@@ -266,6 +269,11 @@ export default {
             }catch(error){
                 console.log("error fetching public user data", error);
                 this.loading = true;
+                if(error.response.status == 404) {
+                    this.loading = false;
+                    this.$router.push("/404")
+                    // alert("User mot found")
+                }
             }
         },
 
@@ -351,16 +359,18 @@ export default {
       
         this.getActiveAndCompletedContracts();
 
-        if(this.user){
-            const ogTitleMetaTag = document.querySelector('meta[property="og:title"]');
-            ogTitleMetaTag.setAttribute('content', `${this.user.firstname}`);
-        }
+        // if(this.user){
+        //     this.$options.head.title = `${this.user.firstname} ${this.user.lastname}`;
+        //     this.$options.head.meta.push({ name: 'description', content: `checkout ${this.user.title} on Apex-tek a freelance marketplace for nigerians`});
+        // }
+        
         
     },
-
-    computed:{
-        
-    },
+    // watch: {
+    //     user(newTitle) {
+    //     this.$options.head.title = `${this.user.firstname} on apex-tek XXX`;
+    //     },
+    // }
 
 }
 </script>

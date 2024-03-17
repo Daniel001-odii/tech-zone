@@ -1,4 +1,7 @@
 <template>
+   
+   <FullPageLoading v-if="loading"/>
+
     <div class="flex flex-row">
         <div class=" h-screen w-full lg:w-3/6 flex flex-col justify-center items-center dark:bg-[#27323F] dark:text-white">
             <div class=" w-fit p-8">
@@ -58,6 +61,7 @@
 </template>
 <script>
 import Alert from '@/components/Alert.vue';
+import FullPageLoading from '@/components/FullPageLoading.vue';
 import LoaderButton from '@/components/LoaderButton.vue';
 import axios from 'axios';
 import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
@@ -65,7 +69,7 @@ import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 
 export default {
     name: "LoginView",
-    components: {},
+    components: { FullPageLoading, Alert, LoaderButton },
     data() {
         return {
             error: '',
@@ -106,13 +110,14 @@ export default {
         },
 
         async googleLogin(){
+            this.loading = true;
             try{
                 const response = await googleAuthCodeLogin();
                 console.log("response from google: ", response);
                 const auth_code = { code: response.code }
                 const newResponse = await axios.post(`${this.api_url}/google-auth`, auth_code );
                 console.log("response from backend: ", newResponse.data);
-                
+                this.loading = false;
                 localStorage.setItem("life-gaurd", newResponse.data.token);
                 if(newResponse.data.role == "user"){
                     this.$router.push("/jobs")
@@ -121,12 +126,13 @@ export default {
                 if(newResponse.data.role == "employer"){
                     this.$router.push("/client/dashboard");
                 }
+                
             }catch(error){
                 alert(error);
+                this.loading = true;
             }
         },
     },
-    components: { Alert, LoaderButton }
 }
 </script>
 <style scoped>

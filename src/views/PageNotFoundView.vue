@@ -1,7 +1,7 @@
 <template>
     <div>
         <TemplateView :leftNav="true">
-            <template #page-title>Page Not Found</template>
+            <template #page-title>Not Found</template>
             <template #page-contents>
                 <div class="h-screen flex flex-col gap-4 justify-center items-center">
                     <div class="flex flex-col justify-center items-center w-full mt-6">
@@ -11,7 +11,7 @@
                     
 
                     <RouterLink to="/">
-                        <button class="btn w-fit">Go back</button>
+                        <button class="btn w-fit">Go Home</button>
                     </RouterLink>
                     
                 </div>
