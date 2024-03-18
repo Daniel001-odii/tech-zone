@@ -150,10 +150,11 @@
                                     </div>
 
                                 </div>
-                                <div v-if="is_application">
+                                <!-- {{ application_form }} -->
+                                <div v-if="is_application && application_form.attachments">
                                     <span v-if="application_form.attachments.length > 0">you attached files are secured..</span>
-                                    <span v-else>No attachments</span>
                                 </div>
+                                <div v-else>No attachments</div>
                             </div>
                          </div>
                          <div class="flex flex-col text-left gap-3">
@@ -306,7 +307,7 @@ export default {
             };
             try{
                 const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, formData, config);
-                // console.log(response)
+                console.log(response)
                 this.loading = false;
                 this.application_sent = true;
             } catch(error){
