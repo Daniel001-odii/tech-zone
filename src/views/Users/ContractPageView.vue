@@ -1,18 +1,37 @@
 <template>
+    <FullPageLoading v-if="loading"/>
+
     <Modal :title="'Submit a review'" :modal_active="feedbackModal">
         <template #body>
             <form @submit.prevent="submitFeedback">
                 <div class="flex flex-col gap-3 text-2xl">
-                    <p>Rate the user or client</p>
-                    <input type="number" max="5" min="0"  step="0.1" v-model="feedback.rating" placeholder="your rating here">
-                    <br/>
-                    <p>Send an honest review to the user or client</p>
-                    <textarea v-model="feedback.review" placeholder="a very honest review about your experience working with this person"></textarea>
+                    <p class=" text-blue-500">Rate your experience with the client</p>
+                        <div class="modal-body mt-3" @submit.prevent="sendClientFeedBack">
+                                <div>
+                                    <!-- Example 1: Communication -->
+                                    <div class="feedback_row" v-for="(feedback, feedback_id) in review_type" :key="feedback_id">
+                                        <span>{{ feedback }}:</span>
+                                        <div class="rating flex flex-row gap-2">
+                                            <label v-for="value in 5" :key="value" class="">
+                                            <input type="radio" :value="value" v-model="rating[feedback_id]" :id="value" :name="value" class="sr-only" />
+                                            <div :class="{ 'selected': value <= rating[feedback_id] }" class="custom-rating-box tz_rate" @click="selected(value, 'grade_a')">
+                                                {{ value }}
+                                            </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    Total Score: {{ rating.reduce((acc, value) => {return acc + value }, 0) / 5 }}
+                                </div>
+                            </div>
+                    <p>Write an honest review to the client</p>
+                    <span class=" text-sm bg-blue-100 text-blue-700 p-3 rounded-md">The client will be able to see your review once submitted</span>
+                    <textarea v-model="feedback.review" placeholder="a very honest review about your experience working with this person" class="form_input text-xl"></textarea>
                 </div>
             </form>
         </template>
         <template #footer>
-            <button type="button" class="btn" @click="submitFeedback">Submit Feedback</button>
+            <button type="button" class="btn" @click="submitFeedback" :disabled="rating.length < 5 || feedback.review == ''">Submit Feedback</button>
+            <!-- <button type="button" class="btn" @click="ratingScore">Submit Feedback</button> -->
         </template>
     </Modal>
 
@@ -34,7 +53,7 @@
                 <p class="text-left pt-5 pl-8 text-gray-400">contract status: {{ contract.status }}</p>
                 <div v-if="contract && user.role == 'user'" class="flex flex-col p-5 text-left">
                     
-                    <span v-if="contract.action == 'accepted'" class=" bg-green-100 text-green-700 p-5 rounded-lg m-3"> You accepted this offer </span>
+                    <span v-if="contract.action == 'accepted'" class=" bg-green-200 text-green-700 p-5 rounded-lg m-3"> You accepted this offer </span>
                     <span v-if="contract.action == 'declined'" class=" bg-red-100 text-red-700 p-5 rounded-lg m-3"> You declined this offer </span>
 
                     <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">{{ user.firstname }} you received a job contract offer!</h1>
@@ -72,9 +91,9 @@
                            <i class="bi bi-exclamation-circle"></i> Feedback submission will only be available when contract is completed.
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.user_feedback">
-                                <span v-if="contract.user_feedback">Feedback sent</span>
-                                <span v-else>Send Freelancer Feedback</span>
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
+                                <span v-if="contract.employer_feedback.review">Feedback sent</span>
+                                <span v-else>Send Feedback to client</span>
                             </button>
                         </div>
                         
@@ -84,7 +103,7 @@
 
                 <!-- CONTRACT VIEWING FOR EMPLOYERS.... -->
                 <div v-if="contract && user.role == 'employer'" class="flex flex-col p-5 text-left">
-                    <span v-if="contract.action == 'accepted'" class=" bg-[#d9ffcc] text-[#2b860c] p-5 rounded-lg m-3"> {{ contract.user.firstname }} {{ contract.user.lastname }} accepted this offer </span>
+                    <span v-if="contract.action == 'accepted'" class=" bg-green-200 text-green-700 p-5 rounded-lg m-3"> {{ contract.user.firstname }} {{ contract.user.lastname }} accepted this offer </span>
                     <span v-if="contract.action == 'declined'" class=" bg-red-100 text-red-700 p-5 rounded-lg m-3"> {{ contract.user.firstname }} {{ contract.user.lastname }} declined this offer </span>
 
                     <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">you sent {{ contract.user.firstname }} {{ contract.user.lastname }} a job contract offer!</h1>
@@ -117,9 +136,9 @@
                            <i class="bi bi-exclamation-circle"></i>  Feedback submission will only be available when contract is completed.
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback">
-                                <span v-if="contract.employer_feedback">Feedback sent</span>
-                                <span v-else>Send Freelancer Feedback</span>
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.user_feedback.review">
+                                <span v-if="contract.user_feedback.review">Feedback sent</span>
+                                <span v-else>Send Feedback to Freelancer</span>
                             </button>
                         </div>
                     </div>
@@ -192,12 +211,14 @@ import axios from 'axios';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import Modal from '@/components/Modal.vue';
+import FullPageLoading from '@/components/FullPageLoading.vue';
 
 export default {
     name: "ContractsListPageView",
-    components: { TemplateView, SkeletonLoader, Modal },
+    components: { TemplateView, SkeletonLoader, Modal, FullPageLoading },
     data(){
         return{
+            loading: '',
             user: '',
             contract: '',
             headers: {
@@ -205,17 +226,31 @@ export default {
             },
 
             feedback: {
-                rating: 0,
+                rating: '',
                 review: '',
             },
 
             feedbackModal: false,
+
+            rating: [],
+            review_type: [
+                "Communication",
+                "Requirements",
+                "Payment Promptness",
+                "Project Clarity and Scope",
+                "Overall Satisfaction"
+            ],
         }
     },
     methods: {
         readableTimeFormat(time){
             return formatToRelativeTime(time);
         },
+
+        selected(value, section) {
+            this.rating[section] = value;
+        },
+
 
         async getUser(){
             const headers = this.headers;
@@ -236,6 +271,9 @@ export default {
                 this.contract = response.data.contract;
             }catch(error){
                 console.log(error);
+                if(error.response.status == 404){
+                    this.$router.push("/404");
+                }
             }
         },
 
@@ -312,13 +350,26 @@ export default {
         },
 
         async submitFeedback(){
+            this.loading = true;
             const headers = this.headers;
-            console.log(this.user.role, this.feedback)
+            // console.log(this.user.role, this.feedback);
+
+            // CALCULATE THE OVER ALL RATING....
+                if(this.rating.length >= 5){
+                    const calculated_rating = this.rating.reduce((acc, value) => {return acc + value }, 0) / 5;
+                    // console.log("calcuated rating: ", calculated_rating);
+                    this.feedback.rating = calculated_rating;
+                };
+            // RATING CALCULATION ENDS HERE....
+
+
             // LOGGED IN AS USER AND RATING THE EMPLOYER >>>>>>>>>
             if(this.user.role == 'user'){
                 try{
                     const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/user-feedback`, this.feedback, { headers });
-                    console.log(response)
+                    // console.log(response);
+                    this.loading = false;
+                    window.location.reload()
                 }catch(error){
                     console.log(error)
                 }
@@ -327,15 +378,17 @@ export default {
             if(this.user.role == 'employer'){
                 try{
                     const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/employer-feedback`, this.feedback, { headers });
-                    console.log(response)
+                    // console.log(response);
+                    this.loading = false;
+                    window.location.reload()
                 }catch(error){
                     console.log(error)
                 }
             }
         }
     },
-    computed(){
-
+    computed: {
+        
     },
     mounted(){
         this.getUser();
@@ -345,5 +398,38 @@ export default {
 }
 </script>
 <style scoped>
-    
+    /* This style is used to visually represent the rating as custom-designed boxes */
+
+.rating{
+    @apply flex flex-row justify-between w-[300px] text-xl gap-4
+}
+
+.rating-item {
+  @apply relative cursor-pointer
+}
+
+.sr-only{
+    @apply absolute opacity-0 w-[1px] h-[1px] -m-[1px] p-0 overflow-hidden
+}
+
+/* Style for the custom-designed rating boxes */
+.custom-rating-box {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.selected {
+ @apply bg-tz_blue text-white
+}
+
+
+.feedback_row{
+    @apply flex flex-row flex-wrap gap-3 mb-3 border-b pb-3 dark:border-b-gray-500
+}
+.closeBtn{
+    right: 0px !important;
+}
+
+.tz_rate {
+    @apply border dark:border-gray-500 rounded-md w-[35px] h-[35px] flex justify-center items-center cursor-pointer;
+}
 </style>

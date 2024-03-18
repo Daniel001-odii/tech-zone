@@ -120,11 +120,13 @@ export default {
                 this.loading = false;
                 localStorage.setItem("life-gaurd", newResponse.data.token);
                 if(newResponse.data.role == "user"){
-                    this.$router.push("/jobs")
+                    this.$router.push("/jobs");
+                    window.reload()
                 }
                 
                 if(newResponse.data.role == "employer"){
                     this.$router.push("/client/dashboard");
+                    window.reload()
                 }
                 
             }catch(error){

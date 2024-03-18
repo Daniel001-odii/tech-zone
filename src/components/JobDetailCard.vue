@@ -62,7 +62,7 @@ export default {
     name: "JobDetailCard",
     props: {
         company: String,
-        location: Object,
+        location: String,
         posted: String,
         budget: String,
         period: String,

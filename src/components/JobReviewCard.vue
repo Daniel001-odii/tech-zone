@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="flex flex-col text-left gap-3 border-b p-2 md:p-4 hover:bg-tz_light_blue">
+        <div class="flex flex-col text-left gap-3 border-b p-2 md:p-4 hover:bg-tz_light_blue dark:border-b-gray-500">
             <div class="flex flex-row justify-between items-center gap-3">
                 <RouterLink to="#">
-                    <div class="text-xl font-bold text-tz_blue underline">{{ title }}</div>
+                    <div class="text-xl text-tz_blue underline">{{ title }}</div>
                 </RouterLink>
-                <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">
+                <button class="border rounded-full h-14 w-14 hover:bg-gray-200 dark:hover:bg-tz_dark_blue">
                     <i class="bi bi-share"></i>
                 </button>
             </div>
@@ -14,11 +14,9 @@
                 <div>
                     "<slot name="feedback"></slot>"
                 </div>
-                <div class="font-bold flex flex-row">
+                <div class="flex flex-row">
                     <div class="flex flex-col">
-                        <span>
                             <slot name="star-rating"></slot>
-                        </span>
                         <span>
                             <slot name="date"></slot>
                         </span>

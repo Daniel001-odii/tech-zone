@@ -77,8 +77,6 @@
                 <!-- <div >loading user data...</div> -->
                 <FullPageLoading v-if="!user"/>
 
-                <div>User not Found</div>
-
                 <div class="p-5" v-if="user">
                     <div class=" flex flex-col items-center gap-8">
 
@@ -90,15 +88,15 @@
                                
                                 <div class="flex flex-col items-start text-start">
                                     <h1 class="font-bold text-4xl flex flex-row items-center gap-1">{{ user.firstname }} {{ user.lastname }}
-                                        <svg class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <svg v-if=" user.settings.KYC.is_verified" class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z" clip-rule="evenodd"/>
                                         </svg>
                                     </h1>
                                     <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                                     <p>{{ user.email }}</p>
                                     <div clas="flex flex-row gap-3">
-                                        <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.ratings)"></p>
-                                        <span>({{ userRating(user.ratings) }}) {{ user.ratings.length }} reviews</span>
+                                        <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user_rating)"></p>
+                                        <span>({{ user_rating }}) {{ user_rating_count }} reviews</span>
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +106,7 @@
                                     <span v-if="user.is_verified">user is verified</span>
                                     <span v-else="user.is_verified">user is not verified</span>
                                 </div>
-                                <p>Joined: {{ user.created }}</p>
+                                <p>Joined: {{ readableDate(user.created) }}</p>
                                 <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
                                 <div class="flex flex-row flex-wrap gap-3 mt-3">
                                     <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
@@ -184,13 +182,18 @@
                                     <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
                                         <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
                                             <template #feedback>{{ contract.user_feedback.review }}</template>
-                                            <template #star-rating>{{ contract.employer_feedback.rating }}</template>
-                                            <template #date>{{ contract.created }}</template>
+                                            <template #star-rating>
+                                                <div>
+                                                    <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.employer_feedback.rating)"></p>
+                                                    <!-- rating: {{ useStarFromInteger(contract.employer_feedback.rating) }} -->
+                                                </div>
+                                            </template>
+                                            <template #date>{{ readableDate(contract.created) }}</template>
                                             <template #status>
                                                 <span class="px-4 py-1 text-white rounded-md text-xl" 
                                                 :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                         contract.status == 'paused'?'bg-orange-500':'',
-                                                        contract.status == 'completed'?'bg-green':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
                                                         contract.status == 'closed'?'bg-gray-500':''
                                                         ]">
                                                     {{ contract.status }}
@@ -216,9 +219,11 @@ import Modal from '@/components/Modal.vue';
 import axios from 'axios';
 import LoaderButton from '@/components/LoaderButton.vue';
 import { generateStarRating } from '@/utils/ratingStars';
+import { generateStarRatingFromInteger } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 
+import { formatTimestamp } from '@/utils/dateFormat';
 import { head } from 'vue-head'
 
 export default {
@@ -231,6 +236,9 @@ export default {
             profile_edit_menu: false,
 
             loading: null,
+
+            user_rating: '',
+            user_rating_count: '',
 
             user_form: {
                 loading: false,
@@ -322,19 +330,33 @@ export default {
             }
         },
 
-        userRating(ratings){
-            if(ratings > 0){
-                const sum = ratings.reduce((acc, rating) => acc + rating, 0);
-                return sum / ratings.length;
-            } else {
-                return 0
+        async getUserRating(user_id){
+            try{
+                const response = await axios.get(`${this.api_url}/user/${user_id}/rating`);
+                this.user_rating = response.data.averageRating;
+                this.user_rating_count = response.data.totalRatingsCount;
+            }catch(error){
+
             }
-            
         },
 
-        userStars(ratings){
-            return generateStarRating(ratings);
+        // userRating(ratings){
+        //     if(ratings > 0){
+        //         const sum = ratings.reduce((acc, rating) => acc + rating, 0);
+        //         return sum / ratings.length;
+        //     } else {
+        //         return 0
+        //     }
+            
+        // }
+        useStarFromInteger(rating){
+            return generateStarRatingFromInteger(rating);
         },
+
+        readableDate(date){
+            return formatTimestamp(date);
+        },
+        
 
         checkCurrentViewer(){
             const token = localStorage.getItem('life-gaurd');
@@ -350,29 +372,19 @@ export default {
 
 
     },
+    computed: {
+        
+        },
     mounted(){
         if(this.$route.params.user_id){
             this.getPublicUserData();
         } else{
             this.getUserData();
         }
-      
+        this.getUserRating(this.$route.params.user_id);
         this.getActiveAndCompletedContracts();
-
-        // if(this.user){
-        //     this.$options.head.title = `${this.user.firstname} ${this.user.lastname}`;
-        //     this.$options.head.meta.push({ name: 'description', content: `checkout ${this.user.title} on Apex-tek a freelance marketplace for nigerians`});
-        // }
-        
-        
-    },
-    // watch: {
-    //     user(newTitle) {
-    //     this.$options.head.title = `${this.user.firstname} on apex-tek XXX`;
-    //     },
-    // }
-
-}
+        },
+    }
 </script>
 <style>
 

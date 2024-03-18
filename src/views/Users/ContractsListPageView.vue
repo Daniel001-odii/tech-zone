@@ -9,7 +9,10 @@
                     </div>
                 </div>
 
-                <div v-if="!contracts">Loading Contracts...</div>
+                <div v-if="loading && !contracts" v-for="box in 4">
+                    <SkeletonLoader/>
+                </div>
+                
                 <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contract_list()">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                         <div class="flex flex-row justify-between items-center">
@@ -20,12 +23,16 @@
                                 <i class="bi bi-three-dots"></i>
                             </button> -->
                         </div>
+
+
                         <div>
                             <div class="text-xl font-bold">Employer {{ contract.employer.firstname }} {{ contract.employer.lastname }}</div>
                             <div class="text-xl font-bold">Freelancer {{ contract.user.firstname }} {{ contract.user.lastname }} <br/> <span class=" font-thin text-sm">{{ contract.user.email }}</span></div>
                             <div>{{ contract.employer.company_name }}</div>
                             <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
                         </div>
+
+
                         <div class="flex flex-row gap-3">
                             <span class="px-4 py-1 text-white rounded-md text-xl" 
                             :class="[contract.status == 'open'?'bg-tz_blue':'', 
@@ -54,10 +61,12 @@ import JobDetailCard from '@/components/JobDetailCard.vue';
 import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
+import SkeletonLoader from '@/components/SkeletonLoader.vue';
+
 
 export default {
     name: "ContractPageView",
-    components: { TemplateView, ContractStatus },
+    components: { TemplateView, ContractStatus, SkeletonLoader },
     data(){
         return{
             contracts: '',
@@ -65,6 +74,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             search_term: '',
+            loading: null,
         }
     },
     methods:{
@@ -78,13 +88,16 @@ export default {
         },
         // get all user contracts...
         async getContracts(){
+            this.loading = true;
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/contracts`,  { headers } );
                 console.log("contracts :", response);
                 this.contracts = response.data.contracts.reverse();
+                // this.loading = false;
             }catch(error){
                 console.log("contracts :", error);
+                // this.loading = false;
             }
         }
     },

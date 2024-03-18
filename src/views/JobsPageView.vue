@@ -44,22 +44,26 @@
                                
                                 <div  class=" lg:w-3/4 h-full overflow-y-scroll items-start flex flex-col gap-3">
                                     
-                                    <div v-for="(job, job_index) in jobs" :key="job_index">
-                                        <div v-if="!job.is_deleted">
+                                    <div v-for="(job, job_index) in jobs" :key="job_index" class="w-full">
+                                        <div v-if="!job.is_deleted" class="w-full">
 
                                         
-                                            <!-- is job saved: {{ checkIfJobIsSaved(job._id) }} -->
-                                            <MainJobCard  @click="showJobDetail(job_index)"
+                                            <!-- @saveJob="addJobToSaves(job._id)" -->
+                                            <!-- is saved: {{checkIfJobIsSaved(job._id)}} -->
+                                            <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
                                             :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
-                                            @saveJob="addJobToSaves(job._id)" 
-                                            :job_is_saved="checkIfJobIsSaved(job._id)" 
                                             :company="job.employer.profile.company_name" :rating="5" 
                                             @flagJob="console.log('job flagged')"
                                             :budget="job.budget" 
                                             :period="job.period" 
                                             :remote="job.location.remote"
-                                            :is_applied="checkIfJobIsApplied(job._id)"
-                                            >
+                                            :is_applied="checkIfJobIsApplied(job._id)">
+                                                <template #save-button>
+                                                    <button class="icon_btn" @click="addJobToSaves(job._id)">
+                                                        <i v-if="checkIfJobIsSaved(job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
+                                                        <i v-else class="bi bi-bookmark-check"></i>
+                                                    </button>
+                                                </template>
                                                 <template #job-title>
                                                 <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
                                                 </template>
@@ -67,7 +71,7 @@
                                                     <span v-if="job.location.remote == 'true'">remote</span>
                                                     <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
                                                 </template>
-                                                <template v-if="job.decription" #job-description>{{  job.description.substring(0, 300) }}...
+                                                <template #job-description>{{  job.description.substring(0, 200) }}...
                                                 </template>
                                                 <template #job-posting-time>{{  formattedDate(job.created) }}</template>
                                             </MainJobCard>
@@ -76,12 +80,12 @@
                                     
                                 </div>
 
-                                <div class="hidden lg:flex lg:w-10/12 h-full">
-                                   <JobDetailCard class="h-full"
+                                <div class="hidden lg:flex lg:w-10/12 h-full w-full">
+                                   <JobDetailCard class="h-full w-full"
                                    @visitJobPost="this.$router.push('/jobs/' + jobs[selectedJob]._id + '/application')"
                                    :company="jobs[selectedJob].employer.profile.company_name" 
                                    :remote="jobs[selectedJob].location.remote"
-                                   :location="jobs[selectedJob].location" 
+                                   :location="`${jobs[selectedJob].location.address} ${jobs[selectedJob].location.state}`" 
                                    :posted="formattedDate(jobs[selectedJob].created)" 
                                    :period="jobs[selectedJob].period" 
                                    :budget="jobs[selectedJob].budget.toLocaleString()"
@@ -261,7 +265,7 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 this.user = response.data.user;
-                this.saved_jobs = this.user.saved_jobs;
+                // this.saved_jobs = this.user.saved_jobs;
             }catch(error){
                 console.log("user data error:", error)
             }
@@ -300,7 +304,8 @@ export default {
            try{
                 const headers = this.headers;
                 const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
-                console.log(res)
+                console.log(res);
+                this.getSavedJobs();
            }catch(error){
             console.log(error)
            }
@@ -311,9 +316,10 @@ export default {
             this.loading = true;
             try{
                 const response = await axios.get(`${this.api_url}/user/jobs/applied`, { headers });
-                console.log(response.data)
+                console.log("your applications: ", response.data)
                 this.applied_jobs = response.data.applications.map(job => job._id);
-                console.log("applied jobs id: ", this.applied_jobs);
+                // this.applied_jobs = response.data.applications;
+                // console.log("applied jobs id: ", this.applied_jobs);
                 this.loading = false;
             } catch(error){
                 this.loading = false;
@@ -351,6 +357,17 @@ export default {
             }
         },
 
+        async getSavedJobs(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/user/jobs/saved`, { headers });
+                // console.log("your saved jobs id: ", response.data.savedJobs)
+                this.saved_jobs = response.data.savedJobs.map(job => job._id);
+            }catch(error){
+                console.log("error saving job")
+            }
+        },
+
         formattedDate(dateToFormat) {
             return formatToRelativeTime(dateToFormat);
         },
@@ -363,7 +380,7 @@ export default {
 
         checkIfJobIsApplied(job_id){
             if(this.user.role == 'user'){
-                return this.applied_jobs.includes(job_id)
+                return this.applied_jobs.includes(job_id);
             }
         }
 
@@ -380,6 +397,7 @@ export default {
         this.getJobs();
         this.getAllApplications();
         this.getContracts();
+        this.getSavedJobs();
 
         if(this.$route.params.tab == 'assigned'){
             this.showTab = 'tab-2';
@@ -400,5 +418,8 @@ export default {
         @apply border-b-4 rounded-sm border-b-tz_blue
     }
 
+    .icon_btn{
+        @apply p-2 hover:bg-tz_light_blue h-10 w-10 rounded-full
+    }
 
 </style>

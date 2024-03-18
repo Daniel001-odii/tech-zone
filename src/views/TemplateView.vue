@@ -1,13 +1,13 @@
 <template>        
-<div class=" h-full flex flex-row bg-white dark:bg-[#27323F] dark:text-white ">
+<div class=" h-screen flex flex-row bg-white dark:bg-[#27323F] dark:text-white">
     <div class=" flex h-full">
         <LeftNavBar v-if="leftNav" :class="nav_active ? 'block':'hidden'" class="md:block"/>
     </div>
-    <div class=" flex w-full relative top-0 h-screen flex-col">
+    <div class=" flex w-full relative top-0 h-screen flex-col h-full">
         <div class=" w-full text-left p-5 text-3xl border-b flex items-center pl-3 dark:border-gray-600">
             <span class="flex gap-5">
                 <button @click="$router.go(-1)">
-                    <i class="bi bi-arrow-left"></i>
+                    <i class="bi bi-arrow-left text-[20px]"></i>
                 </button>
                 
                 <slot name="page-title">Work Explorer</slot>

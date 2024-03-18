@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="flex flex-col border p-3 rounded-md text-left gap-3 hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
+        <div class="flex flex-col justify-between border p-3 rounded-md text-left gap-3 max-h-[300px] hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
+            
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between items-center">
                     <span class="font-bold">
@@ -9,10 +10,10 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="icon_btn bg-tz_light_blue" @click="saveJob">
-                            <i v-if="saved || job_is_saved" class="bi bi-bookmark-check-fill text-tz_blue"></i>
-                            <i v-else class="bi bi-bookmark-check"></i>
-                        </button>
+                        <slot name="save-button">
+                            <h1>Hello</h1>
+                        </slot>
+                        
                         <button class="icon_btn" @click="flagJob">
                             <i class="bi bi-hand-thumbs-down"></i>
                         </button>
@@ -39,7 +40,9 @@
                     <i class="bi bi-briefcase"></i> <span>{{ period }}</span>
                 </span>
             </div>
-            <div>
+
+
+            <div class="">
                 <slot name="job-description">
                     We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
                 </slot>

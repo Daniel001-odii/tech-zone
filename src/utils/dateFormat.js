@@ -35,5 +35,12 @@ export function formatToRelativeTime(dateString) {
       const years = Math.floor(elapsedMilliseconds / year);
       return `${years} year${years > 1 ? 's' : ''} ago`;
     }
-  }
+}
+
+
+export function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString(undefined, options);
+};
   
