@@ -128,8 +128,8 @@
                                             <div>
                                                 <p class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</p>
                                                 <p class="text-gray-400">{{ user.profile.title }}</p>
-                                                <p class="text-sm flex flex-row gap-1 text-orange-500" v-html="userStars(user.ratings)"></p>
-                                                <p class="text-gray-400">Earned: ${{ user.earned }}</p>
+                                                <!-- <p class="text-sm flex flex-row gap-1 text-orange-500" v-html="userStars(user.ratings)"></p> -->
+                                                <p class="text-gray-400">{{ getUserRating(user_id) }}</p>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>
@@ -282,6 +282,18 @@ export default {
                 alert(message)
             }catch(error){
                 console.log("error sending Contract:", error)
+            }
+        },
+
+        async getUserRating(user_id){
+            try{
+                const response = await axios.get(`${this.api_url}/user/${user_id}/rating`);
+                this.user_rating = response.data.averageRating;
+                this.user_rating_count = response.data.totalRatingsCount;
+                const user_feedbacks = {user_rating, user_rating_count};
+                return user_feedbacks
+            }catch(error){
+
             }
         },
 

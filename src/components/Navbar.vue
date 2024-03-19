@@ -247,6 +247,7 @@ export default {
                     alert('Your session expired please login again')
                     localStorage.removeItem('life-gaurd');
                     this.$router.push('/login');
+                    window.location.reload();
                 }
             }
         },
