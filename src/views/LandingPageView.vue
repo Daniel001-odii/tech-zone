@@ -260,7 +260,7 @@ export default {
     }
 
     .section_img{
-        /* @apply h-96 */
+        @apply md:w-[45%]
     }
 
     .section_subtitle{
