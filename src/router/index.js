@@ -30,6 +30,7 @@ import ClientContractsListPageViewVue from '@/views/Employers/ContractsListPageV
 import ClientProfilePageViewVue from '@/views/Employers/ProfilePageView.vue'
 import NotifcationsPageView from '@/views/NotifcationsPageView.vue'
 import JobsListPageView from '@/views/Employers/JobsListPageView.vue'
+import TemplateView from '@/views/TemplateView.vue'
 
 
 const routes = [
@@ -95,6 +96,20 @@ const routes = [
     name: 'jobs',
     component: JobsPageViewVue,
   },
+
+  // {
+  //   path: '/in',
+  //   component: TemplateView,
+  //   children: [
+  //     {path: 'jobs', component: JobsPageViewVue}
+  //   ]
+  // },
+
+  // {
+  //   path: '/a/jobs',
+  //   name: 'jobs',
+  //   component: JobsPageViewVue,
+  // },
 
   {
     path: '/jobs/:tab',

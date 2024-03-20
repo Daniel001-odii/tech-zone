@@ -1,7 +1,8 @@
 <template>        
 <div class=" h-screen flex flex-row bg-white dark:bg-[#27323F] dark:text-white">
     <div class=" flex h-full">
-        <LeftNavBar v-if="leftNav" :class="nav_active ? 'block':'hidden'" class="md:block"/>
+        <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
+        <!-- <LeftNavBar v-if="leftNav" :class="nav_active ? 'block':'hidden'" class="md:block"/> -->
     </div>
     <div class=" flex w-full relative top-0 h-screen flex-col h-full">
         <div class=" w-full text-left p-5 text-3xl border-b flex items-center pl-3 dark:border-gray-600">
@@ -10,7 +11,7 @@
                     <i class="bi bi-arrow-left text-[20px]"></i>
                 </button>
                 
-                <slot name="page-title">Work Explorer</slot>
+                <slot name="page-title">Default Title</slot>
             </span>
         </div>
 
@@ -18,6 +19,7 @@
             <slot name="page-contents">
                     Page contents here...
             </slot>
+            <!-- <router-view></router-view> -->
         </div>
     </div>
 </div>

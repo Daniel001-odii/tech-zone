@@ -26,7 +26,7 @@
                                 <input class="form_input" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                             </div>
                         </div>
-                        <div class="flex flex-row justify-between flex-wrap">
+                        <div class="flex flex-row gap-5 justify-between flex-wrap">
                             <div class="flex flex-row-reverse gap-1 items-center">
                                 <label for="rem-details">Remember details</label>
                                 <input name="rem-details" id="rem-details" type="checkbox" />

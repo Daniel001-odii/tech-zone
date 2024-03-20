@@ -124,6 +124,9 @@
                                     <div>Hires:</div>
                                 </div>
 
+                                
+
+
                                 <div>
                                     <span class="font-bold">Share this job</span>
                                     <div class="bg-tz_light_blue p-3 border rounded-md w-fit cursor-not-allowed">{{ this.$route.path }}</div>

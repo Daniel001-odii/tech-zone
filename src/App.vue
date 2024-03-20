@@ -16,7 +16,7 @@ export default {
 
 <template>
 
-<div class=" h-screen w-full">
+<div class=" w-full">
   <div>
     <Navbar/>
   </div>
