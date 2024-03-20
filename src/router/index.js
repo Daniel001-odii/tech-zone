@@ -91,22 +91,26 @@ const routes = [
   },
 
 
+  // {
+  //   path: '/jobs',
+  //   name: 'jobs',
+  //   component: JobsPageViewVue,
+  // },
+
   {
-    path: '/jobs',
-    name: 'jobs',
-    component: JobsPageViewVue,
+    path: '/in',
+    component: TemplateView,
+    children: [
+      {path: 'jobs', component: JobsPageViewVue},
+      {path: 'saved', component: SavedJobsViewVue},
+      {path: 'messages', component: MessagePageViewVue},
+      {path: 'contracts', component: ContractsListPageViewVue},
+      {path: 'users/:user_id', component: ProfilePageViewVue},
+    ]
   },
 
   // {
-  //   path: '/in',
-  //   component: TemplateView,
-  //   children: [
-  //     {path: 'jobs', component: JobsPageViewVue}
-  //   ]
-  // },
-
-  // {
-  //   path: '/a/jobs',
+  //   path: '/in/jobs',
   //   name: 'jobs',
   //   component: JobsPageViewVue,
   // },

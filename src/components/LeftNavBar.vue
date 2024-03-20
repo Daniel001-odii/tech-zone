@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 dark:border-gray-600 h-screen dark:bg-[#27323F] ">
+        <div class=" md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 dark:border-gray-600 dark:bg-[#27323F] h-full">
             <div class=" md:h-20"></div>
             <!-- EMPLOYER -->
             <div v-if="user.role === 'employer'">
@@ -30,28 +30,28 @@
 
             <!-- USER -->
             <div v-if="user.role === 'user'">
-                <RouterLink to="/jobs" >
+                <RouterLink to="/in/jobs" >
                     <div class="nav_item" :class="{ 'active': isWorkExplorer }">
                         <i class="bi bi-briefcase" v-if="!isWorkExplorer"></i> 
                         <i class="bi bi-briefcase-fill" v-if="isWorkExplorer"></i>
                         <span class="md:hidden lg:inline-block">Work Explorer</span>
                     </div>
                 </RouterLink>
-                <RouterLink to="/saved-jobs" >
+                <RouterLink to="/in/saved" >
                     <div class="nav_item" :class="{ 'active': isSavedJobs }">
                         <i class="bi bi-bookmark-check" v-if="!isSavedJobs"></i> 
                         <i class="bi bi-bookmark-check-fill" v-if="isSavedJobs"></i> 
                         <span class="md:hidden lg:inline-block">Saved Jobs</span>
                     </div>
                 </RouterLink>
-                <RouterLink to="/messages" >
+                <RouterLink to="/in/messages" >
                     <div class="nav_item" :class="{ 'active': isMessages }">
                         <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
                         <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
                         <span class="md:hidden lg:inline-block">Messages</span>
                     </div>
                 </RouterLink>
-                <RouterLink to="/contracts" >
+                <RouterLink to="/in/contracts" >
                     <div class="nav_item" :class="{ 'active': isContracts }">
                         <i class="bi bi-gift" v-if="!isContracts"></i> 
                         <i class="bi bi-gift-fill" v-if="isContracts"></i> 
@@ -79,10 +79,10 @@ export default {
     name: "LeftnavBar",
     
     computed: {
-        isWorkExplorer() { return this.$route.path.startsWith("/jobs"); },
-        isSavedJobs() { return this.$route.path.startsWith("/saved-jobs"); },
-        isContracts() { return this.$route.path.startsWith("/contracts"); },
-        isMessages() { return this.$route.path.startsWith("/messages"); },
+        isWorkExplorer() { return this.$route.path.startsWith("/in/jobs"); },
+        isSavedJobs() { return this.$route.path.startsWith("/in/saved"); },
+        isContracts() { return this.$route.path.startsWith("/in/contracts"); },
+        isMessages() { return this.$route.path.startsWith("/in/messages"); },
 
         // EMPLOYER....
         isDashboard() { return this.$route.path.startsWith("/client/dashboard"); },

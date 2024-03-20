@@ -1,5 +1,5 @@
     <template>
-    <div>
+    <div class="overflow-y-scroll h-full">
         <!-- PROFILE EDIT MODAL HERE -->
         <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
             <template #body>
@@ -68,147 +68,138 @@
            
         </Modal>
 
+        <FullPageLoading v-if="!user"/>
 
-        <TemplateView :leftnav="true">
-        <!-- <TemplateView :leftNav="false"> -->
-            <template #page-title>Profile</template>
-            
-            <template #page-contents>
-                <!-- <div >loading user data...</div> -->
-                <FullPageLoading v-if="!user"/>
+        <div class="p-5" v-if="user">
+            <div class=" flex flex-col items-center gap-8">
 
-                <div class="p-5" v-if="user">
-                    <div class=" flex flex-col items-center gap-8">
-
-                        <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border  dark:border-gray-600 ">
-                            <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
-                                <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
-                                <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
-                                    <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
-                               
-                                <div class="flex flex-col items-start text-start">
-                                    <h1 class="font-bold text-4xl flex flex-row items-center gap-1">{{ user.firstname }} {{ user.lastname }}
-                                        <svg v-if=" user.settings.KYC.is_verified" class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </h1>
-                                    <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
-                                    <p>{{ user.email }}</p>
-                                    <div clas="flex flex-row gap-3">
-                                        <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user_rating)"></p>
-                                        <span>({{ user_rating }}) {{ user_rating_count }} reviews</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
-                            <div class=" flex flex-col items-start justify-center text-left p-5">
-                                <div>
-                                    <span v-if="user.is_verified">user is verified</span>
-                                    <span v-else="user.is_verified">user is not verified</span>
-                                </div>
-                                <p>Joined: {{ readableDate(user.created) }}</p>
-                                <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
-                                <div class="flex flex-row flex-wrap gap-3 mt-3">
-                                    <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
-                                    <button class="btn_white dark:hover:bg-tz_light_blue">View Resume</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class=" w-full lg:w-3/4">
-                            <div class="border rounded-xl p-3 text-left  dark:border-gray-600 ">
-                                <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
-                            </div>
-
-                            <div>
-                                <div class="profile_section">
-                                    <h2 class="font-bold">About Me</h2>
-                                    <div>
-                                        {{ user.profile.bio }}
-                                        <span v-if="!user.profile.bio">No content...</span>
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Skills</h2>
-                                    <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 gap-y-4 mt-3">
-                                        <div v-for="skill in user.profile.skills.split(',')" >
-                                            <span class=" bg-tz_light_blue p-2 rounded-md text-tz_blue">{{ skill }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Phone Number</h2>
-                                    <div>
-                                        {{ user.profile.phone }}
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Email Address</h2>
-                                    <div>
-                                        {{ user.email }}
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Connected Accounts</h2>
-                                    <a :href="user.profile.social" class="text-tz_blue">
-                                       {{ user.profile.social }}
-                                    </a>
-                                </div>
-
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Date Joined</h2>
-                                    <div>
-                                        {{ user.created }}
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class=" w-full lg:w-3/4">
-                            <div class="border rounded-xl p-3 text-left  dark:border-gray-600 ">
-                                <h1 class="font-bold"><i class="bi bi-briefcase"></i> Work History</h1>
-                            </div>
-
-                            <div class="profile_section">
-                                <h2 class="font-bold">Completed Jobs</h2>
-                                <div>
-                                    <SkeletonLoader v-if="!contracts"/>
-                                    <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
-                                        <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
-                                            <template #feedback>{{ contract.user_feedback.review }}</template>
-                                            <template #star-rating>
-                                                <div>
-                                                    <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.employer_feedback.rating)"></p>
-                                                    <!-- rating: {{ useStarFromInteger(contract.employer_feedback.rating) }} -->
-                                                </div>
-                                            </template>
-                                            <template #date>{{ readableDate(contract.created) }}</template>
-                                            <template #status>
-                                                <span class="px-4 py-1 text-white rounded-md text-xl" 
-                                                :class="[contract.status == 'open'?'bg-tz_blue':'', 
-                                                        contract.status == 'paused'?'bg-orange-500':'',
-                                                        contract.status == 'completed'?'bg-green-500':'',
-                                                        contract.status == 'closed'?'bg-gray-500':''
-                                                        ]">
-                                                    {{ contract.status }}
-                                                </span>
-                                            </template>
-                                        </JobReviewCard>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border  dark:border-gray-600 ">
+                    <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
+                        <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
+                        <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
+                            <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
                         
+                        <div class="flex flex-col items-start text-start">
+                            <h1 class="font-bold text-4xl flex flex-row items-center gap-1">{{ user.firstname }} {{ user.lastname }}
+                                <svg v-if=" user.settings.KYC.is_verified" class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z" clip-rule="evenodd"/>
+                                </svg>
+                            </h1>
+                            <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
+                            <p>{{ user.email }}</p>
+                            <div clas="flex flex-row gap-3">
+                                <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user_rating)"></p>
+                                <span>({{ user_rating }}) {{ user_rating_count }} reviews</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
+                    <div class=" flex flex-col items-start justify-center text-left p-5">
+                        <div>
+                            <span v-if="user.is_verified">user is verified</span>
+                            <span v-else="user.is_verified">user is not verified</span>
+                        </div>
+                        <p>Joined: {{ readableDate(user.created) }}</p>
+                        <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
+                        <div class="flex flex-row flex-wrap gap-3 mt-3">
+                            <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
+                            <button class="btn_white dark:hover:bg-tz_light_blue">View Resume</button>
+                        </div>
                     </div>
                 </div>
-            </template>
-        </TemplateView>
+
+                <div class=" w-full lg:w-3/4">
+                    <div class="border rounded-xl p-3 text-left  dark:border-gray-600 ">
+                        <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
+                    </div>
+
+                    <div>
+                        <div class="profile_section">
+                            <h2 class="font-bold">About Me</h2>
+                            <div>
+                                {{ user.profile.bio }}
+                                <span v-if="!user.profile.bio">No content...</span>
+                            </div>
+                        </div>
+
+                        <div class="profile_section">
+                            <h2 class="font-bold">Skills</h2>
+                            <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 gap-y-4 mt-3">
+                                <div v-for="skill in user.profile.skills.split(',')" >
+                                    <span class=" bg-tz_light_blue p-2 rounded-md text-tz_blue">{{ skill }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile_section">
+                            <h2 class="font-bold">Phone Number</h2>
+                            <div>
+                                {{ user.profile.phone }}
+                            </div>
+                        </div>
+
+                        <div class="profile_section">
+                            <h2 class="font-bold">Email Address</h2>
+                            <div>
+                                {{ user.email }}
+                            </div>
+                        </div>
+
+                        <div class="profile_section">
+                            <h2 class="font-bold">Connected Accounts</h2>
+                            <a :href="user.profile.social" class="text-tz_blue">
+                                {{ user.profile.social }}
+                            </a>
+                        </div>
+
+
+                        <div class="profile_section">
+                            <h2 class="font-bold">Date Joined</h2>
+                            <div>
+                                {{ user.created }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class=" w-full lg:w-3/4">
+                    <div class="border rounded-xl p-3 text-left  dark:border-gray-600 ">
+                        <h1 class="font-bold"><i class="bi bi-briefcase"></i> Work History</h1>
+                    </div>
+
+                    <div class="profile_section">
+                        <h2 class="font-bold">Completed Jobs</h2>
+                        <div>
+                            <SkeletonLoader v-if="!contracts"/>
+                            <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
+                                <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
+                                    <template #feedback>{{ contract.user_feedback.review }}</template>
+                                    <template #star-rating>
+                                        <div>
+                                            <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.employer_feedback.rating)"></p>
+                                            <!-- rating: {{ useStarFromInteger(contract.employer_feedback.rating) }} -->
+                                        </div>
+                                    </template>
+                                    <template #date>{{ readableDate(contract.created) }}</template>
+                                    <template #status>
+                                        <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                        :class="[contract.status == 'open'?'bg-tz_blue':'', 
+                                                contract.status == 'paused'?'bg-orange-500':'',
+                                                contract.status == 'completed'?'bg-green-500':'',
+                                                contract.status == 'closed'?'bg-gray-500':''
+                                                ]">
+                                            {{ contract.status }}
+                                        </span>
+                                    </template>
+                                </JobReviewCard>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
     </div>
 </template>
 <script>

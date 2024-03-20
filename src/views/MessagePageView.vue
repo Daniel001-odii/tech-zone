@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <TemplateView :leftNav="true">
+    <!-- <div> -->
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>Messages</template>
-            <template #page-contents>
-                <div class=" flex flex-row h-full">
+            <template #page-contents> -->
+                <div class=" flex flex-row h-full w-full">
                     <!-- LEFT SIDE -->
-                    <div class="w-full md:w-[30%] border-r dark:border-r-gray-700">
+                    <div class="w-full md:w-[300px] border-r dark:border-r-gray-700">
                         <div class="h-[70px] flex flex-col items-start justify-center border-b dark:border-b-gray-700 p-3">
                             <input type='search' class=" w-3/6 md:w-[150px] h-[40px] form_input" placeholder="search for rooms here">
                         </div>
@@ -21,7 +21,7 @@
                     <!-- /LEFT SIDE ENDS HERE -->
 
                     <!-- RIGHT SIDE -->
-                    <div :class="show_chat_room == true ? 'flex' : 'hidden'" class=" hidden absolute top-0 left-0 md:relative md:flex w-[70%] flex-col">
+                    <div :class="show_chat_room == true ? 'flex' : 'hidden'" class=" hidden absolute top-0 left-0 md:relative md:flex w-[100%] flex-col">
                         <div class="h-[70px] border-b dark:border-b-gray-700 flex flex-col justify-center p-3">
                             <span class="font-medium">Alex Ferguson</span>
                             <span class="text-gray-400">Web Development Project</span>
@@ -192,9 +192,9 @@
                     <!-- RIGHT SIDE ENDS HERE -->
                 </div>
                 </div>
-            </template>
-        </TemplateView>
-    </div>
+            <!-- </template>
+        </TemplateView> -->
+    <!-- </div> -->
 </template>
 <script>
 import TemplateView from './TemplateView.vue';

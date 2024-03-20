@@ -1,8 +1,8 @@
 <template>
     <div>
-        <TemplateView :leftNav="true">
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>Saved Jobs</template>
-            <template #page-contents>
+            <template #page-contents> -->
                 <!-- {{ jobs }} -->
                 <!-- {{  getUserData }} -->
                 <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
@@ -53,8 +53,8 @@
                 </div>
 
                 <div v-if="search_term && !job_list().length" class=" p-8 text-center text-red-400">No matches found!</div>
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>
