@@ -18,14 +18,14 @@
                             </button>
                         </div>
 
-                        <div class="flex flex-row h-14 pl-5 border-b items-end dark:border-gray-600">
-                            <!-- <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full"> -->
+                        <!-- <div class="flex flex-row h-14 pl-5 border-b items-end dark:border-gray-600"> -->
+                            <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full">
                             <div class="flex flex-row flex-wrap gap-4 w-full">
                                 <button @click="showTab = 'tab-1'" :class="{ 'active_tab': showTab == 'tab-1' }" class="p-2 border-b-4 border-b-transparent">Available</button>
                                 <button v-if="user" @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Applied</button>
-                                <button v-if="user" @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
-                                <button v-if="user" @click="showTab = 'tab-3'" :class="{ 'active_tab': showTab == 'tab-3' }" class="p-2 border-b-4 border-b-transparent">Completed</button>
-                                <button v-if="user" @click="showTab = 'tab-4'" :class="{ 'active_tab': showTab == 'tab-4' }" class="p-2 border-b-4 border-b-transparent">Declined</button>
+                                <button v-if="user" @click="showTab = 'tab-3'" :class="{ 'active_tab': showTab == 'tab-3' }" class="p-2 border-b-4 border-b-transparent">Assigned</button>
+                                <button v-if="user" @click="showTab = 'tab-4'" :class="{ 'active_tab': showTab == 'tab-4' }" class="p-2 border-b-4 border-b-transparent">Completed</button>
+                                <button v-if="user" @click="showTab = 'tab-5'" :class="{ 'active_tab': showTab == 'tab-5' }" class="p-2 border-b-4 border-b-transparent">Declined</button>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                                                 </button>
                                             </template>
                                             <template #job-title>
-                                            <RouterLink :to="'/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                            <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="job.location.remote == 'true'">remote</span>
@@ -73,7 +73,7 @@
                         <div class="h-full w-full md:w-3/6 hidden md:flex absolute right-0">
                             
                                 <JobDetailCard class="h-full w-full"
-                                @visitJobPost="this.$router.push('/jobs/' + jobs[selectedJob]._id + '/application')"
+                                @visitJobPost="this.$router.push('/in/jobs/' + jobs[selectedJob]._id + '/application')"
                                 :company="jobs[selectedJob].employer.profile.company_name" 
                                 :remote="jobs[selectedJob].location.remote"
                                 :location="`${jobs[selectedJob].location.address} ${jobs[selectedJob].location.state}`" 
@@ -94,9 +94,44 @@
                        
                     </div>
 
+                    <!-- ----------APPLIED JOBS------------ -->
+                    <div v-if="showTab == 'tab-2'" class="h-full flex flex-row gap-3 relative">
+                        <div class="h-full absolute w-full overflow-y-scroll flex flex-col">
+                            <div class=" h-full items-start flex flex-col gap-3">
+                            <div v-for="(job, index) in applications" :key="index" class="w-full">
+                                <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
+                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
+                                        
+                                        @flagJob="console.log('job flagged')"
+                                        :budget="job.budget" 
+                                        :period="job.period" 
+                                        :remote="job.location.remote"
+                                        :is_applied="checkIfJobIsApplied(job._id)">
+                                            <template #save-button>
+                                                <button class="icon_btn" @click="addJobToSaves(job._id)">
+                                                    <i v-if="checkIfJobIsSaved(job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
+                                                    <i v-else class="bi bi-bookmark-check"></i>
+                                                </button>
+                                            </template>
+                                            <template #job-title>
+                                            <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                            </template>
+                                            <template #job-location>
+                                                <span v-if="job.location.remote == 'true'">remote</span>
+                                                <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
+                                            </template>
+                                            <template #job-description>{{  job.description.substring(0, 200) }}...
+                                            </template>
+                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                        </MainJobCard>
+                            </div>
+                            <div v-if="applications.length <= 0">No applied jobs</div>
+                        </div>
+                        </div>
+                    </div>
 
-                    <!-- ---------------------- -->
-                    <div v-if="showTab == 'tab-2'">
+                    <!-- ------------ASSIGNED JOBS---------- -->
+                    <div v-if="showTab == 'tab-3'">
                         <div class="flex flex-col gap-3">
                             <div v-for="contract in contracts" :key="contract._id">
                                 <div v-if="contract.type == 'assigned'">
@@ -104,7 +139,7 @@
                                         
                                         <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                                             <div class="flex flex-row justify-between items-center">
-                                                <RouterLink :to="'/contracts/' + contract._id">
+                                                <RouterLink :to="'/in/contracts/' + contract._id">
                                                     <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                                                 </RouterLink>
                                             </div>
@@ -116,7 +151,7 @@
                                                 <span class="px-4 py-1 text-white rounded-md text-xl" 
                                                 :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                         contract.status == 'paused'?'bg-orange-500':'',
-                                                        contract.status == 'completed'?'bg-green':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
                                                         contract.status == 'closed'?'bg-gray-500':''
                                                         ]">
                                                     {{ contract.status }}
@@ -135,8 +170,8 @@
                         </div>
                     </div>
 
-                    <!-- --------------------- -->
-                    <div v-if="showTab == 'tab-3'">
+                    <!-- ------------COMPLETED JOBS--------- -->
+                    <div v-if="showTab == 'tab-4'">
                         <div class="flex flex-col gap-3">
                             <div v-for="contract in contracts" :key="contract._id">
                                 <div v-if="contract.status == 'completed'">
@@ -144,7 +179,7 @@
                                         
                                         <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                                             <div class="flex flex-row justify-between items-center">
-                                                <RouterLink :to="'/contracts/' + contract._id">
+                                                <RouterLink :to="'/in/contracts/' + contract._id">
                                                     <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                                                 </RouterLink>
                                             </div>
@@ -156,7 +191,7 @@
                                                 <span class="px-4 py-1 text-white rounded-md text-xl" 
                                                 :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                         contract.status == 'paused'?'bg-orange-500':'',
-                                                        contract.status == 'completed'?'bg-green':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
                                                         contract.status == 'closed'?'bg-gray-500':''
                                                         ]">
                                                     {{ contract.status }}
@@ -170,8 +205,8 @@
                         </div>
                     </div>
 
-                    <!-- ------------------- -->
-                    <div v-if="showTab == 'tab-4'">
+                    <!-- ------------DECLINDED JOBS------- -->
+                    <div v-if="showTab == 'tab-5'">
                         <div class="flex flex-col gap-3">
                             <div v-for="contract in contracts" :key="contract._id">
                                 <div v-if="contract.action == 'declined'">
@@ -179,7 +214,7 @@
                                         
                                         <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                                             <div class="flex flex-row justify-between items-center">
-                                                <RouterLink :to="'/contracts/' + contract._id">
+                                                <RouterLink :to="'/in/contracts/' + contract._id">
                                                     <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                                                 </RouterLink>
                                             </div>
@@ -191,7 +226,7 @@
                                                 <span class="px-4 py-1 text-white rounded-md text-xl" 
                                                 :class="[contract.status == 'open'?'bg-tz_blue':'', 
                                                         contract.status == 'paused'?'bg-orange-500':'',
-                                                        contract.status == 'completed'?'bg-green':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
                                                         contract.status == 'closed'?'bg-gray-500':''
                                                         ]">
                                                     {{ contract.status }}
@@ -240,6 +275,7 @@ export default {
             contracts: '',
 
             job_search: '',
+            applications: '',
         }
         
     },
@@ -310,7 +346,7 @@ export default {
                 const response = await axios.get(`${this.api_url}/user/jobs/applied`, { headers });
                 console.log("your applications: ", response.data)
                 this.applied_jobs = response.data.applications.map(job => job._id);
-                // this.applied_jobs = response.data.applications;
+                this.applications = response.data.applications;
                 // console.log("applied jobs id: ", this.applied_jobs);
                 this.loading = false;
             } catch(error){

@@ -1,14 +1,14 @@
 <template>
     <div>
-        <div class="h-full bg-[rgb(0,0,0,70%)] fixed z-20 top-0 w-full flex justify-center items-center">
-            <div class="flex flex-col bg-white justify-center items-center rounded-xl p-5">
+        <div class="h-full bg-[rgb(0,0,0,70%)] fixed left-0 z-20 top-0 w-full flex justify-center items-center">
+            <div class="flex flex-col bg-white justify-center items-center rounded-xl p-5 dark:bg-gray-700">
                 <i v-if="type == 'success'" class="bi bi-check-circle text-green-500 text-3xl"></i>
                 <i v-if="type == 'fail'" class="bi bi-x-lg text-red-400 text-3xl"></i>
                 <slot name="text-content">
                     <p class="p-3 font-bold text-lg">Application sent successfully</p>
                 </slot>
                 <slot name="button">
-                    <RouterLink to="/jobs">
+                    <RouterLink to="/in/jobs">
                         <button class="btn w-full">Return to work explorer</button>
                     </RouterLink>
                 </slot>

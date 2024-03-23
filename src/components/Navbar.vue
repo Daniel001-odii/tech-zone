@@ -75,21 +75,21 @@
         
             <div class="text-center">
             <div class="flex flex-col text-left gap-2 mt-8 w-full p-2 " @click="mobile_nav = !mobile_nav" v-if="user_type == 'user'">
-                <RouterLink to="/jobs" class="nav_link">Work Explorer</RouterLink>
+                <RouterLink to="/in/jobs" class="nav_link">Work Explorer</RouterLink>
 
-                <RouterLink to="/saved-jobs" class="nav_link">Saved Jobs</RouterLink>
+                <RouterLink to="/in/saved" class="nav_link">Saved Jobs</RouterLink>
 
-                <RouterLink to="/messages" class="nav_link">Messages</RouterLink>
+                <RouterLink to="/in/messages" class="nav_link">Messages</RouterLink>
 
-                <RouterLink to="/contracts" class="nav_link">Contracts</RouterLink>
+                <RouterLink to="/in/contracts" class="nav_link">Contracts</RouterLink>
 
-                <RouterLink to="/notifications" class="nav_link">Notifications</RouterLink>
+                <RouterLink to="/in/notifications" class="nav_link">Notifications</RouterLink>
 
-                <RouterLink :to="'/users/' + user._id" class="nav_link">My Profile</RouterLink>
+                <RouterLink :to="'/in/users/' + user._id" class="nav_link">My Profile</RouterLink>
 
-                <RouterLink to="/jobs/applications" class="nav_link">My Applications</RouterLink>
+                <RouterLink to="/in/applications" class="nav_link">My Applications</RouterLink>
 
-                <RouterLink to="/settings" class="nav_link">Settings</RouterLink>
+                <RouterLink to="/in/settings" class="nav_link">Settings</RouterLink>
 
                 <RouterLink to="/" class="nav_link">Help & Support</RouterLink>
             </div>
@@ -115,9 +115,9 @@
                 <SiteLogo/>
 
                 <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
-                <div class="border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
+                <div class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
                     <input type="search" placeholder="Search for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
-                    <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-500 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
+                    <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-600 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
                         <i class="bi bi-search"></i>
                         <span>Search</span>
                     </button>
@@ -128,7 +128,7 @@
                         
                         <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
                         
-                        <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-10 dark:bg-[#1F2A36] dark:border-gray-600">
+                        <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600">
                            <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
                            <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="p-3 hover:bg-slate-50 rounded-md flex flex-row gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
                             <div class="flex flex-col">
@@ -147,7 +147,7 @@
                                 <span>No new notifications</span>
                             </div>
 
-                           <RouterLink to="/notifications" class="text-center mb-3 border-t p-3 dark:border-gray-600">
+                           <RouterLink to="/in/notifications" class="text-center mb-3 border-t p-3 dark:border-gray-600">
                                 <span class="text-center text-tz_blue">see all notifications</span>
                            </RouterLink>
                         </div>
@@ -304,7 +304,7 @@ export default {
         logout(){
             localStorage.removeItem("life-gaurd");
             this.$router.push('/login');
-            window.location.reload();
+            // window.location.reload();
         },
 
         realTimeFormat(time){

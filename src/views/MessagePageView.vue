@@ -1,8 +1,6 @@
 <template>
-    <!-- <div> -->
-        <!-- <TemplateView :leftNav="true">
-            <template #page-title>Messages</template>
-            <template #page-contents> -->
+    <div class="h-full flex flex-col">
+                <PageTitle>Messages</PageTitle>
                 <div class=" flex flex-row h-full w-full">
                     <!-- LEFT SIDE -->
                     <div class="w-full md:w-[300px] border-r dark:border-r-gray-700">
@@ -13,7 +11,7 @@
                         <div @click="show_chat_room = !show_chat_room" class="h-[70px] gap-3 border-b dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" v-for="box in 6">
                             <div class="rounded-full h-12 w-12 bg-blue-500"></div>
                             <div clas=" flex flex-col">
-                                <div class="font-medium">Odii Daniel room {{ show_chat_room }}</div>
+                                <div class="font-medium">Odii Daniel room</div>
                                 <span class="text-sm">Web Development Jo..</span>
                             </div>
                         </div>
@@ -192,16 +190,16 @@
                     <!-- RIGHT SIDE ENDS HERE -->
                 </div>
                 </div>
-            <!-- </template>
-        </TemplateView> -->
-    <!-- </div> -->
+    </div>
 </template>
 <script>
 import TemplateView from './TemplateView.vue';
+import PageTitle from '@/components/PageTitle.vue';
+
 
 export default {
     name: "MessagePageView",
-    components: { TemplateView },
+    components: { TemplateView, PageTitle },
     data(){
         return{
             show_chat_room: false,

@@ -1,11 +1,10 @@
 <template>
-    <div>
-        <TemplateView :leftNav="true">
-            <template #page-title>Overview</template>
-            <template #page-contents>
-               <p class="p-5">Your overview..</p>
-            </template>
-        </TemplateView>
+    <div class="h-full flex flex-col relative">
+       <PageTitle>Overview & Earnings</PageTitle>
+       <div class="relative h-full">
+            <FullPageLoading/>
+       </div>
+        
     </div>
 </template>
 <script>
@@ -13,10 +12,12 @@ import JobDetailCard from '@/components/JobDetailCard.vue';
 import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
+import PageTitle from '@/components/PageTitle.vue';
+import FullPageLoading from '@/components/FullPageLoading.vue';
 
 export default {
     name: "OverviewPageView",
-    components: { TemplateView, ContractStatus },
+    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading },
     data(){
         return{
             contracts: '',

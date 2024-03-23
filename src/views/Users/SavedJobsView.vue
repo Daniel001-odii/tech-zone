@@ -5,6 +5,7 @@
             <template #page-contents> -->
                 <!-- {{ jobs }} -->
                 <!-- {{  getUserData }} -->
+                <PageTitle>Saved Jobs</PageTitle>
                 <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
                     <input type="search" class=" form_input" placeholder="Search all types of jobs" v-model="search_term">
                 </div>
@@ -23,7 +24,7 @@
                         <div>posted {{ formatTime(job.created) }}</div>
                         <div class="flex flex-row justify-between items-center">
                             <div class="text-2xl font-bold">
-                                <RouterLink :to="'/jobs/' + job._id + '/application'">
+                                <RouterLink :to="'/in/jobs/' + job._id + '/application'">
                                     {{ job.title }}
                                 </RouterLink>
                             </div>
@@ -63,10 +64,11 @@ import axios from 'axios';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "SavedJobsView",
-    components: { TemplateView, SkeletonLoader },
+    components: { TemplateView, SkeletonLoader, PageTitle },
     data(){
         return{
             loading: false,

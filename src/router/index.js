@@ -40,11 +40,11 @@ const routes = [
     component: LandingPageViewVue
   },
 
-  {
-    path: '/users/:user_id',
-    name: 'Public profile',
-    component: ProfilePageViewVue
-  },
+  // {
+  //   path: '/users/:user_id',
+  //   name: 'Public profile',
+  //   component: ProfilePageViewVue
+  // },
 
   {
     path: '/about',
@@ -64,11 +64,11 @@ const routes = [
     component: LoginViewVue
   },
 
-  {
-    path: '/profile/update',
-    name: 'new user',
-    component: ProfileStepViewVue
-  },
+  // {
+  //   path: '/profile/update',
+  //   name: 'new user',
+  //   component: ProfileStepViewVue
+  // },
 
   {
     path: '/register',
@@ -105,92 +105,99 @@ const routes = [
       {path: 'saved', component: SavedJobsViewVue},
       {path: 'messages', component: MessagePageViewVue},
       {path: 'contracts', component: ContractsListPageViewVue},
+      {path: 'contracts/:contract_id/', component: ContractPageViewVue},
       {path: 'users/:user_id', component: ProfilePageViewVue},
-    ]
+      {path: 'applications', component: MyApplicationsPageViewVue},
+      {path: 'jobs/:job_id/application', component: ApplicationPageViewVue},
+      {path: 'overview', component: OverviewPageView},
+      {path: 'notifications', component: NotifcationsPageView},
+      {path: 'settings', component: SettingsPageView},
+    ],
+    meta: { requiresAuth: true, role: 'user' },
   },
 
-  // {
-  //   path: '/in/jobs',
-  //   name: 'jobs',
-  //   component: JobsPageViewVue,
-  // },
-
   {
-    path: '/jobs/:tab',
-    name: `jobs - others`,
+    path: '/jobs',
+    name: 'jobs',
     component: JobsPageViewVue,
   },
 
-  {
-    path: '/profile',
-    name: 'profile',
-    component: ProfilePageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/jobs/:tab',
+  //   name: `jobs - others`,
+  //   component: JobsPageViewVue,
+  // },
 
-  {
-    path: '/jobs/applications',
-    name: 'applications',
-    component: MyApplicationsPageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/profile',
+  //   name: 'profile',
+  //   component: ProfilePageViewVue,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/jobs/:job_id/application',
-    name: 'application',
-    component: ApplicationPageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/jobs/applications',
+  //   name: 'applications',
+  //   component: MyApplicationsPageViewVue,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/contracts',
-    name: 'contracts',
-    component: ContractsListPageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/jobs/:job_id/application',
+  //   name: 'application',
+  //   component: ApplicationPageViewVue,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/contracts/:contract_id',
-    name: 'contract',
-    component: ContractPageViewVue,
-    // meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/contracts',
+  //   name: 'contracts',
+  //   component: ContractsListPageViewVue,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
+
+  // {
+  //   path: '/contracts/:contract_id',
+  //   name: 'contract',
+  //   component: ContractPageViewVue,
+  //   // meta: { requiresAuth: true, role: 'user' }
+  // },
 
 
-  {
-    path: '/messages',
-    name: 'messages',
-    component: MessagePageViewVue,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/messages',
+  //   name: 'messages',
+  //   component: MessagePageViewVue,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/saved-jobs',
-    name: 'saved-job',
-    component: SavedJobsViewVue,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/saved-jobs',
+  //   name: 'saved-job',
+  //   component: SavedJobsViewVue,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/earnings',
-    name: 'earnings',
-    component: EarningsPageView,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/earnings',
+  //   name: 'earnings',
+  //   component: EarningsPageView,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/settings',
-    name: 'settings',
-    component: SettingsPageView,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/settings',
+  //   name: 'settings',
+  //   component: SettingsPageView,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
-  {
-    path: '/overview',
-    name: 'overview',
-    component: OverviewPageView,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/overview',
+  //   name: 'overview',
+  //   component: OverviewPageView,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
   {
     path: '/notifications',
@@ -279,7 +286,7 @@ router.beforeEach((to, from, next) => {
   // If the user is logged in and is trying to visit the root URL or login page
   if (userRole && userRole == 'user' && to.path === '/' || userRole && userRole == 'user'&& to.path === '/login') {
     // Redirect users to /jobs
-    next('/jobs')
+    next('/in/jobs')
 
   } else if(userRole && userRole == 'employer' && to.path === '/' || userRole && userRole == 'employer'&& to.path === '/login') {
     // redirect clients to their dashboard

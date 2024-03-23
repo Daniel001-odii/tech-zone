@@ -1,8 +1,9 @@
 <template>
+    <PageTitle>Notifications</PageTitle>
     <div>
-        <TemplateView :leftNav="true">
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>Notifications</template>
-            <template #page-contents>
+            <template #page-contents> -->
                 <div class="p-3">
                     <div class="p-3 border mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-500" v-for="notification in notifications" :key="notification._id">
                         {{ notification.message }} <br/>
@@ -12,8 +13,8 @@
                 </div>
                <!-- {{ notifications }} -->
               
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>
@@ -22,10 +23,11 @@ import TemplateView from './TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "NotificationsPageView",
-    components: { TemplateView, ContractStatus },
+    components: { TemplateView, ContractStatus, PageTitle },
     data(){
         return{
             notifications: '',

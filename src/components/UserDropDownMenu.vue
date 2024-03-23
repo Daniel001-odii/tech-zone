@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" w-fit border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-10 dark:bg-[#1F2A36] dark:border-gray-600">
+        <div class=" w-fit border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-50 dark:bg-[#1F2A36] dark:border-gray-600">
             <div class="flex flex-col text-left gap-1">
                 <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-evenly px-1 cursor-pointer">
                     <div class="flex flex-col">
@@ -13,23 +13,23 @@
 
                 <!-- MENU FOR USER ... -->
                 <div v-if="sub_items && user_type == 'user'">
-                    <RouterLink :to="'/users/' + user._id">
+                    <RouterLink :to="'/in/users/' + user._id">
                         <div class="menu_item"><i class="bi bi-person"></i>My Profile</div>
                     </RouterLink>
 
-                    <RouterLink to="/jobs/applications">
+                    <RouterLink to="/in/applications">
                         <div class="menu_item"><i class="bi bi-sticky"></i> My Applications</div>
                     </RouterLink>
                     
-                    <RouterLink to="/overview">
+                    <RouterLink to="/in/overview">
                         <div class="menu_item"><i class="bi bi-compass"></i> Overview</div>
                     </RouterLink>
                     
-                    <RouterLink to="/earnings">
+                    <!-- <RouterLink to="/earnings">
                         <div class="menu_item"><i class="bi bi-cash-stack"></i> Earnings</div>
-                    </RouterLink>
+                    </RouterLink> -->
 
-                    <RouterLink to="/settings">
+                    <RouterLink to="/in/settings">
                         <div class="menu_item"><i class="bi bi-gear"></i> Settings</div>
                     </RouterLink>
                 </div>

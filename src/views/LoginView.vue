@@ -89,10 +89,10 @@ export default {
                 const response = await axios.post(`${this.api_url}/login`, this.form_data);
                 console.log(response);
                 localStorage.setItem('life-gaurd', response.data.accessToken);
-                // alert('login successful!');
+                alert('login successful!');
                 if(response.data.user.role == "user"){
                     window.location.reload();
-                    this.$router.push('/jobs');
+                    this.$router.push('/in/jobs');
                    
                 }else if(response.data.user.role == "employer"){
                     window.location.reload();
@@ -119,8 +119,9 @@ export default {
                 console.log("response from backend: ", newResponse.data);
                 this.loading = false;
                 localStorage.setItem("life-gaurd", newResponse.data.token);
+                alert('login successful!');
                 if(newResponse.data.role == "user"){
-                    this.$router.push("/jobs");
+                    this.$router.push("/in/jobs");
                     window.location.reload();
                 }
                 

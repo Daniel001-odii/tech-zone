@@ -1,4 +1,5 @@
 <template>
+    <PageTitle>Contracts</PageTitle>
     <FullPageLoading v-if="loading"/>
 
     <Modal :title="'Submit a review'" :modal_active="feedbackModal">
@@ -37,9 +38,6 @@
 
     <!-- <<<<<<<<<>>>>>>>>> -->
     <div>
-        <TemplateView :leftNav="true">
-            <template #page-title>Contract</template>
-            <template #page-contents>
                 
                 <div v-if="!contract" class="p-5 gap-3 flex flex-col">
                     <SkeletonLoader/>
@@ -200,9 +198,7 @@
                         </div>
                     </li>
                 </ol>
-                
-            </template>
-        </TemplateView>
+
     </div>  
 </template>
 <script>
@@ -212,10 +208,11 @@ import { formatToRelativeTime } from '@/utils/dateFormat';
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import Modal from '@/components/Modal.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "ContractsListPageView",
-    components: { TemplateView, SkeletonLoader, Modal, FullPageLoading },
+    components: { TemplateView, SkeletonLoader, Modal, FullPageLoading, PageTitle },
     data(){
         return{
             loading: '',

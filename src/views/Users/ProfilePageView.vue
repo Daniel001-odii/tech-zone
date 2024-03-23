@@ -1,79 +1,77 @@
     <template>
-    <div class="overflow-y-scroll h-full">
-        <!-- PROFILE EDIT MODAL HERE -->
-        <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
-            <template #body>
-                <div>
-                <form @submit.prevent="updateUserProfile" v-if="user">
+        <PageTitle>Profile</PageTitle>
+        <div class="h-full flex flex-col relative">
+            <!-- PROFILE EDIT MODAL HERE -->
+            <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
+                <template #body>
                     <div>
-                        <div class="flex flex-row gap-3 mb-3">
-                            <div class="w-3/6 flex flex-col">
-                                <label for="firstname">firstname</label>
-                                <input class="form_input " type="name" name="firstname" id="firstname" :value="user.firstname" disabled>
+                    <form @submit.prevent="updateUserProfile" v-if="user">
+                        <div>
+                            <div class="flex flex-row gap-3 mb-3">
+                                <div class="w-3/6 flex flex-col">
+                                    <label for="firstname">firstname</label>
+                                    <input class="form_input " type="name" name="firstname" id="firstname" :value="user.firstname" disabled>
+                                </div>
+
+                                <div class="w-3/6 flex flex-col">
+                                    <label for="firstname">lastname</label>
+                                    <input class="form_input" type="name" name="lastname" id="lastname" :value="user.lastname" disabled>
+                                </div>
                             </div>
 
-                            <div class="w-3/6 flex flex-col">
-                                <label for="firstname">lastname</label>
-                                <input class="form_input" type="name" name="lastname" id="lastname" :value="user.lastname" disabled>
+                            <div class="form-section">
+                                <div class="form-control">
+                                    <label for="email">email</label>
+                                    <input class="form_input" type="email" name="email" id="email" :value="user.email" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-control">
+                                    <label for="title">profile title</label>
+                                    <input class="form_input" type="text" name="title" id="title" v-model="user_form.profile.title" placeholder="Expereinced Copywriter">
+                                </div>
+                                <div class="form-control">
+                                    <label for="bio">profile bio</label>
+                                    <textarea class="form_input h-40 max-h-52" type="text" name="bio" id="bio" v-model="user_form.profile.bio" placeholder="A very brief and descriptive bio"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-control">
+                                    <label for="skills">skills & expertise</label>
+                                    <input class="form_input" type="text" name="skills" id="skills" v-model="user_form.profile.skills" placeholder="Copy writing, Technical writing, Graphic Design">
+                                </div>
+                            </div>
+
+
+                            <div class="form-section">
+                            
+
+                                <div class="form-control">
+                                    <label for="phone">phone</label>
+                                    <input class="form_input" type="phone" name="phone" id="phone" v-model="user_form.profile.phone" placeholder="+2348156074667">
+                                </div>
+
+                                <div class="form-control">
+                                    <label for="phone">social</label>
+                                    <input class="form_input" type="text" name="social" id="social" v-model="user_form.profile.social" placeholder="https://facebook.com/johndoe">
+                                </div>
                             </div>
                         </div>
+                    </form>
+                </div>
+            
+                </template>
+                <template #footer>
+                    <LoaderButton @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
+                </template>
+            </Modal>
 
-                        <div class="form-section">
-                            <div class="form-control">
-                                <label for="email">email</label>
-                                <input class="form_input" type="email" name="email" id="email" :value="user.email" disabled>
-                            </div>
-                        </div>
+            <FullPageLoading v-if="!user"/>
+            <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full overflow-y-scroll ">
 
-                        <div class="form-section">
-                            <div class="form-control">
-                                <label for="title">profile title</label>
-                                <input class="form_input" type="text" name="title" id="title" v-model="user_form.profile.title" placeholder="Expereinced Copywriter">
-                            </div>
-                            <div class="form-control">
-                                <label for="bio">profile bio</label>
-                                <textarea class="form_input h-40 max-h-52" type="text" name="bio" id="bio" v-model="user_form.profile.bio" placeholder="A very brief and descriptive bio"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-section">
-                            <div class="form-control">
-                                <label for="skills">skills & expertise</label>
-                                <input class="form_input" type="text" name="skills" id="skills" v-model="user_form.profile.skills" placeholder="Copy writing, Technical writing, Graphic Design">
-                            </div>
-                        </div>
-
-
-                        <div class="form-section">
-                           
-
-                            <div class="form-control">
-                                <label for="phone">phone</label>
-                                <input class="form_input" type="phone" name="phone" id="phone" v-model="user_form.profile.phone" placeholder="+2348156074667">
-                            </div>
-
-                            <div class="form-control">
-                                <label for="phone">social</label>
-                                <input class="form_input" type="text" name="social" id="social" v-model="user_form.profile.social" placeholder="https://facebook.com/johndoe">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-           
-            </template>
-            <template #footer>
-                <LoaderButton @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
-            </template>
-           
-        </Modal>
-
-        <FullPageLoading v-if="!user"/>
-
-        <div class="p-5" v-if="user">
-            <div class=" flex flex-col items-center gap-8">
-
-                <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border  dark:border-gray-600 ">
+                <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
                     <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
                         <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
                         <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
@@ -200,7 +198,6 @@
                 
             </div>
         </div>
-    </div>
 </template>
 <script>
 import Navbar from '@/components/Navbar.vue';
@@ -213,13 +210,13 @@ import { generateStarRating } from '@/utils/ratingStars';
 import { generateStarRatingFromInteger } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
-
+import PageTitle from '@/components/PageTitle.vue';
 import { formatTimestamp } from '@/utils/dateFormat';
 import { head } from 'vue-head'
 
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader, FullPageLoading },
+    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader, FullPageLoading, PageTitle },
     data(){
         return{
             user: null,

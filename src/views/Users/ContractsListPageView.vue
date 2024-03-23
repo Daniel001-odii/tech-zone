@@ -1,8 +1,6 @@
 <template>
-    <div>
-        <!-- <TemplateView :leftNav="true">
-            <template #page-title>All Contracts</template>
-            <template #page-contents> -->
+    <PageTitle>Contracts</PageTitle>
+    <div class="h-full flex flex-col">
                 <div>
                     <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
                         <input type="search" class=" form_input" placeholder="Search all types of jobs" v-model="search_term">
@@ -16,7 +14,7 @@
                 <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contract_list()">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
                         <div class="flex flex-row justify-between items-center">
-                            <RouterLink :to="'/contracts/' + contract._id">
+                            <RouterLink :to="'/in/contracts/' + contract._id">
                                 <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                             </RouterLink>
                             <!-- <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">
@@ -52,8 +50,6 @@
                     </div>
                 </div>
                 <div v-if="search_term && !contract_list().length" class=" p-8 text-center text-red-400">No matches found!</div>
-            <!-- </template>
-        </TemplateView> -->
     </div>
 </template>
 <script>
@@ -62,11 +58,11 @@ import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
-
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "ContractPageView",
-    components: { TemplateView, ContractStatus, SkeletonLoader },
+    components: { TemplateView, ContractStatus, SkeletonLoader, PageTitle },
     data(){
         return{
             contracts: '',

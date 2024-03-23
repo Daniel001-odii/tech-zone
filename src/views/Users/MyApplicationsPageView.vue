@@ -1,8 +1,9 @@
 <template>
     <div>
-        <TemplateView :leftNav="true">
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>My Applications</template>
-            <template #page-contents>
+            <template #page-contents> -->
+                <PageTitle>Job Applications</PageTitle>
                 <SkeletonLoader v-if="loading"/>
                 <div class="p-5" v-if="!loading && applications.length <= 0">You haven't applied for any job yet</div>
                 <div v-if="applications " class="flex flex-col overscroll-y-scroll" v-for="application in applications">
@@ -10,7 +11,7 @@
                         <div>{{ formattedTime(application.created) }}</div>
                         <div class="flex flex-row justify-between items-center">
                             <div class="text-2xl font-bold">
-                                <RouterLink :to="'/jobs/' + application._id + '/application'">
+                                <RouterLink :to="'/in/jobs/' + application._id + '/application'">
                                     {{ application.title }}
                                 </RouterLink>
                             </div>
@@ -36,8 +37,8 @@
                         </div>
                     </div>
                 </div>
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>
@@ -45,10 +46,11 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import TemplateView from '../TemplateView.vue';
 import axios from 'axios';
 import { formatToRelativeTime } from '@/utils/dateFormat';
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "MyApplicationsPage",
-    components: { TemplateView, SkeletonLoader },
+    components: { TemplateView, SkeletonLoader, PageTitle },
     data(){
         return{
             loading: false,

@@ -16,20 +16,13 @@ export default {
 
 <template>
 
-<div class=" w-full h-screen bg-green-400 flex flex-col">
+<div class=" w-full h-screen flex flex-col">
     <Navbar/>
-    <div class="h-full bg-red-300 relative">
+    <div class="h-full relative">
       <router-view></router-view>
     </div>
-    <!-- <router-view></router-view> -->
 </div>
 
-<!-- <Navbar/>
-<div class="relative flex">
-  
-</div> -->
-
-    
 </template>
 
 <style>
