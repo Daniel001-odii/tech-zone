@@ -1,5 +1,13 @@
 <template>
-    
+    <!-- ALERTS AND NOTIFICS -->
+    <div class="fixed bottom-10 right-0 left-0 flex justify-center">
+            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
+                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
+            </div>
+    </div>
+   
+
+
     <PageTitle>Settings</PageTitle>
     <div class="h-full flex flex-col relative">
         <FullPageLoading v-if="loading"/>
@@ -215,12 +223,19 @@ import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue'
 import PageTitle from '@/components/PageTitle.vue';
+import DismissableAlert from '@/components/DismissableAlert.vue';
+
 
 export default {
     name: "SettingsPageView",
-    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading },
+    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading, DismissableAlert },
     data(){
         return{
+            alerts: [],
+            show_alert: false,
+            alert_type: '',
+            alert_message: '',
+
             loading: false,
             contracts: '',
             headers: {
@@ -288,6 +303,13 @@ export default {
             
         },
 
+        showAlertBox(type, message){
+            this.alerts.push(message);
+            this.show_alert = !this.show_alert;
+            this.alert_type = type;
+            this.alert_message = message;
+        },
+
         async getUserData(){
             this.loading = true;
             const headers = this.headers;
@@ -327,13 +349,15 @@ export default {
                 const user = this.user;
                 user.settings = this.settings;
 
-                console.log(user)
+                // console.log(user)
 
                 const response = await axios.patch(`${this.api_url}/user/profile`, user, { headers });
-                console.log("set successful: ", response);
+                // console.log("set successful: ", response);
+                this.showAlertBox("success", "settings updated successfully!");
                 this.loading = false;
             }catch(error){
-                console.log("error updating user profile: ", error);
+                // console.log("error updating user profile: ", error);
+                showAlertBox("danger", "error updating settings");
             }
         }
        

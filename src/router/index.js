@@ -199,12 +199,12 @@ const routes = [
   //   meta: { requiresAuth: true, role: 'user' }
   // },
 
-  {
-    path: '/notifications',
-    name: 'notifications',
-    component: NotifcationsPageView,
-    meta: { requiresAuth: true, role: 'user' }
-  },
+  // {
+  //   path: '/notifications',
+  //   name: 'notifications',
+  //   component: NotifcationsPageView,
+  //   meta: { requiresAuth: true, role: 'user' }
+  // },
 
 
 
@@ -228,9 +228,11 @@ const routes = [
     children: [
       {path: 'dashboard', component: ClientDashBoardPage},
       {path: 'job', component: ClientPostJobView},
+      {path: 'jobs/:job_id/edit', component: ClientPostJobView},
       {path: 'jobs', component: JobsListPageView},
       {path: 'messages', component: MessagePageViewVue},
       {path: 'profile', component: ClientProfilePageViewVue},
+      {path: 'notifications', component: NotifcationsPageView},
       {path: 'contracts', component: ClientContractsListPageViewVue},
     ],
     meta: { requiresAuth: true, role: 'employer' },

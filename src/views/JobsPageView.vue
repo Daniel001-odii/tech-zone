@@ -1,7 +1,14 @@
 <template>
     <div class="h-full flex flex-col">
 
-                <DismissableAlert></DismissableAlert>
+        <!-- ALERTS AND NOTIFICS -->
+        <div class="fixed bottom-10 right-0 left-0 flex justify-center">
+                <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
+                    <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
+                </div>
+        </div>
+       
+                
     
                 <div class="relative">
                     <PageTitle>Work Explorer</PageTitle>
@@ -276,10 +283,22 @@ export default {
 
             job_search: '',
             applications: '',
+
+            alerts: [],
+            show_alert: false,
+            alert_type: '',
+            alert_message: '',
         }
         
     },
     methods:{
+        showAlertBox(type, message){
+            this.alerts.push(message);
+            this.show_alert = !this.show_alert;
+            this.alert_type = type;
+            this.alert_message = message;
+        },
+
         getUser(){
             this.store.dispatch('fetchUserData')
         },
@@ -332,7 +351,7 @@ export default {
            try{
                 const headers = this.headers;
                 const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
-                console.log(res);
+                // console.log(res);
                 this.getSavedJobs();
            }catch(error){
             console.log(error)
@@ -353,7 +372,6 @@ export default {
                 this.loading = false;
             }
         },
-
                 // get all user contracts...
         async getContracts(){
             const headers = this.headers;
@@ -436,6 +454,8 @@ export default {
         if(this.$route.params.tab == 'declined'){
             this.showTab = 'tab-4';
         }
+
+
         
     }
 

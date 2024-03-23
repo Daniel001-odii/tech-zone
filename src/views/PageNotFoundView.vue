@@ -1,8 +1,8 @@
 <template>
     <div>
-        <TemplateView :leftNav="true">
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>Not Found</template>
-            <template #page-contents>
+            <template #page-contents> -->
                 <div class="h-screen flex flex-col gap-4 justify-center items-center">
                     <div class="flex flex-col justify-center items-center w-full mt-6">
                         <img class=" h-40 w-40" src="../assets/images/404 error in laptop.svg">
@@ -16,8 +16,8 @@
                     
                 </div>
               
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>

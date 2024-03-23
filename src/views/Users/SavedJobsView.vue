@@ -1,10 +1,13 @@
 <template>
     <div>
-        <!-- <TemplateView :leftNav="true">
-            <template #page-title>Saved Jobs</template>
-            <template #page-contents> -->
-                <!-- {{ jobs }} -->
-                <!-- {{  getUserData }} -->
+         <!-- ALERTS AND NOTIFICS -->
+    <div class="fixed bottom-10 right-0 left-0 flex justify-center">
+            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
+                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
+            </div>
+    </div>
+
+
                 <PageTitle>Saved Jobs</PageTitle>
                 <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
                     <input type="search" class=" form_input" placeholder="Search all types of jobs" v-model="search_term">
@@ -65,12 +68,19 @@ import { formatToRelativeTime } from '@/utils/dateFormat';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import PageTitle from '@/components/PageTitle.vue';
+import DismissableAlert from '@/components/DismissableAlert.vue';
+
 
 export default {
     name: "SavedJobsView",
-    components: { TemplateView, SkeletonLoader, PageTitle },
+    components: { TemplateView, SkeletonLoader, PageTitle, DismissableAlert },
     data(){
         return{
+            alerts: [],
+            show_alert: false,
+            alert_type: '',
+            alert_message: '',
+
             loading: false,
             store: useStore(),
             user: '',
@@ -85,6 +95,14 @@ export default {
         }
     },
     methods:{
+        showAlertBox(type, message){
+            this.alerts.push(message);
+            this.show_alert = !this.show_alert;
+            this.alert_type = type;
+            this.alert_message = message;
+        },
+
+
         job_list() {
             if(this.jobs){
                 return this.jobs.filter((job) => 
@@ -123,6 +141,8 @@ export default {
                const headers = this.headers;
                const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
             //    console.log(res)
+            this.showAlertBox("success", "Job removed from saved");
+
                 this.getSavedJobs();
           }catch(error){
            console.log(error)

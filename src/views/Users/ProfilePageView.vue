@@ -1,8 +1,13 @@
     <template>
-        <PageTitle>Profile</PageTitle>
-        <div class="h-full flex flex-col relative">
-            <!-- PROFILE EDIT MODAL HERE -->
-            <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
+        <!-- ALERTS AND NOTIFICS -->
+        <div class="fixed bottom-10 right-0 left-0 flex justify-center z-50">
+            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
+                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
+            </div>
+        </div>
+
+        <!-- PROFILE EDIT MODAL HERE -->
+        <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
                 <template #body>
                     <div>
                     <form @submit.prevent="updateUserProfile" v-if="user">
@@ -64,9 +69,14 @@
             
                 </template>
                 <template #footer>
-                    <LoaderButton @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
+                    <LoaderButton @click="updateUserProfile" type="button" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
                 </template>
             </Modal>
+
+
+        <PageTitle>Profile</PageTitle>
+        <div class="h-full flex flex-col relative">
+            
 
             <FullPageLoading v-if="!user"/>
             <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full overflow-y-scroll ">
@@ -213,12 +223,18 @@ import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import { formatTimestamp } from '@/utils/dateFormat';
 import { head } from 'vue-head'
+import DismissableAlert from '@/components/DismissableAlert.vue';
 
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader, FullPageLoading, PageTitle },
+    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader, FullPageLoading, PageTitle, DismissableAlert },
     data(){
         return{
+            alerts: [],
+            show_alert: false,
+            alert_type: '',
+            alert_message: '',
+
             user: null,
 
             profile_edit_menu: false,
@@ -252,6 +268,13 @@ export default {
         }
     },
     methods: {
+        showAlertBox(type, message){
+            this.alerts.push(message);
+            this.show_alert = !this.show_alert;
+            this.alert_type = type;
+            this.alert_message = message;
+        },
+
         async getPublicUserData(){
             this.loading = true;
             try{
@@ -299,7 +322,8 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.patch(`${this.api_url}/user/profile`, this.user_form, { headers });
-                console.log(response)
+                // console.log(response)
+                this.showAlertBox("success", "Profile Updated successfully!");
                 this.user_form.loading = false;
             }
             catch(error){

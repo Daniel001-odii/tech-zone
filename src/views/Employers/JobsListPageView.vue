@@ -29,18 +29,18 @@
                         <div :id="`dropdownHover${job_id}`" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
                             <li>
-                                <span class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <RouterLink :to="'/client/jobs/' + job._id + '/edit'" class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     <i class="bi bi-pencil-fill"></i>
                                     Edit Job
-                                </span>
+                                </RouterLink>
                             </li>
                             <li>
-                                <span class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <span @click="closeJob(job._id)" class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     <i class="bi bi-x-circle-fill"></i>
                                     Close Job</span>
                             </li>
                             <li>
-                                <span class="block cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-700">
+                                <span @click="deleteJob(job._id)" class="block cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-700">
                                     <i class="bi bi-trash-fill"></i>
                                     Delete Job
                                 </span>
@@ -53,6 +53,7 @@
                             <div class="text-sm">{{ job.description.substring(0, 400) }}..</div>
                             <div class="font-bold mt-3">${{job.budget.toLocaleString() }} Budget</div>
                             <div class="mt-2">posted {{job.created }}</div>
+                            <div class="mt-2">status: {{job.status }}</div>
                         </div>
                     </div>
                 </div>
@@ -88,6 +89,28 @@ export default {
     },
     methods:{
         // get all clients jobs...
+        async deleteJob(job_id){
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/jobs/${job_id}/delete`, {}, { headers });
+                console.log(response);
+                this.getJobsByEmployer();
+            }catch(error){
+                console.log(error)
+            }
+        },
+
+        async closeJob(job_id){
+            const headers = this.headers;
+            try{
+                const response = await axios.post(`${this.api_url}/jobs/${job_id}/close`, {}, { headers });
+                console.log(response);
+                this.getJobsByEmployer();
+            }catch(error){
+                console.log(error)
+            }
+        },
+
         async getJobsByEmployer(){
             const headers = this.headers;
             try{

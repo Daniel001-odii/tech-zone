@@ -5,7 +5,7 @@
         </RouterLink>
     </FullPageModal>
 
-<PageTitle>Post Job</PageTitle>
+<PageTitle>Edit Job</PageTitle>
 <div class="flex flex-col justify-between dark:bg-[#27323F] dark:text-white w-full h-full">
 
 <div class="flex flex-col gap-3">
@@ -291,7 +291,8 @@
                                     </div>
                                 </div>
 
-                                <button type="button" @click="submitJob" class=" p-3 font-bold bg-green-500 hover:bg-green-700 text-white rounded-md">Post Job</button>
+                                <button v-if="this.$route.params.job_id" type="button" @click="updateJob" class=" p-3 font-bold bg-green-500 hover:bg-green-700 text-white rounded-md">Update Job</button>
+                                <button v-else type="button" @click="submitJob" class=" p-3 font-bold bg-green-500 hover:bg-green-700 text-white rounded-md">Post Job</button>
                         </div>
                     </div>
 
@@ -349,7 +350,7 @@ import axios from 'axios'
         components: { JobDetailCard, FullPageModal, PageTitle },
         data(){
             return{
-                currentIndex: 0,
+                currentIndex: 6,
                 prev_title: false,
                 prev_skills: false,
                 prev_period: false,
@@ -435,10 +436,45 @@ import axios from 'axios'
                 }
             },
 
+            // edit job...
+            async updateJob(){
+                const headers = {
+                    Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+                }
+                try{
+                    const response = await axios.patch(`${this.api_url}/jobs/${this.$route.params.job_id}`, this.job_post, { headers })
+                    console.log(response);
+                    this.job_is_posted = true;
+                }catch(error){
+                    // handle error..
+                    console.log(error.response.data.message)
+                    this.form_errors = error.response.data.message;
+                }
+            },
+
+            async getCurrentJobDetails(){
+                const headers = this.headers;
+                try{
+                    const response = await axios.get(`${this.api_url}/jobs/${this.$route.params.job_id}`, { headers });
+                    console.log(response);
+                    this.job_post = response.data.job;
+                    this.tags = this.job_post.skills;
+
+                }
+                catch(error){
+                    // handle response here....
+                    if(error.response.status === 404){
+                        this.$router.push('/404');
+                    }
+                }
+            },
+
             
         },
         mounted(){
-            
+            if(this.$route.params.job_id){
+                this.getCurrentJobDetails();
+            }
         },
         computed:{
 
