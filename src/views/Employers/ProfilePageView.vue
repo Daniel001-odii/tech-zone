@@ -68,12 +68,11 @@
            
         </Modal>
 
-
+<!-- 
         <TemplateView :leftnav="true">
-        <!-- <TemplateView :leftNav="false"> -->
             <template #page-title>Profile</template>
             
-            <template #page-contents>
+            <template #page-contents> -->
                 <div v-if="!user">loading user data...</div>
                 <div class="p-5" v-if="user">
                     <div class=" flex flex-col items-center gap-8">
@@ -158,8 +157,8 @@
                         
                     </div>
                 </div>
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>

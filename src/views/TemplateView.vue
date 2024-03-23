@@ -4,7 +4,6 @@
     <div class="h-full w-full relative overflow-y-scroll">
         <router-view></router-view>
     </div>
-    
 </div>
     
            

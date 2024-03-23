@@ -1,8 +1,8 @@
 <template>
     <div>
-        <TemplateView :leftNav="true">
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>All Contracts</template>
-            <template #page-contents>
+            <template #page-contents> -->
                 <div>
                     <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
                         <input type="search" class=" form_input" placeholder="Search all types of jobs" v-model="search_term">
@@ -53,8 +53,8 @@
                     </div>
                 </div>
 
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>

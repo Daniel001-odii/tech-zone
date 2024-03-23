@@ -11,6 +11,13 @@
                         <span class="md:hidden lg:inline-block">Dashboard</span>
                     </div>
                 </RouterLink>
+                <RouterLink to="/client/messages" >
+                    <div class="nav_item" :class="{ 'active': isClientMessages }">
+                        <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
+                        <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
+                        <span class="md:hidden lg:inline-block">Messages</span>
+                    </div>
+                </RouterLink>
                 <RouterLink to="/client/jobs" >
                     <div class="nav_item" :class="{ 'active': isMyJobs }">
                         <i class="bi bi-briefcase" v-if="!isMyJobs"></i> 
@@ -18,13 +25,7 @@
                         <span class="md:hidden lg:inline-block">My Jobs</span>
                     </div>
                 </RouterLink>
-                <RouterLink to="/messages" >
-                    <div class="nav_item" :class="{ 'active': isMessages }">
-                        <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
-                        <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
-                        <span class="md:hidden lg:inline-block">Messages</span>
-                    </div>
-                </RouterLink>
+               
 
             </div>
 
@@ -82,11 +83,12 @@ export default {
         isWorkExplorer() { return this.$route.path.startsWith("/in/jobs"); },
         isSavedJobs() { return this.$route.path.startsWith("/in/saved"); },
         isContracts() { return this.$route.path.startsWith("/in/contracts"); },
-        isMessages() { return this.$route.path.startsWith("/in/messages"); },
+        isMessages() { return this.$route.path.startsWith("/in/messages") },
 
         // EMPLOYER....
         isDashboard() { return this.$route.path.startsWith("/client/dashboard"); },
         isMyJobs() { return this.$route.path.startsWith("/client/jobs"); },
+        isClientMessages() { return this.$route.path.startsWith("/client/messages") },
     },
     data(){
         return{

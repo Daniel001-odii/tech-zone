@@ -124,7 +124,7 @@ export default {
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
                     // redirect to user profile...
-                    this.$router.push("/profile")
+                    this.$router.push("/in/profile")
                 } else if(res.data.message == "User registered successfully"){
                     alert("Registration successful!");
                     this.$router.push("/profile")

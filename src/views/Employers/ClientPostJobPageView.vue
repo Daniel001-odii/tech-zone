@@ -4,17 +4,11 @@
             <button class="btn">Return to home</button>
         </RouterLink>
     </FullPageModal>
-<div class="flex flex-col dark:bg-[#27323F] dark:text-white w-full h-screen">
-   <div>
-    <div class=" w-full text-left p-5 text-3xl border-b flex items-center pl-3 dark:border-gray-600">
-            <span class="flex gap-5">
-                <button @click="$router.go(-1)">
-                    <i class="bi bi-arrow-left"></i>
-                </button>
-                Post Job
-            </span>
-        </div>
-   </div>
+
+<PageTitle>Post Job</PageTitle>
+<div class="flex flex-col justify-between dark:bg-[#27323F] dark:text-white w-full h-full">
+
+<div class="flex flex-col gap-3">
     <div v-if="form_errors" class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 m-8" role="alert">
         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -25,7 +19,6 @@
         </div>
     </div>
 
-<div>
     <div class="flex flex-row justify-center items-center">
        
             <!-- FOR SECTION 1 JOB TITLE -->
@@ -329,13 +322,15 @@
 
     </div>
 
-    <div class="flex p-4 flex-col justify-center  items-center gap-6 w-full fixed bottom-0">
-        <div class=" w-4/5 h-4 bg-tz_blue rounded-lg"></div>
-        <div class="w-full justify-between flex flex-row">
-            <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex === 0">Previous</button>
-            <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="next" :disabled="currentIndex === 6" >Next</button>
-          
-        </div>
+   
+</div>
+
+<div class="flex p-4 flex-col justify-center  items-center gap-6 w-full">
+    <div class=" w-4/5 h-4 bg-tz_blue rounded-lg"></div>
+    <div class="w-full justify-between flex flex-row">
+        <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex === 0">Previous</button>
+        <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="next" :disabled="currentIndex === 6" >Next</button>
+        
     </div>
 </div>
 
@@ -346,14 +341,15 @@
 <script>
 import FullPageModal from '@/components/FullPageModal.vue';
 import JobDetailCard from '@/components/JobDetailCard.vue';
+import PageTitle from '@/components/PageTitle.vue';
 import axios from 'axios'
 
     export default {
         name: "ClientPostJobView",
-        components: { JobDetailCard, FullPageModal },
+        components: { JobDetailCard, FullPageModal, PageTitle },
         data(){
             return{
-                currentIndex: 6,
+                currentIndex: 0,
                 prev_title: false,
                 prev_skills: false,
                 prev_period: false,

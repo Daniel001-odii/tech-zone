@@ -1,8 +1,9 @@
 <template>
+    <PageTitle>My Jobs</PageTitle>
     <div>
-        <TemplateView :leftNav="true">
+        <!-- <TemplateView :leftNav="true">
             <template #page-title>All Jobs</template>
-            <template #page-contents>
+            <template #page-contents> -->
                 <div>
                     <div class="flex flex-row gap-2 p-5 border-b dark:border-gray-500">
                         <input type="search" class="form_input" placeholder="Search all types of jobs">
@@ -62,8 +63,8 @@
                         <span class="font-bold mt-4 text-gray-400">You Have No Contracts Yet</span>
                     </div>
                 </div>
-            </template>
-        </TemplateView>
+            <!-- </template>
+        </TemplateView> -->
     </div>
 </template>
 <script>
@@ -72,10 +73,11 @@ import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "JobsListPageView",
-    components: { TemplateView, ContractStatus, SkeletonLoader },
+    components: { TemplateView, ContractStatus, SkeletonLoader, PageTitle },
     data(){
         return{
             jobs: '',

@@ -94,7 +94,7 @@
                        
                     </div>
 
-                    <!-- ----------APPLIED JOBS------------ -->
+                    <!------------APPLIED JOBS------------ -->
                     <div v-if="showTab == 'tab-2'" class="h-full flex flex-row gap-3 relative">
                         <div class="h-full absolute w-full overflow-y-scroll flex flex-col">
                             <div class=" h-full items-start flex flex-col gap-3">
@@ -137,7 +137,7 @@
                                 <div v-if="contract.type == 'assigned'">
                                     <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                         
-                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
+                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-700">
                                             <div class="flex flex-row justify-between items-center">
                                                 <RouterLink :to="'/in/contracts/' + contract._id">
                                                     <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
@@ -177,7 +177,7 @@
                                 <div v-if="contract.status == 'completed'">
                                     <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                         
-                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
+                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue  dark:border-gray-700">
                                             <div class="flex flex-row justify-between items-center">
                                                 <RouterLink :to="'/in/contracts/' + contract._id">
                                                     <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
@@ -212,7 +212,7 @@
                                 <div v-if="contract.action == 'declined'">
                                     <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                         
-                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue">
+                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue  dark:border-gray-700">
                                             <div class="flex flex-row justify-between items-center">
                                                 <RouterLink :to="'/in/contracts/' + contract._id">
                                                     <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>

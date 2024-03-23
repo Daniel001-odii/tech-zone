@@ -33,7 +33,7 @@
                             <div class="flex flex-row gap-3 flex-wrap">
                                 <div>
                                     <i class="bi bi-geo-alt mr-1"></i> 
-                                    <span v-if="job.location.remote == 'true'">remote</span>
+                                    <span v-if="job.location.remote">remote</span>
                                     <span v-else>{{ job.location.address }}, {{ job.location.state }}</span>
                                 </div>
                                 <div>

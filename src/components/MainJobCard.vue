@@ -21,7 +21,7 @@
                 </div>
                 <div class=" capitalize flex flex-row gap-3">
                     <span>{{ company }}</span>
-                    <span>{{ rating }}.0 stars</span>
+                    <!-- <span>{{ rating }}.0 stars</span> -->
                 </div>
                 <div>
                     <i class="bi bi-geo-alt"></i> 

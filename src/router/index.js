@@ -222,44 +222,56 @@ const routes = [
   },
   //  404 PAGES ENDS HERE....
 
-
+  {
+    path: '/client',
+    component: TemplateView,
+    children: [
+      {path: 'dashboard', component: ClientDashBoardPage},
+      {path: 'job', component: ClientPostJobView},
+      {path: 'jobs', component: JobsListPageView},
+      {path: 'messages', component: MessagePageViewVue},
+      {path: 'profile', component: ClientProfilePageViewVue},
+      {path: 'contracts', component: ClientContractsListPageViewVue},
+    ],
+    meta: { requiresAuth: true, role: 'employer' },
+  },
 /*
 // CLIENT BASED ROUTES STARTS HERE
 */
-{
-  path: "/client/dashboard",
-  name: "dashboard",
-  component: ClientDashBoardPage,
-  meta: { requiresAuth: true, role: 'employer' }
-},
+// {
+//   path: "/client/dashboard",
+//   name: "dashboard",
+//   component: ClientDashBoardPage,
+//   meta: { requiresAuth: true, role: 'employer' }
+// },
 
-{
-  path: "/client/job",
-  name: "job",
-  component: ClientPostJobView,
-  meta: { requiresAuth: true, role: 'employer' }
-},
+// {
+//   path: "/client/job",
+//   name: "job",
+//   component: ClientPostJobView,
+//   meta: { requiresAuth: true, role: 'employer' }
+// },
 
-{
-  path: "/client/jobs",
-  name: "my jobs",
-  component: JobsListPageView,
-  meta: { requiresAuth: true, role: 'employer' }
-},
+// {
+//   path: "/client/jobs",
+//   name: "my jobs",
+//   component: JobsListPageView,
+//   meta: { requiresAuth: true, role: 'employer' }
+// },
 
-{
-  path: '/client/contracts',
-  name: 'client contracts',
-  component: ClientContractsListPageViewVue,
-  meta: { requiresAuth: true, role: 'employer' }
-},
+// {
+//   path: '/client/contracts',
+//   name: 'client contracts',
+//   component: ClientContractsListPageViewVue,
+//   meta: { requiresAuth: true, role: 'employer' }
+// },
 
-{
-  path: '/client/profile',
-  name: 'client profile',
-  component: ClientProfilePageViewVue,
-  meta: { requiresAuth: true, role: 'employer' }
-},
+// {
+//   path: '/client/profile',
+//   name: 'client profile',
+//   component: ClientProfilePageViewVue,
+//   meta: { requiresAuth: true, role: 'employer' }
+// },
 
 ]
 
