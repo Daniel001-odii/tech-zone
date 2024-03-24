@@ -34,12 +34,12 @@
                         </select>
                     </div>
 
-                    <div class=" flex flex-col">
+                    <!-- <div class=" flex flex-col">
                         <span class="font-bold text-lg">Posting time</span>
                         <select class="form_input" v-model="job_filter_form.posted">
                             <option v-for="option in job_time" :value="option">{{ option }}</option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
             </template>
             <template #footer>
@@ -95,7 +95,11 @@
                 
               <div class=" top-0 bottom-0 right-0 flex flex-col h-full">
 
-                <div v-if="jobs.length <= 0" class=" text-center p-8 text-red-500">No jobs matched your search query</div>
+                <div v-if="jobs.length <= 0" class=" text-center p-8 dark:text-gray-300 flex flex-col justify-center items-center">
+                    <img src="../assets/images/no-match-found.png" class=" w-52 h-52">
+                    <span class="font-bold text-lg">No job matched your search query</span>
+                    <span class="text-gray-500">Try using a different search keyword or filter</span>
+                </div>
 
                 <div v-if="jobs.length > 0" class="flex flex-col justify-start p-3 h-full">
                     
