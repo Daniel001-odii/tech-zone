@@ -8,20 +8,75 @@
                 </div>
         </div>
        
+       <Modal :title="'Job Filters'" :modal_active="job_filter_modal" >
+            <template #body>
+                <div class="flex flex-col gap-3">
+                    <div class=" flex flex-col">
+                        <span class="font-bold text-lg">Minimum Budget</span>
+                        <input class="form_input" type="number" name="min_budget" placeholder="0.00" v-model="job_filter_form.budgetMin">
+                    </div>
+                    <div class=" flex flex-col">
+                        <span class="font-bold text-lg">Maximum Budget</span>
+                        <input class="form_input" type="number" name="max_budget" placeholder="999.00" v-model="job_filter_form.budgetMax">
+                    </div>
+
+                    <div class=" flex flex-col">
+                        <span class="font-bold text-lg">Job period</span>
+                        <select class="form_input" v-model="job_filter_form.period">
+                            <option v-for="option in job_types" :value="option">{{ option }}</option>
+                        </select>
+                    </div>
+
+                    <div class=" flex flex-col">
+                        <span class="font-bold text-lg">Location by State</span>
+                        <select class="form_input" v-model="job_filter_form.location.state">
+                            <option v-for="option in states" :value="option">{{ option }}</option>
+                        </select>
+                    </div>
+
+                    <div class=" flex flex-col">
+                        <span class="font-bold text-lg">Posting time</span>
+                        <select class="form_input" v-model="job_filter_form.posted">
+                            <option v-for="option in job_time" :value="option">{{ option }}</option>
+                        </select>
+                    </div>
+                </div>
+            </template>
+            <template #footer>
+                <div class="flex flex-row gap-3">
+                    <button class="btn bg-transparent" @click="clearFilters">Clear Filters</button>
+                    <button class="btn" @click="applyFilter">Apply Filter</button>
+                </div>
+            </template>
+       </Modal>
                 
     
                 <div class="relative">
                     <PageTitle>Work Explorer</PageTitle>
                     <div>
                         <div class="flex flex-row gap-2 p-2 md:p-2 border-b dark:border-gray-600">
+
+                            <button @click="removeBudgetFilter" v-if="job_filter_form.budgetMax || job_filter_form.budgetMin" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
+                                <i class="bi bi-cash-stack"></i> <span class="hidden md:inline-block ">${{ job_filter_form.budgetMin + ' - $' + job_filter_form.budgetMax}}</span>
+                            </button>
+                            <button @click="job_filter_form.period = ''" v-if="job_filter_form.period" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
+                                <i class="bi bi-arrow-clockwise"></i> <span class="hidden md:inline-block ">{{job_filter_form.period}}</span>
+                            </button>
+                            <button @click="job_filter_form.location.state = ''" v-if="job_filter_form.location.state" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
+                                <i class="bi bi-geo-alt-fill"></i> <span class="hidden md:inline-block ">{{job_filter_form.location.state}}</span>
+                            </button>
+                            <button @click="job_filter_form.posted = ''" v-if="job_filter_form.posted" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
+                                <i class="bi bi-clock-history"></i> <span class="hidden md:inline-block ">{{job_filter_form.posted}}</span>
+                            </button>
+
                             <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
                                 <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md form_input" placeholder="Search all types of jobs" v-model="job_search">
                                 <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white dark:text-white">
                                     <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
                                 </button>
                             </form>
-                            <button class="border text-black px-4 py-2 rounded-md dark:text-white">
-                                <i class="bi bi-funnel"></i> <span class="hidden md:inline-block ">Filters</span>
+                            <button @click="job_filter_modal = !job_filter_modal" class="border text-black px-4 py-2 rounded-md dark:text-white">
+                                <i class="bi bi-funnel"></i> <span class="hidden md:inline-block "> Filters</span>
                             </button>
                         </div>
 
@@ -39,6 +94,9 @@
                 </div> 
                 
               <div class=" top-0 bottom-0 right-0 flex flex-col h-full">
+
+                <div v-if="jobs.length <= 0" class=" text-center p-8 text-red-500">No jobs matched your search query</div>
+
                 <div v-if="jobs.length > 0" class="flex flex-col justify-start p-3 h-full">
                     
                     <div v-if="showTab == 'tab-1'" class="h-full flex flex-row gap-3 relative">
@@ -250,6 +308,8 @@
 
               </div>
 
+              
+
     </div>
 </template>
 <script>
@@ -262,10 +322,12 @@ import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import PageTitle from '@/components/PageTitle.vue';
+import Modal from '@/components/Modal.vue';
+import { nigerianStates } from '@/utils/states';
 
 export default {
     name: "JobsPageView",
-    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert, PageTitle },
+    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert, PageTitle, Modal },
     data(){
         return{
             store: useStore(),
@@ -288,6 +350,26 @@ export default {
             show_alert: false,
             alert_type: '',
             alert_message: '',
+
+            job_filter_modal: false,
+
+            job_filter_form: {
+                budgetMin: '',
+                budgetMax: '',
+                period: '',
+                location: {
+                    state: '',
+                },
+                posted: '',
+            },
+            states: [
+                'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River',
+                'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina',
+                'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau',
+                'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
+            ],
+            job_types: ["less than a month", "1 to 3 months", "3 to 6 months", "6 months plus"],
+            job_time: ["under 24 hrs", "under a week", "under a month", "over a month"]
         }
         
     },
@@ -305,6 +387,28 @@ export default {
 
         showJobDetail(index){
             this.selectedJob = index;
+        },
+
+        applyFilter(){
+            this.job_filter_modal = !this.job_filter_modal;
+            this.searchJob();
+        },
+
+        clearFilters(){
+            this.job_filter_form = {
+                budgetMin: '',
+                budgetMax: '',
+                period: '',
+                location: {
+                    state: '',
+                },
+                posted: '',
+            },
+            this.searchJob();
+        },
+        removeBudgetFilter(){
+            this.job_filter_form.budgetMax = '';
+            this.job_filter_form.budgetMin = '';
         },
 
         async getUserData(){
@@ -387,10 +491,16 @@ export default {
         async searchJob(){
             this.showTab = "tab-1";
             this.loading = true;
+            const filters = this.job_filter_form;
             try{
                 const response = await axios.get(`${this.api_url}/jobs/search`, {
                 params: {
                     keywords: this.job_search,
+                    budgetMin: filters.budgetMin,
+                    budgetMax: filters.budgetMax,
+                    jobType: filters.period,
+                    location: filters.location.state,
+                    posted: filters.posted
                 }});
 
                 console.log(response);
