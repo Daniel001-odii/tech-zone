@@ -31,7 +31,7 @@
                                 <label for="rem-details">Remember details</label>
                                 <input name="rem-details" id="rem-details" type="checkbox" />
                             </div>
-                            <RouterLink to="/#">Forgot password ?</RouterLink>
+                            <RouterLink to="/password/forgot">Forgot password ?</RouterLink>
                         </div>
                         <LoaderButton  :buttonText="loading ? 'Loading...' : 'Sign in'" :loading="loading"/>
                         <!-- <button class="btn w-full" disabled>Sign in</button>  -->

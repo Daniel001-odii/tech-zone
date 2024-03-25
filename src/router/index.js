@@ -31,6 +31,8 @@ import ClientProfilePageViewVue from '@/views/Employers/ProfilePageView.vue'
 import NotifcationsPageView from '@/views/NotifcationsPageView.vue'
 import JobsListPageView from '@/views/Employers/JobsListPageView.vue'
 import TemplateView from '@/views/TemplateView.vue'
+import SendPassResetEmailView from '@/views/SendPassResetEmailView.vue'
+import ResetPasswordPageView from '@/views/ResetPasswordPageView.vue'
 
 
 const routes = [
@@ -74,6 +76,18 @@ const routes = [
     path: '/register',
     name: 'register',
     component: SignupViewVue
+  },
+
+  {
+    path: '/password/forgot',
+    name: 'password-forgot',
+    component: SendPassResetEmailView
+  },
+
+  {
+    path: '/user/:reset_token/password',
+    name: 'password-change',
+    component: ResetPasswordPageView
   },
 
 

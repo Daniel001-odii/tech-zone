@@ -95,7 +95,7 @@
                 
               <div class=" top-0 bottom-0 right-0 flex flex-col h-full">
 
-                <div v-if="jobs.length <= 0" class=" text-center p-8 dark:text-gray-300 flex flex-col justify-center items-center">
+                <div v-if="!loading && jobs.length <= 0" class=" text-center p-8 dark:text-gray-300 flex flex-col justify-center items-center">
                     <img src="../assets/images/no-match-found.png" class=" w-52 h-52">
                     <span class="font-bold text-lg">No job matched your search query</span>
                     <span class="text-gray-500">Try using a different search keyword or filter</span>
