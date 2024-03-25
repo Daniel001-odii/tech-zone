@@ -18,7 +18,7 @@ export default {
 
 <div class=" w-full h-screen flex flex-col">
     <Navbar/>
-    <div class="h-full relative">
+    <div class="h-full relative dark:bg-[#27323F] dark:text-white">
       <router-view></router-view>
     </div>
 </div>

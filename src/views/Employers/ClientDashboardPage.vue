@@ -90,6 +90,7 @@
                                                             <!-- <RouterLink :to="'user/'"></RouterLink> -->
                                                             <p @click="seeUserProfile(application.user._id)" class="text-xl font-bold underline cursor-pointer">{{ application.user.firstname }} {{ application.user.lastname }}</p>
                                                             <p class="text-gray-400">{{ application.user.profile.title }}</p>
+                                                            <p class="text-gray-400">{{ application.user.rating }}</p>
                                                         </div>
                                                         <span class="rounded-lg bg-orange-100 text-orange-700 p-2" v-if="application.counter_offer">counter offer</span>
                                                     </div>
@@ -103,7 +104,7 @@
                                                                 <a class=" text-tz_blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment.name }}</a>
                                                             </div>
                                                         </p>
-                                                        <p><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
+                                                        <p v-if="application.counter_offer"><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
                                                         <p><b>Reason:</b> {{ application.reason_for_co }}</p>
                                                     </div>
                                                     <div class="flex flex-row flex-wrap gap-3 mt-3">
@@ -132,7 +133,7 @@
                                                 <p class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</p>
                                                 <p class="text-gray-400">{{ user.profile.title }}</p>
                                                 <!-- <p class="text-sm flex flex-row gap-1 text-orange-500" v-html="userStars(user.ratings)"></p> -->
-                                                <p class="text-gray-400">{{ getUserRating(user_id) }}</p>
+                                                <p class="text-gray-400">{{ user.rating }}</p>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>

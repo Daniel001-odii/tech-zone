@@ -116,7 +116,7 @@
 
                 <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
                 <div class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
-                    <input type="search" placeholder="Search for jobs" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
+                    <input type="search" :placeholder="user.role == 'user' ? 'Search for jobs':'Search for Talents'" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
                     <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-600 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
                         <i class="bi bi-search"></i>
                         <span>Search</span>
@@ -304,7 +304,7 @@ export default {
         logout(){
             localStorage.removeItem("life-gaurd");
             this.$router.push('/login');
-            // window.location.reload();
+            window.location.reload();
         },
 
         realTimeFormat(time){

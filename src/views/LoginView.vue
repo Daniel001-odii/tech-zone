@@ -1,5 +1,14 @@
 <template>
-   
+<Modal :title="'Create an Account'" :modal_active="signup_modal">
+    <template #body>
+        <p class="text-3xl">user account not found, please <RouterLink to="register/decide" class="underline text-blue-500">signup</RouterLink> as either a freelancer or employer</p>
+    </template>
+    <template #footer>
+        <button @click="signup_modal = !signup_modal" class="bg-red-500 text-white py-3 px-6 rounded-md text-lg font-bold">Close</button>
+    </template>
+</Modal>
+
+
    <FullPageLoading v-if="loading"/>
 
     <div class="flex flex-row">
@@ -63,13 +72,14 @@
 import Alert from '@/components/Alert.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import LoaderButton from '@/components/LoaderButton.vue';
+import Modal from '@/components/Modal.vue';
 import axios from 'axios';
 import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 // import {  } from 'vue3-google-login';
 
 export default {
     name: "LoginView",
-    components: { FullPageLoading, Alert, LoaderButton },
+    components: { FullPageLoading, Alert, LoaderButton, Modal },
     data() {
         return {
             error: '',
@@ -80,6 +90,7 @@ export default {
                 password: ''
             },
             callback: this.googleAuth,
+            signup_modal: false,
         };
     },
     methods: {
@@ -93,6 +104,10 @@ export default {
                 if(response.data.user.role == "user"){
                     window.location.reload();
                     this.$router.push('/in/jobs');
+
+                    if(!response.data.user.profile.title){
+                        alert("please update your profile");
+                    }
                    
                 }else if(response.data.user.role == "employer"){
                     window.location.reload();
@@ -119,8 +134,19 @@ export default {
                 console.log("response from backend: ", newResponse.data);
                 this.loading = false;
                 localStorage.setItem("life-gaurd", newResponse.data.token);
-                alert('login successful!');
-                if(newResponse.data.role == "user"){
+                // alert('login successful!');
+
+                // if user hasnt updated profle yet redirect to profile completion page..
+                if(!newResponse.data.user.profile.title){
+                        alert("please update your profile");
+                        this.$router.push("/profile/complete");
+                        window.location.reload();
+                        
+                }  
+
+                // else continue with normal login...
+                else if(newResponse.data.role == "user"){
+                    console.log("login respo: ", newResponse);
                     this.$router.push("/in/jobs");
                     window.location.reload();
                 }
@@ -131,8 +157,11 @@ export default {
                 }
                 
             }catch(error){
-                alert(error);
+                // alert(error);
                 this.loading = false;
+                if(error.response.status == 404){
+                    this.signup_modal = true;
+                }
             }
         },
     },

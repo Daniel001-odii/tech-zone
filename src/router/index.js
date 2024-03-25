@@ -42,11 +42,11 @@ const routes = [
     component: LandingPageViewVue
   },
 
-  // {
-  //   path: '/users/:user_id',
-  //   name: 'Public profile',
-  //   component: ProfilePageViewVue
-  // },
+  {
+    path: '/users/:user_id',
+    name: 'Public profile',
+    component: ProfilePageViewVue
+  },
 
   {
     path: '/about',
@@ -88,6 +88,13 @@ const routes = [
     path: '/user/:reset_token/password',
     name: 'password-change',
     component: ResetPasswordPageView
+  },
+
+  {
+    path: '/profile/complete',
+    name: 'complete profile',
+    component: ProfileStepViewVue,
+    meta: { requiresAuth: true, role: 'user' },
   },
 
 

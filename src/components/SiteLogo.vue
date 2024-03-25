@@ -3,8 +3,8 @@
         <RouterLink to="/" class="">
             <div>
                 
-                <img v-if="light_logo" src="../../public/apex-tek-logo-black.png" class=" h-[60px]">
-                <img v-else src="../../public/apex-tek-logo-white.png" class=" h-[60px]"> 
+                <img v-if="light_logo" src="../../public/apex-tek-logo-black.png" class=" h-[40px]">
+                <img v-else src="../../public/apex-tek-logo-white.png" class=" h-[40px]"> 
             </div>
            
         </RouterLink>

@@ -71,7 +71,7 @@
                 <template #footer>
                     <LoaderButton @click="updateUserProfile" type="button" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
                 </template>
-            </Modal>
+        </Modal>
 
 
         <PageTitle>Profile</PageTitle>
@@ -96,8 +96,8 @@
                             <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                             <p>{{ user.email }}</p>
                             <div clas="flex flex-row gap-3">
-                                <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user_rating)"></p>
-                                <span>({{ user_rating }}) {{ user_rating_count }} reviews</span>
+                                <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user.rating)"></p>
+                                <span>({{ user.rating }}) {{ user.rating_count }} reviews</span>
                             </div>
                         </div>
                     </div>
@@ -240,8 +240,6 @@ export default {
             profile_edit_menu: false,
 
             loading: null,
-
-            user_rating: '',
             user_rating_count: '',
 
             user_form: {
@@ -306,6 +304,10 @@ export default {
 
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 console.log("profile page :", response);
+                if(!this.user.profile.title){
+                    alert("please update your profile");
+                    this.$router.push("/profile/complete");
+                }
                 // push to user variable..
                 this.user = response.data.user;
                 // this.user_form = response.data.user;
@@ -342,25 +344,6 @@ export default {
             }
         },
 
-        async getUserRating(user_id){
-            try{
-                const response = await axios.get(`${this.api_url}/user/${user_id}/rating`);
-                this.user_rating = response.data.averageRating;
-                this.user_rating_count = response.data.totalRatingsCount;
-            }catch(error){
-
-            }
-        },
-
-        // userRating(ratings){
-        //     if(ratings > 0){
-        //         const sum = ratings.reduce((acc, rating) => acc + rating, 0);
-        //         return sum / ratings.length;
-        //     } else {
-        //         return 0
-        //     }
-            
-        // }
         useStarFromInteger(rating){
             return generateStarRatingFromInteger(rating);
         },
@@ -393,7 +376,6 @@ export default {
         } else{
             this.getUserData();
         }
-        this.getUserRating(this.$route.params.user_id);
         this.getActiveAndCompletedContracts();
         },
     }

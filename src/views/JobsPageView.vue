@@ -420,6 +420,10 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 this.user = response.data.user;
+                if(!this.user.profile.title){
+                    alert("please update your profile");
+                    this.$router.push("/profile/complete");
+                } 
                 // this.saved_jobs = this.user.saved_jobs;
             }catch(error){
                 console.log("user data error:", error)
@@ -568,6 +572,8 @@ export default {
         if(this.$route.params.tab == 'declined'){
             this.showTab = 'tab-4';
         }
+
+         
 
 
         

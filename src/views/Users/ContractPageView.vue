@@ -66,8 +66,8 @@
             <div class="text-left gap-3 flex flex-col p-5">
             <p class="font-bold text-xl">{{ contract.job.title }}</p>
             <p>Budget - ${{ contract.job.budget.toLocaleString() }}</p>
-            <p>ApexTek Service fee: -$5</p>
-            <p>Expected amount you will receive: ${{ (contract.job.budget - 5).toLocaleString() }}</p>
+            <p>ApexTek Service fee: -15%</p>
+            <p>Expected amount you will receive: ${{ (contract.job.budget - (contract.job.budget * 15)/100).toLocaleString() }}</p>
             <div>
                 <p>Contract offer from</p>
                 <!-- <p>{{ contract.employer }}</p> -->
@@ -116,8 +116,6 @@
             <div class="text-left gap-3 flex flex-col p-5">
             <p class="font-bold text-xl">{{ contract.job.title }}</p>
             <p>Your Budget - ${{ contract.job.budget.toLocaleString() }}</p>
-            <p>ApexTek Service fee: -$5</p>
-            <p>Expected amount Freelancer will receive: ${{ (contract.job.budget - 5).toLocaleString() }}</p>
             <p class=" text-sm text-gray-400">sent {{ readableTimeFormat(contract.created) }}</p>
                 
             
@@ -276,6 +274,10 @@ export default {
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 // console.log("user data: ", response)
                 this.user = response.data.user;
+                if(!this.user.profile.title){
+                    alert("please update your profile");
+                    this.$router.push("/profile/complete");
+                }
             }catch(error){
                 console.log(error)
             }
