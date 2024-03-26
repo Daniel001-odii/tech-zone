@@ -28,7 +28,7 @@
                 <div>
                 <!-- <div data-aos="zoom-out"> -->
                     <span class="text-2xl text-white">How it works</span>
-                    <h3 class="section_subtitle text-white">We a re here to help you,<br/> just follow these steps!</h3>
+                    <h3 class="section_subtitle text-white">We are here to help you,<br/> just follow these steps!</h3>
                 </div>
                 <div class="flex flex-col flex-wrap justify-center items-center md:flex-row mt-8">
                     <StepBox :number="1"></StepBox>
@@ -264,7 +264,7 @@ export default {
     }
 
     .section_subtitle{
-        @apply text-5xl font-bold
+        @apply text-4xl font-bold
     }
 
     section{
