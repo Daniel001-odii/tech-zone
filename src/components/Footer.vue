@@ -1,10 +1,12 @@
 <template>
     <div>
         <!-- <div class="flex flex-col-reverse gap-10 md:flex-row justify-between bg-white max-w-screen-2xl" data-aos="fade-up" data-aos-delay="200"> -->
-        <div class="flex flex-col-reverse md:flex-row justify-between p-8 w-screen max-w-screen-2xl" style="margin: 0 auto;">
+        <div class="flex flex-col-reverse md:flex-row justify-between p-8 w-full gap-5 max-w-screen-2xl" style="margin: 0 auto;">
             <div class="">
+                
                 <ul class="list">
-                    <li class="list_header">About Tech-zone</li>
+                    <li class="list_header">About Apex-teks</li>
+                    <SiteLogo/>
                     <li class="text-sm">
                         In Nigeria, the burgeoning tech industry holds immense promise for both companies seeking skilled professionals and individuals equipped with tech expertise. However, amidst this potential lies a challenge: unemployment among tech professionals persists, even as companies struggle to find the right talent for their projects. Enters Apex Technologies, a pioneering platform on a mission to revolutionize the tech employment landscape in Nigeria. 
                         Whether you're a company looking to expand your tech team or an IT professional seeking your next challenge, Apex Technologies invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria's tech industry and pave the way for a brighter, more prosperous future. 
@@ -18,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-row  flex-wrap gap-10">
+            <div class="flex flex-row  flex-wrap gap-5">
 
                 <ul class="list">
                     <li class="list_header">Job by type</li>
@@ -37,14 +39,19 @@
                     <li>Team</li>
                 </ul>
             </div>
+          
         </div>
+        <p class="text-center text-sm text-gray-500 p-5"> &copy; 2023 - 2024 Apex-Tek® Nigeria Inc.</p>
 
             
     </div>
 </template>
 <script>
+import SiteLogo from './SiteLogo.vue';
+
 export default {
     name: "Footer",
+    components: { SiteLogo },
     data(){
         return{
             onsiteJobs: [
@@ -81,7 +88,7 @@ export default {
 }
 
 .list{
-    @apply text-left text-lg md:max-w-80
+    @apply text-left text-sm md:max-w-80
 }
 .list_header{
     @apply font-bold text-xl uppercase mb-3

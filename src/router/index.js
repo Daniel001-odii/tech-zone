@@ -34,6 +34,7 @@ import TemplateView from '@/views/TemplateView.vue'
 import SendPassResetEmailView from '@/views/SendPassResetEmailView.vue'
 import ResetPasswordPageView from '@/views/ResetPasswordPageView.vue'
 
+import SupportPageView from '@/views/SupportPageView.vue'
 
 const routes = [
   {
@@ -111,12 +112,12 @@ const routes = [
     component: ClientSignupViewVue
   },
 
+  {
+    path: '/support',
+    name: 'support',
+    component: SupportPageView
+  },
 
-  // {
-  //   path: '/jobs',
-  //   name: 'jobs',
-  //   component: JobsPageViewVue,
-  // },
 
   {
     path: '/in',
