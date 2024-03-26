@@ -40,7 +40,7 @@
                                     <i class="bi bi-arrow-clockwise"></i> <span>{{ formatTimeFormat(job.created) }}</span>
                                 </div>
                                 <div>
-                                    <i class="bi bi-wallet"></i> <span>N{{ job.budget.toLocaleString()}}</span>
+                                    <i class="bi bi-wallet"></i> <span>N{{ job.budget.toLocaleString()}} {{ job.budget_type }}</span>
                                 </div>
                                 <div>
                                     <i class="bi bi-briefcase"></i> <span>{{ job.period }}</span>

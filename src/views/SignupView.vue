@@ -65,7 +65,7 @@
 
     <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6 dark:bg-[#1F2A36]">
         <div>
-            <img src="../assets/images/tech-zone.svg">
+            <SiteLogo/>
         </div>
     </div>
 </div>
@@ -74,10 +74,11 @@
 import axios from 'axios';
 import Alert from '@/components/Alert.vue';
 import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
+import SiteLogo from '@/components/SiteLogo.vue';
 
 export default {
     name: "SignUpView",
-    components: { Alert },
+    components: { Alert, SiteLogo },
     data(){
         return{
             error: '',

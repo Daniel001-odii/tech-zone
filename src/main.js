@@ -11,6 +11,8 @@ import vue3GoogleLogin from 'vue3-google-login';
 
 import clickOutside from './utils/clickOutside'
 
+import Vue3Lottie from "vue3-lottie";
+
 
 const app = createApp(App);
 
@@ -18,6 +20,8 @@ const app = createApp(App);
 app.use(vue3GoogleLogin, {
     clientId: '546104205241-g4vtopr689l3vb5cfjmphard09e1ia2k.apps.googleusercontent.com'
 })
+
+app.use(Vue3Lottie);
 
 // Declare a global variable
 app.config.globalProperties.api_url = process.env.VUE_APP_API_URL;

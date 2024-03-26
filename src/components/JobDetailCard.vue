@@ -4,7 +4,7 @@
             <div class="flex flex-col gap-3">
                 
                 <div class="flex flex-row justify-between items-center flex-wrap gap-3">
-                    <span class="font-bold text-2xl">
+                    <span class="font-bold text-lg">
                         <slot name="job-title">
                             senior software developer (java)
                         </slot>
@@ -40,10 +40,11 @@
                     </div>
                     
                 </div>
-                <div class="flex flex-row flex-wrap gap-3">
-                    <span v-for="skill in skills" class="bg-tz_light_blue text-tz_blue px-3 py-2 rounded-md">{{ skill }}</span>
+                <div class="flex flex-row flex-wrap gap-1">
+                    <span v-for="skill in skills" class="bg-tz_light_blue text-tz_blue dark:text-blue-300 px-3 py-2 rounded-md">{{ skill }}</span>
                 </div>
             </div>
+            <div class="border-b border-gray-600"></div>
             <div class="font-bold">
                 Job Description
             </div>

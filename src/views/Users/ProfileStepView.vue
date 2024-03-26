@@ -1,8 +1,22 @@
 <template>
+
+    <FullPageModal v-if="profile_is_complete" :type="'success'">
+        <template #text-content>Profile Completed successfully</template>
+        <template #button>
+            <RouterLink to="/in/jobs">
+                <button class="btn">Continue to Work Explorer</button>
+            </RouterLink>
+        </template>
+    </FullPageModal>
+
     <div class=" overflow-y-scroll h-full">
-        <!-- <TemplateView :left-nav="false">
-            <template #page-title>Profile Update</template>
-            <template #page-contents> -->
+        <!-- ALERTS AND NOTIFICS -->
+        <div class="fixed bottom-10 right-0 left-0 flex justify-center">
+                <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
+                    <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
+                </div>
+        </div>
+
                 <div class="flex justify-center h-full">
                     <div class="  w-[70%] md:w-[500px] text-left">
                         <div></div>
@@ -10,11 +24,11 @@
                             <form @submit.prevent="updateUserProfile">
                                 <h1 class="font-bold text-3xl p-5 text-center">Lets Get Started!</h1>
                                 <div class="flex flex-col h-96">
-                                    <div class="flex flex-row mb-5 justify-between items-center dark:text-gray-600 border-b pb-8 dark:border-b-gray-500">
+                                    <div class="flex flex-row mb-5 gap-2 justify-between items-center dark:text-gray-600 border-b pb-8 dark:border-b-gray-500">
                                         <span class=" h-10 w-10  rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 0 ? 'bg-tz_blue text-white':'bg-gray-200'">1</span>
-                                            <span class="h-1 w-20 rounded-xl" :class="step >= 1 ? 'bg-tz_blue':' bg-gray-200'"></span>
+                                            <span class="h-1 grow rounded-xl" :class="step >= 1 ? 'bg-tz_blue':' bg-gray-200'"></span>
                                         <span class=" h-10 w-10  rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 1 ? 'bg-tz_blue text-white':'bg-gray-200'">2</span>
-                                            <span class=" h-1 w-20 rounded-xl" :class="step >= 2 ? 'bg-tz_blue':'bg-gray-200'"></span>
+                                            <span class=" h-1 grow rounded-xl" :class="step >= 2 ? 'bg-tz_blue':'bg-gray-200'"></span>
                                         <span class=" h-10 w-10  rounded-full flex justify-center items-center font-bold text-2xl" :class="step >= 2 ? 'bg-tz_blue text-white':'bg-gray-200'">3</span>
                                     </div>
 
@@ -24,18 +38,18 @@
                                         <div class="form-section">
                                             <div class="form-control">
                                                 <label for="title">profile title</label>
-                                                <input class="form_input" type="text" name="title" id="title" v-model="user_form.profile.title" placeholder="Expereinced Copywriter">
+                                                <input class="form_input" type="text" name="title" id="title" minlength="12" maxlength="35" v-model="user_form.profile.title" placeholder="Technical Copywriter">
                                             </div>
                                             <div class="form-control">
                                                 <label for="bio">profile bio</label>
-                                                <textarea class="form_input" type="text" name="bio" id="bio" v-model="user_form.profile.bio" placeholder="A very brief and descriptive bio"></textarea>
+                                                <textarea class="form_input" type="text" name="bio" id="bio" minlength="15" v-model="user_form.profile.bio" placeholder="A very brief and descriptive bio"></textarea>
                                             </div>
                                         </div>
 
                                         <div class="form-section">
                                             <div class="form-control">
                                                 <label for="skills">skills & expertise</label>
-                                                <input class="form_input" type="text" name="skills" id="skills" v-model="user_form.profile.skills" placeholder="Copy writing, Technical writing, Graphic Design">
+                                                <input class="form_input" type="text" name="skills" id="skills" minlength="15" v-model="user_form.profile.skills" placeholder="Copy writing, Technical writing, Graphic Design">
                                             </div>
                                         </div>
                                         
@@ -79,7 +93,7 @@
                                         <div class="form-section">
                                             <div class="form-control">
                                                 <label for="phone">phone</label>
-                                                <input class="form_input" type="phone" name="phone" id="phone" v-model="user_form.profile.phone" placeholder="+2348156074667">
+                                                <input class="form_input" type="phone" name="phone" id="phone"  min="11" maxlength="11"  v-model="user_form.profile.phone" placeholder="+2348156074667">
                                             </div>
 
                                             <div class="form-control">
@@ -106,15 +120,17 @@ import TemplateView from '../TemplateView.vue';
 import { nigerianStates } from '@/utils/states'
 import LoaderButton from '@/components/LoaderButton.vue';
 import axios from 'axios';
+import FullPageModal from '@/components/FullPageModal.vue';
 
 export default {
     name: "ProfileStepView",
-    components: { TemplateView, LoaderButton },
+    components: { TemplateView, LoaderButton, FullPageModal },
     data(){
         return{
             step: 0,
             user: '',
             user_form: {
+                alerts: [],
                 loading: false,
                 preffered_job_types: '',
                 profile: {
@@ -132,17 +148,28 @@ export default {
                 },
 
                 nigerianStates,
-                headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
+                headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`},
+
+                profile_is_complete: '',
         }
     },
 
     methods: {
+
+        showAlertBox(type, message){
+            this.alerts.push(message);
+            this.show_alert = !this.show_alert;
+            this.alert_type = type;
+            this.alert_message = message;
+        },
+
         async updateUserProfile(){
             this.loading = true;
             const headers = this.headers;
             try{
                 const response = await axios.patch(`${this.api_url}/user/profile`, this.user_form, { headers });
                 console.log(response);
+                this.profile_is_complete = true;
                 this.loading = false;
             }
             catch(error){
@@ -157,20 +184,25 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 const user = response.data.user;
+                const profile = response.data.user.profile;
 
-                // this.user.preffered_job_types = user.preffered_job_types;
-                
-                if(user.profile.phone){
-                    this.$router.push("/in/jobs");
-                } 
-                // this.saved_jobs = this.user.saved_jobs;
+                this.user_form.preffered_job_types = user.preffered_job_types;
+                this.user_form.profile.title = profile.title;
+                this.user_form.profile.bio = profile.bio;
+                this.user_form.profile.location.city = profile.location.city;
+                this.user_form.profile.location.state = profile.location.state;
+                this.user_form.profile.location.address = profile.location.address;
+                this.user_form.profile.phone = profile.phone;
+                this.user_form.profile.social = profile.social;
+                this.user_form.profile.skills = profile.skills
             }catch(error){
-                console.log("user data error:", error)
+                // console.log("user data error:", error);
+                this.showAlertBox("danger", error.response.data.message)
             }
         },
     },
     mounted(){
-        this.getUserData()
+        this.getUserData();
     }
 }
 </script>

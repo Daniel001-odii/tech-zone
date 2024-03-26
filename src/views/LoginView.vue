@@ -60,7 +60,7 @@
 
         <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6 dark:bg-[#1F2A36]">
             <div>
-                <img src="../assets/images/tech-zone.svg" width="100px">
+                <SiteLogo/>
             </div>
         </div>
            
@@ -73,13 +73,14 @@ import Alert from '@/components/Alert.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import LoaderButton from '@/components/LoaderButton.vue';
 import Modal from '@/components/Modal.vue';
+import SiteLogo from '@/components/SiteLogo.vue';
 import axios from 'axios';
 import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 // import {  } from 'vue3-google-login';
 
 export default {
     name: "LoginView",
-    components: { FullPageLoading, Alert, LoaderButton, Modal },
+    components: { FullPageLoading, Alert, LoaderButton, Modal, SiteLogo },
     data() {
         return {
             error: '',
