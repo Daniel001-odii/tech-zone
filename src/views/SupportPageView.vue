@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-row justify-center items-center bg-black">
+        <div class="flex flex-row justify-center items-center bg-black text-white">
             <div class="p-5 w-full">
                 <h2>Support</h2>
                 <h1 class="font-bold text-2xl">Frequently asked Questions</h1>

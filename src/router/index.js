@@ -256,6 +256,8 @@ const routes = [
       {path: 'profile', component: ClientProfilePageViewVue},
       {path: 'notifications', component: NotifcationsPageView},
       {path: 'contracts', component: ClientContractsListPageViewVue},
+      {path: 'contracts/:contract_id', component: ContractPageViewVue},
+
     ],
     meta: { requiresAuth: true, role: 'employer' },
   },

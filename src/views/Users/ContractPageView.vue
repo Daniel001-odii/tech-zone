@@ -55,15 +55,20 @@
         </div>
         <!-- LOADED CONTRACT HERE -->
         <!-- CONTRACT VIEWING FOR USERS.... -->
-        <p class="text-left pt-5 pl-8 text-gray-400">contract status: {{ contract.status }}</p>
-        <div v-if="contract && user.role == 'user'" class="flex flex-col p-5 text-left">
+        
+        <div v-if="contract && user.role == 'user'" class="flex flex-col p-5 text-center">
             
             <span v-if="contract.action == 'accepted'" class=" bg-green-200 text-green-700 p-5 rounded-lg m-3"> You accepted this offer </span>
             <span v-if="contract.action == 'declined'" class=" bg-red-100 text-red-700 p-5 rounded-lg m-3"> You declined this offer </span>
 
+            <Vue3Lottie v-if="contract.action == 'pending'"
+                :animationData="contractOffer"
+                :height="200"
+                :width="200"
+            />
             <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">{{ user.firstname }} you received a job contract offer!</h1>
 
-            <div class="text-left gap-3 flex flex-col p-5">
+            <div class="text-center gap-3 flex flex-col justify-center p-5">
             <p class="font-bold text-xl">{{ contract.job.title }}</p>
             <p>Budget - ${{ contract.job.budget.toLocaleString() }}</p>
             <p>ApexTek Service fee: -15%</p>
@@ -71,7 +76,7 @@
             <div>
                 <p>Contract offer from</p>
                 <!-- <p>{{ contract.employer }}</p> -->
-                <div class="flex flex-row items-center gap-3">
+                <div class="flex flex-row justify-center items-center gap-3">
                     <div class=" h-8 w-8 rounded-lg overflow-hidden">
                         <img :src="contract.employer.profile.image_url">
                     </div>
@@ -83,9 +88,9 @@
                 <p class=" text-sm text-gray-400 mt-3">sent {{ readableTimeFormat(contract.created) }}</p>
                 
             </div>
-            <div class="mt-6">
+            <div class="mt-6 flex flex-col justify-center">
                 <p class="text-gray-600">Once you accept the offer you can begin working on the contract right away</p>
-                <div class="flex flex-row gap-5 justify-start mt-3">
+                <div class="flex flex-row gap-5 justify-center mt-3">
                     <button @click="declineOffer" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.action != 'pending'">Decline Offer</button>
                     <button @click="acceptOffer" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action != 'pending'">Accept Offer</button>
                 </div>
@@ -105,6 +110,7 @@
             </div>
             </div>
         </div>
+        
 
         <!-- CONTRACT VIEWING FOR EMPLOYERS.... -->
         <div v-if="contract && user.role == 'employer'" class="flex flex-col p-5 text-left">
@@ -121,13 +127,13 @@
             
             <div class="mt-6">
                 <h2 class="font-bold text-xl">Contract Actions</h2>
-                <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
+                <p class=" mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
                     <i class="bi bi-exclamation-circle"></i> The Freelancer will be notified for any action you perform on the contract
                 </p>
                 <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                    <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
-                    <button v-if="contract.action == 'accepted'" @click="pauseContract" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed' ">Pause contract</button>
-                    <button v-if="contract.action == 'accepted' && contract.status == 'paused'" @click="resumeContract" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume contract</button>
+                    <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="contrac_activity_btn" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
+                    <button v-if="contract.action == 'accepted'" @click="pauseContract" class="contrac_activity_btn" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed' ">Pause contract</button>
+                    <button v-if="contract.action == 'accepted' && contract.status == 'paused'" @click="resumeContract" class="contrac_activity_btn" :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume contract</button>
                     <button @click="closeContract" class="font-bold border border-red-500 text-red-500 rounded-2xl px-6 py-3 hover:bg-red-500 hover:text-white disabled:bg-gray-200 disabled:text-gray-400 disabled:border-none" :disabled="contract.action == 'declined' || contract.status == 'completed' || contract.status == 'closed'">Close</button>
                 </div>
                 <!-- <p>close - Pause - Mark as complete - Fund</p> -->
@@ -135,11 +141,11 @@
 
             <div v-if="contract.action == 'accepted'" class="mt-6">
                 <h2 class="font-bold text-xl">Feedback & Review</h2>
-                <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
+                <p class=" mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
                     <i class="bi bi-exclamation-circle"></i>  Feedback submission will only be available when contract is completed.
                 </p>
                 <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                    <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.user_feedback.review">
+                    <button @click="feedbackModal = !feedbackModal" class="contrac_activity_btn" :disabled="contract.status != 'completed' || contract.user_feedback.review">
                         <span v-if="contract.user_feedback.review">Feedback sent</span>
                         <span v-else>Send Feedback to Freelancer</span>
                     </button>
@@ -149,6 +155,7 @@
             
         </div>
 
+        <p class="text-left pt-5 pl-8 text-gray-400">contract status: {{ contract.status }}</p>
         <!-- contract tracker -->
         <ol v-if="false" class="flex items-center">
             <li class="relative w-full mb-6">
@@ -215,7 +222,7 @@ import Modal from '@/components/Modal.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
-
+import contractOffer from '../../lottie/contract-offer.json';
 
 export default {
     name: "ContractsListPageView",
@@ -249,6 +256,7 @@ export default {
                 "Project Clarity and Scope",
                 "Overall Satisfaction"
             ],
+            contractOffer
         }
     },
     methods: {
@@ -274,10 +282,10 @@ export default {
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 // console.log("user data: ", response)
                 this.user = response.data.user;
-                if(!this.user.profile.title){
-                    alert("please update your profile");
-                    this.$router.push("/profile/complete");
-                }
+                // if(!this.user.profile.title){
+                //     alert("please update your profile");
+                //     this.$router.push("/profile/complete");
+                // }
             }catch(error){
                 console.log(error)
             }
@@ -453,5 +461,9 @@ export default {
 
 .tz_rate {
     @apply border dark:border-gray-500 rounded-md w-[35px] h-[35px] flex justify-center items-center cursor-pointer;
+}
+
+.contrac_activity_btn{
+    @apply font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue  dark:disabled:bg-gray-600 disabled:text-gray-400
 }
 </style>

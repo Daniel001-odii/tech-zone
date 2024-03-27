@@ -1,6 +1,6 @@
 <template>
     <!-- ALERTS AND NOTIFICS -->
-    <div class="fixed bottom-10 right-0 left-0 flex justify-center">
+    <div class="fixed flex-col bottom-10 right-0 left-0 flex justify-center items-center z-50">
             <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
                 <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
             </div>
@@ -112,7 +112,7 @@
 
             <form @submit.prevent="updateUserData" v-if="active_tab == 3" class="section mb-3">
                 <h1 class="font-bold mb-3 text-lg">Notification Settings</h1>
-                <div class=" flex flex-row items-center justify-between justify-center">
+                <!-- <div class=" flex flex-row items-center justify-between justify-center">
                     <div class="flex flex-col">
                         <span class="font-bold">Contract Notifications</span>
                         <span class="text-sm w-72 text-gray-400">Allow Apex-tek send you email notifications for contract actions and updates.</span>
@@ -122,7 +122,7 @@
                         <input type="checkbox" value="" class="sr-only peer" @change="updateUserData" v-model="settings.notifications.contracts">
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     </label>
-                </div>
+                </div> -->
 
                 <div class=" flex flex-row items-center justify-between justify-center">
                     <div class="flex flex-col">

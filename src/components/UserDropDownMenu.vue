@@ -52,7 +52,7 @@
                 <RouterLink to="/support">
                     <div class="menu_item"><i class="bi bi-question-circle"></i> Help & Support</div>
                 </RouterLink>
-                <button @click="logout" class=" bg-tz_light_blue font-bold p-3 rounded-md text-blue-900"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                <button @click="logout" class=" bg-tz_light_blue font-bold p-3 rounded-md text-blue-900 dark:text-blue-300"><i class="bi bi-box-arrow-right"></i> Logout</button>
             </div>
         </div>
     </div>

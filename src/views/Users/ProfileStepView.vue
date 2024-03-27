@@ -121,16 +121,19 @@ import { nigerianStates } from '@/utils/states'
 import LoaderButton from '@/components/LoaderButton.vue';
 import axios from 'axios';
 import FullPageModal from '@/components/FullPageModal.vue';
+import DismissableAlert from '@/components/DismissableAlert.vue';
+
 
 export default {
     name: "ProfileStepView",
-    components: { TemplateView, LoaderButton, FullPageModal },
+    components: { TemplateView, LoaderButton, FullPageModal, DismissableAlert },
     data(){
         return{
             step: 0,
             user: '',
+            alerts: [],
+
             user_form: {
-                alerts: [],
                 loading: false,
                 preffered_job_types: '',
                 profile: {
@@ -184,17 +187,19 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 const user = response.data.user;
-                const profile = response.data.user.profile;
+                const profile = this.user.profile;
 
-                this.user_form.preffered_job_types = user.preffered_job_types;
-                this.user_form.profile.title = profile.title;
-                this.user_form.profile.bio = profile.bio;
-                this.user_form.profile.location.city = profile.location.city;
-                this.user_form.profile.location.state = profile.location.state;
-                this.user_form.profile.location.address = profile.location.address;
-                this.user_form.profile.phone = profile.phone;
-                this.user_form.profile.social = profile.social;
-                this.user_form.profile.skills = profile.skills
+                // this.user_form.preffered_job_types = user.preffered_job_types;
+                // this.user_form.profile.title = profile.title;
+                // this.user_form.profile.bio = profile.bio;
+                // this.user_form.profile.location.city = profile.location.city;
+                // this.user_form.profile.location.state = profile.location.state;
+                // this.user_form.profile.location.address = profile.location.address;
+                // this.user_form.profile.phone = profile.phone;
+                // this.user_form.profile.social = profile.social;
+                // this.user_form.profile.skills = profile.skills
+
+                console.log("user data: ", response)
             }catch(error){
                 // console.log("user data error:", error);
                 this.showAlertBox("danger", error.response.data.message)

@@ -17,7 +17,7 @@
                 <div v-if="contracts" class="flex flex-col overscroll-y-scroll" v-for="(contract, contract_id) in contract_list()">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-500">
                         <div class="flex flex-row justify-between items-center">
-                            <RouterLink :to="'/contracts/' + contract._id">
+                            <RouterLink :to="'/client/contracts/' + contract._id">
                                 <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
                             </RouterLink>
                             <!-- <button class="border rounded-full h-14 w-14 hover:bg-gray-200 ">

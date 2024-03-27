@@ -1,8 +1,6 @@
 <template>
-<div class=" border-b border-gray-200  dark:border-gray-600">
-    <div class="dark:bg-[#27323F]  max-w-screen-2xl mx-auto my-0 w-full ">
-
-
+<div class=" bg-white dark:bg-[#1f2a36] border-b border-gray-200  dark:border-gray-600">
+    <div class="  max-w-screen-2xl mx-auto my-0 w-full ">
         <!-- THE DUMMY NAVBAR BELOW SHOWS ONLY FOR NON AUTHENTCATED USERS, MAJORLY FOR LANDING PAGE -->
         <div v-if="!is_authenticated">
             <nav class="bg-white start-0 relative z-30 dark:bg-[#1F2A36]">
