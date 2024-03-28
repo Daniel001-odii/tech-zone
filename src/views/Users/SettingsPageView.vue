@@ -91,11 +91,15 @@
                     <h1 class="font-bold mb-3 text-lg mt-3">Password & Security</h1>
                     <div class="flex flex-col max-w-sm">
                         <label for="email">Current Password</label>
-                        <input class="form_input" type="password" name="password" id="password" :value="settings.password">
+                        <input class="form_input" type="password" name="password" id="password" :value="password">
                     </div>
                     <div class="flex flex-col max-w-sm mt-5">
-                        <label for="email">New Password</label>
-                        <input class="form_input" type="password" name="password" id="new_password" :value="settings.new_password">
+                        <label for="new_password">New Password</label>
+                        <input class="form_input" type="password" name="new_password" id="new_password" :value="new_password">
+                    </div>
+                    <div class="flex flex-col max-w-sm mt-5">
+                        <label for="confirm_new_password">Confirm New Password</label>
+                        <input class="form_input" type="password" name="confirm_new_password" id="confirm_new_password" :value="confirm_new_password">
                     </div>
                     <button type="submit" class="btn mt-3">Change Account Password</button>
                 </form>
@@ -249,6 +253,11 @@ export default {
                     phone: '',
                 }
             },
+
+            password: '',
+            new_password: '',
+            confirm_new_password: '',
+
             settings:{
                 bank: {
                     name: '',

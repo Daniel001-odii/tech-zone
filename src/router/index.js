@@ -36,6 +36,14 @@ import ResetPasswordPageView from '@/views/ResetPasswordPageView.vue'
 
 import SupportPageView from '@/views/SupportPageView.vue'
 
+
+import AdminTemplateView from '@/views/Administration/AdminTemplateView.vue'
+import AdminDashboardView from '@/views/Administration/AdminDashboardView.vue'
+import AdminSettingsView from '@/views/Administration/AdminSettingsView.vue'
+import AdminRegisterPageView from '@/views/Administration/AdminRegisterView.vue'
+import AdminLoginView from '@/views/Administration/AdminLoginView.vue'
+
+
 const routes = [
   {
     path: '/',
@@ -144,93 +152,6 @@ const routes = [
     component: JobsPageViewVue,
   },
 
-  // {
-  //   path: '/jobs/:tab',
-  //   name: `jobs - others`,
-  //   component: JobsPageViewVue,
-  // },
-
-  // {
-  //   path: '/profile',
-  //   name: 'profile',
-  //   component: ProfilePageViewVue,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/jobs/applications',
-  //   name: 'applications',
-  //   component: MyApplicationsPageViewVue,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/jobs/:job_id/application',
-  //   name: 'application',
-  //   component: ApplicationPageViewVue,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/contracts',
-  //   name: 'contracts',
-  //   component: ContractsListPageViewVue,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/contracts/:contract_id',
-  //   name: 'contract',
-  //   component: ContractPageViewVue,
-  //   // meta: { requiresAuth: true, role: 'user' }
-  // },
-
-
-  // {
-  //   path: '/messages',
-  //   name: 'messages',
-  //   component: MessagePageViewVue,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/saved-jobs',
-  //   name: 'saved-job',
-  //   component: SavedJobsViewVue,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/earnings',
-  //   name: 'earnings',
-  //   component: EarningsPageView,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/settings',
-  //   name: 'settings',
-  //   component: SettingsPageView,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/overview',
-  //   name: 'overview',
-  //   component: OverviewPageView,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-  // {
-  //   path: '/notifications',
-  //   name: 'notifications',
-  //   component: NotifcationsPageView,
-  //   meta: { requiresAuth: true, role: 'user' }
-  // },
-
-
-
-
   // 404 PAGES CONFIG...
   {
     path: "/404", 
@@ -261,6 +182,38 @@ const routes = [
     ],
     meta: { requiresAuth: true, role: 'employer' },
   },
+
+  
+
+
+  /*
+  **
+  ** ADMNISTRATIVE BASED ROUTES
+  **
+  */
+  {
+    path: "/site/register",
+    name: "admin register",
+    component: AdminRegisterPageView,
+  },
+  {
+    path: "/site/login",
+    name: "admin login",
+    component: AdminLoginView,
+  },
+
+  {
+    path: "/admin",
+    component: AdminTemplateView,
+    children: [
+      {path: "dashboard", component: AdminDashboardView},
+      {path: "settings", component: AdminSettingsView},
+    ]
+    // meta: { requiresAuth: true, role: 'administrator'}
+  },
+
+
+ 
 /*
 // CLIENT BASED ROUTES STARTS HERE
 */

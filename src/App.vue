@@ -16,12 +16,11 @@ export default {
 
 <template>
 
-<div class=" w-full h-screen flex flex-col">
-    <Navbar/>
-    <div class="h-full relative dark:bg-[#27323F] dark:text-white">
+<!-- <div class=" w-full h-screen flex flex-col"> -->
+    <!-- <div class="h-full relative dark:bg-[#27323F] dark:text-white"> -->
       <router-view></router-view>
-    </div>
-</div>
+    <!-- </div> -->
+<!-- </div> -->
 
 </template>
 

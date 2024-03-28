@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class=" h-full overflow-y-scroll">
         <div class="flex flex-row justify-center items-center bg-black text-white">
             <div class="p-5 w-full">
                 <h2>Support</h2>
@@ -18,10 +18,13 @@
                 <div v-for="(question, question_id) in generalFAQs" :key="question_id">
                     <div class="flex flex-row justify-between mt-3">
                         <h4 class="font-bold text-lg max-w-90%">{{ question.text }}</h4>
-                        <i class="bi bi-plus"></i>
+                        <button @click="show_answer(question_id)" class="">
+                            <i v-if="answer_active[question_id]" class="bi bi-dash"></i>
+                            <i v-else class="bi bi-plus"></i>
+                        </button>
                     </div>
                   
-                    <p class="w-[90%]">{{ question.answer }}</p>
+                    <p v-if="answer_active[question_id]" class="w-[90%]">{{ question.answer }}</p>
                 </div>
             </div>
         </section>
@@ -35,10 +38,13 @@
                 <div v-for="(question, question_id) in billingsFAQs" :key="question_id">
                     <div class="flex flex-row justify-between mt-3">
                         <h4 class="font-bold text-lg max-w-90%">{{ question.text }}</h4>
-                        <i class="bi bi-plus"></i>
+                        <button @click="show_answer2(question_id)" class="">
+                            <i v-if="answer_active2[question_id]" class="bi bi-dash"></i>
+                            <i v-else class="bi bi-plus"></i>
+                        </button>
                     </div>
                   
-                    <p class="w-[90%]">{{ question.answer }}</p>
+                    <p v-if="answer_active2[question_id]" class="w-[90%]">{{ question.answer }}</p>
                 </div>
             </div>
         </section>
@@ -53,8 +59,9 @@
                 </div>
             </div>
         </section>
+        <Footer/>
     </div>
-    <Footer/>
+   
 </template>
 
 <script>
@@ -93,7 +100,7 @@ import Footer from '@/components/Footer.vue'
                     }
 
             ],
-            billingsFAQs: [
+                billingsFAQs: [
                 {
                     text: "Are there any fees associated with employers posting jobs? ",
                     answer: "No, there are no charges for posting jobs on ApexTeks. The platform is free for both employers and talents. However, there is a 15% charge applied to every completed work order."
@@ -111,7 +118,20 @@ import Footer from '@/components/Footer.vue'
                     text: "What happens in case of payment failure or billing issues? ",
                     answer: "You will receive an immediate notification and will be prompted to address the problem. Payment for services will remain pending until the billing issues are resolved. For premium memberships, the subscription will be temporarily deactivated during this period. "
                 }
-            ]
+            ],
+
+            answer_active: [],
+            answer_active2: [],
+            }
+        },
+
+        methods: {
+            show_answer(index){
+                this.answer_active[index] = !this.answer_active[index];
+            },
+
+            show_answer2(index){
+                this.answer_active2[index] = !this.answer_active2[index];
             }
         }
     }
