@@ -208,8 +208,8 @@ const routes = [
     children: [
       {path: "dashboard", component: AdminDashboardView},
       {path: "settings", component: AdminSettingsView},
-    ]
-    // meta: { requiresAuth: true, role: 'administrator'}
+    ],
+    meta: { requiresAuth: true, role: 'admin'}
   },
 
 
@@ -288,6 +288,22 @@ router.beforeEach((to, from, next) => {
       next()
     }
 });
+
+
+// navigation gaurd to allow only loggedin users to view certain pages..
+router.beforeEach((to, from, next) => {
+  const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
+
+  // Check if the route has a "requiresAuth" meta field and matches the user's role
+  if (to.meta.requiresAuth && to.meta.role !== userRole) {
+    redirectToLogin = true; // Set the flag to true
+    requestedRoute = to.fullPath; // Store the requested route
+    next('/login'); // Redirect to login for unauthorized access
+  } else {
+    next(); // Proceed to the route
+  }
+});
+
 
 // navigation gaurd to allow only loggedin users to view certain pages..
 router.beforeEach((to, from, next) => {

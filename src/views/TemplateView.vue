@@ -1,17 +1,24 @@
-<template>  
-<div class="bg-white dark:bg-[#27323F] dark:text-white h-full">
-    <!-- navbar -->
-    <Navbar/>  
-    <div class="flex flex-row w-full h-full">
-        <!-- left sidebar -->
-        <!-- <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/> -->
-        <!-- page contents -->
-        <!-- <router-view></router-view> -->
-    </div>
-</div>
+<template>
+<div>
+    <div class="bg-white dark:bg-[#27323F] dark:text-white h-screen w-full flex flex-col justify-start items-stretch">
+        <!-- navbar -->
+        <Navbar/>  
 
-        
+        <div class="flex flex-row w-full h-full">
+            <!-- left sidebar -->
+            <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
+
+            <!-- page contents -->
+            <div class=" w-full overflow-y-scroll">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
+  
+</div>     
 </template>
+
+
 <script>
 import LeftNavBar from '@/components/LeftNavBar.vue';
 import Navbar from '@/components/Navbar.vue';

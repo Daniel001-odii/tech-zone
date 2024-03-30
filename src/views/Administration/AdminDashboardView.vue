@@ -4,45 +4,45 @@
 
         <!-- TOP SIDE FOR MAINPAGE -->
         <div class="flex flex-row flex-wrap gap-3 mt-6">
-            <AdminStat v-if="users"class=" bg-purple-100"
-            :title="'Registered Users'"
-            :value="users.length"
+            <AdminStat class=" bg-purple-100"
+            :title="'Total Registered Users'"
+            :value="count.users"
             :iconColor="'bg-purple-500'"
             >
                 <i class="bi bi-person-check"></i>
             </AdminStat>
 
             <AdminStat class=" bg-orange-100"
-            :title="'Registered Employers'"
-            :value="6"
+            :title="'Total Registered Employers'"
+            :value="count.employers"
             :iconColor="'bg-orange-500'"
             >    <i class="bi bi-building-check"></i>
             </AdminStat>
 
-            <AdminStat v-if="jobs"class=" bg-green-100"
-            :title="'Jobs Posted'"
-            :value="jobs.length"
+            <AdminStat class=" bg-green-100"
+            :title="'Total Jobs Posted'"
+            :value="count.jobs"
             :iconColor="'bg-green-500'"
             >    <i class="bi bi-briefcase"></i>
             </AdminStat>
 
             <AdminStat class=" bg-blue-100"
-            :title="'Job Applications'"
-            :value="90"
+            :title="'Total Job Applications'"
+            :value="count.applications"
             :iconColor="' bg-blue-500'"
             >    <i class="bi bi-send-check"></i>
             </AdminStat>
 
             <AdminStat class=" bg-blue-100"
-            :title="'Contracts'"
-            :value="90"
+            :title="'Total Contracts'"
+            :value="count.contracts"
             :iconColor="' bg-blue-500'"
             >    <i class="bi bi-gift"></i>
             </AdminStat>
 
             <AdminStat class=" bg-pink-100"
-            :title="'Admin Users'"
-            :value="2"
+            :title="'Total Admin Users'"
+            :value="count.administrators"
             :iconColor="' bg-pink-500'"
             >    <i class="bi bi-key"></i>
             </AdminStat>
@@ -113,6 +113,8 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- <button  type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">User profile</button> -->
+                
             </div>
 
         </div>
@@ -150,7 +152,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(employer, employer_id) in employers" :key="user_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <tr v-for="(employer, employer_id) in employers" :key="employer_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
                                     <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -201,27 +203,49 @@ export default {
 
     data(){
         return{
+            count: '',
+            admin: '',
+
             jobs: '',
             employers: '',
             applications: '',
             contracts: '',
-            users: ''
+            users: '',
+
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+            },
         }
     },
 
     methods: {
-        async getAllJobs(){
+        // async getAllJobs(){
+        //     const headers = this.headers;
+
+        //     try{
+        //         const response = await axios.get(`${this.api_url}/jobs`);
+        //         this.jobs = response.data.jobs;
+        //     }catch(error){
+
+        //     }
+        // },
+        
+
+        async getAllRecordsCount(){
+            const headers = this.headers;
             try{
-                const response = await axios.get(`${this.api_url}/jobs`);
-                this.jobs = response.data.jobs;
+                const response = await axios.get(`${this.api_url}/admin/count/all`, { headers});
+                this.count = response.data.count;
+                console.log(" records count :", this.count)
             }catch(error){
 
             }
         },
 
         async getAllUsers(){
+            const headers = this.headers;
             try{
-                const response = await axios.get(`${this.api_url}/users/all`);
+                const response = await axios.get(`${this.api_url}/admin/users/all`, { headers});
                 this.users = response.data.users;
                 // console.log(" admin users :", this.users)
             }catch(error){
@@ -229,21 +253,36 @@ export default {
             }
         },
 
+
         async getAllEmployers(){
+            const headers = this.headers;
             try{
-                const response = await axios.get(`${this.api_url}/employers/all`);
+                const response = await axios.get(`${this.api_url}/admin/employers/all`, { headers});
                 this.employers = response.data.employers;
                 console.log(" admin employers :", this.employers)
             }catch(error){
 
             }
         },
+
+        // async getAllContracts(){
+        //     const headers = this.headers;
+        //     try{
+        //         const response = await axios.get(`${this.api_url}/admin/contracts/all`, { headers});
+        //         this.contracts = response.data.contracts;
+        //         console.log(" admin contracts :", this.contracts)
+        //     }catch(error){
+
+        //     }
+        // },
     },
 
     mounted(){
-        this.getAllJobs();
+        this.getAllRecordsCount();
+        // this.getAllJobs();
         this.getAllUsers();
         this.getAllEmployers();
+        // this.getAllContracts();
     }
 }
 </script>

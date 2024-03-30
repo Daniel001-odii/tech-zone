@@ -65,25 +65,25 @@
         </div>
 
         <!--  RIGHT CONTENT & NAVBAR  -->
-        <div class="flex flex-col h-full w-full">
+        <div class="flex flex-col h-full w-full" v-if="admin">
             <!-- NAVBAR -->
             <div class="flex flex-row p-3 w-full items-center justify-between bg-white  dark:bg-[#1f2a36] dark:text-white">
                 <div>
-                    <span>25th December 2024</span>
+                    <span>{{ currentDate }}</span>
                 </div>
                 <div class="flex flex-row gap-8 items-center justify-end">
                     <div class="flex flex-row gap-3 justify-center items-center">
-                        <div class=" h-[50px] w-[50px] bg-blue-300 rounded-full"></div>
+                        <div class=" h-[50px] w-[50px] bg-blue-300 rounded-full flex font-bold text-2xl justify-center items-center text-blue-800">{{ admin.firstname[0] }}{{ admin.lastname[0] }}</div>
                         <div class="flex flex-col">
-                            <span class="font-bold">Admin</span>
-                            <span class="text-blue-500">xenithheight@gmail.com</span>
+                            <span class="font-bold">{{ admin.firstname }} {{ admin.lastname }}</span>
+                            <span class="text-blue-500">{{  admin.email  }}</span>
                         </div>
                     </div>
-                    <button class=" bg-gray-200 p-4 rounded-full flex justify-center items-center h-10 w-10">
+                    <button class=" bg-gray-200 p-4 rounded-full flex justify-center items-center h-10 w-10 dark:bg-tz_light_blue">
                         <i class="bi bi-moon-fill"></i>
                     </button>
 
-                    <button class=" bg-gray-200 p-4 rounded-full flex justify-center items-center h-10 w-10">
+                    <button @click="logout" class=" bg-gray-200 p-4 rounded-full flex justify-center items-center h-10 w-10 dark:bg-tz_light_blue">
                         <i class="bi bi-box-arrow-right"></i>
                     </button>
                 </div>
@@ -102,15 +102,57 @@
 <script>
 import AdminStat from '@/components/AdminStat.vue'
 import SiteLogo from '@/components/SiteLogo.vue'
-
+import axios from 'axios';
 
 export default {
     name: "AdminTemplateView",
     components: { AdminStat, SiteLogo },
+    data(){
+        return{
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+            },
+            admin: '',
+            currentDate: '',
+        }
+    },
     computed: {
         isDashboard() { return this.$route.path.startsWith("/admin/dashboard"); },
         isSettings() { return this.$route.path.startsWith("/admin/settings"); },
     },
+    methods:{
+        logout(){
+            localStorage.removeItem('life-gaurd');
+            this.$router.push('/site/login');
+        },
+
+        getCurrentDate() {
+            const dateObject = new Date(); // Create a new Date object
+            const formattedDate = dateObject.toDateString(); // Get the date in a human-readable format
+            this.currentDate = formattedDate; // Update currentDate with the formatted date
+        },
+
+        async getAdminData(){
+            const headers = this.headers;
+            try{
+                const response = await axios.get(`${this.api_url}/admin/data`, { headers} );
+                // console.log("admin data: ", response)
+                this.admin = response.data.user;
+
+            }catch(error){
+                console.error("error getting admin data: ", error);
+                if(error.response.status == 401){
+                    localStorage.removeItem('life-gaurd');
+                    this.$router.push("/site/login")
+                }
+            }
+        }
+    },
+
+    mounted(){
+        this.getAdminData();
+        this.getCurrentDate();
+    }
 }
 </script>
 
