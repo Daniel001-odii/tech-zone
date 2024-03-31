@@ -10,9 +10,9 @@
                     </div>
                     
 
-                    <RouterLink to="/">
-                        <button class="btn w-fit">Go Home</button>
-                    </RouterLink>
+                 
+                        <button @click="$router.go(-1)" class="btn w-fit">Go Back</button>
+                  
                     
                 </div>
               

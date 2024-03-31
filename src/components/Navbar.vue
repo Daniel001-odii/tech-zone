@@ -105,7 +105,10 @@
                                     <span>No new notifications</span>
                                 </div>
 
-                            <RouterLink to="/in/notifications" class="text-center mb-3 border-t p-3 dark:border-gray-600">
+                            <RouterLink v-if="user.role == 'user'" to="/in/notifications" class="text-center mb-3 border-t p-3 dark:border-gray-600">
+                                    <span class="text-center text-tz_blue">see all notifications</span>
+                            </RouterLink>
+                            <RouterLink v-else to="/client/notifications" class="text-center mb-3 border-t p-3 dark:border-gray-600">
                                     <span class="text-center text-tz_blue">see all notifications</span>
                             </RouterLink>
                             </div>

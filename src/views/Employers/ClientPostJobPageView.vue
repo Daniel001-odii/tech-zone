@@ -350,7 +350,7 @@ import axios from 'axios'
         components: { JobDetailCard, FullPageModal, PageTitle },
         data(){
             return{
-                currentIndex: 6,
+                currentIndex: 0,
                 prev_title: false,
                 prev_skills: false,
                 prev_period: false,

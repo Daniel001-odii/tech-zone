@@ -35,6 +35,16 @@
                                     <div v-if="step === 0">
                                         <h1 class="font-bold text-xl p-5 text-center">Tell us about yourself</h1>
                                         <p>Lets get to know you a bit and have a view of your perspective of the world.</p>
+                                        <div class="form-section" v-if="!user.firstname || !user.lastname">
+                                            <div class="form-control">
+                                                <label for="firstname">firstname</label>
+                                                <input class="form_input" type="text" name="firstname" id="firstname" minlength="2" maxlength="35" v-model="user_form.firstname" placeholder="John">
+                                            </div>
+                                            <div class="form-control">
+                                                <label for="lastname">lastname</label>
+                                                <input class="form_input" type="text" name="lastname" id="lastname" minlength="2" v-model="user_form.lastname" placeholder="Doe">
+                                            </div>
+                                        </div>
                                         <div class="form-section">
                                             <div class="form-control">
                                                 <label for="title">profile title</label>
@@ -132,10 +142,11 @@ export default {
             step: 0,
             user: '',
             alerts: [],
-
+            loading: false,
             user_form: {
-                loading: false,
                 preffered_job_types: '',
+                firstname: '',
+                lastname: '',
                 profile: {
                     title: '',
                     bio: '',

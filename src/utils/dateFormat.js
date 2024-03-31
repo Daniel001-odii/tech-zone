@@ -40,7 +40,13 @@ export function formatToRelativeTime(dateString) {
 
 export function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return date.toLocaleDateString(undefined, options);
+  const options = { 
+    year: "numeric", 
+    month: "long", 
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true // Use 12-hour clock format
+  };
+  return date.toLocaleString(undefined, options);
 };
-  

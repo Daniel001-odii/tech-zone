@@ -96,9 +96,10 @@
                                                     </div>
                                                     <div>
                                                         <p><b>Cover Letter:</b> {{ application.cover_letter }}</p>
-                                                        <p><b>Attachments({{ application.attachment.length }}):</b> 
+                                                        <p><b>Attachments({{ application.attachments.length }}):</b> 
                                                             <!-- {{ application.attachments }} -->
                                                             <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
+                                                            <a v-for="file in application.attachments" :href="file" target="_blank" class="underline text-blue-500 p-2">{{ file.split("-")[file.split("-").length - 1] }}</a>
 
                                                             <div v-for="(attachment, attachment_id) in application.attachment" :key="attachment_id">
                                                                 <a class=" text-tz_blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment.name }}</a>

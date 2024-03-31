@@ -81,8 +81,8 @@
             <FullPageLoading v-if="!user"/>
             <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full overflow-y-scroll ">
 
-                <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
-                    <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
+                <div class="flex w-full rounded-xl justify-evenly items-start md:items-center  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
+                    <div class="flex flex-row justify-start md:justify-start items-center p-5 gap-3 flex-wrap">
                         <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
                         <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
                             <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
@@ -99,6 +99,10 @@
                                 <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user.rating)"></p>
                                 <span>({{ user.rating }}) {{ user.rating_count }} reviews</span>
                             </div>
+                            <div class="flex flex-row flex-wrap gap-3 mt-3">
+                                <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
+                                <button class="btn_white dark:hover:bg-tz_light_blue">View Resume</button>
+                            </div>
                         </div>
                     </div>
                     <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
@@ -109,10 +113,7 @@
                         </div>
                         <p>Joined: {{ readableDate(user.created) }}</p>
                         <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
-                        <div class="flex flex-row flex-wrap gap-3 mt-3">
-                            <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
-                            <button class="btn_white dark:hover:bg-tz_light_blue">View Resume</button>
-                        </div>
+                       
                     </div>
                 </div>
 

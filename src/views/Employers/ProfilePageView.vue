@@ -295,6 +295,7 @@ export default {
         }
       
         this.getActiveAndCompletedContracts();
+        this.checkCurrentViewer();
         
        
     },

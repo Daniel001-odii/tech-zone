@@ -37,7 +37,7 @@
                                     <span v-else>{{ job.location.address }}, {{ job.location.state }}</span>
                                 </div>
                                 <div>
-                                    <i class="bi bi-arrow-clockwise"></i> <span>{{ formatTimeFormat(job.created) }}</span>
+                                    <i class="bi bi-arrow-clockwise"></i> <span>{{ formatToRelativeTime(job.created) }}</span>
                                 </div>
                                 <div>
                                     <i class="bi bi-wallet"></i> <span>N{{ job.budget.toLocaleString()}} {{ job.budget_type }}</span>
@@ -131,7 +131,7 @@
                         <!-- <div v-if="upload_progress !== ''">
                             <p>Upload Progress: {{ upload_progress }}%</p>
                         </div> -->
-                        <div  v-if="!is_application" class="flex items-center justify-center w-full">
+                        <div v-if="!is_application" class="flex items-center justify-center w-full">
                             <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -143,6 +143,9 @@
                                 <input id="dropzone-file" type="file" class="hidden" multiple @change="handleFileChange"/>
                             </label>
                         </div> 
+
+                        <!-- <button class="btn" @click="uploadFiles">Upload files</button> -->
+
                         <div v-if="!is_application" class="flex flex-col w-full">
                             <div class="w-full min-h-4 mt-3" >
                                 <p>Selected Files:</p>
@@ -154,13 +157,13 @@
                                     </li>
                                 </ul>
                             </div>
-
+                            <button type="button" @click="uploadFiles" class=" bg-blue-500 p-3">upload files</button>
                         </div>
                         <!-- {{ application_form }} -->
                         <div v-if="is_application && application_form.attachments">
                             <span v-if="application_form.attachments.length > 0">you attached files are secured..</span>
                         </div>
-                        <div v-else>No attachments</div>
+                        <!-- <div v-else>No attachments</div> -->
                     </div>
                     </div>
                     <div class="flex flex-col text-left gap-3">
@@ -224,12 +227,17 @@ export default {
             application_form: {
                 cover_letter: '',
                 counter_offer: '',
-                reason_for_co: ''
+                reason_for_co: '',
+                attachments: '',
             },
 
             is_application: false,
             upload_progress: '',
+
+            formatToRelativeTime,
+
             application_attachments: '',
+
             selectedFiles: [],
 
             application_sent: false,
@@ -241,7 +249,6 @@ export default {
              // Update the selectedFiles array with the names of the selected files
             for (let i = 0; i < this.application_attachments.length; i++) {
                 this.selectedFiles.push(this.application_attachments[i]);
-                // this.uploadSingleFile(this.application_attachments[i]);
             }
         },
 
@@ -249,8 +256,27 @@ export default {
             this.selectedFiles.splice(index, 1);
         },
 
-        formatTimeFormat(time){
-            return formatToRelativeTime(time)
+        async uploadFiles() {
+            // Create a FormData object to append files
+            const formData = new FormData();
+            for (let file of this.application_attachments) {
+                formData.append('files', file);
+            }
+
+            try {
+                // Make a POST request to the server endpoint
+                const response = await axios.post(`${this.api_url}/application/files`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+                });
+                console.log(response.data); // Handle server response
+                this.application_form.attachments = response.data.data;
+                alert("files uploaded securely...");
+
+            } catch (error) {
+                console.error('Error uploading files:', error);
+            }
         },
 
         async getCurrentJobDetails(){
@@ -297,39 +323,25 @@ export default {
         },
 
         async sumbitApplication(){
-            this.loading = true;
-            const formData = new FormData();
-            formData.append('cover_letter', this.application_form.cover_letter);
-            formData.append('counter_offer', this.application_form.counter_offer);
-            formData.append('reason_for_co', this.application_form.reason_for_co);
-            for (let i = 0; i < this.application_attachments.length; i++) {
-                formData.append('attachments', this.application_attachments[i]);
-            }
+            const headers = this.headers;
+            const form_data = this.application_form;
 
-            const config = {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
-                },
-                onUploadProgress: (progressEvent) => {
-                        this.upload_progress = Math.round((progressEvent.loaded / progressEvent.total ) * 100);
-                }
-            };
+            console.log("attachments raw: ", form_data);
+            
+            // if(this.application_attachments){
+            //     form_data.attachments = this.application_attachments
+            // };
+
             try{
-                const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, formData, config);
-                console.log(response)
+                this.loading = true;
+                const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form, { headers });
+                console.log("application sent: ", response.data);
                 this.loading = false;
-                this.application_sent = true;
-            } catch(error){
-                console.log(error);
+            }catch(error){
+                console.log("error submitting application: ", error)
+                this.loading = false;
             }
         },
-
-        createMetaTag(property, content){
-            const metaTag = document.createElement('meta');
-            metaTag.setAttribute('property', property);
-            metaTag.setAttribute('content', content);
-            window.document.head.appendChild(metaTag);
-        }
 
     
     },
