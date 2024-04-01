@@ -68,97 +68,95 @@
            
         </Modal>
 
-<!-- 
-        <TemplateView :leftnav="true">
-            <template #page-title>Profile</template>
-            
-            <template #page-contents> -->
-                <div v-if="!user">loading user data...</div>
-                <div class="p-5" v-if="user">
-                    <div class=" flex flex-col items-center gap-8">
+            <div v-if="!user">loading user data...</div>
+            <div class="" v-if="user">
+                <div class=" flex flex-col items-center gap-8">
 
-                        <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border">
-                            <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
-                                <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
-                                <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
-                                    <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
-                               
-                                <div class="flex flex-col items-start text-start">
-                                    <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
-                                    <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
-                                    <p>{{ user.email }}</p>
-                                    <div clas="flex flex-row gap-3">
-                                        <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.ratings)"></p>
-                                        <span>({{ userRating(user.ratings) }}) {{ user.ratings.length }} reviews</span>
-                                    </div>
-                                  
+                    <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border">
+                        <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
+                            
+                            <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
+                                <div class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex">
+                                    <i class="bi bi-camera text-2xl"></i>
                                 </div>
                             </div>
-                            <div class="border"></div>
-                            <div class=" flex flex-col items-start justify-center text-left p-5">
-                                <div>
-                                    <span v-if="user.is_verified">user is verified</span>
-                                    <span v-else="user.is_verified">user is not verified</span>
+                                <!-- <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full"> -->
+                            
+                            <div class="flex flex-col items-start text-start">
+                                <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
+                                <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
+                                <p>{{ user.email }}</p>
+                                <div clas="flex flex-row gap-3">
+                                    <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.ratings)"></p>
+                                    <span>({{ userRating(user.ratings) }}) {{ user.ratings.length }} reviews</span>
                                 </div>
-                                <p>Joined: {{ user.created }}</p>
-                                <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
-                                <div class="flex flex-row flex-wrap gap-3 mt-3">
-                                    <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
-                                </div>
+                                
                             </div>
                         </div>
-
-                        <div class=" w-full lg:w-3/4">
-                            <div class="border rounded-xl p-3 text-left">
-                                <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
-                            </div>
-
+                        <div class="border"></div>
+                        <div class=" flex flex-col items-start justify-center text-left p-5">
                             <div>
-                                <div class="profile_section">
-                                    <h2 class="font-bold">About Me</h2>
-                                    <div>
-                                        {{ user.profile.bio }}
-                                        <span v-if="!user.profile.bio">No content...</span>
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Phone Number</h2>
-                                    <div>
-                                        {{ user.profile.phone }}
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Email Address</h2>
-                                    <div>
-                                        {{ user.email }}
-                                    </div>
-                                </div>
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Connected Accounts</h2>
-                                    <a :href="user.profile.social" class="text-tz_blue">
-                                       {{ user.profile.social }}
-                                    </a>
-                                </div>
-
-
-                                <div class="profile_section">
-                                    <h2 class="font-bold">Date Joined</h2>
-                                    <div>
-                                        {{ user.created }}
-                                    </div>
-                                </div>
-
+                                <span v-if="user.is_verified">user is verified</span>
+                                <span v-else="user.is_verified">user is not verified</span>
+                            </div>
+                            <p>Joined: {{ user.created }}</p>
+                            <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
+                            <div class="flex flex-row flex-wrap gap-3 mt-3">
+                                <button class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
                             </div>
                         </div>
-
-                        
                     </div>
+
+                    <div class=" w-full lg:w-3/4">
+                        <div class="border rounded-xl p-3 text-left">
+                            <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
+                        </div>
+
+                        <div>
+                            <div class="profile_section">
+                                <h2 class="font-bold">About Me</h2>
+                                <div>
+                                    {{ user.profile.bio }}
+                                    <span v-if="!user.profile.bio">No content...</span>
+                                </div>
+                            </div>
+
+                            <div class="profile_section">
+                                <h2 class="font-bold">Phone Number</h2>
+                                <div>
+                                    {{ user.profile.phone }}
+                                </div>
+                            </div>
+
+                            <div class="profile_section">
+                                <h2 class="font-bold">Email Address</h2>
+                                <div>
+                                    {{ user.email }}
+                                </div>
+                            </div>
+
+                            <div class="profile_section">
+                                <h2 class="font-bold">Connected Accounts</h2>
+                                <a :href="user.profile.social" class="text-tz_blue">
+                                    {{ user.profile.social }}
+                                </a>
+                            </div>
+
+
+                            <div class="profile_section">
+                                <h2 class="font-bold">Date Joined</h2>
+                                <div>
+                                    {{ user.created }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    
                 </div>
-            <!-- </template>
-        </TemplateView> -->
+            </div>
+
     </div>
 </template>
 <script>
@@ -209,7 +207,7 @@ export default {
                 const response = await axios.get(`${this.api_url}/user/${this.$route.params.user_id}`);
                 this.user = response.data.user;
                 console.log("pulic user: ", response);
-                this.checkCurrentViewer();
+                // this.checkCurrentViewer();
             }catch(error){
                 console.log("error fetching public user data", error)
             }
@@ -228,6 +226,8 @@ export default {
                 // push to user variable..
                 this.user = response.data.user;
                 this.user_form = response.data.user;
+
+                // this.checkCurrentViewer();
                 
             }
             catch(error){
@@ -295,7 +295,7 @@ export default {
         }
       
         this.getActiveAndCompletedContracts();
-        this.checkCurrentViewer();
+        
         
        
     },

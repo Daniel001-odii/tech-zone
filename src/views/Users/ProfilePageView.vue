@@ -73,6 +73,84 @@
                 </template>
         </Modal>
 
+        <!-- PROFILE IMAGE UPLOAD MODAL -->
+        <Modal :title="'Upload a profile image'" :modal_active="profile_image_menu">
+            <template #body>
+                <div class="flex flex-row flex-wrap gap-5 p-8 justify-center items-center">
+                    <div class="flex flex-col">
+                        <!-- <h1 class="font-bold text-xl mb-3">Edit Photo</h1> -->
+                        <cropper
+                            ref="cropper"
+                            class="cropper h-[300px] w-[300px] bg-gray-400 rounded-full"
+                            :src="image.src"
+                            :stencil-component="$options.components.CircleStencil"
+                            :stencil-props="{
+                                handlers: {},
+                                movable: false,
+                                resizable: false,
+                                aspectRatio: 1,
+                                handlerClasses: {
+                                    default: 'handler',
+                                },
+                                previewClass: 'preview'
+                            }"
+                            :debounce="false"
+                            :stencil-size="{
+                                width: 280,
+                                height: 280
+                            }"
+                            :resize-image="{
+                                adjustStencil: false
+                            }"
+                            image-restriction="stencil"
+                            @change="change"
+                        />
+                        <div v-if="image.src" class=" flex flex-row justify-center mt-3 gap-3">
+                            <button @click="zoomIn" class="btn"><i class="bi bi-zoom-in"></i></button>
+                            <button @click="zoomOut" class="btn"><i class="bi bi-zoom-out"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <h1 class="text-2xl ">Show Employers<br/> the best version of yourself!</h1>
+                        <div  class="flex flex-row gap-3 mt-6">
+                            <preview class="bg-gray-400 rounded-full"
+                                :width="150"
+                                :height="150"
+                                :image="result.image"
+                                :coordinates="result.coordinates"
+                            />
+                            <preview class="rounded-full bg-gray-400"
+                                :width="75"
+                                :height="75"
+                                :image="result.image"
+                                :coordinates="result.coordinates"
+                            />
+                            <preview class="rounded-full bg-gray-400"
+                                :width="37.5"
+                                :height="37.5"
+                                :image="result.image"
+                                :coordinates="result.coordinates"
+                            />
+                        </div>
+                        <p class="text-blue-500">Must be an actual photo of you (showing your face particularly).<br/>
+    Logos, clip-art, group photos, and digitally-altered images are not allowed.</p>
+                    </div>
+                
+                </div>
+                
+               
+                
+                
+            </template>
+            <template #footer>
+                <div class="flex flex-row gap-3">
+                    <input type="file" ref="file" @change="loadImage($event)" class="hidden" accept="image/*">
+                    <button class="border border-tz_blue p-3 rounded-md" @click="$refs.file.click()">Select image </button>
+                    <button class="btn" @click="$refs.file.click()">Save photo</button>
+                </div>
+            </template>
+        </Modal>
+
 
         <PageTitle>Profile</PageTitle>
         <div class="h-full flex flex-col relative">
@@ -83,9 +161,12 @@
 
                 <div class="flex w-full rounded-xl justify-evenly items-start md:items-center  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
                     <div class="flex flex-row justify-start md:justify-start items-center p-5 gap-3 flex-wrap">
-                        <!-- <div class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
-                        <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover"></div> -->
-                            <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full">
+                        <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
+                                <div class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex cursor-pointer" @click="profile_image_menu = !profile_image_menu">
+                                    <i class="bi bi-camera text-2xl"></i>
+                                </div>
+                            </div>
+                            <!-- <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full"> -->
                         
                         <div class="flex flex-col items-start text-start">
                             <h1 class="font-bold text-4xl flex flex-row items-center gap-1">{{ user.firstname }} {{ user.lastname }}
@@ -183,7 +264,8 @@
                             <SkeletonLoader v-if="!contracts"/>
                             <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
                                 <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
-                                    <template #feedback>{{ contract.user_feedback.review }}</template>
+                                    <template v-if="contract.user_feedback.rating > 0" #feedback>{{ contract.user_feedback.review }}</template>
+                                    
                                     <template #star-rating>
                                         <div>
                                             <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.employer_feedback.rating)"></p>
@@ -200,6 +282,8 @@
                                                 ]">
                                             {{ contract.status }}
                                         </span>
+
+                                        <!-- {{ contract.user_feedback}} -->
                                     </template>
                                 </JobReviewCard>
                             </div>
@@ -223,12 +307,46 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import { formatTimestamp } from '@/utils/dateFormat';
-import { head } from 'vue-head'
 import DismissableAlert from '@/components/DismissableAlert.vue';
+import { CircleStencil, Cropper, Preview } from 'vue-advanced-cropper';
+
+// This function is used to detect the actual image type, 
+function getMimeType(file, fallback = null) {
+	const byteArray = (new Uint8Array(file)).subarray(0, 4);
+    let header = '';
+    for (let i = 0; i < byteArray.length; i++) {
+       header += byteArray[i].toString(16);
+    }
+	switch (header) {
+        case "89504e47":
+            return "image/png";
+        case "47494638":
+            return "image/gif";
+        case "ffd8ffe0":
+        case "ffd8ffe1":
+        case "ffd8ffe2":
+        case "ffd8ffe3":
+        case "ffd8ffe8":
+            return "image/jpeg";
+        default:
+            return fallback;
+    }
+};
 
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader, FullPageLoading, PageTitle, DismissableAlert },
+    components: { Navbar, TemplateView, 
+        JobReviewCard, 
+        Modal, 
+        LoaderButton, 
+        SkeletonLoader, 
+        FullPageLoading, 
+        PageTitle, 
+        DismissableAlert,
+        Cropper,
+        CircleStencil,
+        Preview
+     },
     data(){
         return{
             alerts: [],
@@ -239,9 +357,21 @@ export default {
             user: null,
 
             profile_edit_menu: false,
+            profile_image_menu: true,
 
             loading: null,
             user_rating_count: '',
+            user_profile_image: 'https://techzone-storage.s3.amazonaws.com/profile-images/buy+coins.png',
+            // user_profile_image: 'https://images.unsplash.com/photo-1600984575359-310ae7b6bdf2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
+            result: {
+                coordinates: null,
+                image: null,
+            },
+            image: {
+				src: 'https://images.unsplash.com/photo-1600984575359-310ae7b6bdf2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
+				type: null
+			},
+            zoom_image_size: 0,
 
             user_form: {
                 loading: false,
@@ -267,6 +397,14 @@ export default {
         }
     },
     methods: {
+        change({ coordinates, image }) {
+			// console.log(coordinates, canvas, image);
+            this.result = {
+				coordinates,
+				image
+			};
+		},
+
         showAlertBox(type, message){
             this.alerts.push(message);
             this.show_alert = !this.show_alert;
@@ -364,9 +502,110 @@ export default {
             else{this.isAllowed = false};
         },
 
-       
 
+        // FUNCTIONS FOR ADVANCED IMAGE CROPPER..
+        zoomIn() {
+			this.$refs.cropper.zoom(1.2);
+		},
+        zoomOut() {
+			this.$refs.cropper.zoom(0.2);
+		},
 
+        crop() {
+			const { canvas } = this.$refs.cropper.getResult();
+			canvas.toBlob((blob) => {
+				// Do something with blob: upload to a server, download and etc.
+			}, this.image.type);
+		},
+
+		reset() {
+			this.image = {
+				src: null,
+				type: null
+			}
+		},
+
+		loadImage(event) {
+			// Reference to the DOM input element
+			const { files } = event.target;
+			// Ensure that you have a file before attempting to read it
+			if (files && files[0]) {
+				// 1. Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
+				if (this.image.src) {
+					URL.revokeObjectURL(this.image.src)
+				}
+				// 2. Create the blob link to the file to optimize performance:
+				const blob = URL.createObjectURL(files[0]);
+				
+				// 3. The steps below are designated to determine a file mime type to use it during the 
+				// getting of a cropped image from the canvas. You can replace it them by the following string, 
+				// but the type will be derived from the extension and it can lead to an incorrect result:
+				//
+				// this.image = {
+				//    src: blob;
+				//    type: files[0].type
+				// }
+				
+				// Create a new FileReader to read this image binary data
+				const reader = new FileReader();
+				// Define a callback function to run, when FileReader finishes its job
+				reader.onload = (e) => {
+					// Note: arrow function used here, so that "this.image" refers to the image of Vue component
+					this.image = {
+						// Set the image source (it will look like blob:http://example.com/2c5270a5-18b5-406e-a4fb-07427f5e7b94)
+						src: blob,
+						// Determine the image type to preserve it during the extracting the image from canvas:
+						type: getMimeType(e.target.result, files[0].type),
+					};
+				};
+				// Start the reader job - read file as a data url (base64 format)
+				reader.readAsArrayBuffer(files[0]);
+			}
+		},
+
+        uploadImage() {
+			const { canvas } = this.$refs.cropper.getResult();
+			if (canvas) {
+				const form = new FormData();
+				canvas.toBlob(blob => {
+					form.append('file', blob);
+					// You can use axios, superagent and other libraries instead here
+					fetch('http://example.com/upload/', {
+						method: 'POST',
+						body: form,
+					});
+					// Perhaps you should add the setting appropriate file format here
+				}, 'image/jpeg');
+			}
+		},
+
+        async uploadProfileImage() {
+            const { canvas } = this.$refs.cropper.getResult();
+            try {
+                if (canvas) {
+                    const form = new FormData();
+
+                    canvas.toBlob(async blob => {
+                        form.append('file', blob);
+                        try {
+                            const response = await axios.post(`${this.api_url}/profile/image`, form);
+                            console.log("profile image: ", response);
+                            // Perhaps you should add the setting appropriate file format here
+                        } catch (error) {
+                            console.error("Error uploading profile image:", error);
+                        }
+                    }, 'image/jpeg');
+                }
+            } catch (error) {
+                console.error("Error uploading profile image:", error);
+            }
+        },
+	},
+	destroyed() {
+		// Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
+		if (this.image.src) {
+			URL.revokeObjectURL(this.image.src)
+		}
     },
     computed: {
         
@@ -396,5 +635,13 @@ export default {
 
     .form-control{
         @apply flex flex-col justify-start w-full
+    }
+
+    .handler{
+        @apply border-red-500 border 
+    }
+
+    .preview {
+    	border: dashed 1px rgba(255,255,255, 0.25) !important;
     }
 </style>

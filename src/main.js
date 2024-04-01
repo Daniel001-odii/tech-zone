@@ -7,12 +7,19 @@ import store from './store'
 import './assets/css/style.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+// GOOGLE LOGIN FOR GOOGLE AUTH...
 import vue3GoogleLogin from 'vue3-google-login';
 
+// CLICK OUTSIDE FOR MENUS AND DROPDOWNS...
 import clickOutside from './utils/clickOutside'
 
+// LOTTIE ANIMATIONS FOR SVGS
 import Vue3Lottie from "vue3-lottie";
 
+
+// CROPPER FOR PROFILE IMAGES....
+import 'vue-advanced-cropper/dist/style.css';
+// import 'vue-advanced-cropper/dist/theme.classic.css';
 
 const app = createApp(App);
 
