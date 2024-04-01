@@ -6,55 +6,71 @@
                 <div>
                 <form @submit.prevent="updateUserProfile" v-if="user">
                     <div>
-                        <div class="flex flex-row gap-3 mb-3">
-                            <div class="w-3/6 flex flex-col">
+                        <div class="flex flex-row flex-wrap gap-3 mb-3">
+                            <div class="w-3/6 flex flex-col grow">
                                 <label for="firstname">firstname</label>
-                                <input class="p-3 rounded-lg border " type="name" name="firstname" id="firstname" :value="user.firstname" disabled>
+                                <input class="form_input " type="name" name="firstname" id="firstname" :value="user.firstname" disabled>
                             </div>
 
-                            <div class="w-3/6 flex flex-col">
+                            <div class="w-3/6 flex flex-col grow">
                                 <label for="firstname">lastname</label>
-                                <input class="p-3 rounded-lg border" type="name" name="lastname" id="lastname" :value="user.lastname" disabled>
+                                <input class="form_input" type="name" name="lastname" id="lastname" :value="user.lastname" disabled>
                             </div>
                         </div>
 
                         <div class="form-section">
                             <div class="form-control">
                                 <label for="email">email</label>
-                                <input class="p-3 rounded-lg border" type="email" name="email" id="email" :value="user.email" disabled>
+                                <input class="form_input" type="email" name="email" id="email" :value="user.email" disabled>
                             </div>
                         </div>
 
                         <div class="form-section">
                             <div class="form-control">
-                                <label for="title">profile title</label>
-                                <input class="p-3 rounded-lg border" type="text" name="title" id="title" v-model="user_form.profile.title" placeholder="Expereinced Copywriter">
+                                <label for="company_name">company name</label>
+                                <input class="form_input" type="text" name="company_name" id="company_name" v-model="user_form.profile.company_name" placeholder="Company Name here">
                             </div>
                             <div class="form-control">
-                                <label for="bio">profile bio</label>
-                                <textarea class="p-3 rounded-lg border h-40 max-h-52" type="text" name="bio" id="bio" v-model="user_form.profile.bio" placeholder="A very brief and descriptive bio"></textarea>
+                                <label for="tag_line">company tag line</label>
+                                <input class="form_input" type="text" name="tag_line" id="tag_line" v-model="user_form.profile.tag_line" placeholder="Company Tag line here">
                             </div>
                         </div>
 
                         <div class="form-section">
+                            <label for="bio">Company Description</label>
+                            <textarea class="form_input h-40 max-h-52" type="text" name="bio" id="bio" v-model="user_form.profile.description" placeholder="A very brief description about your company"></textarea>
+                        </div>
+
+                        <div class="flex flex-row gap-3 mb-3">
+                            <div class="w-3/6 flex flex-col">
+                                <label for="firstname">State</label>
+                                <select class="form_input " v-model="user_form.profile.location.state">
+                                    <option value="">Select state</option>
+                                    <option class="p-3" v-for="(state, index) in nigerianStates" :key="index" :value="state">{{ state }}</option>
+                                </select>
+                            </div>
+
+                            <div class="w-3/6 flex flex-col">
+                                <label for="city">City</label>
+                                <input class="form_input" type="text" name="city" id="city" v-model="user_form.profile.location.city">
+                            </div>
+                        </div>
+                        <div v-if="user_form.profile"class="form-section">
                             <div class="form-control">
-                                <label for="skills">skills & expertise</label>
-                                <input class="p-3 rounded-lg border" type="text" name="skills" id="skills" v-model="user_form.profile.skills" placeholder="Copy writing, Technical writing, Graphic Design">
+                                <label for="address">address line</label>
+                                <input class="form_input" type="text" name="address" id="address" v-model="user_form.profile.location.address" placeholder="No. 27 John Doe Avenue, block 123">
                             </div>
                         </div>
 
-
                         <div class="form-section">
-                           
-
                             <div class="form-control">
                                 <label for="phone">phone</label>
-                                <input class="p-3 rounded-lg border" type="phone" name="phone" id="phone" v-model="user_form.profile.phone" placeholder="+2348156074667">
+                                <input class="form_input" type="phone" name="phone" id="phone" v-model="user_form.profile.phone" placeholder="+2348156074667">
                             </div>
 
                             <div class="form-control">
                                 <label for="phone">social</label>
-                                <input class="p-3 rounded-lg border" type="text" name="social" id="social" v-model="user_form.profile.social" placeholder="https://facebook.com/johndoe">
+                                <input class="form_input" type="text" name="social" id="social" v-model="user_form.profile.social" placeholder="https://facebook.com/johndoe">
                             </div>
                         </div>
                     </div>
@@ -63,16 +79,17 @@
            
             </template>
             <template #footer>
-                <LoaderButton @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
+                <LoaderButton type="button" @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
             </template>
            
         </Modal>
 
             <div v-if="!user">loading user data...</div>
-            <div class="" v-if="user">
-                <div class=" flex flex-col items-center gap-8">
 
-                    <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border">
+            <div class="" v-if="user">
+                <div class=" flex flex-col items-center gap-8 p-5">
+
+                    <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border border-gray-600">
                         <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
                             
                             <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
@@ -84,7 +101,7 @@
                             
                             <div class="flex flex-col items-start text-start">
                                 <h1 class="font-bold text-4xl">{{ user.firstname }} {{ user.lastname }}</h1>
-                                <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
+                                <h2 class="text-sm text-gray-500">{{ user.profile.company_name }}</h2>
                                 <p>{{ user.email }}</p>
                                 <div clas="flex flex-row gap-3">
                                     <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.ratings)"></p>
@@ -93,14 +110,22 @@
                                 
                             </div>
                         </div>
-                        <div class="border"></div>
+                        <div class="border  border-gray-600 md:inline-block md:h-[200px] hidden"></div>
                         <div class=" flex flex-col items-start justify-center text-left p-5">
                             <div>
-                                <span v-if="user.is_verified">user is verified</span>
-                                <span v-else="user.is_verified">user is not verified</span>
+                                <span v-if="user.is_verified">Account verified</span>
+                                <span v-else="user.is_verified">Account is not verified</span>
                             </div>
                             <p>Joined: {{ user.created }}</p>
                             <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
+                            
+                            <!-- PROFILE PROGRESS PERCENTAGE -->
+                            <div class="flex flex-col mt-3">
+                                <p>Profile Completion ({{  profile_completion  }}%)</p>
+                                <div class=" h-3 w-52 rounded-full overflow-hidden bg-green-700">
+                                    <div class=" h-full bg-green-400" :class="`w-[${profile_completion}%]`"></div>
+                                </div>
+                            </div>
                             <div class="flex flex-row flex-wrap gap-3 mt-3">
                                 <button class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
                             </div>
@@ -108,7 +133,7 @@
                     </div>
 
                     <div class=" w-full lg:w-3/4">
-                        <div class="border rounded-xl p-3 text-left">
+                        <div class="border rounded-xl p-3 text-left  border-gray-600">
                             <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
                         </div>
 
@@ -168,6 +193,7 @@ import axios from 'axios';
 import LoaderButton from '@/components/LoaderButton.vue';
 import { generateStarRating } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import { nigerianStates } from '@/utils/states';
 
 export default {
     name: "ProfilePage",
@@ -177,21 +203,23 @@ export default {
             user: null,
 
             profile_edit_menu: false,
+            profile_completion: 80,
+            loading: false,
+            nigerianStates,
 
             user_form: {
-                loading: false,
                 preffered_job_types: '',
                 profile: {
-                    title: '',
-                    bio: '',
+                    company_name: '',
+                    tag_line: '',
+                    description: '',
                     location: {
                         city: '',
                         state: '',
                         address: '',
-                    },
+                        },
                     phone: '',
                     social: '',
-                    skills: '',
                     },
                 },
 
@@ -225,8 +253,21 @@ export default {
                 console.log("profile page :", response);
                 // push to user variable..
                 this.user = response.data.user;
-                this.user_form = response.data.user;
+                const user = response.data.user;
+                const profile = response.data.user.profile;
+                const form = this.user_form;
 
+                form.profile.company_name = profile.company_name;
+                form.profile.tag_line = profile.tag_line;
+                form.profile.description = profile.description;
+                if(profile.location){
+                    form.profile.location = profile.location
+                }
+                form.profile.phone = profile.phone;
+                form.profile.social = profile.social;
+                // this.user_form = response.data.user;
+
+                this.calculateProfileCompletion();
                 // this.checkCurrentViewer();
                 
             }
@@ -239,12 +280,13 @@ export default {
             this.user_form.loading = true;
             const headers = this.headers;
             try{
-                const response = await axios.patch(`${this.api_url}/user/profile`, this.user_form, { headers });
+                const response = await axios.patch(`${this.api_url}/employer/profile/update`, this.user_form, { headers });
                 console.log(response)
                 this.user_form.loading = false;
             }
             catch(error){
                 // display any possible error here...
+                console.log("error updating profile data");
             }
         },
 
@@ -283,6 +325,40 @@ export default {
             else{this.isAllowed = false};
         },
 
+        calculateProfileCompletion(){
+            const profile = this.user.profile;
+            let percentage = 10;
+
+            if(this.user){
+                if(profile){
+                    percentage += 0;
+                }
+                if(profile.tag_line){
+                    percentage += 10;
+                }
+                if(profile.description){
+                    percentage += 10;
+                }
+                if(profile.location){
+                    percentage += 40;
+                }
+                if(profile.phone){
+                    percentage += 10
+                }
+                if(profile.social){
+                    percentage += 10
+                }
+                if(profile.link){
+                    percentage += 10
+                }
+                
+                this.profile_completion = percentage;
+                // return percentage;
+            }
+    },
+
+
+
        
 
 
@@ -295,6 +371,8 @@ export default {
         }
       
         this.getActiveAndCompletedContracts();
+
+        // check profile completion percentage ...
         
         
        

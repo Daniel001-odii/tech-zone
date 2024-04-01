@@ -9,7 +9,9 @@
             <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
 
             <!-- page contents -->
-            <div class=" w-full overflow-y-scroll">
+            <!-- REMOVED OVERFLOW SCROLL HERE BECAUSE OF MESSAGE PAGE -->
+            <div class=" w-full ">
+            <!-- <div class=" w-full overflow-y-scroll"> -->
                 <router-view></router-view>
             </div>
         </div>
