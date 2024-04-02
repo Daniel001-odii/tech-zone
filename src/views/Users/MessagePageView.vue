@@ -19,8 +19,6 @@
 
                             <div v-if="!rooms || rooms.length <= 0" class="text-gray-500 text-center p-8">No Message rooms</div>
                         </div>
-
-                        
                     </div>
                     <!-- /LEFT SIDE ENDS HERE -->
 
@@ -54,27 +52,23 @@
                                     <!-- <span class="msg_time">{{ formatTimestamp(message.created) }}</span> -->
                                 </div>
                                 </div>
-
-
-
-
                             </div>
-                                <div class="h-[15%] flex justify-center items-center">
-                                    <div class="w-full flex flex-row items-center justify-center gap-1">
-                                        <button class="h-10 w-10 flex justify-center items-center bg-transparent p-3 text-gray-500 text-xl">
-                                            <i class="bi bi-paperclip"></i>
-                                        </button>
-                                        
-                                        <input type="text" class="form_input w-[80%] h-10" placeholder="Type your message here...">
 
-                                        <button class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl">
-                                            <i class="bi bi-send-fill"></i>
-                                        </button>
+                            <div class="h-[15%] flex justify-center items-center">
+                                <div class="w-full flex flex-row items-center justify-center gap-1">
+                                    <button class="h-10 w-10 flex justify-center items-center bg-transparent p-3 text-gray-500 text-xl">
+                                        <i class="bi bi-paperclip"></i>
+                                    </button>
+                                    
+                                    <input type="text" class="form_input w-[80%] h-10" placeholder="Type your message here...">
 
-                                    </div>
+                                    <button class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl">
+                                        <i class="bi bi-send-fill"></i>
+                                    </button>
+
                                 </div>
+                            </div>
                         <!-- </div> -->
-                    
                     </div>
 
                     <div v-else class=" absolute top-0 left-0 md:relative md:flex w-[100%] flex-col justify-center items-center text-center">
@@ -90,17 +84,14 @@
     </div>
 </template>
 <script>
-import TemplateView from './TemplateView.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import axios from 'axios';
 import io from 'socket.io-client';
-import blankMessagePage from '../lottie/blankMessagePage.json';
-
-import getMessages from '../utils/dummyMessage.js'
+import blankMessagePage from '../../lottie/blankMessagePage.json';
 
 export default {
     name: "MessagePageView",
-    components: { TemplateView, PageTitle },
+    components: { PageTitle },
     data(){
         return{
             user: '',
@@ -145,6 +136,16 @@ export default {
     },
 
     methods: {
+        // get user's rooms..
+        async getMessageRooms(){
+            try{
+                const response = await axios.get(`${this.msg_api_url}/rooms/${this.user._id}`);
+                console.log("user rooms: ", response.data);
+            }catch(error){
+                console.log("error fetching rooms: ", error)
+            }
+        },
+
         async fetchMessages(roomId) {
             // Fetch messages for the selected room using Axios
             this.messageIsLoading = true;

@@ -32,6 +32,8 @@ app.use(Vue3Lottie);
 
 // Declare a global variable
 app.config.globalProperties.api_url = process.env.VUE_APP_API_URL;
+app.config.globalProperties.msg_api_url = process.env.VUE_APP_MSG_API_URL;
+
 
 app.use(store).use(router).mount('#app');
 

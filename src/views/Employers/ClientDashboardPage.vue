@@ -1,4 +1,7 @@
 <template>
+
+    <FullPageLoading v-if="loading"/>
+
     <!-- Job assignment modal... -->
     <Modal :title="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
         <template #body>
@@ -110,7 +113,7 @@
                                                     </div>
                                                     <div class="flex flex-row flex-wrap gap-3 mt-3">
                                                         <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save</button>
-                                                        <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md hover:bg-tz_blue">Interview</button>
+                                                        <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md hover:bg-tz_blue" @click="startMessageRoom(job.title, application.user._id, getUserData.user._id)">Interview</button>
                                                         <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer</button>
                                                     </div>
                                                 </div>
@@ -165,10 +168,11 @@ import Modal from '@/components/Modal.vue';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import { generateStarRating } from '@/utils/ratingStars';
 import PageTitle from '@/components/PageTitle.vue';
+import FullPageLoading from '@/components/FullPageLoading.vue';
 
 export default {
     name: "ClientDashboardPage",
-    components: { TemplateView, SkeletonLoader, Modal, PageTitle },
+    components: { TemplateView, SkeletonLoader, Modal, PageTitle, FullPageLoading },
     data(){
         return{
             store: useStore(),
@@ -303,6 +307,20 @@ export default {
             }
         },
 
+        async startMessageRoom(name, userId, employerId){
+            this.loading = true;
+            console.log("user: ", userId, "employer: ", employerId);
+            try{
+                const response = await axios.post(`${this.msg_api_url}/create-room`, { name, userId, employerId }, {});
+                console.log("new room response: ", response);
+                this.loading = false;
+                this.$router.push("/client/messages");
+            }catch(error){
+                console.log("error creating room: ", error);
+                this.loading = false;
+            }
+        },
+
         
         userIsSaved(user_id){
             if(this.getUserData){
@@ -314,10 +332,6 @@ export default {
             return generateStarRating(ratings);
         },
 
-        // editJobPost(job_id) {
-        //     const route = this.$router.resolve({name: "Techzone - Edit Job", params: { job_id: job_id } });
-        //     window.open(route.href, '_blank');
-        // },
 
         seeUserProfile(user_id) {
             const route = this.$router.resolve({name: "Public profile", params: { user_id: user_id } });

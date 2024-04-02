@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPageViewVue from '@/views/LandingPageView.vue'
 import JobsPageViewVue from '@/views/JobsPageView.vue'
-import MessagePageViewVue from '@/views/MessagePageView.vue'
+import MessagePageViewVue from '@/views/Users/MessagePageView.vue'
 import SavedJobsViewVue from '@/views/Users/SavedJobsView.vue'
 import ApplicationPageViewVue from '@/views/Users/ApplicationPageView.vue'
 import ContractPageViewVue from '@/views/Users/ContractPageView.vue'
@@ -43,6 +43,7 @@ import AdminSettingsView from '@/views/Administration/AdminSettingsView.vue'
 import AdminRegisterPageView from '@/views/Administration/AdminRegisterView.vue'
 import AdminLoginView from '@/views/Administration/AdminLoginView.vue'
 
+import ClientMessagePageView from '@/views/Employers/ClientMessagePageView.vue'
 
 const routes = [
   {
@@ -173,7 +174,7 @@ const routes = [
       {path: 'job', component: ClientPostJobView},
       {path: 'jobs/:job_id/edit', component: ClientPostJobView},
       {path: 'jobs', component: JobsListPageView},
-      {path: 'messages', component: MessagePageViewVue},
+      {path: 'messages', component: ClientMessagePageView},
       {path: 'profile', component: ClientProfilePageViewVue},
       {path: 'notifications', component: NotifcationsPageView},
       {path: 'contracts', component: ClientContractsListPageViewVue},
