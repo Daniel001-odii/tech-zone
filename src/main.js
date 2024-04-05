@@ -3,10 +3,9 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-
 import './assets/css/style.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+const app = createApp(App);
 // GOOGLE LOGIN FOR GOOGLE AUTH...
 import vue3GoogleLogin from 'vue3-google-login';
 
@@ -21,7 +20,14 @@ import Vue3Lottie from "vue3-lottie";
 import 'vue-advanced-cropper/dist/style.css';
 // import 'vue-advanced-cropper/dist/theme.classic.css';
 
-const app = createApp(App);
+
+// SOCKET IO FOR REAL TIME COMMS
+import VueSocketIO from 'vue-3-socket.io'
+app.use(new VueSocketIO({
+    connection: 'http://localhost:8000'
+  }));
+
+
 
 
 app.use(vue3GoogleLogin, {
@@ -29,6 +35,7 @@ app.use(vue3GoogleLogin, {
 })
 
 app.use(Vue3Lottie);
+
 
 // Declare a global variable
 app.config.globalProperties.api_url = process.env.VUE_APP_API_URL;

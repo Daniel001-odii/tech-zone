@@ -184,9 +184,9 @@
             </div>
         </section>
     </div>
-    <Footer/>
+   
     </div>
-    
+    <Footer/>
     </div>
     <!-- <Navbar :type="'wesbite'"/> -->
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- <div class="flex flex-col-reverse gap-10 md:flex-row justify-between bg-white max-w-screen-2xl" data-aos="fade-up" data-aos-delay="200"> -->
-        <div class="flex flex-col-reverse md:flex-row justify-between p-8 w-full gap-5 max-w-screen-2xl" style="margin: 0 auto;">
+        <div class="flex flex-col-reverse md:flex-row gap-10 justify-between p-8 w-full max-w-screen-2xl my-0 mx-auto">
             <div class="">
                 
                 <ul class="list">
@@ -41,7 +41,7 @@
             </div>
           
         </div>
-        <p class="text-center text-sm text-gray-500 p-5"> &copy; 2023 - 2024 Apex-Tek® Nigeria Inc.</p>
+        <!-- <p class="text-center text-sm text-gray-500 p-5"> &copy; 2023 - 2024 Apex-Tek® Nigeria Inc.</p> -->
 
             
     </div>

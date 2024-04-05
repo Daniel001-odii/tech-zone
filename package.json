@@ -14,10 +14,12 @@
     "register-service-worker": "^1.7.2",
     "socket.io-client": "^4.7.5",
     "vue": "^3.2.13",
+    "vue-3-socket.io": "^1.0.5",
     "vue-advanced-cropper": "^2.8.8",
     "vue-animate-onscroll": "^1.0.8",
     "vue-head": "^2.2.0",
     "vue-router": "^4.0.3",
+    "vue-socket.io": "^3.0.10",
     "vue3-google-login": "^2.0.25",
     "vue3-lottie": "^3.3.0",
     "vuex": "^4.0.0"
