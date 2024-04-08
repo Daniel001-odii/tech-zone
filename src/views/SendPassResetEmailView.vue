@@ -34,7 +34,7 @@
 
         <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6 dark:bg-[#1F2A36]">
             <div>
-                <img src="../assets/images/tech-zone.svg" width="100px">
+                <img src="../../public/apex-tek.svg" class=" h-[400px] w-[405px]">
             </div>
         </div>
            
