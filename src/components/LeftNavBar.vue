@@ -25,6 +25,13 @@
                         <span class="md:hidden lg:inline-block">My Jobs</span>
                     </div>
                 </RouterLink>
+                <RouterLink to="/client/contracts" >
+                    <div class="nav_item" :class="{ 'active': isClientContracts }">
+                        <i class="bi bi-briefcase" v-if="!isClientContracts"></i> 
+                        <i class="bi bi-briefcase-fill" v-if="isClientContracts"></i> 
+                        <span class="md:hidden lg:inline-block">Contracts & hires</span>
+                    </div>
+                </RouterLink>
                
 
             </div>
@@ -89,6 +96,7 @@ export default {
         isDashboard() { return this.$route.path.startsWith("/client/dashboard"); },
         isMyJobs() { return this.$route.path.startsWith("/client/jobs"); },
         isClientMessages() { return this.$route.path.startsWith("/client/messages") },
+        isClientContracts() { return this.$route.path.startsWith("/client/contracts") },
     },
     data(){
         return{
