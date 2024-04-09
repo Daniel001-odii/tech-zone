@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="w-fit p-6 shadow-lg" data-aos="fade-up">
+        <div class="w-fit p-6 shadow-lg dark:bg-tz_light_blue">
             <slot name="icon">
                 <i class="bi bi-gear font-bold"></i>
             </slot>

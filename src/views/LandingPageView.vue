@@ -59,13 +59,13 @@
         </section>
 
         <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
-            <div class="flex flex-col">
+            <div class="flex flex-col text-center">
                 <div>
                 <!-- <div data-aos="zoom-out"> -->
                     <span class="text-2xl text-white">How it works</span>
                     <h3 class="section_subtitle text-white">We are here to help you,<br/> just follow these steps!</h3>
                 </div>
-                <div class="flex flex-col flex-wrap justify-center items-center md:flex-row mt-8">
+                <div class="flex flex-col justify-center items-center md:flex-row mt-8">
                     <StepBox :number="1"></StepBox>
                     <StepBox :number="2">
                         <template #title>Complete User Profile</template>
@@ -99,36 +99,36 @@
         <section>
             <div class="flex flex-col">
                 <!-- <div data-aos="zoom-out"> -->
-                <div>
+                <div class="text-center">
                     <span class="font-bold uppercase text-xl ">Jobs By Category</span>
                     <h1 class="font-bol text-5xl font-bold">Explore Our Divers Job Categories</h1>
                 </div>
                
                 <div class="flex flex-row gap-8 justify-center flex-wrap mt-10">
-                    <JobCat :jobs_avaialble="900" data-aos="fade-up" data-aos-delay="200"></JobCat>
-                    <JobCat :jobs_avaialble="400" data-aos="fade-up" data-aos-delay="300">
+                    <JobCat :jobs_avaialble="900" >
+                    </JobCat>
+                    <JobCat :jobs_avaialble="400">
                         <template #icon></template>
                         <template #title></template>
                     </JobCat>
-                    <JobCat :jobs_avaialble="400" data-aos="fade-up" data-aos-delay="400">
+                    <JobCat :jobs_avaialble="400">
                         <template #icon></template>
                         <template #title></template>
                     </JobCat>
-                    <JobCat :jobs_avaialble="90" data-aos="fade-up" data-aos-delay="500">
+                    <JobCat :jobs_avaialble="90">
                         <template #icon></template>
                         <template #title></template>
                     </JobCat>
-                    <!-- <br/> -->
-                    <JobCat :jobs_avaialble="900" data-aos="fade-up" data-aos-delay="600"></JobCat>
-                    <JobCat :jobs_avaialble="400" data-aos="fade-up" data-aos-delay="700">
+                    <JobCat :jobs_avaialble="900"></JobCat>
+                    <JobCat :jobs_avaialble="400">
                         <template #icon></template>
                         <template #title></template>
                     </JobCat>
-                    <JobCat :jobs_avaialble="400" data-aos="fade-up" data-aos-delay="800">
+                    <JobCat :jobs_avaialble="400">
                         <template #icon></template>
                         <template #title></template>
                     </JobCat>
-                    <JobCat :jobs_avaialble="90" data-aos="fade-up" data-aos-delay="900">
+                    <JobCat :jobs_avaialble="90">
                         <template #icon></template>
                         <template #title></template>
                     </JobCat>
@@ -163,11 +163,57 @@
                         />
                     </div>
 
+                    
+
+<div id="controls-carousel" class="relative w-full" data-carousel="static">
+    <!-- Carousel wrapper -->
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+         <!-- Item 1 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="../assets/images/404 error in laptop.svg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 2 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+            <img src="../assets/images/empty open mailbox.svg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 3 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="../assets/images/empty tin can.svg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 4 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="../assets/images/FAQ-People-group.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 5 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="../assets/images/Group 284.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+    </div>
+    <!-- Slider controls -->
+    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+            </svg>
+            <span class="sr-only">Previous</span>
+        </span>
+    </button>
+    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="sr-only">Next</span>
+        </span>
+    </button>
+</div>
+
+
                     <div class="flex flex-row justify-center gap-3 p-5">
-                        <button class="slide_btn">
+                        <button data-carousel-prev class="slide_btn">
                             <i class="bi bi-arrow-left"></i>
                         </button>
-                        <button class="slide_btn sb_active">
+                        <button data-carousel-next class="slide_btn sb_active">
                             <i class="bi bi-arrow-right"></i>
                         </button>
                     </div>

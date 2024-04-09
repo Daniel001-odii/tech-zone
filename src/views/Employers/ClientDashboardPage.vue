@@ -55,6 +55,7 @@
                         </div>
                         <div>
                             <div v-if="current_tab == 'jobs'" class="p-3 rounded-lg mt-3">
+                                <div v-if="loading_posted_jobs">Loading your jobs...</div>
                                 <div v-if="jobs.length > 0">
                                     <!-- {{ jobs }} -->
                                     <div class=" bg-white p-2 rounded-2xl mb-4  hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]" v-for="(job, job_id) in jobs" :key="job_id">
@@ -70,8 +71,8 @@
                                         </div>
                                         <div class="p-3 text-left">{{ job.description.substring(0, 200) }}..</div>
                                         <div class="flex flex-row justify-end mt-3 mb-3">
-                                            <button @click="show_applicants(job_id, job._id)" type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                Applications<span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">{{ job.no_of_applications }}</span>
+                                            <button v-if="job.no_of_applications" @click="show_applicants(job_id, job._id)" type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                See Applications<span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">{{ job.no_of_applications }}</span>
                                             </button>
                                             <!-- <span class="p-2 rounded-lg bg-slate-200 text-sm dark:bg-tz_light_blue">applications: {{ job.no_of_applications }}</span> -->
                                         </div>
@@ -192,6 +193,8 @@ export default {
                 name: '',
                 id: '',
             },
+
+            loading_posted_jobs: false,
         }
         
     },
@@ -225,6 +228,7 @@ export default {
 
         async getJobsByEmployer(){
             const headers = this.headers;
+            this.loading_posted_jobs = true;
             try{
                 const response = await axios.get(`${this.api_url}/employer/jobs`, { headers });
                 console.log("my posted jobs : ", response);
@@ -232,8 +236,10 @@ export default {
                 this.jobs.forEach(job => {
                     job.show_applicants = false;
                 });
+                this.loading_posted_jobs = false;
             }catch(error){
-                console.log(error)
+                console.log(error);
+                this.loading_posted_jobs = false;
             }
         },
 

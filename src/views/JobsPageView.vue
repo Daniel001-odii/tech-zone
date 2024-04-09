@@ -377,6 +377,7 @@ import PageTitle from '@/components/PageTitle.vue';
 import Modal from '@/components/Modal.vue';
 import { nigerianStates } from '@/utils/states';
 
+
 export default {
     name: "JobsPageView",
     components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert, PageTitle, Modal },

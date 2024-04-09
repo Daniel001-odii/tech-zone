@@ -1,5 +1,5 @@
 <template>
-        <div class="rounded-lg p-5 border border-white bg-white opacity-50 flex flex-col w-fit max-w-80 hover:opacity-100 hover:text-black">
+        <div class="rounded-lg p-5 border border-white flex flex-col w-fit max-w-80 hover:opacity-100 hover:text-black hover:bg-white">
             <div class="flex flex-row justify-between font-bold text-md">
                 <div class="flex items-center justify-center">
                     <i class="bi bi-building-check"></i> | <span>{{company}}</span>
