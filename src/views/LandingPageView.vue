@@ -1,6 +1,6 @@
 <template>
     <nav class="bg-white start-0 relative z-30 dark:bg-[#1F2A36]">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
         <SiteLogo/>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <div class="flex justify-self-end md:flex gap-3 md:m-0">
@@ -38,200 +38,156 @@
 
     <div class=" w-full dark:bg-[#27323F] dark:text-white">
         <div class="flex flex-col justify-center items-center max-w-screen-2xl " style="margin: 0 auto;">
-        <div class="py-4 mt-12 md:px-4 flex justify-center items-center flex-col">
-        <section>
-            <div class="section_container">
-                <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6">
-                    <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
-                        <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
+        
+            <section>
+                <div class="section_container">
+                    <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6">
+                        <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
+                            <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
+                        </div>
+                        <div class=" text-7xl font-bold">
+                            Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-12 right-3 li"/></span> Job.<br/> Hire the right talents.
+                        </div>
+                        <div class=" text-xl">
+                            At Apex Technologies, we serve as a comprehensive marketplace, facilitating seamless connections between companies seeking tech expertise and skilled professionals looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects, whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
+                        </div>
+                        <GetStartedNow/>
                     </div>
-                    <div class=" text-7xl font-bold">
-                        Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-12 right-3 li"/></span> Job.<br/> Hire the right talents.
+                    <img src="../assets/images/Group 284.png" class="section_img w-96">
+                </div>
+                
+            </section>
+
+            <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
+                <div class="flex flex-col text-center">
+                    <div>
+                    <!-- <div data-aos="zoom-out"> -->
+                        <span class="text-2xl text-white">How it works</span>
+                        <h3 class="section_subtitle text-white">We are here to help you,<br/> just follow these steps!</h3>
                     </div>
-                    <div class=" text-xl">
-                        At Apex Technologies, we serve as a comprehensive marketplace, facilitating seamless connections between companies seeking tech expertise and skilled professionals looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects, whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
+                    <div class="flex flex-col md:flex-row justify-center items-center mt-8 ">
+                        <!-- <div class="flex flex-row"> -->
+                            <StepBox :number="1"></StepBox>
+                            <StepBox :number="2">
+                                <template #title>Complete User Profile</template>
+                                <template #content></template>
+                            </StepBox>
+                            <StepBox :number="3">
+                                <template #title>
+                                    Search Your Job Type
+                                </template>
+                            </StepBox>
+                            <StepBox :number="4">
+                                <template #title>
+                                    Search Your Job Type
+                                </template>
+                            </StepBox>
+                        <!-- </div> -->
                     </div>
-                    <GetStartedNow/>
                 </div>
-                <img src="../assets/images/Group 284.png" class="section_img w-96">
-            </div>
-            
-        </section>
+                
+            </section>
 
-        <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
-            <div class="flex flex-col text-center">
-                <div>
-                <!-- <div data-aos="zoom-out"> -->
-                    <span class="text-2xl text-white">How it works</span>
-                    <h3 class="section_subtitle text-white">We are here to help you,<br/> just follow these steps!</h3>
+            <section>
+                <div class="section_container">
+                    <img src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
+                    <div class="md:w-fit text-left gap-8 flex flex-col">
+                        <h1 class="section_subtitle">Unlock your next career move! <br/> Upload your CV to stand out to recruiters and impact your job search.</h1>
+                        <button class="btn">Upload CV Now</button>
+                    </div>
                 </div>
-                <div class="flex flex-col justify-center items-center md:flex-row mt-8">
-                    <StepBox :number="1"></StepBox>
-                    <StepBox :number="2">
-                        <template #title>Complete User Profile</template>
-                        <template #content></template>
-                    </StepBox>
-                    <StepBox :number="3">
-                        <template #title>
-                            Search Your Job Type
-                        </template>
-                    </StepBox>
-                    <StepBox :number="4">
-                        <template #title>
-                            Search Your Job Type
-                        </template>
-                    </StepBox>
-                </div>
-            </div>
-            
-        </section>
+            </section>
 
-        <section>
-            <div class="section_container" data-aos="zoom-in">
-                <img src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
-                <div class="md:w-fit text-left gap-8 flex flex-col">
-                    <h1 class="section_subtitle">Unlock your next career move! <br/> Upload your CV to stand out to recruiters and impact your job search.</h1>
-                    <button class="btn">Upload CV Now</button>
+            <section>
+                <div class="flex flex-col">
+                    <!-- <div data-aos="zoom-out"> -->
+                    <div class="text-center">
+                        <span class="font-bold uppercase text-xl ">Jobs By Category</span>
+                        <h1 class="font-bol text-5xl font-bold">Explore Our Divers Job Categories</h1>
+                    </div>
+                
+                    <div class="flex flex-row gap-8 justify-center flex-wrap mt-10">
+                        <JobCat :jobs_avaialble="900" >
+                        </JobCat>
+                        <JobCat :jobs_avaialble="400">
+                            <template #icon></template>
+                            <template #title></template>
+                        </JobCat>
+                        <JobCat :jobs_avaialble="400">
+                            <template #icon></template>
+                            <template #title></template>
+                        </JobCat>
+                        <JobCat :jobs_avaialble="90">
+                            <template #icon></template>
+                            <template #title></template>
+                        </JobCat>
+                        <JobCat :jobs_avaialble="900"></JobCat>
+                        <JobCat :jobs_avaialble="400">
+                            <template #icon></template>
+                            <template #title></template>
+                        </JobCat>
+                        <JobCat :jobs_avaialble="400">
+                            <template #icon></template>
+                            <template #title></template>
+                        </JobCat>
+                        <JobCat :jobs_avaialble="90">
+                            <template #icon></template>
+                            <template #title></template>
+                        </JobCat>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section>
-            <div class="flex flex-col">
-                <!-- <div data-aos="zoom-out"> -->
-                <div class="text-center">
-                    <span class="font-bold uppercase text-xl ">Jobs By Category</span>
-                    <h1 class="font-bol text-5xl font-bold">Explore Our Divers Job Categories</h1>
-                </div>
-               
-                <div class="flex flex-row gap-8 justify-center flex-wrap mt-10">
-                    <JobCat :jobs_avaialble="900" >
-                    </JobCat>
-                    <JobCat :jobs_avaialble="400">
-                        <template #icon></template>
-                        <template #title></template>
-                    </JobCat>
-                    <JobCat :jobs_avaialble="400">
-                        <template #icon></template>
-                        <template #title></template>
-                    </JobCat>
-                    <JobCat :jobs_avaialble="90">
-                        <template #icon></template>
-                        <template #title></template>
-                    </JobCat>
-                    <JobCat :jobs_avaialble="900"></JobCat>
-                    <JobCat :jobs_avaialble="400">
-                        <template #icon></template>
-                        <template #title></template>
-                    </JobCat>
-                    <JobCat :jobs_avaialble="400">
-                        <template #icon></template>
-                        <template #title></template>
-                    </JobCat>
-                    <JobCat :jobs_avaialble="90">
-                        <template #icon></template>
-                        <template #title></template>
-                    </JobCat>
-                </div>
-            </div>
-        </section>
+            <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
+                    <div class="text-left flex flex-col gap-5">
+                        <div class="flex flex-col justify-around">
+                            <span class="text-2xl text-white">FEATURED JOBS</span>
+                            <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
+                                <h2 class="section_subtitle text-white">Get access to high in-demand jobs in realtime</h2>
+                                <RouterLink to="/jobs">
+                                    <button class="btn bg-white text-tz_blue hover:text-white flex flex-row gap-1">
+                                        Browse All jobs <i class="bi bi-arrow-right"></i> 
+                                    </button>
+                                </RouterLink>
+                            </div>
+                        </div>
 
-        <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
-                <div class="text-left flex flex-col gap-5">
-                    <div class="flex flex-col justify-around">
-                        <span class="text-2xl text-white">FEATURED JOBS</span>
-                        <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
-                            <h2 class="section_subtitle text-white">Get access to high in-demand jobs in realtime</h2>
-                            <RouterLink to="/jobs">
-                                <button class="btn bg-white text-tz_blue hover:text-white flex flex-row gap-1">
-                                    Browse All jobs <i class="bi bi-arrow-right"></i> 
-                                </button>
-                            </RouterLink>
+                        <div class="flex flex-col flex-wrap justify-center items-center md:flex-row gap-3">
+                            <LpJobCard v-for="(job, index) in jobPostings" :key="index"
+                            :company = "job.company"
+                            :job_time = "job.job_time"
+                            :Job_title = "job.job_title"
+                            :job_location = "job.job_location"
+                            :job_duration = "job.job_duration"
+                            :job_description = "job.job_description"
+                            :job_url = "'/'"
+                            :budget = "job.budget"
+                            />
+                        </div>
+
+                        <div class="flex flex-row justify-center gap-3 p-5">
+                            <button class="slide_btn">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <button class="slide_btn sb_active">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
+            </section>
 
-                    <div class="flex flex-col flex-wrap justify-center items-center md:flex-row gap-3">
-                        <LpJobCard v-for="(job, index) in jobPostings" :key="index"
-                        :company = "job.company"
-                        :job_time = "job.job_time"
-                        :Job_title = "job.job_title"
-                        :job_location = "job.job_location"
-                        :job_duration = "job.job_duration"
-                        :job_description = "job.job_description"
-                        :job_url = "'/'"
-                        :budget = "job.budget"
-                        />
+            <section>
+                <div class="section_container">
+                    <div class="md:w-fit text-left gap-8 flex flex-col">
+                        <h2 class="section_subtitle">Take the next step in your professional career.<br/>Sign-in to unlock limitless opportunities.</h2>
+                        <GetStartedNow/>
                     </div>
-
-                    
-
-<div id="controls-carousel" class="relative w-full" data-carousel="static">
-    <!-- Carousel wrapper -->
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-         <!-- Item 1 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="../assets/images/404 error in laptop.svg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        <!-- Item 2 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-            <img src="../assets/images/empty open mailbox.svg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        <!-- Item 3 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="../assets/images/empty tin can.svg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        <!-- Item 4 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="../assets/images/FAQ-People-group.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        <!-- Item 5 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="../assets/images/Group 284.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-    </div>
-    <!-- Slider controls -->
-    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-            </svg>
-            <span class="sr-only">Previous</span>
-        </span>
-    </button>
-    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-            </svg>
-            <span class="sr-only">Next</span>
-        </span>
-    </button>
-</div>
-
-
-                    <div class="flex flex-row justify-center gap-3 p-5">
-                        <button data-carousel-prev class="slide_btn">
-                            <i class="bi bi-arrow-left"></i>
-                        </button>
-                        <button data-carousel-next class="slide_btn sb_active">
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </div>
+                    <img src="../assets/images/Group 281.png" alt="lady image" class="section_img w-96">
                 </div>
-        </section>
-
-        <section>
-            <div class="section_container">
-                <div class="md:w-fit text-left gap-8 flex flex-col" data-aos="fade-in">
-                    <h2 class="section_subtitle">Take the next step in your professional career.<br/>Sign-in to unlock limitless opportunities.</h2>
-                    <GetStartedNow/>
-                </div>
-                <img src="../assets/images/Group 281.png" alt="lady image" class="section_img w-96">
-            </div>
-        </section>
-    </div>
-   
-    </div>
+            </section>
+        
+    
+        </div>
     <Footer/>
     </div>
     <!-- <Navbar :type="'wesbite'"/> -->
@@ -349,6 +305,6 @@ export default {
     }
 
     section{
-        @apply flex justify-center items-center mx-0 my-auto p-8
+        @apply flex justify-center items-center mx-0 my-auto p-8 w-full
     }
 </style>

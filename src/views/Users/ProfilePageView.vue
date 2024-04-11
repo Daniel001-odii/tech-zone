@@ -146,7 +146,10 @@
                 <div class="flex flex-row gap-3">
                     <input type="file" ref="file" @change="loadImage($event)" class="hidden" accept="image/*">
                     <button class="border border-tz_blue p-3 rounded-md" @click="$refs.file.click()">Select image </button>
-                    <button class="btn" @click="$refs.file.click()">Save photo</button>
+                    <button class="btn" @click="uploadProfileImage">
+                        <span v-if="!image_uploading">Save photo</span>
+                        <span v-else>Working...</span>
+                    </button>
                 </div>
             </template>
         </Modal>
@@ -310,28 +313,6 @@ import { formatTimestamp } from '@/utils/dateFormat';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import { CircleStencil, Cropper, Preview } from 'vue-advanced-cropper';
 
-// This function is used to detect the actual image type, 
-function getMimeType(file, fallback = null) {
-	const byteArray = (new Uint8Array(file)).subarray(0, 4);
-    let header = '';
-    for (let i = 0; i < byteArray.length; i++) {
-       header += byteArray[i].toString(16);
-    }
-	switch (header) {
-        case "89504e47":
-            return "image/png";
-        case "47494638":
-            return "image/gif";
-        case "ffd8ffe0":
-        case "ffd8ffe1":
-        case "ffd8ffe2":
-        case "ffd8ffe3":
-        case "ffd8ffe8":
-            return "image/jpeg";
-        default:
-            return fallback;
-    }
-};
 
 export default {
     name: "ProfilePage",
@@ -357,21 +338,22 @@ export default {
             user: null,
 
             profile_edit_menu: false,
-            profile_image_menu: true,
+            profile_image_menu: false,
 
             loading: null,
             user_rating_count: '',
-            user_profile_image: 'https://techzone-storage.s3.amazonaws.com/profile-images/buy+coins.png',
+            user_profile_image: '',
             // user_profile_image: 'https://images.unsplash.com/photo-1600984575359-310ae7b6bdf2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
             result: {
                 coordinates: null,
                 image: null,
             },
             image: {
-				src: 'https://images.unsplash.com/photo-1600984575359-310ae7b6bdf2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
+				src: '',
 				type: null
 			},
-            zoom_image_size: 0,
+            current_zoom: 0,
+            max_zoom: 5,
 
             user_form: {
                 loading: false,
@@ -393,7 +375,9 @@ export default {
                 contracts: '',
                 isAllowed: false,
 
-            headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
+            headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`},
+
+            image_uploading: false,
         }
     },
     methods: {
@@ -422,6 +406,9 @@ export default {
                 this.user_form = response.data.user;
                 this.checkCurrentViewer();
                 this.loading = false;
+                this.image.src = this.user.profile.image_url;
+
+                console.log("image.src: ", this.image.src)
             }catch(error){
                 console.log("error fetching public user data", error);
                 this.loading = true;
@@ -451,6 +438,9 @@ export default {
                 this.user = response.data.user;
                 // this.user_form = response.data.user;
                 this.user_form.profile = response.data.user.profile;
+
+                // set image src..
+                
                 
             }
             catch(error){
@@ -505,10 +495,15 @@ export default {
 
         // FUNCTIONS FOR ADVANCED IMAGE CROPPER..
         zoomIn() {
-			this.$refs.cropper.zoom(1.2);
+            if(this.current_zoom < this.max_zoom){
+                this.$refs.cropper.zoom(1.2);
+                this.current_zoom += 1;
+            }
 		},
+
         zoomOut() {
-			this.$refs.cropper.zoom(0.2);
+                this.$refs.cropper.zoom(0.2);
+                this.current_zoom = 0;
 		},
 
         crop() {
@@ -524,6 +519,28 @@ export default {
 				type: null
 			}
 		},
+
+        getMimeType(file, fallback = null) {
+            const byteArray = (new Uint8Array(file)).subarray(0, 4);
+            let header = '';
+            for (let i = 0; i < byteArray.length; i++) {
+            header += byteArray[i].toString(16);
+            }
+            switch (header) {
+                case "89504e47":
+                    return "image/png";
+                case "47494638":
+                    return "image/gif";
+                case "ffd8ffe0":
+                case "ffd8ffe1":
+                case "ffd8ffe2":
+                case "ffd8ffe3":
+                case "ffd8ffe8":
+                    return "image/jpeg";
+                default:
+                    return fallback;
+            }
+        },
 
 		loadImage(event) {
 			// Reference to the DOM input element
@@ -541,10 +558,10 @@ export default {
 				// getting of a cropped image from the canvas. You can replace it them by the following string, 
 				// but the type will be derived from the extension and it can lead to an incorrect result:
 				//
-				// this.image = {
-				//    src: blob;
-				//    type: files[0].type
-				// }
+				this.image = {
+				   src: blob,
+				   type: files[0].type
+				}
 				
 				// Create a new FileReader to read this image binary data
 				const reader = new FileReader();
@@ -555,7 +572,7 @@ export default {
 						// Set the image source (it will look like blob:http://example.com/2c5270a5-18b5-406e-a4fb-07427f5e7b94)
 						src: blob,
 						// Determine the image type to preserve it during the extracting the image from canvas:
-						type: getMimeType(e.target.result, files[0].type),
+						type: this.getMimeType(e.target.result, files[0].type),
 					};
 				};
 				// Start the reader job - read file as a data url (base64 format)
@@ -563,43 +580,34 @@ export default {
 			}
 		},
 
-        uploadImage() {
-			const { canvas } = this.$refs.cropper.getResult();
-			if (canvas) {
-				const form = new FormData();
-				canvas.toBlob(blob => {
-					form.append('file', blob);
-					// You can use axios, superagent and other libraries instead here
-					fetch('http://example.com/upload/', {
-						method: 'POST',
-						body: form,
-					});
-					// Perhaps you should add the setting appropriate file format here
-				}, 'image/jpeg');
-			}
-		},
-
         async uploadProfileImage() {
             const { canvas } = this.$refs.cropper.getResult();
+            const headers = this.headers;
+            this.image_uploading = true;
             try {
                 if (canvas) {
                     const form = new FormData();
 
                     canvas.toBlob(async blob => {
-                        form.append('file', blob);
+                        const mimeType = this.image.type; // Use the MIME type determined earlier
+                        form.append('image', blob, `${this.user.firstname}_${this.user.lastname}-${this.user._id}-dp.${mimeType.split('/')[1]}`); // Append the blob with original file extension
                         try {
-                            const response = await axios.post(`${this.api_url}/profile/image`, form);
+                            const response = await axios.post(`${this.api_url}/profile/image`, form, { headers });
+                            this.image_uploading = false;
                             console.log("profile image: ", response);
-                            // Perhaps you should add the setting appropriate file format here
+                            this.profile_image_menu = !this.profile_image_menu;
+                            window.location.reload();
                         } catch (error) {
                             console.error("Error uploading profile image:", error);
+                            this.image_uploading = false;
                         }
-                    }, 'image/jpeg');
+                    }, this.image.type); // Pass original MIME type to toBlob
                 }
             } catch (error) {
                 console.error("Error uploading profile image:", error);
             }
         },
+
 	},
 	destroyed() {
 		// Revoke the object URL, to allow the garbage collector to destroy the uploaded before file

@@ -23,9 +23,9 @@ import 'vue-advanced-cropper/dist/style.css';
 
 // SOCKET IO FOR REAL TIME COMMS
 import VueSocketIO from 'vue-3-socket.io'
-app.use(new VueSocketIO({
-    connection: 'http://localhost:8000'
-  }));
+// app.use(new VueSocketIO({
+//     connection: 'http://localhost:8000'
+//   }));
 
 
 
