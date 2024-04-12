@@ -1,4 +1,6 @@
 <template>
+<SessionExpiredModal v-if="session_expired_modal"/>
+
 <div class=" bg-white dark:bg-[#1f2a36] border-b border-gray-200  dark:border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
         <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
@@ -135,10 +137,12 @@ import UserDropDownMenu from './UserDropDownMenu.vue';
 import axios from 'axios'
 import { io } from 'socket.io-client';
 
+import SessionExpiredModal from './SessionExpiredModal.vue'
 
 
 export default {
     name: "Navbar",
+    components: { SiteLogo, UserDropDownMenu, SessionExpiredModal },
     props: {
         type: String,
         jobs_from_search: '',
@@ -164,11 +168,12 @@ export default {
             is_authenticated: false,
 
             user_type: '',
+            session_expired_modal: false,
 
             
         };
     },
-    components: { SiteLogo, UserDropDownMenu },
+
     methods: {
         toggleNavbar(){
             this.left_nav_open = !this.left_nav_open;
@@ -207,10 +212,9 @@ export default {
             catch(error){
                 console.log("error from navbar :", error);
                 if(error.response.status == '401' && localStorage.getItem('life-gaurd')){
-                    alert('Your session expired please login again')
+                    
                     localStorage.removeItem('life-gaurd');
-                    this.$router.push('/login');
-                    window.location.reload();
+                    this.session_expired_modal = true;
                 }
             }
         },

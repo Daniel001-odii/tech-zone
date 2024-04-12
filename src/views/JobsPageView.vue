@@ -381,7 +381,7 @@ export default {
             alert_type: '',
             alert_message: '',
 
-            job_filter_modal: true,
+            job_filter_modal: false,
 
             job_filter_form: {
                 budgetMin: '',
