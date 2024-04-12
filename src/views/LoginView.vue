@@ -11,10 +11,10 @@
 
    <FullPageLoading v-if="loading"/>
 
-    <div class="w-full h-screen flex justify-center items-center dark:text-black">
-        <div class=" w-[90%] md:w-[70%] bg-white rounded-xl flex flex-row py-8 px-3">
+    <div class="w-full h-screen flex justify-center items-center dark:text-white dark:bg-[#27323F] ">
+        <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 dark:bg-[#1f2a36]">
             <div class="flex flex-col w-full md:w-[50%] p-5">
-                <img src="../../public/apex-tek.svg" class=" h-[50px] self-start">
+                <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start">
                 <div class="mt-3">
                     <h1 class="text-3xl font-bold">Welcome back</h1>
                     <span>Please enter your login details</span>
@@ -43,7 +43,7 @@
                         <!-- GOOGLE SIGN IN -->
                         <div class="">
                             <!-- <GoogleLogin class="!w-full" :callback="callback" auto-login/> -->
-                                <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-5 hover:bg-slate-50">
+                                <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-5 hover:bg-slate-50 dark:hover:bg-gray-700">
                                     <img src="../assets/images/google.svg" class="h-5"/>
                                     Continue with Google<div></div></button>
                             <!-- </GoogleLogin> -->
