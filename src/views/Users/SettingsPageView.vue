@@ -87,21 +87,30 @@
                     </div>
                 </div>
                 
-                <form class="">
+                <form class="" @submit.prevent="updatePassword">
                     <h1 class="font-bold mb-3 text-lg mt-3">Password & Security</h1>
+                   
+                  
+                    
                     <div class="flex flex-col max-w-sm">
                         <label for="email">Current Password</label>
-                        <input class="form_input" type="password" name="password" id="password" :value="password">
+                        <input class="form_input" type="password" name="password" id="password" v-model="security.password">
                     </div>
+
                     <div class="flex flex-col max-w-sm mt-5">
-                        <label for="new_password">New Password</label>
-                        <input class="form_input" type="password" name="new_password" id="new_password" :value="new_password">
+                        <label>New Password</label>
+                            <Password 
+                        inputClass="form_input w-full"
+                        panelClass="form_input"
+                        v-model="security.new_password"/>                    
                     </div>
+
                     <div class="flex flex-col max-w-sm mt-5">
-                        <label for="confirm_new_password">Confirm New Password</label>
-                        <input class="form_input" type="password" name="confirm_new_password" id="confirm_new_password" :value="confirm_new_password">
+                        <label for="new_password_confirmation">Confirm New Password</label>
+                        <input class="form_input" type="password" name="new_password_confirmation" id="new_password_confirmation" v-model="security.new_password_confirmation">
                     </div>
-                    <button type="submit" class="btn mt-3">Change Account Password</button>
+                    <div class="text-red-500 py-5" type="danger" v-if="password_errors">{{  password_errors }}</div>
+                    <button type="button" @click="updatePassword" class="btn mt-3">Change Account Password</button>
                 </form>
 
                 <div class=" mt-3">
@@ -119,7 +128,7 @@
                 <!-- <div class=" flex flex-row items-center justify-between justify-center">
                     <div class="flex flex-col">
                         <span class="font-bold">Contract Notifications</span>
-                        <span class="text-sm w-72 text-gray-400">Allow Apex-tek send you email notifications for contract actions and updates.</span>
+                        <span class="text-sm w-72 text-gray-400">Allow ApexTeks send you email notifications for contract actions and updates.</span>
                     </div>
                     
                     <label class="inline-flex items-center cursor-pointer">
@@ -131,7 +140,7 @@
                 <div class=" flex flex-row items-center justify-between justify-center">
                     <div class="flex flex-col">
                         <span class="font-bold">Message Notifications</span>
-                        <span class="text-sm w-72 text-gray-400">Allow Apex-tek send you email notifications for messages.</span>
+                        <span class="text-sm w-72 text-gray-400">Allow ApexTeks send you email notifications for messages.</span>
                     </div>
                     
                     <label class="inline-flex items-center cursor-pointer">
@@ -143,7 +152,7 @@
                 <div class=" flex flex-row items-center justify-between justify-center">
                     <div class="flex flex-col">
                         <span class="font-bold">Email Notifications</span>
-                        <span class="text-sm w-72 text-gray-400">Allow Apex-tek send you email notifications for updates and activities related to your account.</span>
+                        <span class="text-sm w-72 text-gray-400">Allow ApexTeks send you email notifications for updates and activities related to your account.</span>
                     </div>
                     
                     <label class="inline-flex items-center cursor-pointer">
@@ -229,10 +238,12 @@ import FullPageLoading from '@/components/FullPageLoading.vue'
 import PageTitle from '@/components/PageTitle.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 
+import Password from 'primevue/password'
+import Alert from '@/components/Alert.vue';
 
 export default {
     name: "SettingsPageView",
-    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading, DismissableAlert },
+    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading, DismissableAlert, Password, Alert },
     data(){
         return{
             alerts: [],
@@ -246,7 +257,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             current_mode: '',
-            active_tab: 1,
+            active_tab: 2,
 
             user: {
                 profile:{
@@ -254,9 +265,13 @@ export default {
                 }
             },
 
-            password: '',
-            new_password: '',
-            confirm_new_password: '',
+            security: {
+                password: '',
+                new_password: '',
+                new_password_confirmation: '',
+            },
+
+            password_errors: '',
 
             settings:{
                 bank: {
@@ -367,6 +382,22 @@ export default {
             }catch(error){
                 // console.log("error updating user profile: ", error);
                 showAlertBox("danger", "error updating settings");
+            }
+        },
+
+        async updatePassword(){
+            const headers = this.headers;
+            this.loading = true;
+            console.log("form: ", this.security, " headers ;", headers)
+            try{
+                const response = await axios.post(`${this.api_url}/user/password/change`, this.security, { headers });
+                console.log("password response: ", response);
+                alert("Password Updated Successfully!")
+                this.loading = false;
+            }catch(error){
+                // console.log("error changing password: ", error);
+                this.password_errors = error.response.data.message;
+                this.loading = false;
             }
         }
        
