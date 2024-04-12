@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-col text-left gap-3 border-b p-2 md:p-4 hover:bg-tz_light_blue dark:border-b-gray-500">
+        <div class="flex flex-col text-left gap-2 border-b p-2 md:p-4 hover:bg-tz_light_blue dark:border-b-gray-500">
             <div class="flex flex-row justify-between items-center gap-3">
                 <RouterLink to="#">
                     <div class="text-xl text-tz_blue underline">{{ title }}</div>
@@ -12,7 +12,7 @@
             <div>
                 
                 <div>
-                    "<slot name="feedback"></slot>"
+                    <slot name="feedback"></slot>
                 </div>
                 <div class="flex flex-row">
                     <div class="flex flex-col">

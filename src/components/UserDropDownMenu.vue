@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class=" w-fit border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-50 dark:bg-[#1F2A36] dark:border-gray-600">
+        <div class=" w-[250px] border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-50 dark:bg-[#1F2A36] dark:border-gray-600">
             <div class="flex flex-col text-left gap-1">
-                <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-evenly px-1 cursor-pointer">
+                <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-between px-1 cursor-pointer">
                     <div class="flex flex-col">
                         <span>{{ username }}</span>
                         <span class="text-tz_blue text-sm">{{ email }}</span>

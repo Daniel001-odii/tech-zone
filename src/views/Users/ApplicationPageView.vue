@@ -1,5 +1,6 @@
 <template>
     <FullPageModal v-if="application_sent" :type="'success'" />
+
     <div class="h-full flex flex-col">
         <PageTitle>Application</PageTitle>
         <div class=" top-0 bottom-0 right-0 flex flex-col h-full">
@@ -150,18 +151,18 @@
                             <div class="w-full min-h-4 mt-3" >
                                 <p>Selected Files:</p>
                                 <ul class="flex flex-row flex-wrap justify-start gap-2 text-sm">
-                                    <li class=" text-tz_blue flex flex-row items-center justify-between bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white" v-for="(file, index) in selectedFiles" :key="index">
+                                    <li class=" text-blue-300 flex flex-row items-center justify-between bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white" v-for="(file, index) in selectedFiles" :key="index">
                                         {{ file.name }} 
                                         <button type="button" @click="removeFile(index)" class="p-2"><i class="bi bi-x-lg"></i></button>
                                         
                                     </li>
                                 </ul>
                             </div>
-                            <button type="button" @click="uploadFiles" class=" bg-blue-500 p-3">upload files</button>
+                            <!-- <button type="button" @click="uploadFiles" class=" bg-blue-500 p-3">upload files</button> -->
                         </div>
                         <!-- {{ application_form }} -->
                         <div v-if="is_application && application_form.attachments">
-                            <span v-if="application_form.attachments.length > 0">you attached files are secured..</span>
+                            <span v-if="application_form.attachments.length > 0"><i class="bi bi-lock"></i> your attached files are secured..</span>
                         </div>
                         <!-- <div v-else>No attachments</div> -->
                     </div>
@@ -188,12 +189,21 @@
                     </div>
                     </div>
                     <div class="flex ">
-                    <button type="submit" class="bg-tz_blue py-3 px-6 text-white rounded-md hover:bg-tz_dark_blue disabled:bg-gray-300" :disabled="is_application">
-                        <span v-if="loading">Loading...</span>
+                    <button type="submit" class="bg-tz_blue py-3 px-6 text-white rounded-md hover:bg-tz_dark_blue disabled:bg-gray-300" :disabled="is_application || submit_loading">
+                        <span v-if="submit_loading">Loading...</span>
                         <span v-else>Submit Application</span>
                     </button>
                     </div>
+
+               
             </form>
+
+            <!-- <FileUpload name="demo[]" url="/api/upload" @upload="onAdvancedUpload($event)" :multiple="true" accept="image/*" :maxFileSize="1000000">
+                <template #empty>
+                    <p>Drag and drop files to here to upload.</p>
+                </template>
+            </FileUpload> -->
+            <!-- {{ application_form }} -->
 
             
         </div>
@@ -210,10 +220,11 @@ import FullPageModal from '@/components/FullPageModal.vue'
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 
+import FileUpload from 'primevue/fileupload';
 
 export default {
     name: "ApplicationPageView",
-    components: { TemplateView, JobDetailCard, FullPageModal, FullPageLoading, PageTitle },
+    components: { TemplateView, JobDetailCard, FullPageModal, FullPageLoading, PageTitle, FileUpload },
     data(){
         return{
             loading: false,
@@ -241,6 +252,8 @@ export default {
             selectedFiles: [],
 
             application_sent: false,
+
+            submit_loading: false,
         }
     },
     methods: {
@@ -260,7 +273,7 @@ export default {
             // Create a FormData object to append files
             const formData = new FormData();
             for (let file of this.application_attachments) {
-                formData.append('files', file);
+                formData.append('attachments', file);
             }
 
             try {
@@ -271,7 +284,7 @@ export default {
                 }
                 });
                 console.log(response.data); // Handle server response
-                this.application_form.attachments = response.data.data;
+                this.application_form.attachments = response.data.fileUrls;
                 alert("files uploaded securely...");
 
             } catch (error) {
@@ -323,23 +336,28 @@ export default {
         },
 
         async sumbitApplication(){
+            this.submit_loading = true;
             const headers = this.headers;
             const form_data = this.application_form;
 
             console.log("attachments raw: ", form_data);
-            
-            // if(this.application_attachments){
-            //     form_data.attachments = this.application_attachments
-            // };
 
             try{
-                this.loading = true;
+                // upload files here...
+                if(this.selectedFiles.length > 0 ){
+                    try{
+                        this.uploadFiles();
+                    }catch(error){
+                        console.log("error uploading files");
+                    }
+                }
                 const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form, { headers });
                 console.log("application sent: ", response.data);
-                this.loading = false;
+                this.submit_loading = false;
+                this.application_sent = true;
             }catch(error){
                 console.log("error submitting application: ", error)
-                this.loading = false;
+                this.submit_loading = false;
             }
         },
 

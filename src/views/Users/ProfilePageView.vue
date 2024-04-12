@@ -154,18 +154,43 @@
             </template>
         </Modal>
 
+        <!-- USER RESUME UPLOAD MODAL -->
+        <Modal v-if="user" :title="`${user.firstname} ${user.lastname} Resume`" :modal_active="resume_upload_menu">
+                <template #body>
+                    <div class="md:w-[500px]">
+                        <div v-if="user.portfolio_url" class="py-5">
+                            Current Resume: <a :href="user.portfolio_url" target="_blank" class="text-blue-400">Download</a>
+                        </div>
+                        <FileUpload v-if="isAllowed" accept="application/pdf,image/*,.doc,.docx,.pdf" name="file" :url="`${api_url}/profile/resume`" :withCredentials="true" @before-send="addHeaders"
+                        :file-limit="1" 
+                        :multiple="false" 
+                        :show-cancel-button="false"
+                        :accept="''" :maxFileSize="5000000">
+                            <template #empty>
+                                <p>Drag and drop files to here to upload.</p>
+                            </template>
+                        </FileUpload>
+                        
+                    </div>
+            
+                </template>
+                <template #footer>
+                    <!-- <LoaderButton @click="updateUserProfile" type="button" class="btn" :buttonText="'upload'" :loading="user_form.loading"></LoaderButton> -->
+                </template>
+        </Modal>
 
         <PageTitle>Profile</PageTitle>
         <div class="h-full flex flex-col relative">
             
 
             <FullPageLoading v-if="!user"/>
+
             <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full overflow-y-scroll ">
 
                 <div class="flex w-full rounded-xl justify-evenly items-start md:items-center  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
                     <div class="flex flex-row justify-start md:justify-start items-center p-5 gap-3 flex-wrap">
                         <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
-                                <div class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex cursor-pointer" @click="profile_image_menu = !profile_image_menu">
+                                <div v-if="isAllowed" class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex cursor-pointer" @click="profile_image_menu = !profile_image_menu">
                                     <i class="bi bi-camera text-2xl"></i>
                                 </div>
                             </div>
@@ -183,9 +208,18 @@
                                 <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user.rating)"></p>
                                 <span>({{ user.rating }}) {{ user.rating_count }} reviews</span>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-3 mt-3">
+                            <div v-if="user" class="flex flex-row flex-wrap gap-3 mt-3">
                                 <button v-if="isAllowed" class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
-                                <button class="btn_white dark:hover:bg-tz_light_blue">View Resume</button>
+                                
+                                <button v-if="isAllowed" @click="resume_upload_menu = !resume_upload_menu" class="btn_white dark:hover:bg-tz_light_blue"> 
+                                    <span v-if="!user.portfolio_url">Upload Resume</span>
+                                    <span v-else>view resume</span>
+                                </button>
+                                <div v-else>
+                                    <button v-if="user.portfolio_url" @click="resume_upload_menu = !resume_upload_menu">View Resume</button>
+                                    <span v-else>No Resume Uploaded</span>
+                                </div>
+                                <!-- <SplitButton label="Resume" icon="pi pi-plus" @click="save" :model="items" /> -->
                             </div>
                         </div>
                     </div>
@@ -265,14 +299,15 @@
                         <h2 class="font-bold">Completed Jobs</h2>
                         <div>
                             <SkeletonLoader v-if="!contracts"/>
+                           
                             <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
                                 <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
-                                    <template v-if="contract.user_feedback.rating > 0" #feedback>{{ contract.user_feedback.review }}</template>
+                                    <template v-if="contract.user_feedback.rating > 0" #feedback>"{{ contract.user_feedback.review }}"</template>
                                     
                                     <template #star-rating>
                                         <div>
-                                            <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.employer_feedback.rating)"></p>
-                                            <!-- rating: {{ useStarFromInteger(contract.employer_feedback.rating) }} -->
+                                            <p v-if="contract.user_feedback.rating > 0" class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.employer_feedback.rating)"></p>
+                                            <p v-else class="py-3">No feedback given yet</p>
                                         </div>
                                     </template>
                                     <template #date>{{ readableDate(contract.created) }}</template>
@@ -285,8 +320,6 @@
                                                 ]">
                                             {{ contract.status }}
                                         </span>
-
-                                        <!-- {{ contract.user_feedback}} -->
                                     </template>
                                 </JobReviewCard>
                             </div>
@@ -313,6 +346,8 @@ import { formatTimestamp } from '@/utils/dateFormat';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import { CircleStencil, Cropper, Preview } from 'vue-advanced-cropper';
 
+import FileUpload from 'primevue/fileupload';
+import SplitButton from 'primevue/splitbutton';
 
 export default {
     name: "ProfilePage",
@@ -326,7 +361,9 @@ export default {
         DismissableAlert,
         Cropper,
         CircleStencil,
-        Preview
+        Preview,
+        FileUpload,
+        SplitButton
      },
     data(){
         return{
@@ -339,6 +376,7 @@ export default {
 
             profile_edit_menu: false,
             profile_image_menu: false,
+            resume_upload_menu: false,
 
             loading: null,
             user_rating_count: '',
@@ -378,6 +416,23 @@ export default {
             headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`},
 
             image_uploading: false,
+            items: [
+                {
+                    label: 'View',
+                    icon: 'pi pi-refresh',
+                },
+                {
+                    label: 'Update',
+                    icon: 'pi pi-times',
+                },
+                {
+                    label: 'Delete',
+                    icon: 'pi pi-external-link',
+                    command: () => {
+                        window.location.href = 'https://vuejs.org/';
+                    }
+                },
+            ],
         }
     },
     methods: {
@@ -415,7 +470,6 @@ export default {
                 if(error.response.status == 404) {
                     this.loading = false;
                     this.$router.push("/404")
-                    // alert("User mot found")
                 }
             }
         },
@@ -466,7 +520,6 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/contracts/good/${this.$route.params.user_id}`, { headers });
-                // console.log("good contracts: ", response);
                 this.contracts = response.data.contracts;
             }catch(error){
                 console.log(error)
@@ -482,14 +535,19 @@ export default {
         },
         
 
+        // CHECK FOR CURRENT PROFILE VIEWER AND RESTRICT CERTAIN ACTIONS...
         checkCurrentViewer(){
             const token = localStorage.getItem('life-gaurd');
             const user = token ? JSON.parse(atob(token.split('.')[1])) : null;
-            // console.log("user roleeee: ", user_id, "parsed data: ", parsed_item);
-            if(user.id == this.$route.params.user_id || user.googleId == this.user.googleId){
-                this.isAllowed = true;
+            if(user){
+                console.log("user roleeee: ", user);
+                if(user.id == this.$route.params.user_id){
+                    this.isAllowed = true;
+                }
             }
-            else{this.isAllowed = false};
+            else{
+                this.isAllowed = false;
+            }
         },
 
 
@@ -608,6 +666,11 @@ export default {
             }
         },
 
+        addHeaders(event){
+            const token = localStorage.getItem('life-gaurd');
+            event.xhr.setRequestHeader('Authorization', `JWT ${token}`);
+        }
+
 	},
 	destroyed() {
 		// Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
@@ -619,12 +682,8 @@ export default {
         
         },
     mounted(){
-        if(this.$route.params.user_id){
             this.getPublicUserData();
-        } else{
-            this.getUserData();
-        }
-        this.getActiveAndCompletedContracts();
+            this.getActiveAndCompletedContracts();
         },
     }
 </script>

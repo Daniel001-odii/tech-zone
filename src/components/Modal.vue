@@ -14,7 +14,7 @@
                 </div>
                 <div class=" px-4 py-2 flex flex-row justify-end items-end">
                     <slot name="footer">
-                        <p>Modal footer</p>
+                        <p>...</p>
                     </slot>
                 </div>
             </div>

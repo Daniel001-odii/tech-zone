@@ -28,9 +28,15 @@ import VueSocketIO from 'vue-3-socket.io'
 //   }));
 
 
-// VUE FILE AGENT FOR DYNAMIC FILE UPLOADING...
+// PRIME VUE THE ULTIMATE COMPONENT STUFF
+import PrimeVue from 'primevue/config'
+import 'primevue/resources/themes/aura-light-green/theme.css'
+app.use(PrimeVue);
+// app.use(PrimeVue, {
+//   unstyled: true
+// });
 
-
+// GOOGLE LOGIN.....
 app.use(vue3GoogleLogin, {
     clientId: '546104205241-g4vtopr689l3vb5cfjmphard09e1ia2k.apps.googleusercontent.com'
 })

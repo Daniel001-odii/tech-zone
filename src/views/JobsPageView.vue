@@ -23,68 +23,38 @@
                     </div>
 
                     <div class="flex flex-row flex-wrap gap-3 mt-3">
-                        <div class="grow">
-                            <span class="font-bold text-lg">Location by State</span>
-                            <button id="dropdownCheckboxButton" data-dropdown-toggle="dropdownDefaultCheckbox" class="form_input flex flex-row justify-between items-center w-full" type="button">
-                                Select job state
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-
-                            <!-- Dropdown menu -->
-                            <div id="dropdownDefaultCheckbox" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200 max-h-[300px] overflow-y-scroll" aria-labelledby="dropdownCheckboxButton">
-                                    <li v-for="(state, state_index) in nigerianStates" :key="state_index">
-                                        <div class="flex items-center">
-                                        <input :id="state" type="checkbox" :value="state" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label :for="state" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ state }}</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div class="grow flex flex-col">
+                            <span class="font-bold text-lg">Job Location</span>
+                            <MultiSelect v-model="job_filter_form.location.state" 
+                            :options="nigerianStatesObject" 
+                            optionLabel="name" 
+                            optionValue="name" 
+                            placeholder="Select Cities"
+                            filter 
+                            :maxSelectedLabels="3" class="form_input" />
                         </div>  
-                        <div class="grow">
-                            <span class="font-bold text-lg">Budget Type</span>
-                            <button id="jobTypeDropDownButton" data-dropdown-toggle="jobTypeDropDown" class="form_input flex flex-row justify-between items-center w-full" type="button">
-                                Select job type
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
 
-                            <!-- Dropdown menu -->
-                            <div id="jobTypeDropDown" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200 max-h-[300px] overflow-y-scroll" aria-labelledby="dropdownCheckboxButton">
-                                    <li v-for="(type, budget_index) in budget_type" :key="budget_index">
-                                        <div class="flex items-center">
-                                        <input :id="type" type="checkbox" :value="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label :for="type" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ type }}</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="grow">
+
+                        <div class="grow flex flex-col">
+                            <!-- {{ job_filter_form.type }} -->
                             <span class="font-bold text-lg">Job Type</span>
-                            <button id="jobBudgetTypeDropDownButton" data-dropdown-toggle="jobBTypeDropDown" class="form_input flex flex-row justify-between items-center w-full" type="button">
-                                Select job type
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            <MultiSelect v-model="job_filter_form.type" 
+                            :options="jobTypesObject" 
+                            optionLabel="name" 
+                            optionValue="name" 
+                            placeholder="Select Job type"
+                            :maxSelectedLabels="3" class="form_input" />
+                        </div>
 
-                            <!-- Dropdown menu -->
-                            <div id="jobBTypeDropDown" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200 max-h-[300px] overflow-y-scroll" aria-labelledby="dropdownCheckboxButton">
-                                    <li v-for="(type, job_index) in job_type" :key="job_index">
-                                        <div class="flex items-center">
-                                        <input :id="type" type="checkbox" :value="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label :for="type" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ type }}</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div class="grow flex flex-col">
+                            <!-- {{ job_filter_form.type }} -->
+                            <span class="font-bold text-lg">Budget Type</span>
+                            <MultiSelect v-model="job_filter_form.budget_type" 
+                            :options="budget_type" 
+                            optionLabel="name" 
+                            optionValue="name" 
+                            placeholder="Select Job type"
+                            :maxSelectedLabels="3" class="form_input" />
                         </div>
                     </div>
                 </div>
@@ -104,22 +74,27 @@
                         <div class="flex flex-row gap-2 p-2 md:p-2 border-b dark:border-gray-600">
 
                             <button @click="removeBudgetFilter" v-if="job_filter_form.budgetMax || job_filter_form.budgetMin" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
-                                <i class="bi bi-cash-stack"></i> <span class="hidden md:inline-block ">${{ job_filter_form.budgetMin + ' - $' + job_filter_form.budgetMax}}</span>
+                                <i class="bi bi-cash-stack"></i> 
+                                <!-- <span class="hidden md:inline-block ">${{ job_filter_form.budgetMin + ' - $' + job_filter_form.budgetMax}}</span> -->
                             </button>
                             <button @click="job_filter_form.period = ''" v-if="job_filter_form.period" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
-                                <i class="bi bi-arrow-clockwise"></i> <span class="hidden md:inline-block ">{{job_filter_form.period}}</span>
+                                <i class="bi bi-arrow-clockwise"></i> 
+                                <!-- <span class="hidden md:inline-block ">{{job_filter_form.period}}</span> -->
                             </button>
                             <button @click="job_filter_form.location.state = ''" v-if="job_filter_form.location.state" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
-                                <i class="bi bi-geo-alt-fill"></i> <span class="hidden md:inline-block ">{{job_filter_form.location.state}}</span>
+                                <i class="bi bi-geo-alt-fill"></i> 
+                                <!-- <span class="hidden md:inline-block ">{{job_filter_form.location.state}}</span> -->
                             </button>
                             <button @click="job_filter_form.posted = ''" v-if="job_filter_form.posted" class=" bg-tz_light_blue text-blue-300 border border-blue-300 px-4 py-2 rounded-md">
-                                <i class="bi bi-clock-history"></i> <span class="hidden md:inline-block ">{{job_filter_form.posted}}</span>
+                                <i class="bi bi-clock-history"></i> 
+                                <!-- <span class="hidden md:inline-block ">{{job_filter_form.posted}}</span> -->
                             </button>
 
                             <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
                                 <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md form_input" placeholder="Search all types of jobs" v-model="job_search">
                                 <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white dark:text-white">
-                                    <i class="bi bi-search"></i> <span  class="hidden md:inline-block">Search</span>
+                                    <i class="bi bi-search"></i> 
+                                    <span  class="hidden md:inline-block">Search</span>
                                 </button>
                             </form>
                             <button @click="job_filter_modal = !job_filter_modal" class="border text-black px-4 py-2 rounded-md dark:text-white">
@@ -378,9 +353,11 @@ import Modal from '@/components/Modal.vue';
 import { nigerianStates } from '@/utils/states';
 
 
+import MultiSelect from 'primevue/multiselect';
+
 export default {
     name: "JobsPageView",
-    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert, PageTitle, Modal },
+    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert, PageTitle, Modal, MultiSelect },
     data(){
         return{
             store: useStore(),
@@ -404,7 +381,7 @@ export default {
             alert_type: '',
             alert_message: '',
 
-            job_filter_modal: false,
+            job_filter_modal: true,
 
             job_filter_form: {
                 budgetMin: '',
@@ -414,10 +391,13 @@ export default {
                     state: '',
                 },
                 posted: '',
+                budget_type: '',
             },
             nigerianStates,
             job_type: ["small", "medium", "large"],
-            budget_type: ["fixed-price", "hourly"],
+            budget_type: [{name: "fixed-price"}, {name: "hourly"}],
+
+            states_to_filter: '',
             // job_time: ["under 24 hrs", "under a week", "under a month", "over a month"]
         }
         
@@ -595,6 +575,15 @@ export default {
     },
     computed: {
 
+        nigerianStatesObject(){
+             const object = this.nigerianStates.map(state => ({ name: state }));
+             return object
+        },
+
+        jobTypesObject(){
+             const object = this.job_type.map(type => ({ name: type }));
+             return object
+        }
 
     },
 
