@@ -11,19 +11,15 @@
 
    <FullPageLoading v-if="loading"/>
 
-    <div class="flex flex-row">
-        <div class=" h-screen w-full lg:w-3/6 flex flex-col justify-center items-center dark:bg-[#27323F] dark:text-white">
-            <div class=" w-fit p-8">
-                    <div class="text-start  w-full mb-5">
-                        <h1 class="text-3xl font-bold">Welcome back</h1>
-                        <span>Please enter your login details</span>
-                    </div>
-                    <Alert :type="'danger'" :message="`${error}`" v-if="error"/>
-                    <!-- <span v-if="error" class="p-3 rounded-lg bg-red-100 text-red-700">
-                        {{ error }}
-                    </span> -->
+    <div class="w-full h-screen flex justify-center items-center dark:text-black">
+        <div class=" w-[90%] md:w-[70%] bg-white rounded-xl flex flex-row py-8 px-3">
+            <div class="flex flex-col w-full md:w-[50%] p-5">
+                <img src="../../public/apex-tek.svg" class=" h-[50px] self-start">
+                <div class="mt-3">
+                    <h1 class="text-3xl font-bold">Welcome back</h1>
+                    <span>Please enter your login details</span>
 
-                    <form class="flex flex-col gap-4" @submit.prevent="login">
+                    <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
@@ -37,17 +33,19 @@
                         </div>
                         <div class="flex flex-row gap-5 justify-between flex-wrap">
                             <div class="flex flex-row-reverse gap-1 items-center">
-                                <label for="rem-details">Remember details</label>
+                                <label for="rem-details">Remember me</label>
                                 <input name="rem-details" id="rem-details" type="checkbox" />
                             </div>
                             <RouterLink to="/password/forgot">Forgot password ?</RouterLink>
                         </div>
-                        <LoaderButton  :buttonText="loading ? 'Loading...' : 'Sign in'" :loading="loading"/>
-                        <!-- <button class="btn w-full" disabled>Sign in</button>  -->
+                        <!-- <LoaderButton class="rounded-full"  :buttonText="loading ? 'Loading...' : 'Sign in'" :loading="loading"/> -->
+                        <button class="p-3 text-white bg-tz_blue w-full rounded-full">Sign in</button> 
                         <!-- GOOGLE SIGN IN -->
                         <div class="">
                             <!-- <GoogleLogin class="!w-full" :callback="callback" auto-login/> -->
-                                <button @click="googleLogin" type="button" class="text-white w-full bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center"><svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>Continue with Google<div></div></button>
+                                <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-5 hover:bg-slate-50">
+                                    <img src="../assets/images/google.svg" class="h-5"/>
+                                    Continue with Google<div></div></button>
                             <!-- </GoogleLogin> -->
                             
                         </div>
@@ -55,15 +53,12 @@
                             <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-tz_blue">Sign up</RouterLink> </p>
                         </div>                      
                     </form>
+                </div>
+            </div>
+            <div class="justify-center items-center w-[50%] bg-tz_light_blue hidden md:flex rounded-lg">
+                <img src="../assets/images/dot_logo.svg" class=" h-[200px] w-[200px]">
             </div>
         </div>
-
-        <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6 dark:bg-[#1F2A36]">
-            <div>
-                <img src="../../public/apex-tek.svg" class=" h-[400px] w-[405px]">
-            </div>
-        </div>
-           
     </div>
        
 
