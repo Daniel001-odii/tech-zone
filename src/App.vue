@@ -15,11 +15,17 @@ export default {
 </script>
 
 <template>
-<div class="bg-white dark:bg-[#27323F] dark:text-white h-screen overflow-y-scroll">
+<div class="bg-white dark:bg-[#27323F] dark:text-white h-screen overflow-y-scroll background flex justify-center items-center">
   <router-view></router-view>
 </div>
 </template>
 
 <style>
+.background{
+  background: url('../src/assets/images/backdrop.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 
+}
 </style>

@@ -11,7 +11,7 @@
 
    <FullPageLoading v-if="loading"/>
 
-    <div class="w-full h-screen flex justify-center items-center dark:text-white dark:bg-[#27323F] ">
+    <!-- <div class="w-full h-screen flex justify-center items-center dark:text-white dark:bg-[#27323F] "> -->
         <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 dark:bg-[#1f2a36]">
             <div class="flex flex-col w-full md:w-[50%] p-5">
                 <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start">
@@ -59,7 +59,7 @@
                 <img src="../assets/images/dot_logo.svg" class=" h-[200px] w-[200px]">
             </div>
         </div>
-    </div>
+    <!-- </div> -->
        
 
 </template>
