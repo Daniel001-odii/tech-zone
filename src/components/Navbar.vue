@@ -270,6 +270,7 @@ export default {
 
         logout(){
             localStorage.removeItem("life-gaurd");
+            localStorage.removeItem("theme");
             this.$router.push('/login');
             window.location.reload();
         },
