@@ -1,4 +1,11 @@
 <template>
+    <p v-if="alert_banner" class=" bg-green-500 text-white text-sm p-3 flex flex-row justify-between">
+       <span> We have a <strong>new look</strong> for prelaunch!</span>
+        <button @click="alert_banner = !alert_banner">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </p>
+
     <nav class="bg-white start-0 relative z-30 dark:bg-[#1F2A36]">
         <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
         <SiteLogo/>
@@ -353,6 +360,7 @@ export default {
                 budget: 7000, // Replace with a random amount as needed
             },
                 ],
+            alert_banner: true,
         }
     },
   
