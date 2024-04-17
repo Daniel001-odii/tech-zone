@@ -1,11 +1,17 @@
 <template>
     <!-- <div> -->
-        <div class=" bg-white border scale-90 group opacity-50 hover:opacity-100 hover:scale-100 p-4 text-black rounded-lg w-fit min-w-72 text-left flex flex-col gap-2">
+        <div class=" bg-white border scale-90 group opacity-50 hover:opacity-100 hover:scale-100 p-4 text-black rounded-lg w-fit max-w-[250px] text-left flex flex-col gap-2">
             <div class="flex flex-row justify-between items-center text-5xl">
-                <i class="bi bi-person-check bg-slate-900 group-hover:bg-tz_blue p-2 text-white rounded-md flex justify-center items-center"></i>
-                <span class="font-bold">{{number}}</span>
+                <div class="group-hover:text-tz_blue text-[20px] group-hover:text-[30px]">
+                     <slot name="icon">
+                        
+                    </slot>
+                </div>
+               
+                
+                <span class="font-medium text-[20px] group-hover:text-[30px]">{{number}}</span>
             </div>
-            <h4 class="font-bold text-2xl">
+            <h4 class="font-medium text-2xl">
                 <slot name="title">Register Your Account</slot>
             </h4>
             <div class="text-sm text-left" style="font-size: 12px;">

@@ -2,8 +2,8 @@
 
 <!-- <div class="w-full flex flex-col justify-center items-center dark:text-white bg-[#E7F1FF] dark:bg-[#121212] "> -->
     <div class="flex flex-col min-h-screen justify-between items-center  dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
-        <div class=" mt-[100px] w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
-            <div class="flex flex-col w-full lg:w-[50%] p-5">
+        <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
+            <div class="flex flex-col w-full md:w-[50%] p-5">
                 <RouterLink to="/" class="w-fit">
                     <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block">
                     <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block dark:hidden">
@@ -79,7 +79,7 @@
                 </div>
                 <!-- MAIN CONTENT ENDS HERE -->
             </div>
-            <div class="justify-center items-center w-[50%]  hidden lg:flex rounded-lg">
+            <div class="justify-center items-center w-[50%]  hidden md:flex rounded-lg">
                 <RouterLink to="/">
                     <img src="../assets/images/dot_logo.svg" class=" h-[200px] w-[200px]">
                 </RouterLink>

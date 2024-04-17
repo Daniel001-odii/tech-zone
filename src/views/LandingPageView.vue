@@ -45,7 +45,7 @@
                         <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
                             <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
                         </div>
-                        <div class=" text-7xl font-bold">
+                        <div class=" text-7xl font-medium">
                             Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-12 right-3 li"/></span> Job.<br/> Hire the right talents.
                         </div>
                         <div class=" text-xl">
@@ -58,26 +58,41 @@
                 
             </section>
 
-            <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
-                <div class="flex flex-col text-center">
+            <!-- STEPS FOR USERS -->
+            <section class=" bg-[#EDEFF3]">
+                <div class="flex flex-col text-center py-6">
                     <div>
                     <!-- <div data-aos="zoom-out"> -->
-                        <span class="text-2xl text-white">How it works</span>
-                        <h3 class="section_subtitle text-white">We are here to help you,<br/> just follow these steps!</h3>
+                        <!-- <span class="text-2xl text-white">How it works</span> -->
+                        <h3 class="section_subtitle">Looking for your next paid job?</h3>
+                        <p class="mt-4">We are here to help you, Just follow these steps</p>
                     </div>
                     <div class="flex flex-col md:flex-row justify-center items-center mt-8 ">
                         <!-- <div class="flex flex-row"> -->
-                            <StepBox :number="1"></StepBox>
+                            <StepBox :number="1">
+                                <template #icon>
+                                    <i class="bi bi-file-earmark-person bg-slate-900  p-2 text-white rounded-md flex justify-center items-center"></i>
+                                </template>
+                            </StepBox>
                             <StepBox :number="2">
+                                <template #icon>
+                                    <i class="bi bi-person-check bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                </template>
                                 <template #title>Complete User Profile</template>
                                 <template #content></template>
                             </StepBox>
                             <StepBox :number="3">
+                                <template #icon>
+                                    <i class="bi bi-search  bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                </template>
                                 <template #title>
                                     Search Your Job Type
                                 </template>
                             </StepBox>
                             <StepBox :number="4">
+                                <template #icon>
+                                    <i class="bi bi-clipboard-check  bg-slate-900 p-3 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                </template>
                                 <template #title>
                                     Search Your Job Type
                                 </template>
@@ -87,6 +102,54 @@
                 </div>
                 
             </section>
+
+
+            <!-- STEPS FOR USERS -->
+            <section class=" bg-[#EDEFF3]">
+                <div class="flex flex-col text-center py-6">
+                    <div>
+                    <!-- <div data-aos="zoom-out"> -->
+                        <!-- <span class="text-2xl text-white">How it works</span> -->
+                        <h3 class="section_subtitle">Looking for seasoned professionals for your next project?</h3>
+                        <p class="mt-4">We are here to help you, Just follow these steps</p>
+                    </div>
+                    <div class="flex flex-col md:flex-row justify-center items-center mt-8 ">
+                        <!-- <div class="flex flex-row"> -->
+                            <StepBox :number="1">
+                                <template #icon>
+                                    <i class="bi bi-file-earmark-person bg-slate-900  p-2 text-white rounded-md flex justify-center items-center"></i>
+                                </template>
+                            </StepBox>
+                            <StepBox :number="2">
+                                <template #icon>
+                                    <i class="bi bi-person-check bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                </template>
+                                <template #title>Complete User Profile</template>
+                                <template #content></template>
+                            </StepBox>
+                            <StepBox :number="3">
+                                <template #icon>
+                                    <i class="bi bi-search  bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                </template>
+                                <template #title>
+                                   Post Job
+                                </template>
+                            </StepBox>
+                            <StepBox :number="4">
+                                <template #icon>
+                                    <i class="bi bi-clipboard-check  bg-slate-900 p-3 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                </template>
+                                <template #title>
+                                    Hire Talent
+                                </template>
+                            </StepBox>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                
+            </section>
+
+
 
             <section>
                 <div class="section_container">
@@ -102,8 +165,8 @@
                 <div class="flex flex-col">
                     <!-- <div data-aos="zoom-out"> -->
                     <div class="text-center">
-                        <span class="font-bold uppercase text-xl ">Jobs By Category</span>
-                        <h1 class="font-bol text-5xl font-bold">Explore Our Divers Job Categories</h1>
+                        <span class="font-medium uppercase text-xl ">Jobs By Category</span>
+                        <h1 class="font-bol text-5xl font-medium">Explore Our Divers Job Categories</h1>
                     </div>
                 
                     <div class="flex flex-row gap-8 justify-center flex-wrap mt-10">
@@ -261,31 +324,32 @@ export default {
 }
 </script>
 <style scoped>
-    @font-face {
-    font-family: homeFont;
+    /* @font-face {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
     src: url('../assets/fonts/Inconsolata-VariableFont_wdth\,wght.ttf');
-    }
+    } */
 
     *{
-        font-family: homeFont;
+        font-family: "Poppins", sans-serif;
     }
 
     .nav_btn{
-        @apply px-5 py-2 font-bold;
+        @apply px-5 py-2 font-medium;
     }
 
     .nav_link{
-        @apply p-3 rounded-md hover:bg-tz_light_blue font-medium hover:font-bold;
+        @apply p-3 rounded-md hover:bg-tz_light_blue font-medium hover:font-medium;
     }
 
     .text-sm{
         font-size: 12px !important;
     }
     .btn{
-        @apply bg-tz_blue hover:bg-tz_dark_blue text-white py-3 px-5 rounded-md font-bold w-52 border border-transparent
+        @apply bg-tz_blue hover:bg-tz_dark_blue text-white py-3 px-5 rounded-md font-medium w-52 border border-transparent
     }
     .slide_btn{
-        @apply border border-yellow-400 p-3 rounded-md text-yellow-400 font-bold text-xl hover:bg-yellow-400 hover:text-black;
+        @apply border border-yellow-400 p-3 rounded-md text-yellow-400 font-medium text-xl hover:bg-yellow-400 hover:text-black;
     }
 
     .sb_active{
@@ -301,7 +365,7 @@ export default {
     }
 
     .section_subtitle{
-        @apply text-4xl font-bold
+        @apply text-4xl font-medium
     }
 
     section{
