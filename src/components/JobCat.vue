@@ -1,11 +1,14 @@
 <template>
     <div>
-        <div class="w-fit p-6 shadow-lg dark:bg-tz_light_blue">
-            <slot name="icon">
-                <i class="bi bi-gear font-bold"></i>
-            </slot>
+        <div class="w-fit p-3 hover:border-tz_light_blue border-4 rounded-lg border-transparent  dark:bg-tz_light_blue flex flex-row items-center gap-3">
+
+            <div class=" bg-tz_light_blue p-5 rounded-lg">
+                <slot name="icon">
+                    <i class="bi bi-gear font-medium"></i>
+                </slot>
+            </div>   
             <div class="flex flex-col">
-                <span class="font-bold text-2xl">
+                <span class="font-medium text-2xl">
                     <slot name="title">Fiber Cabling</slot>
                 </span>
                 <span class="text-sm">

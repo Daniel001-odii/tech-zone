@@ -1,6 +1,6 @@
 <template>
-        <div class="rounded-lg p-5 border border-white flex flex-col w-fit max-w-80 hover:opacity-100 hover:text-black hover:bg-white">
-            <div class="flex flex-row justify-between font-bold text-md">
+        <div class="rounded-lg p-5 border border-white flex flex-col w-fit max-w-80 hover:bg-slate-200">
+            <div class="flex flex-row justify-between font-medium text-md">
                 <div class="flex items-center justify-center">
                     <i class="bi bi-building-check"></i> | <span>{{company}}</span>
                 </div>
@@ -9,7 +9,7 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                <span class=" font-extrabold text-2xl">{{ job_title }}</span>
+                <span class=" font-extramedium text-2xl">{{ job_title }}</span>
                 <div class="flex flex-row justify-between"> 
                     <span>
                         <i class="bi bi-geo-alt-fill"></i> <span>{{job_location}}</span>
@@ -24,9 +24,9 @@
                     {{ job_description }}
                 </div>
                
-                <div class="mt-3 font-bold flex justify-between items-center">
+                <div class="mt-3 font-medium flex justify-between items-center">
                     <RouterLink :to="job_url">
-                        <button class=" text-white bg-black hover:bg-tz_blue px-5 py-3 rounded-md">Apply here</button>
+                        <button class=" hover:bg-tz_blue hover:text-white px-5 py-3 rounded-md">Apply here</button>
                     </RouterLink>
                     <span class="text-2xl">#{{budget}}</span>
                 </div>

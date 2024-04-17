@@ -61,29 +61,27 @@
             <!-- STEPS FOR USERS -->
             <section class=" bg-[#EDEFF3]">
                 <div class="flex flex-col text-center py-6">
-                    <div>
-                    <!-- <div data-aos="zoom-out"> -->
-                        <!-- <span class="text-2xl text-white">How it works</span> -->
-                        <h3 class="section_subtitle">Looking for your next paid job?</h3>
-                        <p class="mt-4">We are here to help you, Just follow these steps</p>
+                    <div class="text-center flex flex-col-reverse">
+                        <span class="font-medium text-[16px] capitalize">We are here to help you, Just follow these steps</span>
+                        <h1 class="font-bol text-[30px] font-medium">Looking for your next paid job?</h1>
                     </div>
                     <div class="flex flex-col md:flex-row justify-center items-center mt-8 ">
                         <!-- <div class="flex flex-row"> -->
                             <StepBox :number="1">
                                 <template #icon>
-                                    <i class="bi bi-file-earmark-person bg-slate-900  p-2 text-white rounded-md flex justify-center items-center"></i>
+                                    <i class="bi bi-file-earmark-person"></i>
                                 </template>
                             </StepBox>
                             <StepBox :number="2">
                                 <template #icon>
-                                    <i class="bi bi-person-check bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                    <i class="bi bi-person-check"></i>
                                 </template>
                                 <template #title>Complete User Profile</template>
                                 <template #content></template>
                             </StepBox>
                             <StepBox :number="3">
                                 <template #icon>
-                                    <i class="bi bi-search  bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                    <i class="bi bi-search"></i>
                                 </template>
                                 <template #title>
                                     Search Your Job Type
@@ -91,7 +89,7 @@
                             </StepBox>
                             <StepBox :number="4">
                                 <template #icon>
-                                    <i class="bi bi-clipboard-check  bg-slate-900 p-3 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                    <i class="bi bi-clipboard-check"></i>
                                 </template>
                                 <template #title>
                                     Search Your Job Type
@@ -107,29 +105,27 @@
             <!-- STEPS FOR USERS -->
             <section class=" bg-[#EDEFF3]">
                 <div class="flex flex-col text-center py-6">
-                    <div>
-                    <!-- <div data-aos="zoom-out"> -->
-                        <!-- <span class="text-2xl text-white">How it works</span> -->
-                        <h3 class="section_subtitle">Looking for seasoned professionals for your next project?</h3>
-                        <p class="mt-4">We are here to help you, Just follow these steps</p>
+                    <div class="text-center flex flex-col-reverse">
+                        <span class="font-medium text-[16px] capitalize">We are here to help you, Just follow these steps</span>
+                        <h1 class="font-bol text-[30px] font-medium">Looking for seasoned professionals for your next project?</h1>
                     </div>
                     <div class="flex flex-col md:flex-row justify-center items-center mt-8 ">
                         <!-- <div class="flex flex-row"> -->
                             <StepBox :number="1">
                                 <template #icon>
-                                    <i class="bi bi-file-earmark-person bg-slate-900  p-2 text-white rounded-md flex justify-center items-center"></i>
+                                    <i class="bi bi-file-earmark-person"></i>
                                 </template>
                             </StepBox>
                             <StepBox :number="2">
                                 <template #icon>
-                                    <i class="bi bi-person-check bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                    <i class="bi bi-person-check"></i>
                                 </template>
                                 <template #title>Complete User Profile</template>
                                 <template #content></template>
                             </StepBox>
                             <StepBox :number="3">
                                 <template #icon>
-                                    <i class="bi bi-search  bg-slate-900 p-2 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                    <i class="bi bi-search"></i>
                                 </template>
                                 <template #title>
                                    Post Job
@@ -137,7 +133,7 @@
                             </StepBox>
                             <StepBox :number="4">
                                 <template #icon>
-                                    <i class="bi bi-clipboard-check  bg-slate-900 p-3 text-white rounded-md flex justify-center items-center group-hover:bg-tz_blue"></i>
+                                    <i class="bi bi-clipboard-check"></i>
                                 </template>
                                 <template #title>
                                     Hire Talent
@@ -155,21 +151,21 @@
                 <div class="section_container">
                     <img src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
                     <div class="md:w-fit text-left gap-8 flex flex-col">
-                        <h1 class="section_subtitle">Unlock your next career move! <br/> Upload your CV to stand out to recruiters and impact your job search.</h1>
+                        <h1 class="section_subtitle">Unlock your next career move! <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
                         <button class="btn">Upload CV Now</button>
                     </div>
                 </div>
             </section>
 
-            <section>
+            <section class=" bg-[#EDEFF3]">
                 <div class="flex flex-col">
                     <!-- <div data-aos="zoom-out"> -->
                     <div class="text-center">
-                        <span class="font-medium uppercase text-xl ">Jobs By Category</span>
-                        <h1 class="font-bol text-5xl font-medium">Explore Our Divers Job Categories</h1>
+                        <span class="font-medium text-[16px] capitalize">Jobs By Category</span>
+                        <h1 class="font-bol text-[30px] font-medium">Explore Our Divers Job Categories</h1>
                     </div>
                 
-                    <div class="flex flex-row gap-8 justify-center flex-wrap mt-10">
+                    <div class="flex flex-row gap-8 justify-center flex-wrap mt-10 bg-white rounded-lg p-5">
                         <JobCat :jobs_avaialble="900" >
                         </JobCat>
                         <JobCat :jobs_avaialble="400">
@@ -201,12 +197,12 @@
                 </div>
             </section>
 
-            <section style="background-image: linear-gradient(#1B2E40, #4e79bc );">
+            <section class=" bg-white">
                     <div class="text-left flex flex-col gap-5">
                         <div class="flex flex-col justify-around">
-                            <span class="text-2xl text-white">FEATURED JOBS</span>
+                            <span class="text-[16px] capitalize">FEATURED JOBS</span>
                             <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
-                                <h2 class="section_subtitle text-white">Get access to high in-demand jobs in realtime</h2>
+                                <h2 class="section_subtitle">Get access to high in-demand jobs<br/> in realtime</h2>
                                 <RouterLink to="/jobs">
                                     <button class="btn bg-white text-tz_blue hover:text-white flex flex-row gap-1">
                                         Browse All jobs <i class="bi bi-arrow-right"></i> 
@@ -215,7 +211,7 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col flex-wrap justify-center items-center md:flex-row gap-3">
+                        <div class="flex flex-col justify-center items-center md:flex-row gap-3">
                             <LpJobCard v-for="(job, index) in jobPostings" :key="index"
                             :company = "job.company"
                             :job_time = "job.job_time"
@@ -295,15 +291,7 @@ export default {
                 job_description: 'Looking for a creative graphic designer to work on exciting projects.',
                 budget: 8000, // Replace with a random amount as needed
             },
-            {
-                company: 'Mobile Apps Co.',
-                job_time: '15 days ago',
-                job_title: 'Mobile App Developer',
-                job_location: 'Port, Rivers State',
-                job_duration: '4 months',
-                job_description: 'Join our mobile app development team and contribute to cutting-edge projects.',
-                budget: 6000, // Replace with a random amount as needed
-            },
+           
             {
                 company: 'Data Analytics',
                 job_time: '3 months ago',
@@ -349,11 +337,11 @@ export default {
         @apply bg-tz_blue hover:bg-tz_dark_blue text-white py-3 px-5 rounded-md font-medium w-52 border border-transparent
     }
     .slide_btn{
-        @apply border border-yellow-400 p-3 rounded-md text-yellow-400 font-medium text-xl hover:bg-yellow-400 hover:text-black;
+        @apply border border-tz_blue p-3 rounded-md text-tz_blue font-medium text-xl hover:bg-tz_blue hover:text-black;
     }
 
     .sb_active{
-        @apply bg-yellow-400 text-black
+        @apply bg-tz_blue text-white
     }
 
     .section_container{
@@ -365,7 +353,7 @@ export default {
     }
 
     .section_subtitle{
-        @apply text-4xl font-medium
+        @apply text-[30px] font-medium
     }
 
     section{
