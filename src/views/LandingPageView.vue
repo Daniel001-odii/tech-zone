@@ -148,10 +148,10 @@
 
 
             <section>
-                <div class="section_container">
-                    <img src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
+                <div class="flex flex-row-reverse items-center p-5">
+                    <img src="../assets/images/recruiter_illustration.png" alt="lady-image" class="section_img w-96">
                     <div class="md:w-fit text-left gap-8 flex flex-col">
-                        <h1 class="section_subtitle">Unlock your next career move! <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
+                        <h1 class="text-[40px]">Unlock your next career move! <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
                         <button class="btn">Upload CV Now</button>
                     </div>
                 </div>
@@ -286,13 +286,13 @@
             </section>
 
             <section>
-                <div class="section_container items-start">
+                <div class=" flex items-start flex-row-reverse">
                     <div class="md:w-fit text-left gap-8 flex flex-col">
                         <h2 class="section_subtitle">Join us today!</h2>
                         <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
                         <GetStartedNow/>
                     </div>
-                    <img src="../assets/images/Group 281.png" alt="lady image" class="section_img w-96">
+                    <img src="../assets/images/foot_illustration.png" alt="lady image" class="section_img w-96">
                 </div>
             </section>
         
