@@ -1,10 +1,10 @@
 <template>
 
 <!-- <div class="w-full flex flex-col justify-center items-center dark:text-white bg-[#E7F1FF] dark:bg-[#121212] "> -->
-    <div class="border border-red-400 flex flex-col h-screen justify-between items-center overflow-y-auto  dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
+    <div class="flex flex-col min-h-screen justify-between items-center  dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
         <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
-                <RouterLink to="/">
+                <RouterLink to="/" class="w-fit">
                     <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block">
                     <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block dark:hidden">
                 </RouterLink>
@@ -14,24 +14,26 @@
                     <h1 class="text-3xl font-bold">Create an account</h1>
                     <p>Already have an account? <RouterLink to="/login">Login</RouterLink> </p>
 
+                    <div class="text-red-500 mt-6" v-if="error">{{ error }}</div>
+
                     <form class="flex flex-col gap-4 mt-6"  @submit.prevent="register">
                         <div class="flex flex-col gap-3">
                             <div class=" flex flex-row gap-3">
                                 <div class="">
                                     <label for="firstname">First Name</label>
-                                    <input class="form_input w-full" type="text" name="firstname" id="firstname" placeholder="John" v-model="form_data.firstname" required>
+                                    <input class="rounded-xl p-3 dark:bg-transparent w-full" type="text" name="firstname" id="firstname" placeholder="John" v-model="form_data.firstname" required>
                                 </div>
 
                                 <div class="">
                                     <label for="lastname">Last Name</label>
-                                    <input class="form_input w-full" type="text" name="lastname" id="lastname" placeholder="Doe" v-model="form_data.lastname" required>
+                                    <input class="rounded-xl p-3 dark:bg-transparent w-full" type="text" name="lastname" id="lastname" placeholder="Doe" v-model="form_data.lastname" required>
                                 </div>
                             </div>
                             
 
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
-                                <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
+                                <input class="rounded-xl p-3 dark:bg-transparent w-full" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
                             </div>
 
                             <div v-if='passHint && passwordValidation.errors.length > 0' class='hints'>
@@ -40,7 +42,7 @@
 
                             <div class="tz_form_control">
                                 <label for="password">password</label>
-                                <input @click="passHint = true" class="form_input" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
+                                <input @click="passHint = true" class="rounded-xl p-3 dark:bg-transparent w-full" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                             </div>
                         </div>
 
@@ -61,14 +63,14 @@
                         
                         <!-- or -->
                         <div class="flex flex-row justify-center items-center gap-5">
-                            <div class="border grow"></div>
+                            <div class="border grow dark:border-[#666666]"></div>
                             <div class="">OR</div>
-                            <div class="border grow"></div>
+                            <div class="border grow  dark:border-[#666666]"></div>
                         </div>
 
                          <!-- GOOGLE BUTTON STARTS HERE -->
                          <div class="">
-                            <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50 dark:hover:bg-gray-700">
+                            <button @click="googleLogin" type="button" class="w-full border  dark:border-[#666666] rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50 dark:hover:bg-gray-700">
                                 <img src="../assets/images/google.svg" class="h-5"/>
                                 Continue with Google<div></div></button>
                         </div>
@@ -143,7 +145,7 @@ export default {
                 this.$router.push('/login')
             }
             catch(error){
-                alert(error)
+                this.error = error.response.data.message;
             }
         },
 
@@ -155,13 +157,13 @@ export default {
                 const res = await axios.post(`${this.api_url}/google-auth`, auth );
                 if(res.data.message == "Sign-in successful"){
                     // alert user of successful sign login..
-                    alert("Login Successfull");
+                    
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
                     // redirect to user profile...
                     this.$router.push("/in/jobs")
                 } else if(res.data.message == "User registered successfully"){
-                    alert("Registration successful!");
+                    
                     this.$router.push("/profile")
                 }
                 console.log("response from backend: ", res)
@@ -197,4 +199,6 @@ export default {
     button:disabled{
         @apply bg-gray-400
     }
+
+
 </style>
