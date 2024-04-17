@@ -15,7 +15,7 @@ export default {
 </script>
 
 <template>
-<div class="bg-white dark:bg-[#27323F] dark:text-white">
+<div class="bg-white dark:bg-[#27323F] dark:text-white border border-green-500">
   <router-view></router-view>
 </div>
 </template>

@@ -18,13 +18,15 @@
                     <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block">
                     <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block dark:hidden">
                 </RouterLink>
+
+                <!-- MAIN CONTENT STARTS HERE -->
                 <div class="mt-3">
                     <h1 class="text-3xl font-bold">Welcome back</h1>
                     <span>Please enter your login details</span>
 
                     <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
-                            <span v-if="error" class="text-red-300">{{  error }}</span>
+                            <span v-if="error" class="text-red-500">{{  error }}</span>
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
                                 <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
@@ -40,9 +42,9 @@
                                 <label for="rem-details">Remember me</label>
                                 <input name="rem-details" id="rem-details" type="checkbox"/>
                             </div>
-                            <RouterLink to="/password/forgot">Forgot password ?</RouterLink>
+                            <RouterLink to="/password/forgot" class=" text-tz_blue">Forgot password ?</RouterLink>
                         </div>
-                        <!-- <LoaderButton class="rounded-full"  :buttonText="loading ? 'Loading...' : 'Sign in'" :loading="loading"/> -->
+                        
                         <button class="p-3 text-white bg-tz_blue w-full rounded-full">Sign in</button> 
                         
                         <!-- or -->
@@ -52,20 +54,21 @@
                             <div class="border grow"></div>
                         </div>
                         
-                        <!-- GOOGLE SIGN IN -->
+                        <!-- GOOGLE BUTTON STARTS HERE -->
                         <div class="">
-                            <!-- <GoogleLogin class="!w-full" :callback="callback" auto-login/> -->
-                                <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50 dark:hover:bg-gray-700">
-                                    <img src="../assets/images/google.svg" class="h-5"/>
-                                    Continue with Google<div></div></button>
-                            <!-- </GoogleLogin> -->
-                            
+                            <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50 dark:hover:bg-gray-700">
+                                <img src="../assets/images/google.svg" class="h-5"/>
+                                Continue with Google<div></div></button>
                         </div>
+                        <!-- GOOGLE BUTTON ENDS HERE -->
+
+
                         <div class="text-center">
                             <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-tz_blue">Sign up</RouterLink> </p>
                         </div>                      
                     </form>
                 </div>
+                <!-- MAIN CONTENT ENDS HERE -->
             </div>
             <div class="justify-center items-center w-[50%]  hidden md:flex rounded-lg">
                 <RouterLink to="/">
@@ -74,6 +77,7 @@
             </div>
         </div>
 
+        <!-- MINI FOOTER STARTS HERE -->
         <div class="fixed bottom-0 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
             <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
                 <span>About Us</span>
@@ -85,6 +89,7 @@
             </div>
             <p>&copy;2024 ApexTeks all rights reserved.</p>
         </div>
+        <!-- MINI FOOTER ENDS HERE -->
     </div>
        
 
