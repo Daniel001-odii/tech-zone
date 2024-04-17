@@ -11,8 +11,8 @@
 
    <FullPageLoading v-if="loading"/>
 
-    <div class="w-full h-screen flex justify-center items-center dark:text-white dark:bg-[#27323F] ">
-        <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 dark:bg-[#1f2a36]">
+    <div class="w-full h-screen flex flex-col justify-center items-center dark:text-white dark:bg-[#121212] ">
+        <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 dark:bg-[#0E0E0E] max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
                 <RouterLink to="/">
                     <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start">
@@ -23,6 +23,7 @@
 
                     <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
+                            <span v-if="error" class="text-red-300">{{  error }}</span>
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
                                 <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
@@ -57,11 +58,23 @@
                     </form>
                 </div>
             </div>
-            <div class="justify-center items-center w-[50%] bg-tz_light_blue hidden md:flex rounded-lg">
+            <div class="justify-center items-center w-[50%]  hidden md:flex rounded-lg">
                 <RouterLink to="/">
                     <img src="../assets/images/dot_logo.svg" class=" h-[200px] w-[200px]">
                 </RouterLink>
             </div>
+        </div>
+
+        <div class="fixed bottom-0 p-3 w-full bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
+            <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
+                <span>About Us</span>
+                <span>Privacy Policy</span>
+                <span>Cookie Policy</span>
+                <span>Billing/Payment T&Cs</span>
+                <span>Use of software T&Cs</span>
+                <span>FAQs</span>
+            </div>
+            <p>&copy;2024 ApexTeks all rights reserved.</p>
         </div>
     </div>
        
@@ -141,7 +154,6 @@ export default {
                         alert("please update your profile");
                         this.$router.push("/profile/complete");
                         window.location.reload();
-                        
                 }  
 
                 // else continue with normal login...
@@ -170,5 +182,9 @@ export default {
 <style scoped>
     .tz_form_control{
         @apply flex flex-col justify-start text-start 
+    }
+
+    input[type = "text"]{
+        background: transparent !important;
     }
 </style>

@@ -21,11 +21,4 @@ export default {
 </template>
 
 <style>
-/* .background{
-  background: url('../src/assets/images/backdrop.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-
-} */
 </style>
