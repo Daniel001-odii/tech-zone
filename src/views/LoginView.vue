@@ -11,11 +11,12 @@
 
    <FullPageLoading v-if="loading"/>
 
-    <div class="w-full h-screen flex flex-col justify-center items-center dark:text-white dark:bg-[#121212] ">
-        <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 dark:bg-[#0E0E0E] max-w-4xl">
+    <div class="w-full h-screen flex flex-col justify-center items-center dark:text-white bg-[#E7F1FF] dark:bg-[#121212] ">
+        <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
                 <RouterLink to="/">
-                    <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start">
+                    <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block">
+                    <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block dark:hidden">
                 </RouterLink>
                 <div class="mt-3">
                     <h1 class="text-3xl font-bold">Welcome back</h1>
@@ -35,14 +36,22 @@
                             </div>
                         </div>
                         <div class="flex flex-row gap-5 justify-between flex-wrap">
-                            <div class="flex flex-row-reverse gap-1 items-center">
+                            <div class="flex flex-row-reverse gap-1 items-center justify-center">
                                 <label for="rem-details">Remember me</label>
-                                <input name="rem-details" id="rem-details" type="checkbox" />
+                                <input name="rem-details" id="rem-details" type="checkbox"/>
                             </div>
                             <RouterLink to="/password/forgot">Forgot password ?</RouterLink>
                         </div>
                         <!-- <LoaderButton class="rounded-full"  :buttonText="loading ? 'Loading...' : 'Sign in'" :loading="loading"/> -->
                         <button class="p-3 text-white bg-tz_blue w-full rounded-full">Sign in</button> 
+                        
+                        <!-- or -->
+                        <div class="flex flex-row justify-center items-center gap-5">
+                            <div class="border grow"></div>
+                            <div class="">OR</div>
+                            <div class="border grow"></div>
+                        </div>
+                        
                         <!-- GOOGLE SIGN IN -->
                         <div class="">
                             <!-- <GoogleLogin class="!w-full" :callback="callback" auto-login/> -->
@@ -65,7 +74,7 @@
             </div>
         </div>
 
-        <div class="fixed bottom-0 p-3 w-full bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
+        <div class="fixed bottom-0 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
             <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
                 <span>About Us</span>
                 <span>Privacy Policy</span>
