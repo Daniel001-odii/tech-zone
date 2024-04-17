@@ -12,10 +12,17 @@
                     </li>
                 </ul>
                 <div class="w-full flex items-start gap-8 mb-5">
-                    <i class="bi bi-twitter"></i>
-                    <i class="bi bi-facebook"></i>
-                    <i class="bi bi-instagram"></i>
-                    <i class="bi bi-github"></i>
+                    <a href="#">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-instagram"></i>
+                    </a>
                 </div>
             </div>
 
@@ -32,7 +39,7 @@
                 </ul>
 
                 <ul class="list">
-                    <li class="list_header">Company</li>
+                    <li class="list_header">Quick Links</li>
                     <RouterLink to='/about'><li>About Us</li></RouterLink>
                     <RouterLink to='/vision'><li>Our Vision</li></RouterLink>
                     <li>Team</li>
@@ -90,7 +97,7 @@ export default {
     @apply text-left text-sm md:max-w-80
 }
 .list_header{
-    @apply font-bold text-xl uppercase mb-3
+    @apply font-bold text-xl capitalize mb-3
 }
 
 li{

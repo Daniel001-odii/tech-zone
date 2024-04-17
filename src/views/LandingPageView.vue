@@ -215,7 +215,7 @@
                             <LpJobCard v-for="(job, index) in jobPostings" :key="index"
                             :company = "job.company"
                             :job_time = "job.job_time"
-                            :Job_title = "job.job_title"
+                            :job_title = "job.job_title"
                             :job_location = "job.job_location"
                             :job_duration = "job.job_duration"
                             :job_description = "job.job_description"
@@ -235,10 +235,61 @@
                     </div>
             </section>
 
+            <section class=" bg-[#EDEFF3]">
+                <div class="flex flex-col">
+                    <!-- <div data-aos="zoom-out"> -->
+                    <div class="text-center">
+                        <span class="font-medium text-[16px] capitalize">Revolutionize Collaboration, <br/> Connecting Companies and Tech Pros Seamlessly</span>
+                        <h1 class="font-bol text-[30px] font-medium">What we offer you</h1>
+                    </div>
+                
+                    <div class="flex flex-row gap-8 justify-center items-start flex-wrap mt-10 rounded-lg p-5">
+                       <div class=" flex flex-col justify-center text-center items-center max-w-[300px]">
+                        <img src="../assets/images/sss1.svg">
+                        <p class="font-bold text-[30px]">Tech Connections Redefined</p>
+                        <span>Dynamic online platform that serves as a bridge between large and small scale companies and tech professionals</span>
+                       </div>
+
+                       <div class=" flex flex-col justify-center text-center items-center max-w-[350px]">
+                        <img src="../assets/images/ss2.svg">
+                        <p class="font-bold text-[30px]">Streamlined Contract Networking</p>
+                        <span>Our innovative approach allows tech companies easily connect with skilled tech professionals on a contract basis</span>
+                       </div>
+
+                       <div class=" flex flex-col justify-center text-center items-center max-w-[350px]">
+                        <img src="../assets/images/ss3.svg">
+                        <p class="font-bold text-[30px]">Dynamic Partnership Platform</p>
+                        <span>We provide flexibility for both parties to collaborate. From Quick Projects to Extended Engagements, Flexibility Reigns</span>
+                       </div>
+
+                       <div class=" flex flex-col justify-center text-center items-center max-w-[350px]">
+                        <img src="../assets/images/ss4.svg">
+                        <p class="font-bold text-[30px]">Secure Alliances</p>
+                        <span>Establishing Trustworthy Interactions. Ensuring Secure Communication Between Employers and Technical Professionals on the Platform</span>
+                       </div>
+
+                       
+                       <div class=" flex flex-col justify-center text-center items-center max-w-[350px]">
+                        <img src="../assets/images/ss5.svg">
+                        <p class="font-bold text-[30px]">Secure Alliances</p>
+                        <span>Establishing Trustworthy Interactions. Ensuring Secure Communication Between Employers and Technical Professionals on the Platform</span>
+                       </div>
+
+                       
+
+
+
+
+                    </div>
+
+                </div>
+            </section>
+
             <section>
-                <div class="section_container">
+                <div class="section_container items-start">
                     <div class="md:w-fit text-left gap-8 flex flex-col">
-                        <h2 class="section_subtitle">Take the next step in your professional career.<br/>Sign-in to unlock limitless opportunities.</h2>
+                        <h2 class="section_subtitle">Join us today!</h2>
+                        <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
                         <GetStartedNow/>
                     </div>
                     <img src="../assets/images/Group 281.png" alt="lady image" class="section_img w-96">
