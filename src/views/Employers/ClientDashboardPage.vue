@@ -70,9 +70,9 @@
                                             </div>
                                         </div>
                                         <div class="p-3 text-left">{{ job.description.substring(0, 200) }}..</div>
-                                        <div class="flex flex-row justify-end mt-3 mb-3">
+                                        <div class="flex flex-row justify-start m-3 mb-3">
                                             <button v-if="job.no_of_applications" @click="show_applicants(job_id, job._id)" type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                See Applications<span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">{{ job.no_of_applications }}</span>
+                                               <i class="bi bi-eye-fill mr-3"></i> See {{ job.no_of_applications }} Applications
                                             </button>
                                             <!-- <span class="p-2 rounded-lg bg-slate-200 text-sm dark:bg-tz_light_blue">applications: {{ job.no_of_applications }}</span> -->
                                         </div>
@@ -84,15 +84,16 @@
                                             </div>
                                             <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
                                             <div class="p-3 flex flex-row gap-3 hover:bg-slate-50 rounded-xl w-full border items-start dark:hover:bg-tz_light_blue dark:border-gray-500" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
-                                                <div v-if="application.user" class=" h-16 w-20 bg-tz_blue rounded-lg overflow-hidden">
-                                                    <img :src="application.user.profile.image_url">
+                                                <div v-if="application.user" class=" h-16 w-16 bg-tz_blue rounded-full overflow-hidden">
+                                                    <a :href="`/users/${application.user._id}`" target="_blank">
+                                                        <img :src="application.user.profile.image_url">
+                                                    </a>
                                                 </div>
-                                                <div v-if="application.user" class="flex flex-col text-start w-full">
-                                                    <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
+                                                <div v-if="application.user" class="flex flex-col text-start">
+                                                    <div class="flex flex-row justify-between items-start flex-wrap gap-3">
                                                         <div>
                                                             <!-- {{  application.job }} -->
-                                                            <!-- <RouterLink :to="'user/'"></RouterLink> -->
-                                                            <p @click="seeUserProfile(application.user._id)" class="text-xl font-bold underline cursor-pointer">{{ application.user.firstname }} {{ application.user.lastname }}</p>
+                                                            <a :href="`/users/${application.user._id}`" target="_blank" class="text-xl font-bold cursor-pointer">{{ application.user.firstname }} {{ application.user.lastname }}</a>
                                                             <p class="text-gray-400">{{ application.user.profile.title }}</p>
                                                             <p class="text-gray-400">{{ application.user.rating }}</p>
                                                         </div>
@@ -129,14 +130,17 @@
                                 <p v-if="!saved_users"> loading your saved users...</p>
 
                                 <div v-if="saved_users" class="p-3 flex flex-row gap-3 rounded-xl w-full border items-start dark:bg-[#1F2A36] dark:border-gray-500 dark:hover:bg-none " v-for="(user, user_id) in saved_users" :key="user_id">
-                                    <div class=" h-16 w-20 bg-tz_blue rounded-lg overflow-hidden">
-                                        <img :src="user.profile.image_url">
+                                    <div class=" h-16 w-16 bg-tz_blue rounded-full overflow-hidden">
+                                        <a :href="`/users/${user._id}`" target="_blank">
+                                            <img :src="user.profile.image_url">
+                                        </a>
                                     </div>
-                                    <div class="flex flex-col text-start w-full">
+                                    <div class="flex flex-col text-start">
                                         <div class="flex flex-row w-full justify-between items-start flex-wrap gap-3">
                                             <div>
-                                                <p class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</p>
+                                                <a :href="`/users/${user._id}`" target="_blank" class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</a>
                                                 <p class="text-gray-400">{{ user.profile.title }}</p>
+                                                <Rating :modelValue="user.rating" readonly :cancel="false"></Rating>
                                                 <!-- <p class="text-sm flex flex-row gap-1 text-orange-500" v-html="userStars(user.ratings)"></p> -->
                                                 <p class="text-gray-400">{{ user.rating }}</p>
                                             </div>
@@ -171,9 +175,13 @@ import { generateStarRating } from '@/utils/ratingStars';
 import PageTitle from '@/components/PageTitle.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 
+
+// prime vue rating component
+import Rating from 'primevue/rating';
+
 export default {
     name: "ClientDashboardPage",
-    components: { TemplateView, SkeletonLoader, Modal, PageTitle, FullPageLoading },
+    components: { TemplateView, SkeletonLoader, Modal, PageTitle, FullPageLoading, Rating },
     data(){
         return{
             store: useStore(),
@@ -184,7 +192,7 @@ export default {
             },
             jobs: '',
 
-            current_tab: 'jobs',
+            current_tab: 'saved',
             applicants: [],
             saved_users: '',
 

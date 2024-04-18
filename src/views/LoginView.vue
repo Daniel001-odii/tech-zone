@@ -10,8 +10,8 @@
 
 
    <FullPageLoading v-if="loading"/>
-
-   <div class="flex flex-col min-h-screen justify-between items-center  dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
+<div class=" dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
+   <div class="flex flex-col min-h-screen justify-center items-center ">
         <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
                 <RouterLink to="/" class="w-fit">
@@ -28,7 +28,6 @@
 
                     <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
-                            <span v-if="error" class="text-red-500">{{  error }}</span>
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
                                 <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
@@ -79,25 +78,26 @@
             </div>
         </div>
 
-        <!-- MINI FOOTER STARTS HERE -->
-        <div class=" mt-6 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
-            
-                <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
-                    <span>About Us</span>
-                    <span>Privacy Policy</span>
-                    <span>Cookie Policy</span>
-                    <span>Billing/Payment T&Cs</span>
-                    <span>Use of software T&Cs</span>
-                    <span>FAQs</span>
-                </div>
-                <p>&copy;2024 ApexTeks all rights reserved.</p>
-        </div>
-        
-        <!-- MINI FOOTER ENDS HERE -->
+       
 
 
     </div>
-
+     <!-- MINI FOOTER STARTS HERE -->
+     <div class="mt-3 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
+            
+            <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
+                <span>About Us</span>
+                <span>Privacy Policy</span>
+                <span>Cookie Policy</span>
+                <span>Billing/Payment T&Cs</span>
+                <span>Use of software T&Cs</span>
+                <span>FAQs</span>
+            </div>
+            <p>&copy;2024 ApexTeks all rights reserved.</p>
+    </div>
+    
+    <!-- MINI FOOTER ENDS HERE -->
+</div>
 </template>
 <script>
 import Alert from '@/components/Alert.vue';
