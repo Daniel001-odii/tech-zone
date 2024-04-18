@@ -293,7 +293,7 @@
             </section>
 
             <section>
-                <div class=" flex items-start flex-row-reverse">
+                <div class=" flex items-center flex-col md:flex-row-reverse">
                     <div class="md:w-fit text-left gap-8 flex flex-col">
                         <h2 class="section_subtitle">Join us today!</h2>
                         <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
