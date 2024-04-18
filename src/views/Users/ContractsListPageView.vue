@@ -32,14 +32,7 @@
 
 
                         <div class="flex flex-row gap-3">
-                            <span class="px-4 py-1 text-white rounded-md text-xl" 
-                            :class="[contract.status == 'open'?'bg-tz_blue':'', 
-                                    contract.status == 'paused'?'bg-orange-500':'',
-                                    contract.status == 'completed'?'bg-green-500':'',
-                                    contract.status == 'closed'?'bg-gray-500':''
-                                    ]">
-                                {{ contract.status }}
-                            </span>
+                            <ContractStatus :type="contract.status"/>
                         </div>
                     </div>
                 </div>

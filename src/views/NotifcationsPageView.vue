@@ -13,7 +13,7 @@
                     <div class="flex flex-row justify-between w-full">
 
                         
-                        <button @click="clearAllNotifications" class="rounded-md p-2 underline bg-tz_blue">clear all</button>
+                        <button @click="clearAllNotifications" class="rounded-md px-6 py-2 text-white bg-tz_blue">clear all</button>
                         
                         <div class=" flex flex-row gap-3 items-center justify-between">
                             <div class="flex flex-col">

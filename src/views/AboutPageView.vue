@@ -1,4 +1,5 @@
 <template>
+    <HomeNavbar/>
     <div>
         <div class="p-8 text-left">
             <h2 class="mb-3 text-gray-500">About ApexTeks</h2>           
@@ -57,10 +58,14 @@
 import axios from 'axios';
 import Alert from '@/components/Alert.vue';
 import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
+import HomeNavbar from '../components/HomeNavbar'
 
 export default {
     name: "AboutPageView",
-    components: { Alert },
+    components: { 
+        Alert,
+        HomeNavbar, 
+    },
 }
 </script>
 <style scoped>

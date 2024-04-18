@@ -16,11 +16,11 @@
                         <i class="bi bi-linkedin"></i>
                     </a>
 
-                    <a href="#">
+                    <a href="https://twitter.com/ApexTeks">
                         <i class="bi bi-twitter-x"></i>
                     </a>
 
-                    <a href="#">
+                    <a href="https://instagram.com/apexteks">
                         <i class="bi bi-instagram"></i>
                     </a>
                 </div>

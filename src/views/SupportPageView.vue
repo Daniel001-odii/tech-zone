@@ -1,12 +1,13 @@
 <template>
-    <div class=" h-full overflow-y-scroll">
-        <div class="flex flex-row justify-center items-center bg-black text-white">
-            <div class="p-5 w-full">
-                <h2>Support</h2>
-                <h1 class="font-bold text-2xl">Frequently asked Questions</h1>
-                <p>New help with something?, Here are our most frequetly asked questions.</p>
+    <HomeNavbar/>
+    <div class=" h-full overflow-y-scroll max-w-screen-2xl mx-auto my-0">
+        <div class="flex flex-row justify-center items-center bg-[#EDEFF3] h-[300px] hero" >
+            <div class="p-5 w-full text-center">
+                <h2>FAQs</h2>
+                <h1 class="font-bold text-2xl">Ask Us Anything</h1>
+                <p>New help with something?<br/> Here are our most frequetly asked questions.</p>
             </div>
-            <img src="../assets/images/FAQ.png" class=" w-[500px] hidden md:inline-block">
+            <!-- <img src="../assets/images/FAQ.png" class=" w-[500px] hidden md:inline-block"> -->
         </div>
 
         <section class="flex flex-col  md:flex-row justify-between p-8 gap-3">
@@ -49,16 +50,21 @@
             </div>
         </section>
 
-        <section class="p-8">
-            <div class=" flex flex-col justify-center items-center w-full md:w-[80%] rounded-lg h-[250px] bg-tz_light_blue mx-auto my-0">
-                <img src="../assets/images/FAQ-People-group.png" class="mb-3">
-                <div class="flex flex-col justify-center items-center gap-2">
-                    <h4>Still have questions?</h4>
-                    <p>Can’t find the answer you’re looking for? Please reach out to us directly.</p>
-                    <button class="btn">Reach out</button>
+        <div class="flex flex-row justify-center items-center bg-[#EDEFF3] h-[300px]" >
+            <div class="bg-white w-[80%] p-8 rounded-lg flex flex-row justify-between items-start flex-wrap relative">
+                <div>
+                    <h1>Still Have questions?</h1>
+                    <p>Can’t find the answer you’re looking for?<br/> Please reachout to us.</p>
                 </div>
+
+                <img src="../assets/images/FAQ-bottomImage.png" class=" hidden lg:inline-block absolute -top-10      vop-10 right-44">
+                
+                <button class="btn">Get in touch</button>
+
+           
+                
             </div>
-        </section>
+        </div>
         <Footer/>
     </div>
    
@@ -66,10 +72,15 @@
 
 <script>
 import Footer from '@/components/Footer.vue'
+import HomeNavbar from '@/components/HomeNavbar.vue'
+
 
     export default {
         name: "SupportPageView",
-        components: { Footer },
+        components: { 
+            Footer,
+            HomeNavbar, 
+        },
         data(){
             return{
                 generalFAQs: [
@@ -138,5 +149,9 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <style scoped>
-
+.hero{
+    background-image: url('../assets/images/FAQ-hero.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+}
 </style>

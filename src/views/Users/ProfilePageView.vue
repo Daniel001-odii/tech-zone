@@ -145,7 +145,7 @@
             <template #footer>
                 <div class="flex flex-row gap-3">
                     <input type="file" ref="file" @change="loadImage($event)" class="hidden" accept="image/*">
-                    <button class="border border-tz_blue p-3 rounded-md" @click="$refs.file.click()">Select image </button>
+                    <button class="border border-tz_blue p-3 rounded-md" @click="$refs.file.click()">Change image </button>
                     <button class="btn" @click="uploadProfileImage">
                         <span v-if="!image_uploading">Save photo</span>
                         <span v-else>Working...</span>
@@ -187,10 +187,10 @@
 
             <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full overflow-y-scroll ">
 
-                <div class="flex w-full rounded-xl justify-evenly items-start md:items-center  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
+                <div class="flex w-full rounded-xl relative justify-evenly items-start md:items-center  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
                     <div class="flex flex-row justify-start md:justify-start items-center p-5 gap-3 flex-wrap">
                         <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
-                                <div v-if="isAllowed" class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex cursor-pointer" @click="profile_image_menu = !profile_image_menu">
+                                <div v-if="isAllowed" class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-70 group-hover:flex cursor-pointer text-white" @click="profile_image_menu = !profile_image_menu">
                                     <i class="bi bi-camera text-2xl"></i>
                                 </div>
                             </div>
@@ -222,6 +222,7 @@
                                 <!-- <SplitButton label="Resume" icon="pi pi-plus" @click="save" :model="items" /> -->
                             </div>
                         </div>
+
                     </div>
                     <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
                     <div class=" flex flex-col items-start justify-center text-left p-5">
@@ -231,7 +232,10 @@
                         </div>
                         <p>Joined: {{ readableDate(user.created) }}</p>
                         <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
-                       
+
+                         <!-- VIEW PROFILE AS OTHERS -->
+                         <!-- <a :href="`/users/${user._id}`" target="_blank" v-if="isAllowed" class="text-blue-500 underline"><i class="bi bi-eye"></i> view profile as others</a> -->
+                        <!-- ------- -->
                     </div>
                 </div>
 
@@ -312,14 +316,7 @@
                                     </template>
                                     <template #date>{{ readableDate(contract.created) }}</template>
                                     <template #status>
-                                        <span class="px-4 py-1 text-white rounded-md text-xl" 
-                                        :class="[contract.status == 'open'?'bg-tz_blue':'', 
-                                                contract.status == 'paused'?'bg-orange-500':'',
-                                                contract.status == 'completed'?'bg-green-500':'',
-                                                contract.status == 'closed'?'bg-gray-500':''
-                                                ]">
-                                            {{ contract.status }}
-                                        </span>
+                                        <ContractStatus :type="contract.status"/>
                                     </template>
                                 </JobReviewCard>
                             </div>
@@ -345,6 +342,7 @@ import PageTitle from '@/components/PageTitle.vue';
 import { formatTimestamp } from '@/utils/dateFormat';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import { CircleStencil, Cropper, Preview } from 'vue-advanced-cropper';
+import ContractStatus from '@/components/ContractStatus.vue';
 
 import FileUpload from 'primevue/fileupload';
 import SplitButton from 'primevue/splitbutton';
@@ -363,7 +361,8 @@ export default {
         CircleStencil,
         Preview,
         FileUpload,
-        SplitButton
+        SplitButton,
+        ContractStatus
      },
     data(){
         return{

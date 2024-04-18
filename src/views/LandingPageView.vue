@@ -8,30 +8,7 @@
 
 
     <!--NAVBAR -->
-    <nav>
-        <div class="bg-white start-0 relative z-30 dark:bg-[#1F2A36] p-3 flex flex-row justify-between items-center shadow-xl">
-            <SiteLogo/>
-            <div class="bg-white w-full flex-col md:flex-row justify-between md:flex absolute z-10 top-16 left-0 flex md:top-0 md:relative pb-6 md:p-0 h-0 opacity-0 md:h-fit md:opacity-100 transition-all duration-500 ease-out" :class="mobile_menu ? 'h-fit opacity-100':'h-0 opacity-0'">
-                <div class=" flex flex-col md:flex-row gap-6 md:items-center md:mx-auto md:my-0 p-5 md:p-0">
-                    <RouterLink to="/">Home</RouterLink>
-                    <RouterLink to="/jobs"> FInd Job</RouterLink>
-                    <RouterLink to="/about">About Us</RouterLink>
-                    <RouterLink to="/FAQ">FAQ</RouterLink>
-                </div>
-                <div class="flex flex-row gap-3 p-5 md:p-0">
-                    <RouterLink to="/login">
-                        <button class="nav_btn rounded-md w-fit text-tz_blue hover:text-tz_blue hover:bg-tz_light_blue">Login</button>
-                    </RouterLink>
-                    <RouterLink to="/register/decide">
-                        <button class="nav_btn rounded-md bg-tz_blue hover:bg-tz_dark_blue text-white">Sign Up</button>
-                    </RouterLink>
-                </div>
-            </div>
-            <button class="text-4xl md:hidden" @click="mobile_menu = !mobile_menu">
-                <i class="bi bi-list text-4xl"></i>
-            </button>
-        </div>
-    </nav>
+    <HomeNavbar/>
     <!-- NAVBAR ENDS HERE -->
 
 
@@ -317,11 +294,11 @@ import SiteLogo from '@/components/SiteLogo.vue';
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import LpJobCard from '@/components/LpJobCard.vue';
-
+import HomeNavbar from '@/components/HomeNavbar.vue';
 
 export default {
     name: "LandingPage",
-    components: { Navbar, StatsBox, StepBox, JobCat, StrikeLineSvg, GetStartedNow, Footer, LpJobCard, SiteLogo },
+    components: { Navbar, StatsBox, StepBox, JobCat, StrikeLineSvg, GetStartedNow, Footer, LpJobCard, SiteLogo, HomeNavbar },
     data(){
         return{
             jobPostings: [
@@ -358,6 +335,7 @@ export default {
             mobile_menu: false,
         }
     },
+  
   
 
     mounted() {

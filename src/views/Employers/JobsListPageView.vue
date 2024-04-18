@@ -51,7 +51,7 @@
                         </div>
                         <div>
                             <div class="text-sm">{{ job.description.substring(0, 400) }}..</div>
-                            <div class="font-bold mt-3">${{job.budget.toLocaleString() }} Budget</div>
+                            <div class="font-bold mt-3">₦{{job.budget.toLocaleString() }} Budget</div>
                             <div class="mt-2">posted {{job.created }}</div>
                             <div class="mt-2">status: {{job.status }}</div>
                         </div>

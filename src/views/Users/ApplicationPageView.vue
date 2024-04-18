@@ -18,6 +18,7 @@
             <div class=" md:w-2/4">
                 <div>
                     <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md dark:border-gray-600">
+                        <!-- <div class="border border-red-300 w-full">image here</div> -->
                         <div class="flex flex-col gap-3">
                             <div class="flex flex-row justify-between items-center">
                                 <span class="font-bold text-2xl">

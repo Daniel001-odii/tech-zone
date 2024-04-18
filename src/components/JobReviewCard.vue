@@ -24,7 +24,7 @@
                   
                  
                 </div>
-                <div class="mt-3">${{ budget }} paid</div>
+                <div class="mt-3">₦{{ budget.toLocaleString() }} paid</div>
             </div>
             <div class="flex flex-row gap-3">
                 <slot name="status"></slot>
