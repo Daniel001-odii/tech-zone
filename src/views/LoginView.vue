@@ -125,10 +125,11 @@ export default {
             this.loading = true;
             try {
                 const response = await axios.post(`${this.api_url}/login`, this.form_data);
-                console.log(response);
-                localStorage.setItem('life-gaurd', response.data.accessToken);
+                // console.log(response);
+               
                 alert('login successful!');
                 if(response.data.user.role == "user"){
+                    localStorage.setItem('life-gaurd', response.data.accessToken);
                     window.location.reload();
                     this.$router.push('/in/jobs');
 
@@ -137,6 +138,7 @@ export default {
                     }
                    
                 }else if(response.data.user.role == "employer"){
+                    localStorage.setItem('life-gaurd', response.data.accessToken);
                     window.location.reload();
                     this.$router.push('/client/dashboard');
                 }
