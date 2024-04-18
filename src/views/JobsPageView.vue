@@ -3,9 +3,9 @@
 
         <!-- ALERTS AND NOTIFICS -->
         <div class="fixed right-0 z-50 flex flex-col m-3">
-                <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                    <DismissableAlert  :type="alert_type">{{ alert }}</DismissableAlert>
-                </div>
+            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
+                <DismissableAlert  :type="alert_type">{{ alert }}</DismissableAlert>
+            </div>
         </div>
        
        <Modal :title="'Job Filters'" :modal_active="job_filter_modal" >
@@ -333,9 +333,7 @@
                     </div>
                 </div>
 
-              </div>
-
-              
+              </div> 
 
     </div>
 </template>
