@@ -1,6 +1,6 @@
 <template>
 
-<!-- <div class="w-full flex flex-col justify-center items-center dark:text-white bg-[#E7F1FF] dark:bg-[#121212] "> -->
+
     <div class="flex flex-col min-h-screen justify-between items-center  dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
         <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
@@ -101,7 +101,6 @@
         </div>
         
         <!-- MINI FOOTER ENDS HERE -->
-        
 
 
     </div>

@@ -11,18 +11,20 @@
 
    <FullPageLoading v-if="loading"/>
 
-    <div class="w-full h-screen flex flex-col justify-center items-center dark:text-white bg-[#E7F1FF] dark:bg-[#121212] ">
-        <div class=" w-[90%] md:w-[70%] rounded-xl flex flex-row py-8 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
+   <div class="flex flex-col min-h-screen justify-between items-center  dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
+        <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
-                <RouterLink to="/">
+                <RouterLink to="/" class="w-fit">
                     <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block">
                     <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block dark:hidden">
                 </RouterLink>
 
                 <!-- MAIN CONTENT STARTS HERE -->
                 <div class="mt-3">
-                    <h1 class="text-3xl font-bold">Welcome back</h1>
-                    <span>Please enter your login details</span>
+                    <h1 class="text-3xl font-bold">Create an account</h1>
+                    <p>Already have an account? <RouterLink to="/login">Login</RouterLink> </p>
+
+                    <div class="text-red-500 mt-6" v-if="error">{{ error }}</div>
 
                     <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login">
                         <div class="flex flex-col gap-3">
@@ -78,20 +80,23 @@
         </div>
 
         <!-- MINI FOOTER STARTS HERE -->
-        <div class="fixed bottom-0 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
-            <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
-                <span>About Us</span>
-                <span>Privacy Policy</span>
-                <span>Cookie Policy</span>
-                <span>Billing/Payment T&Cs</span>
-                <span>Use of software T&Cs</span>
-                <span>FAQs</span>
-            </div>
-            <p>&copy;2024 ApexTeks all rights reserved.</p>
+        <div class=" mt-6 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
+            
+                <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
+                    <span>About Us</span>
+                    <span>Privacy Policy</span>
+                    <span>Cookie Policy</span>
+                    <span>Billing/Payment T&Cs</span>
+                    <span>Use of software T&Cs</span>
+                    <span>FAQs</span>
+                </div>
+                <p>&copy;2024 ApexTeks all rights reserved.</p>
         </div>
+        
         <!-- MINI FOOTER ENDS HERE -->
+
+
     </div>
-       
 
 </template>
 <script>

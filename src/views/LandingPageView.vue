@@ -13,10 +13,10 @@
             <SiteLogo/>
             <div class="bg-white w-full flex-col md:flex-row justify-between md:flex absolute z-10 top-16 left-0 flex md:top-0 md:relative pb-6 md:p-0 h-0 opacity-0 md:h-fit md:opacity-100 transition-all duration-500 ease-out" :class="mobile_menu ? 'h-fit opacity-100':'h-0 opacity-0'">
                 <div class=" flex flex-col md:flex-row gap-6 md:items-center md:mx-auto md:my-0 p-5 md:p-0">
-                    <span>Home</span>
-                    <span>FInd Job</span>
-                    <span>About Us</span>
-                    <span>FAQ</span>
+                    <RouterLink to="/">Home</RouterLink>
+                    <RouterLink to="/jobs"> FInd Job</RouterLink>
+                    <RouterLink to="/about">About Us</RouterLink>
+                    <RouterLink to="/FAQ">FAQ</RouterLink>
                 </div>
                 <div class="flex flex-row gap-3 p-5 md:p-0">
                     <RouterLink to="/login">
@@ -212,7 +212,7 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col justify-center items-center md:flex-row gap-3">
+                        <div class="flex flex-col justify-start items-center md:flex-row gap-3border border-red-200 overflow-x-auto">
                             <LpJobCard v-for="(job, index) in jobPostings" :key="index"
                             :company = "job.company"
                             :job_time = "job.job_time"
