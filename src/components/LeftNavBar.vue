@@ -27,8 +27,8 @@
                 </RouterLink>
                 <RouterLink to="/client/contracts" >
                     <div class="nav_item" :class="{ 'active': isClientContracts }">
-                        <i class="bi bi-briefcase" v-if="!isClientContracts"></i> 
-                        <i class="bi bi-briefcase-fill" v-if="isClientContracts"></i> 
+                        <i class="bi bi-gift" v-if="!isClientContracts"></i> 
+                        <i class="bi bi-gift-fill" v-if="isClientContracts"></i> 
                         <span class="md:hidden lg:inline-block">Contracts & hires</span>
                     </div>
                 </RouterLink>

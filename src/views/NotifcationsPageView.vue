@@ -32,7 +32,7 @@
                             <div class="flex flex-col" :class="notification.isRead ? 'text-gray-500':''">
                                 {{ notification.message }} <br/>
                                 {{ formatTimestamp(notification.created) }} <br/>
-                                <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink>
+                                <!-- <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink> -->
                             </div>
                             <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)">Mark as read</button>
                         </div>
