@@ -9,7 +9,7 @@
                     </div>
                 </div>
 
-                <div v-if="loading && !contracts" v-for="box in 4">
+                <div v-if="loading && !contracts" v-for="box in 2">
                     <SkeletonLoader/>
                 </div>
 

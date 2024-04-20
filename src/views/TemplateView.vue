@@ -1,23 +1,24 @@
 <template>
-<div>
-    <div class="bg-white dark:bg-[#27323F] dark:text-white h-screen w-full flex flex-col justify-start items-stretch">
-        <!-- navbar -->
-        <Navbar/>  
-
-        <div class="flex flex-row w-full h-full">
-            <!-- left sidebar -->
-            <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
-
-            <!-- page contents -->
-            <!-- REMOVED OVERFLOW SCROLL HERE BECAUSE OF MESSAGE PAGE -->
-            <div class=" w-full ">
-            <!-- <div class=" w-full overflow-y-scroll"> -->
-                <router-view></router-view>
+   <div class="template h-screen bg-white dark:bg-[#27323F] dark:text-white flex flex-col fixed bottom-0 top-0 right-0 left-0">
+        <div class="navbar h-fit bg-green-400">
+            <Navbar/> 
+        </div>
+        <div class="page flex flex-row h-full">
+            <div class="sidebar max-w-[300px] h-full border-r dark:border-gray-600">
+                <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
+            </div>
+            <div class="page-content h-full w-full">
+                <div class="h-full w-full overflow-y-auto flex flex-col justify-start">
+                    <!-- <div v-for="item in 20" :key="item.id">
+                        {{ item }}
+                        <div class=" h-80 bg-orange-700"></div>
+                    </div> -->
+                    <router-view></router-view>
+                </div>
+                
             </div>
         </div>
-    </div>
-  
-</div>     
+   </div>
 </template>
 
 
@@ -47,5 +48,36 @@ export default {
  *{
     @apply dark:border-[#C8C6C6]
  }
+
+ /* .template{
+    height: 100vh;
+    background: red;
+    display: flex;
+    flex-direction: column;
+ } */
+
+ /* .navbar{
+    min-height: 80px;
+    background: green;
+ } */
+
+ /* .page{
+    display: flex;
+    flex-direction: row;
+    background: yellow;
+    height: 100%;
+ } */
+
+ /* .sidebar{
+    max-width: 300px;
+    height: 100%;
+    background: blue;
+ } */
+
+ /* .page-content{
+    height: 100%;
+    background: red;
+    width: 100%;
+ } */
 
 </style>

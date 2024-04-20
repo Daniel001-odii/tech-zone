@@ -276,11 +276,11 @@ router.beforeEach((to, from, next) => {
   const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
 
   // If the user is logged in and is trying to visit the root URL or login page
-  if (userRole && userRole == 'user' && to.path === '/' || userRole && userRole == 'user'&& to.path === '/login') {
+  if (token && userRole && userRole == 'user' && to.path === '/' || userRole && userRole == 'user'&& to.path === '/login') {
     // Redirect users to /jobs
     next('/in/jobs')
 
-  } else if(userRole && userRole == 'employer' && to.path === '/' || userRole && userRole == 'employer'&& to.path === '/login') {
+  } else if(token && userRole && userRole == 'employer' && to.path === '/' || userRole && userRole == 'employer'&& to.path === '/login') {
     // redirect clients to their dashboard
     next('/client/dashboard');
   }

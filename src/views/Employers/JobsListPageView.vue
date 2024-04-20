@@ -10,7 +10,7 @@
                     </div>
                 </div>
 
-                <div v-if="!jobs" v-for="box in 4">
+                <div v-if="!jobs" v-for="box in 2">
                     <SkeletonLoader/>
                 </div>
 

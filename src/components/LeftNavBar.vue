@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class=" h-full md:block md:w-28 lg:w-56 border-r border-b md:border-b-0 dark:border-gray-600 dark:bg-[#27323F]">
+    <!-- <div> -->
+        <div class="md:block md:w-28 lg:w-56 dark:bg-[#27323F]">
             <div class=" md:h-20"></div>
             <!-- EMPLOYER -->
             <div v-if="user.role === 'employer'">
@@ -79,7 +79,7 @@
             </div>
             
         </div>
-    </div>
+    <!-- </div> -->
 </template>
 <script>
 import axios from 'axios';
@@ -126,7 +126,7 @@ export default {
 </script>
 <style scoped>
     .active{
-        @apply border-l-tz_blue text-tz_blue bg-tz_light_blue font-bold 
+        @apply border-l-tz_blue text-[#81AAEA] bg-tz_light_blue font-bold 
     }
 
     .nav_item{
