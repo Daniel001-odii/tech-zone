@@ -91,7 +91,7 @@
                             <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600">
                             <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
                             <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="p-3 hover:bg-slate-50 rounded-md flex flex-row gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
-                                <div class="flex flex-col">
+                                <div class="flex flex-col w-[85%]">
                                     <span class="text-sm font-bold">{{  notification.message }}</span>
                                     <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
                                 </div>
