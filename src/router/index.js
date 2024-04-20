@@ -18,6 +18,7 @@ import PageNotFoundViewVue from '@/views/PageNotFoundView.vue'
 import AboutPageViewVue from '@/views/AboutPageView.vue'
 import MissionPageViewVue from '@/views/MissionPageView.vue'
 
+import TaskWatchPageView from '@/views/Users/TaskWatchPageView.vue'
 
 import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 import ClientDashBoardPage from '@/views/Employers/ClientDashboardPage.vue'
@@ -143,6 +144,7 @@ const routes = [
       {path: 'overview', component: OverviewPageView},
       {path: 'notifications', component: NotifcationsPageView},
       {path: 'settings', component: SettingsPageView},
+      {path: 'watch', component: TaskWatchPageView},
     ],
     meta: { requiresAuth: true, role: 'user' },
   },

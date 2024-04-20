@@ -66,6 +66,13 @@
                         <span class="md:hidden lg:inline-block">Contracts</span>
                     </div>
                 </RouterLink>
+                <RouterLink to="/in/watch" >
+                    <div class="nav_item" :class="{ 'active': isWatch }">
+                        <i class="bi bi-clipboard2-pulse" v-if="!isWatch"></i> 
+                        <i class="bi bi-clipboard2-pulse-fill" v-if="isWatch"></i> 
+                        <span class="md:hidden lg:inline-block">Task Watch</span>
+                    </div>
+                </RouterLink>
             </div>
 
             <div v-if="user.role != 'user' && user.role != 'employer'">
@@ -91,6 +98,7 @@ export default {
         isSavedJobs() { return this.$route.path.startsWith("/in/saved"); },
         isContracts() { return this.$route.path.startsWith("/in/contracts"); },
         isMessages() { return this.$route.path.startsWith("/in/messages") },
+        isWatch() { return this.$route.path.startsWith("/in/watch") },
 
         // EMPLOYER....
         isDashboard() { return this.$route.path.startsWith("/client/dashboard"); },
