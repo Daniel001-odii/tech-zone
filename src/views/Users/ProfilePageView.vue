@@ -312,7 +312,7 @@
                                     
                                     <template #star-rating>
                                         <div>
-                                            <p v-if="contract.user_feedback.rating > 0" class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.user_feedback.rating)"></p>
+                                            <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.user_feedback.rating)"></p>
                                             <p v-else class="py-3">No feedback yet</p>
                                         </div>
                                     </template>
@@ -322,6 +322,8 @@
                                     </template>
                                 </JobReviewCard>
                             </div>
+                            
+                            <div v-else class="p-3 text-center">No Completed Jobs Yet</div>
                         </div>
                     </div>
                 </div>
