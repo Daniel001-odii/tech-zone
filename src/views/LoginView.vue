@@ -10,13 +10,15 @@
 
 
    <FullPageLoading v-if="loading"/>
-<div class=" dark:text-white bg-[#E7F1FF] dark:bg-[#121212]">
+<!-- <div class=" dark:text-white bg-[#E7F1FF] dark:bg-[#121212]"> -->
+<div class="  bg-[#E7F1FF]">
    <div class="flex flex-col min-h-screen justify-center items-center ">
-        <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl">
+        <!-- <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl"> -->
+        <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
                 <RouterLink to="/" class="w-fit">
-                    <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block">
-                    <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block dark:hidden">
+                    <!-- <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block"> -->
+                    <img src="../../public/apex-tek.svg" class=" h-[50px] self-start inline-block">
                 </RouterLink>
 
                 <!-- MAIN CONTENT STARTS HERE -->
@@ -30,12 +32,12 @@
                         <div class="flex flex-col gap-3">
                             <div class="tz_form_control">
                                 <label for="email">Email Address</label>
-                                <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
+                                <input class="form_input_new" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
                             </div>
 
                             <div class="tz_form_control">
                                 <label for="password">password</label>
-                                <input class="form_input" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
+                                <input class="form_input_new" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                             </div>
                         </div>
                         <div class="flex flex-row gap-5 justify-between flex-wrap">
@@ -57,7 +59,8 @@
                         
                         <!-- GOOGLE BUTTON STARTS HERE -->
                         <div class="">
-                            <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50 dark:hover:bg-gray-700">
+                            <!-- <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50 dark:hover:bg-gray-700"> -->
+                            <button @click="googleLogin" type="button" class="w-full border rounded-full font-medium text-sm px-5 py-3.5 text-center flex flex-row justify-center items-center gap-3 hover:bg-slate-50">
                                 <img src="../assets/images/google.svg" class="h-5"/>
                                 Continue with Google<div></div></button>
                         </div>
@@ -207,5 +210,9 @@ export default {
 
     input[type = "text"]{
         background: transparent !important;
+    }
+
+    .form_input_new{
+        @apply rounded-xl border border-[#666666] bg-transparent p-3
     }
 </style>
