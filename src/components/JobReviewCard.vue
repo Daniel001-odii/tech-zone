@@ -5,9 +5,9 @@
                 <RouterLink to="#">
                     <div class="text-xl text-tz_blue underline">{{ title }}</div>
                 </RouterLink>
-                <button class="border rounded-full h-14 w-14 hover:bg-gray-200 dark:hover:bg-tz_dark_blue">
+                <!-- <button class="border rounded-full h-14 w-14 hover:bg-gray-200 dark:hover:bg-tz_dark_blue">
                     <i class="bi bi-share"></i>
-                </button>
+                </button> -->
             </div>
             <div>
                 
