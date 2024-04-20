@@ -1,5 +1,6 @@
 <template>
-    <div class="p-8 flex flex-col justify-center items-center mx-auto text-center w-full h-screen dark:bg-[#27323F] dark:text-white">
+    <!-- <div class="p-8 flex flex-col justify-center items-center mx-auto text-center w-full h-screen dark:bg-[#27323F] dark:text-white"> -->
+    <div class="p-8 flex flex-col justify-center items-center mx-auto text-center w-full h-screen bg-[#E7F1FF]">
         <SiteLogo/>
         <div class=" flex flex-col justify-center items-center">
             <h1 class="text-4xl p-4 mt-8">Join as an employer or freelancer</h1>
@@ -25,7 +26,7 @@
                 </label>
             </div>
             <RouterLink :to="user_type === 'employer' ? '/register/client' : (user_type === 'freelancer' ? '/register' : '')">
-                <button class="btn" :disabled="!user_type">
+                <button class="bg-tz_blue p-3 text-white rounded-lg" :disabled="!user_type">
                     <span v-if="!user_type">
                     Create Account
                     </span>
@@ -60,7 +61,7 @@ import SiteLogo from '@/components/SiteLogo.vue';
 
 <style scoped>
     .selection_box{
-       @apply flex flex-row-reverse justify-between items-start rounded-lg border border-2 w-full md:w-fit p-5
+       @apply flex flex-row-reverse justify-between items-start rounded-lg border-gray-400 border-2 w-full md:w-fit p-5
     }
 
     .box_title{

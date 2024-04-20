@@ -11,10 +11,11 @@
 
    <FullPageLoading v-if="loading"/>
 <!-- <div class=" dark:text-white bg-[#E7F1FF] dark:bg-[#121212]"> -->
-<div class="  bg-[#E7F1FF]">
-   <div class="flex flex-col min-h-screen justify-center items-center ">
+<div class=" min-h-screen bg-[#E7F1FF] flex flex-col">
+    
+   <div class=" my-auto mx-0 flex flex-col justify-center items-center">
         <!-- <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white dark:bg-[#0E0E0E] max-w-4xl"> -->
-        <div class=" mt-6 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white max-w-4xl">
+        <div class=" mt-3 w-[90%] md:w-[70%] rounded-xl flex flex-row py-3 px-3 bg-white max-w-4xl">
             <div class="flex flex-col w-full md:w-[50%] p-5">
                 <RouterLink to="/" class="w-fit">
                     <!-- <img src="../../public/apex-tek-white.svg" class=" h-[50px] self-start hidden dark:inline-block"> -->
@@ -80,25 +81,10 @@
                 </RouterLink>
             </div>
         </div>
-
-       
-
-
     </div>
+
      <!-- MINI FOOTER STARTS HERE -->
-     <div class="mt-3 p-3 w-full bg-white dark:bg-[#CAD1D8] text-black justify-center items-center text-sm flex flex-row gap-5">
-            
-            <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
-                <span>About Us</span>
-                <span>Privacy Policy</span>
-                <span>Cookie Policy</span>
-                <span>Billing/Payment T&Cs</span>
-                <span>Use of software T&Cs</span>
-                <span>FAQs</span>
-            </div>
-            <p>&copy;2024 ApexTeks all rights reserved.</p>
-    </div>
-    
+        <MiniFooter class="self-end justify-self-end"/>
     <!-- MINI FOOTER ENDS HERE -->
 </div>
 </template>
@@ -112,9 +98,11 @@ import axios from 'axios';
 import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 // import {  } from 'vue3-google-login';
 
+import MiniFooter from '@/components/MiniFooter.vue';
+
 export default {
     name: "LoginView",
-    components: { FullPageLoading, Alert, LoaderButton, Modal, SiteLogo },
+    components: { FullPageLoading, Alert, LoaderButton, Modal, SiteLogo, MiniFooter },
     data() {
         return {
             error: '',
