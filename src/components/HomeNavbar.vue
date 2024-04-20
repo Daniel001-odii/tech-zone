@@ -1,6 +1,7 @@
 <template>
    <nav>
-        <div class="bg-white start-0 relative z-30 dark:bg-[#1F2A36] p-3 flex flex-row justify-between items-center shadow-xl">
+        <div class="bg-white text-black start-0 relative z-30 shadow-xl">
+        <div class="p-3 flex flex-row justify-between items-center mx-auto my-0 max-w-screen-2xl">
             <SiteLogo/>
             
             <div class="bg-white w-full flex-col md:flex-row justify-between md:flex absolute z-10 top-16 left-0 flex md:top-0 md:relative pb-6 md:p-0 h-0 opacity-0 md:h-fit md:opacity-100 transition-all duration-500 ease-out" :class="mobile_menu ? 'h-fit opacity-100':'h-0 opacity-0'">
@@ -23,6 +24,7 @@
                 <i class="bi bi-x text-3xl" v-if="mobile_menu"></i>
                 <i class="bi bi-list text-3xl" v-else></i>
             </button>
+        </div>
         </div>
     </nav>
 </template>

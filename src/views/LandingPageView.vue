@@ -14,7 +14,7 @@
 
 
 
-    <div class=" w-full">
+    <div class=" w-full text-black bg-white">
         <div class="flex flex-col justify-center items-center max-w-screen-2xl " style="margin: 0 auto;">
         
             <section>
