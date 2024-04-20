@@ -127,7 +127,7 @@
 
             <section>
                 <div class="flex flex-col justify-center md:flex-row-reverse items-center p-5">
-                    <img src="../assets/images/recruiter_illustration.png" alt="lady-image" class="section_img w-96">
+                    <img src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
                     <div class="md:w-fit text-left gap-8 flex flex-col">
                         <h1 class="text-[30px]">Unlock your next career move! <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
                         <button class="btn">Upload CV Now</button>
