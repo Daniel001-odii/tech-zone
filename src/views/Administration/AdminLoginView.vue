@@ -148,6 +148,7 @@
                 this.$refs['otpInput' + nextIndex][0].focus();
             }
             },
+            
             handleKeyDown(index) {
             const prevIndex = index - 1;
             if (event.key === 'Backspace' && index > 0 && !this.otpInputs[index]) {
@@ -156,15 +157,7 @@
             }
             },
 
-            getSum() {
-                // Convert array of strings to array of numbers
-                const numbersArray = this.otpInputs.map(str => parseInt(str));
-                
-                // Calculate the sum of numbers
-                const sum = numbersArray.reduce((acc, curr) => acc + curr, 0);
-                
-                return sum;
-            },
+          
     
         },
     

@@ -86,7 +86,7 @@
         methods: {
             async register(){
                 try{
-                    const response = await axios.post(`${this.api_url}/register/user`, this.form_data);
+                    const response = await axios.post(`${this.api_url}/register/admin`, this.form_data);
                     console.log(response);
                     localStorage.setItem('life-gaurd', response.data.accessToken);
                     alert('registration successful, please login')
