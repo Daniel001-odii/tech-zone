@@ -9,7 +9,7 @@
             
                 <Alert :type="'danger'" :message="error" v-if="error"/>
     
-                <form class="flex flex-col gap-4"  @submit.prevent="register">
+                <form class="mt-3 flex flex-col gap-4"  @submit.prevent="register">
                     <div class="flex flex-col gap-3">
                         <div class=" flex flex-row flex-wrap gap-3">
                             <div class="tz_form_control grow">
@@ -38,10 +38,10 @@
                             <input @click="passHint = true" class="border p-3 rounded-md form_input" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                         </div>
                     </div>
-                    <button class="btn w-full" :disabled="!passwordValidation.valid || !acceptedTOS">Continue</button> 
+                    <button class="btn w-full" :disabled="!passwordValidation.valid">Continue</button> 
     
                     <div class="text-center">
-                        <p>Already have an account? <RouterLink to="/login">Login</RouterLink> </p>
+                        <p>Already have an account? <RouterLink to="/site/login">Login</RouterLink> </p>
                     </div>                      
                 </form>
             </div>
@@ -90,10 +90,12 @@
                     console.log(response);
                     localStorage.setItem('life-gaurd', response.data.accessToken);
                     alert('registration successful, please login')
-                    this.$router.push('/login')
+                    this.$router.push('/site/login')
                 }
                 catch(error){
-                    alert(error)
+                    // alert(error)
+                    console.log("error registering: ", error);
+                    this.error = error.response.data.message;
                 }
             },
     
