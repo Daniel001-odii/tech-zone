@@ -31,7 +31,7 @@
                         </div>
                         <GetStartedNow/>
                     </div>
-                    <img src="../assets/images/Group 284.png" class="section_img w-96">
+                    <img src="../assets/images/Group 303.png" class="section_img w-96">
                 </div>
                 
             </section>
