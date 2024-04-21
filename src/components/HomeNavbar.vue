@@ -2,7 +2,8 @@
    <nav>
         <div class="bg-white text-black start-0 relative z-30 shadow-xl">
         <div class="p-3 flex flex-row justify-between items-center mx-auto my-0 max-w-screen-2xl">
-            <SiteLogo/>
+            <!-- <SiteLogo/> -->
+            <img src="../../public/apex-tek.svg" class=" h-[35px] md:h-[50px] ">
             
             <div class="bg-white w-full flex-col md:flex-row justify-between md:flex absolute z-10 top-16 left-0 flex md:top-0 md:relative pb-6 md:p-0 h-0 opacity-0 md:h-fit md:opacity-100 transition-all duration-500 ease-out" :class="mobile_menu ? 'h-fit opacity-100':'h-0 opacity-0'">
                 <div class=" flex flex-col md:flex-row gap-6 md:items-center md:mx-auto md:my-0 p-5 md:p-0">
