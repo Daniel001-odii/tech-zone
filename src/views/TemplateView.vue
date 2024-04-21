@@ -7,11 +7,11 @@
             <div class="sidebar max-w-[300px] h-full border-r dark:border-gray-600">
                 <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
             </div>
-            <div class="page-content h-full w-full">
-                <div class="h-full w-full overflow-y-auto flex flex-col justify-start">
-                    <!-- <div v-for="item in 20" :key="item.id">
+            <div class="page-content h-full w-full overflow-y-auto">
+                <div class="h-full w-full overflow-y-auto flex flex-col justify-start ">
+                    <!-- <div v-for="item in 5" :key="item.id">
                         {{ item }}
-                        <div class=" h-80 bg-orange-700"></div>
+                        <div class=" h-40 bg-orange-700"></div>
                     </div> -->
                     <router-view></router-view>
                 </div>

@@ -227,8 +227,8 @@
                     <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
                     <div class=" flex flex-col items-start justify-center text-left p-5">
                         <div>
-                            <span v-if="user.is_verified">user is verified</span>
-                            <span v-else="user.is_verified">user is not verified</span>
+                            <span v-if="user.is_verified">user email is verified</span>
+                            <span v-else="user.is_verified">user email is not verified</span>
                         </div>
                         <p>Joined: {{ readableDate(user.created) }}</p>
                         <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
