@@ -102,7 +102,7 @@
                 </p>
                 <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
                     <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
-                        <span v-if="contract.employer_feedback.review">Feedback sent</span>
+                        <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
                         <span v-else>Send Feedback to client</span>
                     </button>
                 </div>

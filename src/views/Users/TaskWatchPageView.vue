@@ -2,13 +2,13 @@
     <div>
         <PageTitle>Task Watch</PageTitle>
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
-            <div class="bg-tz_light_blue text-tz_blue p-3 rounded-md">Equipment Installation [Job name]</div>
+            <div class="bg-tz_light_blue text-blue-300 p-3 rounded-md">Equipment Installation [Job name]</div>
 
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
-                <div class="p-3 border rounded-md">{{ current_date }}</div>
+                <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div>
 
                 <div class="bg-tz_blue hover:bg-tz_dark_blue rounded-full w-[300px] flex flex-row items-center p-[3px] justify-between">
-                    <div class="flex flex-row gap-5 bg-white h-full p-2 rounded-l-full px-4">
+                    <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
                         <i class="bi bi-stopwatch"></i>
                         <span>00:00:00</span>
                         <button>
@@ -28,12 +28,12 @@
 
                 <!-- CLOCK IN AND COCK OUT TIME -->
                 <div class="flex flex-col gap-3">
-                    <div class="flex flex-col border rounded-md p-2">
+                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700">
                         <span class="text-[10px] uppercase">clock in time</span>
                         <span class="font-medium">09:59:54am</span>
                     </div>
 
-                    <div class="flex flex-col border rounded-md p-2">
+                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700">
                         <span class="text-[10px] uppercase">clock in time</span>
                         <span class="font-medium">
                             09:59:54am
@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- OTHER ITEMS -->
-                <div class="border flex flex-col gap-2 p-2 rounded-md justify-center min-w-[250px]">
+                <div class="stat_card min-w-[250px]">
                     <span class="text-[10px] uppercase">WORKED TODAY</span>
                     <p class="text-[30px]">05:59:54</p>
                     <span class="text-green-500 text-[10px]">
@@ -51,7 +51,7 @@
                     </span>
                 </div>
 
-                <div class="border flex flex-col gap-2 p-2 rounded-md justify-center min-w-[250px]">
+                <div class="stat_card min-w-[250px]">
                     <span class="text-[10px] uppercase">WORKED THIS WEEK</span>
                     <p class="text-[30px]">05:59:54</p>
                     <span class="text-red-500 text-[10px]">
@@ -60,7 +60,7 @@
                     </span>
                 </div>
 
-                <div class="border flex flex-col gap-2 p-2 rounded-md justify-center min-w-[150px]">
+                <div class="stat_card min-w-[250px]">
                     <span class="text-[10px] uppercase">DAYS WORKED</span>
                     <p class="text-[30px]">5</p>
                     <span class="text-green-500 text-[10px]">
@@ -80,7 +80,7 @@
                 <button class="bg-tz_light_blue p-3 rounded-lg text-tz_blue">Last 5 months</button>
             </div>
 
-            <div class=" bg-gray-300 w-full max-w-[500px] min-h-80">
+            <div class=" bg-gray-300 w-full min-h-80">
 
             </div>
 
@@ -160,5 +160,7 @@ import PageTitle from '@/components/PageTitle.vue';
 </script>
 
 <style scoped>
-
+    .stat_card{
+        @apply border flex flex-col gap-2 p-2 rounded-md justify-center dark:bg-gray-800 dark:border-gray-700
+    }
 </style>
