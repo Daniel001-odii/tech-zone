@@ -53,6 +53,8 @@
                             {{ job.description.substring(0, 300) }}...
                             
                         </div>
+
+                        <span v-if="applied_jobs && applied_jobs.includes(job._id)" class="text-sm bg-green px-6 py-2 bg-green-500 text-white rounded-full w-fit">applied</span>
                     </div>
                 </div>
 
@@ -92,6 +94,8 @@ export default {
             is_saved: false,
 
             search_term: '',
+
+            applied_jobs: [],
         }
     },
     methods:{
@@ -147,7 +151,22 @@ export default {
           }catch(error){
            console.log(error)
           }
-       },
+        },
+
+        async getAllApplications(){
+            const headers = this.headers;
+            this.loading = true;
+            try{
+                const response = await axios.get(`${this.api_url}/user/jobs/applied`, { headers });
+                console.log("your applications: ", response.data)
+                this.applied_jobs = response.data.applications.map(job => job._id);
+                // this.applications = response.data.applications;
+                // console.log("applied jobs id: ", this.applied_jobs);
+                this.loading = false;
+            } catch(error){
+                this.loading = false;
+            }
+        },
 
         formatTime(time){
             return formatToRelativeTime(time);
@@ -165,6 +184,7 @@ export default {
     mounted(){
         this.getUserData();
         this.getSavedJobs();
+        this.getAllApplications();
     }
 }
 </script>

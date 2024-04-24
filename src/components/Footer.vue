@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- <div class="flex flex-col-reverse gap-10 md:flex-row justify-between bg-white max-w-screen-2xl" data-aos="fade-up" data-aos-delay="200"> -->
-        <div class="flex flex-col-reverse md:flex-row gap-10 justify-between p-8 w-full max-w-screen-2xl my-0 mx-auto bg-tz_blue text-white">
+        <div class="flex flex-col-reverse md:flex-row gap-10 justify-between p-8 w-full max-w-screen-2xl my-0 mx-auto bg-black text-white">
             <div class="">
                 
                 <ul class="list">
@@ -53,7 +53,7 @@
             
     </div>
      <!-- MINI FOOTER STARTS HERE -->
-     <div class=" p-3 w-full bg-black text-white justify-center items-center text-sm flex flex-row gap-5">
+     <div class=" p-3 w-full bg-[#EDEFF3] justify-center items-center text-sm flex flex-row gap-5">
             
             <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
                 <span>About Us</span>

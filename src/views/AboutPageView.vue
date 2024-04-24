@@ -1,7 +1,7 @@
 <template>
     <HomeNavbar/>
-    <div>
-        <div class="flex flex-row justify-center items-center bg-[#EDEFF3] h-[300px]" >
+    <div class=" h-full max-w-screen-2xl mx-auto my-0">
+        <div class="flex flex-row justify-center items-center bg-[#EDEFF3] min-h-[300px]" >
             <div class="p-5 w-full text-center justify-center flex flex-col items-center">
                 <p class="text-sm m-0 p-0">ABOUT US</p>
                 <h1 class="font-bold text-2xl m-0 p-0">Our <span class=" text-tz_blue">vision</span> is to empower companies<br/> and IT Professionals <br/>through innovative networking </h1>
@@ -54,10 +54,10 @@ ApexTex bridges the gap between companies and IT Professionals, facilitating mea
             </div>
         </div>
 
-
+        <Footer/>
 
     </div>
- <Footer/>
+
 </template>
 <script>
 import axios from 'axios';

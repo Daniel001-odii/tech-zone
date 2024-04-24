@@ -7,20 +7,28 @@
             <div class="sidebar max-w-[300px] h-full border-r dark:border-gray-600">
                 <LeftNavBar :class="nav_active ? 'block':'hidden'" class="md:block"/>
             </div>
-            <div class="page-content h-full w-full overflow-y-auto">
-                <div class="h-full w-full overflow-y-auto flex flex-col justify-start ">
-                    <!-- <div v-for="item in 5" :key="item.id">
+            <div class="page-content  h-full w-full relative ">
+                <div class="h-full w-full flex flex-col justify-start overflow-y-auto absolute bottom-5 top-0 left-0">
+                    <!-- <div v-for="item in 10" :key="item.id">
                         {{ item }}
-                        <div class=" h-40 bg-orange-700"></div>
+                        <div class=" h-[200px] bg-orange-700"></div>
                     </div> -->
                     <router-view></router-view>
                 </div>
-                
             </div>
         </div>
    </div>
 </template>
 
+<!-- <div class="page-content h-full w-full border border-green-500 overflow-y-auto flex flex-col justify-start">
+    <div class="h-full w-full flex flex-col justify-start ">
+        <div v-for="item in 10" :key="item.id">
+            {{ item }}
+            <div class=" h-40 bg-orange-700"></div>
+        </div>
+        <router-view></router-view>
+    </div>
+</div> -->
 
 <script>
 import LeftNavBar from '@/components/LeftNavBar.vue';

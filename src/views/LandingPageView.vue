@@ -1,10 +1,5 @@
 <template>
-    <!-- <p v-if="alert_banner" class=" bg-green-500 text-white text-sm p-3 flex flex-row justify-between">
-       <span> We have a <strong>new look</strong> for prelaunch!</span>
-        <button @click="alert_banner = !alert_banner">
-            <i class="bi bi-x-lg"></i>
-        </button>
-    </p> -->
+
 
 
     <!--NAVBAR -->
@@ -23,15 +18,15 @@
                         <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
                             <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
                         </div>
-                        <div class=" text-7xl font-medium">
-                            Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-12 right-3 li"/></span> Job.<br/> Hire the right talents.
+                        <div class=" text-6xl font-medium leading-[85px] ">
+                            Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-[55px] left-0 right-0 li"/></span> Job.<br/> Hire the right talents.
                         </div>
-                        <div class=" text-xl">
+                        <div class=" text-[16px]">
                             At Apex Technologies, we serve as a comprehensive marketplace, facilitating seamless connections between companies seeking tech expertise and skilled professionals looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects, whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
                         </div>
                         <GetStartedNow/>
                     </div>
-                    <img src="../assets/images/Group 303.png" class="section_img w-96">
+                    <img src="../assets/images/Group 303.png" class="section_img">
                 </div>
                 
             </section>
@@ -381,7 +376,7 @@ export default {
     }
 
     .section_img{
-        @apply md:w-[45%]
+        @apply md:w-[55%]
     }
 
     .section_subtitle{

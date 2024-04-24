@@ -113,7 +113,7 @@
                     <button type="button" @click="updatePassword" class="btn mt-3">Change Account Password</button>
                 </form>
 
-                <div class=" mt-3">
+                <div class=" mt-3 pb-3">
                     <h1 class="font-bold mb-3 text-lg mt-3">Account & Profile</h1>
                     <p class=" text-red-700 bg-red-100 rounded-lg p-3">
                     <strong>Warning</strong><br/>
@@ -205,7 +205,7 @@
                         <label for="nin-number">NIN Number</label>
                         <div class="flex flex-row items-center gap-3">
                             <div class="flex flex-col w-full">
-                                <input class="form_input" type="number" name="nin-number" id="nin-number" v-model="settings.KYC.NIN_number" :disabled="settings.KYC.is_verified">
+                                <input class="form_input" type="text" name="nin-number" id="nin-number" v-model="settings.KYC.NIN_number" :disabled="settings.KYC.is_verified">
                             </div>
                             <svg v-if="settings.KYC.is_verified" class="w-6 h-6 text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>

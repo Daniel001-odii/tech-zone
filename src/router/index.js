@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPageViewVue from '@/views/LandingPageView.vue'
+import UserJobsPageViewVue from '@/views/Users/JobsPageView.vue'
 import JobsPageViewVue from '@/views/JobsPageView.vue'
 import MessagePageViewVue from '@/views/Users/MessagePageView.vue'
 import SavedJobsViewVue from '@/views/Users/SavedJobsView.vue'
@@ -133,7 +134,7 @@ const routes = [
     path: '/in',
     component: TemplateView,
     children: [
-      {path: 'jobs', component: JobsPageViewVue},
+      {path: 'jobs', component: UserJobsPageViewVue},
       {path: 'saved', component: SavedJobsViewVue},
       {path: 'messages', component: MessagePageViewVue},
       {path: 'contracts', component: ContractsListPageViewVue},

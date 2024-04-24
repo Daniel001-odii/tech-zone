@@ -1,6 +1,6 @@
 <template>
     <!-- <div> -->
-        <div class=" bg-white border scale-90 group opacity-50 hover:opacity-100 hover:scale-100 p-4 text-black rounded-lg w-fit max-w-[250px] text-left flex flex-col gap-2">
+        <div class=" bg-white border scale-90 group opacity-80 hover:opacity-100 hover:scale-100 p-4 text-black rounded-lg w-fit max-w-[250px] text-left flex flex-col gap-2">
             <div class="flex flex-row justify-between items-center text-5xl">
                 <div class="group-hover:text-white text-[20px] group-hover:text-[30px] group-hover:bg-tz_blue rounded-lg p-2 flex justify-center items-center">
                      <slot name="icon">
