@@ -185,9 +185,9 @@
 
             <FullPageLoading v-if="!user"/>
 
-            <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full overflow-y-scroll ">
+            <div v-if="user" class="p-5 flex flex-col items-center gap-8 h-full ">
 
-                <div class="flex w-full rounded-xl relative justify-evenly items-start md:items-center  flex-col md:flex-row p-4 lg:w-3/4 border  dark:border-gray-600 ">
+                <div class="flex w-full rounded-xl relative justify-evenly items-start md:items-center  flex-col md:flex-row p-4 xl:w-3/4 border  dark:border-gray-600 ">
                     <div class="flex flex-row justify-start md:justify-start items-center p-5 gap-3 flex-wrap">
                         <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
                                 <div v-if="isAllowed" class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-70 group-hover:flex cursor-pointer text-white" @click="profile_image_menu = !profile_image_menu">
@@ -239,7 +239,7 @@
                     </div>
                 </div>
 
-                <div class=" w-full lg:w-3/4">
+                <div class=" w-full xl:w-3/4">
                     <div class="border rounded-xl p-3 text-left  dark:border-gray-600 ">
                         <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
                     </div>
@@ -257,7 +257,7 @@
                             <h2 class="font-bold">Skills</h2>
                             <div v-if="user.profile.skills" class="flex flex-row flex-wrap gap-2 gap-y-4 mt-3">
                                 <div v-for="skill in user.profile.skills.split(',')" >
-                                    <span class=" bg-tz_light_blue p-2 rounded-md text-tz_blue">{{ skill }}</span>
+                                    <span class=" bg-tz_light_blue p-2 rounded-md text-blue-400">{{ skill }}</span>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +294,7 @@
                     </div>
                 </div>
 
-                <div class=" w-full lg:w-3/4">
+                <div class=" w-full xl:w-3/4">
                     <div class="border rounded-xl p-3 text-left  dark:border-gray-600 ">
                         <h1 class="font-bold"><i class="bi bi-briefcase"></i> Work History</h1>
                     </div>

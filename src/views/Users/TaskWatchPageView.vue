@@ -27,13 +27,13 @@
             <div class="flex flex-row flex-wrap gap-3">
 
                 <!-- CLOCK IN AND COCK OUT TIME -->
-                <div class="flex flex-col gap-3">
-                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex flex-row md:flex-col gap-3 w-full md:w-fit">
+                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
                         <span class="text-[10px] uppercase">clock in time</span>
                         <span class="font-medium">09:59:54am</span>
                     </div>
 
-                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700">
+                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
                         <span class="text-[10px] uppercase">clock in time</span>
                         <span class="font-medium">
                             09:59:54am
@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- OTHER ITEMS -->
-                <div class="stat_card min-w-[250px]">
+                <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">WORKED TODAY</span>
                     <p class="text-[30px]">05:59:54</p>
                     <span class="text-green-500 text-[10px]">
@@ -51,7 +51,7 @@
                     </span>
                 </div>
 
-                <div class="stat_card min-w-[250px]">
+                <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">WORKED THIS WEEK</span>
                     <p class="text-[30px]">05:59:54</p>
                     <span class="text-red-500 text-[10px]">
@@ -60,7 +60,7 @@
                     </span>
                 </div>
 
-                <div class="stat_card min-w-[250px]">
+                <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">DAYS WORKED</span>
                     <p class="text-[30px]">5</p>
                     <span class="text-green-500 text-[10px]">
@@ -71,17 +71,17 @@
 
             </div>
 
-            <div class="flex flex-row overflow-x-auto gap-3">
+            <div class="flex flex-row flex-wrap justify-start overflow-x-auto gap-3">
                 <button class="flex flex-row gap-3 border p-3 rounded-md hover:bg-tz_light_blue">
                     <i class="bi bi-sliders"></i>
                     <span>Filter</span>
                 </button>
-                <button class="btn">Last 2 weeks</button>
+                <button class="btn w-fit">Last 2 weeks</button>
                 <button class="bg-tz_light_blue p-3 rounded-lg text-tz_blue">Last 5 months</button>
             </div>
 
-            <div class=" bg-gray-300 w-full min-h-80">
-
+            <div class="  w-full min-h-80">
+                <BarChart :chartData="testData" :options="options"/>
             </div>
 
         </div>
@@ -93,11 +93,17 @@
 
 import PageTitle from '@/components/PageTitle.vue';
 
+import { BarChart } from 'vue-chart-3';
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables);
+
 
     export default {
         name: "TaskWatchPageView",
         components: {
             PageTitle,
+            Chart,
+            BarChart
         },
         data(){
             return{
@@ -105,7 +111,30 @@ import PageTitle from '@/components/PageTitle.vue';
                 startTime: null,
                 elapsedTime: 0,
                 timerRunning: false,
-                timerInterval: null
+                timerInterval: null,
+
+                options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                    position: 'top',
+                    },
+                    title: {
+                    display: true,
+                    text: 'Hours worked per day',
+                    },
+                },
+                },
+
+                testData: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [
+                    {
+                    data: [2, 12, 5, 9, 7, 2, 12, 5, 9, 7],
+                    backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED', '#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+                    },
+                ],
+                },
             }
         },
         methods:{

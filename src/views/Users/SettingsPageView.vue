@@ -12,7 +12,7 @@
     <div class="h-full flex flex-col relative">
         <FullPageLoading v-if="loading"/>
        
-        <div class=" tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500">
+        <div class=" tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
             <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button>
             <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
             <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
@@ -21,7 +21,7 @@
         </div>
 
 
-        <div class=" flex flex-col p-3 gap-5 overflow-y-scroll">
+        <div class=" flex flex-col p-3 gap-5">
             <div v-if="active_tab == 1" class="section">
                 <h1 class="font-bold mb-3 text-lg">Select Preffered theme</h1>
                 
