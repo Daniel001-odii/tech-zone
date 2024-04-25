@@ -70,9 +70,9 @@
 
             <div class="text-center gap-3 flex flex-col justify-center p-5">
             <p class="font-bold text-xl">{{ contract.job.title }}</p>
-            <p>Budget - ${{ contract.job.budget.toLocaleString() }}</p>
+            <p>Budget - ₦{{ contract.job.budget.toLocaleString() }}</p>
             <p>ApexTek Service fee: -15%</p>
-            <p>Expected amount you will receive: ${{ (contract.job.budget - (contract.job.budget * 15)/100).toLocaleString() }}</p>
+            <p>Expected amount you will receive: ₦{{ (contract.job.budget - (contract.job.budget * 15)/100).toLocaleString() }}</p>
             <div>
                 <p>Contract offer from</p>
                 <!-- <p>{{ contract.employer }}</p> -->
@@ -95,6 +95,9 @@
                     <button @click="acceptOffer" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action != 'pending'">Accept Offer</button>
                 </div>
             </div>
+
+            <hr/>
+
             <div v-if="contract.action == 'accepted'" class="mt-6">
                 <h2 class="font-bold text-xl">Feedback & Review</h2>
                 <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
@@ -106,6 +109,18 @@
                         <span v-else>Send Feedback to client</span>
                     </button>
                 </div>
+                
+                <hr class="mt-3"/>
+                <h2 class="font-bold text-xl mt-3">Contract Watch</h2>
+                <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
+                    <RouterLink :to="`/in/contracts/${contract._id}/watch`">
+                        <button class="border p-3 rounded-xl">
+                            <i class="bi bi-stopwatch"></i>
+                            Watch Contract
+                        </button>
+                    </RouterLink>
+                </div>
+               
                 
             </div>
             </div>

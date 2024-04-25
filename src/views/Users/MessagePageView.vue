@@ -10,19 +10,26 @@
 
                         <!-- {{ rooms }} -->
                         <div class=" h-[90%] overflow-y-scroll">
-                            <div  @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue':''">
+                            <div v-if="user && user.role == 'employer'" @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
+                                    <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.user.profile.image_url})`"></div>
+                                    <div  class="flex flex-col w-[60%]">
+                                        <div class="font-medium">E{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
+                                        <span class="text-sm">{{ room.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="user && user.role == 'user'" @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
                                     <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div>
                                     <div  class="flex flex-col w-[60%]">
-                                        <div class="font-medium">{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
+                                        <div class="font-medium">U{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
                                         <span class="text-sm">{{ room.name }}</span>
                                     </div>
                                 </div>
                             </div>
                             <div v-if="!rooms || rooms.length <= 0" class="text-gray-500 text-center p-8">No Message rooms</div>
                         </div>
-
-                       
                     </div>
                     <!-- /LEFT SIDE ENDS HERE -->
 
@@ -100,6 +107,8 @@ import loadingChats from '../../lottie/loadingChats.json';
 import { formatTimestamp } from '../../utils/dateFormat'
 import { formatToRelativeTime } from '../../utils/dateFormat';
 
+// socket io for real time messaging...
+import io from "socket.io-client";
 
 export default {
     name: "MessagePageView",
@@ -140,12 +149,13 @@ export default {
             this.fetchMessages(room._id);
 
             // Initialize WebSocket connection for real-time updates
-            // const socket = io('http://localhost:8000');
-            this.$socket.emit('join', room._id);
-            this.$socket.on('message', (message) => {
+            const socket = io('http://localhost:8000', { autoConnect: true});
+            socket.emit('join', room._id);
+            socket.on('message', (message) => {
                 // Add received message to the messages array
                 this.messages.unshift(message);
-                alert("new msg received");
+                // alert("new msg received");
+                console.log('message: ', message)
                 //scrolls the recipients message box...
             });
         },
@@ -168,13 +178,15 @@ export default {
 
         // FETCH USER ROOMS >>>
         async getMessageRooms(){
-            if(this.user){
-                const user_id = this.user._id;
+            const user_id = this.user._id;
+            console.log("getting for user id: ", user_id);
+            if(this.user && this.$route.path == '/client/messages'){
+                
                 try{
-                    const response = await axios.get(`${this.api_url}/message/user/${user_id}/rooms`);
-                    console.log("available message rooms: ", response.data);
+                    const response = await axios.get(`${this.api_url}/message/employer/${user_id}/rooms`);
                     this.rooms = response.data.rooms;
-
+                    console.log("available message rooms: ", response.data);
+                    
                     // AUTO OPEN FIRST MESSAGE ROOM...
                     this.selected_room = this.rooms[0];
                     this.fetchMessages(this.selected_room._id);
@@ -182,9 +194,22 @@ export default {
                 }catch(error){
                     console.log("error fetching rooms: ", error)
                 }
+            } else if(this.user && this.$route.path == '/in/messages'){
+                try{
+                    const response = await axios.get(`${this.api_url}/message/user/${user_id}/rooms`);
+                    this.rooms = response.data.rooms;
+                    console.log("available message rooms: ", response.data);
+                    
+                    // AUTO OPEN FIRST MESSAGE ROOM...
+                    this.selected_room = this.rooms[0];
+                    this.fetchMessages(this.selected_room._id);
+                }catch(error){
+                    console.log("error fetching rooms: ", error)
+                }
             }
         },
 
+                        
         // GET USER DATA BY USER DATA >>>
         async getUserDataById(user_id){
             this.loading = true;

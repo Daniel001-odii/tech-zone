@@ -32,7 +32,7 @@
                     
                     <div class="flex flex-row gap-3">
                         <div>
-                            <i class="bi bi-wallet"></i> <span>N{{ budget }}</span>
+                            <i class="bi bi-wallet"></i> <span>₦{{ budget }}</span>
                         </div>
                         <div>
                             <i class="bi bi-briefcase"></i> <span>{{ period }}</span>

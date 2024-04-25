@@ -2,7 +2,7 @@
     <div>
         <PageTitle>Task Watch</PageTitle>
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
-            <div class="bg-tz_light_blue text-blue-300 p-3 rounded-md">Equipment Installation [Job name]</div>
+            <div class="bg-tz_light_blue text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
 
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
                 <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div>
@@ -22,8 +22,10 @@
                 </div>
             </div>
 
-            <!-- <p>{{ formatTime }}</p>
-            <button @click="toggleTimer">{{ timerRunning ? 'Pause' : 'Play' }}</button> -->
+            <p>{{ formatTime }}</p>
+            <button @click="toggleTimer">{{ timerRunning ? 'Pause' : 'Play' }}</button>
+
+
             <div class="flex flex-row flex-wrap gap-3">
 
                 <!-- CLOCK IN AND COCK OUT TIME -->
@@ -34,7 +36,7 @@
                     </div>
 
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
-                        <span class="text-[10px] uppercase">clock in time</span>
+                        <span class="text-[10px] uppercase">clock out time</span>
                         <span class="font-medium">
                             09:59:54am
                         </span>
@@ -80,7 +82,7 @@
                 <button class="bg-tz_light_blue p-3 rounded-lg text-tz_blue">Last 5 months</button>
             </div>
 
-            <div class="  w-full min-h-80">
+            <div class=" bg-gray-100 dark:bg-gray-700 w-full min-h-80">
                 <BarChart :chartData="testData" :options="options"/>
             </div>
 
@@ -90,7 +92,7 @@
 </template>
 
 <script>
-
+import axios from 'axios';
 import PageTitle from '@/components/PageTitle.vue';
 
 import { BarChart } from 'vue-chart-3';
@@ -113,25 +115,39 @@ Chart.register(...registerables);
                 timerRunning: false,
                 timerInterval: null,
 
-                options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                    position: 'top',
-                    },
-                    title: {
-                    display: true,
-                    text: 'Hours worked per day',
-                    },
-                },
+                contract: '',
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
                 },
 
+                // config values for chart...
+                options: {
+                    responsive: true,
+                    plugins: {
+                    
+                        legend: {
+                            position: 'top',
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Hours worked per day',
+                        },
+                        grid: {
+                            display: false,
+                        }
+                    },
+                  
+                },
+
+                // data values for chart...
                 testData: {
                 labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 datasets: [
                     {
-                    data: [2, 12, 5, 9, 7, 2, 12, 5, 9, 7],
-                    backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED', '#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+                        label: 'Day',
+                        data: [2, 12, 5, 9, 7, 2, 12, 5, 9, 7],
+                        backgroundColor: ['#81AAEA', '#4E79BC', '#4E79BC', '#81AAEA', '#4E79BC', '#4E79BC', '#4E79BC', '#4E79BC', '#4E79BC', '#4E79BC'],
                     },
                 ],
                 },
@@ -145,40 +161,55 @@ Chart.register(...registerables);
             },
 
             toggleTimer() {
-      if (this.timerRunning) {
-        this.pauseTimer();
-      } else {
-        this.startTimer();
-      }
+                if (this.timerRunning) {
+                    this.pauseTimer();
+                } else {
+                    this.startTimer();
+                }
             },
 
             startTimer() {
-            this.startTime = Date.now() - this.elapsedTime;
-            this.timerInterval = setInterval(this.updateTimer, 1000);
-            this.timerRunning = true;
+                this.startTime = Date.now() - this.elapsedTime;
+                this.timerInterval = setInterval(this.updateTimer, 1000);
+                this.timerRunning = true;
             },
 
             pauseTimer() {
-            clearInterval(this.timerInterval);
-            this.timerRunning = false;
+                clearInterval(this.timerInterval);
+                this.timerRunning = false;
             },
 
             updateTimer() {
-            this.elapsedTime = Date.now() - this.startTime;
+                this.elapsedTime = Date.now() - this.startTime;
+            },
+
+            async getContract(){
+                const headers = this.headers;
+                try{
+                    const response = await axios.get(`${this.api_url}/contracts/${this.$route.params.contract_id}`, { headers });
+                    console.log(response);
+                    this.contract = response.data.contract;
+                }catch(error){
+                    console.log(error);
+                    if(error.response.status == 404){
+                        this.$router.push("/404");
+                    }
+                }
             },
         },
 
         computed: {
             formatTime() {
-                // const hours; 
+                const hours = Math.floor(this.elapsedTime / 120000);
                 const minutes = Math.floor(this.elapsedTime / 60000);
                 const seconds = ((this.elapsedTime % 60000) / 1000).toFixed(0);
-                return `${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
+                return `${hours}:${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
             },
         },
 
         mounted(){
             this.getCurrentDate();
+            this.getContract();
         },
 
 

@@ -1,9 +1,12 @@
 <template>
+    <!--HTML NAIRA SIGN--- &#8358; &#x20A6; -->
     <div class="h-full flex flex-col relative">
        <PageTitle>Overview & Earnings</PageTitle>
-       <div class="relative h-full">
-            <FullPageLoading/>
+       <div class="relative h-full flex flex-col p-5">
+            <!-- <FullPageLoading/> -->
+            <p class="text-2xl">Total Earnings: ₦ 0.00 </p>
        </div>
+
         
     </div>
 </template>

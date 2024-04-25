@@ -10,11 +10,20 @@
 
                         <!-- {{ rooms }} -->
                         <div class=" h-[90%] overflow-y-scroll">
-                            <div  @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue hover:text-black cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
-                                    <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.user.profile.image_url})`"></div>
+                            <div v-if="user && user.role == 'employer'" @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
+                                    <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div>
                                     <div  class="flex flex-col w-[60%]">
-                                        <div class="font-bold">{{ room.user.firstname}} {{ room.user.lastname}} </div>
+                                        <div class="font-medium">E{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
+                                        <span class="text-sm">{{ room.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="user && user.role == 'user'" @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
+                                    <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div>
+                                    <div  class="flex flex-col w-[60%]">
+                                        <div class="font-medium">U{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
                                         <span class="text-sm">{{ room.name }}</span>
                                     </div>
                                 </div>
@@ -98,11 +107,11 @@ import loadingChats from '../../lottie/loadingChats.json';
 import { formatTimestamp } from '../../utils/dateFormat'
 import { formatToRelativeTime } from '../../utils/dateFormat';
 
-// import socket io
+// socket io for real time messaging...
 import io from "socket.io-client";
 
 export default {
-    name: "ClientMessagePageView",
+    name: "MessagePageView",
     components: { PageTitle },
     data(){
         return{
@@ -141,8 +150,8 @@ export default {
 
             // Initialize WebSocket connection for real-time updates
             const socket = io('http://localhost:8000', { autoConnect: false});
-            this.socket.emit('join', room._id);
-            this.socket.on('message', (message) => {
+            socket.emit('join', room._id);
+            socket.on('message', (message) => {
                 // Add received message to the messages array
                 this.messages.unshift(message);
                 alert("new msg received");
@@ -171,7 +180,7 @@ export default {
             if(this.user){
                 const user_id = this.user._id;
                 try{
-                    const response = await axios.get(`${this.api_url}/message/employer/${user_id}/rooms`);
+                    const response = await axios.get(`${this.api_url}/message/user/${user_id}/rooms`);
                     console.log("available message rooms: ", response.data);
                     this.rooms = response.data.rooms;
 
@@ -242,7 +251,6 @@ export default {
 
     mounted(){
         this.getUserData();
-        
     },
 
     created(){

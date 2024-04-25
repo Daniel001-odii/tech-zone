@@ -43,7 +43,7 @@
                         </div>
                         <div class="flex flex-row gap-2">
                             <span class=" bg-tz_light_blue p-2 rounded-md">
-                                <i class="bi bi-wallet"></i> <span>#{{ job.budget.toLocaleString() }}</span>
+                                <i class="bi bi-wallet"></i> <span>₦{{ job.budget.toLocaleString() }}</span>
                             </span>
                             <span class=" bg-tz_blue p-2 rounded-md text-white">
                                 <i class="bi bi-briefcase"></i> <span>{{ job.period }}</span>
@@ -54,7 +54,7 @@
                             
                         </div>
 
-                        <span v-if="applied_jobs && applied_jobs.includes(job._id)" class="text-sm bg-green px-6 py-2 bg-green-500 text-white rounded-full w-fit">applied</span>
+                        <span v-if="applied_jobs && applied_jobs.includes(job._id)" class="text-sm bg-green px-3 py-1 bg-green-500 text-white rounded-full w-fit">applied</span>
                     </div>
                 </div>
 

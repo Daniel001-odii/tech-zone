@@ -101,11 +101,11 @@
                                                 <p><b>Cover Letter:</b> {{ application.cover_letter }}</p>
                                                 <p><b>Attachments({{ application.attachments.length }}):</b> 
                                                     <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
-                                                    <a v-for="file in application.attachments" :href="file" target="_blank" class="underline text-blue-500 p-2">{{ file.split("-")[file.split("-").length - 1] }}</a>
+                                                    <a v-for="file in application.attachments" :href="file" target="_blank" class="underline text-blue-500 p-2">{{ file.split("-")[file.split("-").length - 1] }} <br/></a>
 
-                                                    <div v-for="(attachment, attachment_id) in application.attachments" :key="attachment_id">
+                                                    <!-- <div v-for="(attachment, attachment_id) in application.attachments" :key="attachment_id">
                                                         <a class=" text-tz_blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment }}</a>
-                                                    </div>
+                                                    </div> -->
                                                 </p>
                                                 <p v-if="application.counter_offer"><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
                                                 <p><b>Reason:</b> {{ application.reason_for_co }}</p>
@@ -318,7 +318,7 @@ export default {
             this.loading = true;
             console.log("user: ", userId, "employer: ", employerId);
             try{
-                const response = await axios.post(`${this.msg_api_url}/create-room`, { name, userId, employerId }, {});
+                const response = await axios.post(`${this.api_url}/message/create-room`, { name, userId, employerId }, {});
                 console.log("new room response: ", response);
                 this.loading = false;
                 this.$router.push("/client/messages");

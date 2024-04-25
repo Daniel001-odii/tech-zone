@@ -186,7 +186,7 @@
                        
                     </div>
 
-                    <!------------APPLIED JOBS------------ -->
+                    <!-- ----------APPLIED JOBS------------ -->
                     <div v-if="showTab == 'tab-2'" class="h-full flex flex-row gap-3 relative">
                         <div class="h-full absolute w-full overflow-y-scroll flex flex-col">
                             <div class=" h-full items-start flex flex-col gap-3">
@@ -240,7 +240,7 @@
                                             </div>
                                             <div>
                                                 <div>{{ contract.employer.company_name }}</div>
-                                                <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                                <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <ContractStatus :type="contract.status"/>
@@ -276,7 +276,7 @@
                                             </div>
                                             <div>
                                                 <div>{{ contract.employer.company_name }}</div>
-                                                <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                                <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <ContractStatus :type="contract.status"/>
@@ -307,7 +307,7 @@
                                             </div>
                                             <div>
                                                 <div>{{ contract.employer.company_name }}</div>
-                                                <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                                <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
                                             </div>
                                             <div class="flex flex-row gap-3">
                                                 <ContractStatus :type="contract.status"/>
