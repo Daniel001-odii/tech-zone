@@ -50,3 +50,24 @@ export function formatTimestamp(timestamp) {
   };
   return date.toLocaleString(undefined, options);
 };
+
+
+export function convertTimeToAMPM(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  
+  // Convert hours to 12-hour format
+  const hours12 = hours % 12 || 12;
+  
+  // Determine whether it's AM or PM
+  const meridiem = hours < 12 ? 'AM' : 'PM';
+  
+  // Pad minutes with leading zero if necessary
+  const paddedMinutes = minutes < 10 ? '0' + minutes : minutes;
+  
+  // Construct the final formatted time string
+  const formattedTime = `${hours12}:${paddedMinutes} ${meridiem}`;
+  
+  return formattedTime;
+}

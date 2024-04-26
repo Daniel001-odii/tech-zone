@@ -112,7 +112,7 @@
                                             </div>
                                             <div class="flex flex-row flex-wrap gap-3 mt-3">
                                                 <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save freelancer</button>
-                                                <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md hover:bg-tz_blue" @click="startMessageRoom(job.title, application.user._id, getUserData.user._id)">Interview</button>
+                                                <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md" @click="startMessageRoom(job.title, application.user._id, getUserData.user._id)">Interview</button>
                                                 <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer</button>
                                             </div>
                                         </div>

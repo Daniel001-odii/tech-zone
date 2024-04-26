@@ -257,7 +257,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             current_mode: '',
-            active_tab: 2,
+            active_tab: 1,
 
             user: {
                 profile:{

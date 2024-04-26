@@ -9,22 +9,22 @@
                         </div>
 
                         <!-- {{ rooms }} -->
-                        <div class=" h-[90%] overflow-y-scroll">
+                        <div class=" h-[90%] overflow-y-auto">
                             <div v-if="user && user.role == 'employer'" @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
                                     <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.user.profile.image_url})`"></div>
                                     <div  class="flex flex-col w-[60%]">
-                                        <div class="font-medium">E{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
-                                        <span class="text-sm">{{ room.name }}</span>
+                                        <div class="font-bold">{{ room.user.firstname}} {{ room.user.lastname}} </div>
+                                        <span class="text-sm capitalize">{{ room.name }}</span>
                                     </div>
                                 </div>
                             </div>
                             <div v-if="user && user.role == 'user'" @click="selectRoom(room)"  v-for="(room, index) in rooms" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white':''">
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
                                     <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div>
                                     <div  class="flex flex-col w-[60%]">
-                                        <div class="font-medium">U{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
-                                        <span class="text-sm">{{ room.name }}</span>
+                                        <div class="font-bold">{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
+                                        <span class="text-sm capitalize">{{ room.name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -37,13 +37,13 @@
                     <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class=" hidden absolute top-0 left-0 md:relative md:flex w-[100%] flex-col ">
                         <!-- ROOM HEADER AND TITLE BLOCK -->
                         <div class="h-[70px] border-b dark:border-b-gray-700 flex flex-col justify-center p-3">
-                            <span class="font-medium">{{ selected_room.name }}</span>
-                            <span class="text-gray-400">started {{ formatTimestamp(selected_room.createdAt) }}</span>
+                            <span class="font-bold">{{ selected_room.name }}</span>
+                            <span class="text-gray-400">initiated {{ formatTimestamp(selected_room.createdAt) }}</span>
                         </div>
-                        <div class="p-2 border-b dark:border-b-gray-700 flex flex-row gap-3">
+                        <!-- <div class="p-2 border-b dark:border-b-gray-700 flex flex-row gap-3">
                             <span class="text-blue-400">Go to Contract</span>
                             <span class="text-blue-400">See Job Application</span>
-                        </div>
+                        </div> -->
 
                         <!-- CHATS CONTAINER -->
                             <div class="h-[85%] p-4 flex flex-col-reverse gap-4 overflow-y-auto relative justify-start">
@@ -51,10 +51,11 @@
                                 <!-- chat box -->
 
                                 <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
-                                    <div :class="message.user == this.user._id ? 'bg-tz_blue text-white':'bg-gray-700 text-white'" :key="message._id" class=" max-w-[300px] w-fit p-3 rounded-t-xl rounded-bl-xl">
-                                        {{ message.text }} <br/>
+                                    <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-700 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
+                                        <span>{{ message.text }}</span>
                                     </div>
-                                    {{ formatToRelativeTime(message.createdAt) }}
+                                    <span class="text-[12px] text-gray-">{{ convertTimeToAMPM(message.createdAt) }}</span>
+                                 
                                 </div> 
 
                                 <div v-if="loading_chats" class=" bg-white dark:bg-[#27323F] dark:text-white h-full absolute w-full top-0 bottom-0 left-0 flex flex-col justify-center items-center">
@@ -75,10 +76,10 @@
                                     <button class="h-10 w-10 flex justify-center items-center bg-transparent p-3 text-gray-500 text-xl">
                                         <i class="bi bi-paperclip"></i>
                                     </button>
-                                    <input type="textarea" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text">
+                                    <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text">
                                     <!-- <textarea type="text" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"></textarea> -->
 
-                                    <button :disabled="message_text == ''" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl disabled:bg-gray-500 disabled:text-gray-600">
+                                    <button id="send_message_btn" :disabled="!is_valid_message" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
                                         <i class="bi bi-send-fill"></i>
                                     </button>
 
@@ -87,7 +88,7 @@
                         <!-- </div> -->
                     </div>
 
-                    <div v-else class=" absolute top-0 left-0 md:relative md:flex w-[100%] flex-col justify-center items-center text-center">
+                    <div v-else class=" absolute top-0 left-0 md:relative md:flex w-[100%] flex-col justify-center items-center text-center hidden">
                         <Vue3Lottie
                             :animationData="blankMessagePage"
                             :height="200"
@@ -106,6 +107,7 @@ import blankMessagePage from '../../lottie/blankMessagePage.json';
 import loadingChats from '../../lottie/loadingChats.json';
 import { formatTimestamp } from '../../utils/dateFormat'
 import { formatToRelativeTime } from '../../utils/dateFormat';
+import { convertTimeToAMPM } from '../../utils/dateFormat';
 
 // socket io for real time messaging...
 import io from "socket.io-client";
@@ -134,15 +136,23 @@ export default {
             
             formatTimestamp,
             formatToRelativeTime,
+            convertTimeToAMPM,
 
            message_text: '',
 
            loading_chats: false,
 
+           is_valid_message: false,
+
         }
     },
 
     methods: {
+        validateMessage(){
+            const trimmed_msg = this.message_text.trim();
+            this.is_valid_message = trimmed_msg.length > 0;
+        },
+
         // SELECT A PARTICULAR ROOM >>>
         selectRoom(room) {
             this.selected_room = room;
@@ -188,7 +198,8 @@ export default {
                     console.log("available message rooms: ", response.data);
                     
                     // AUTO OPEN FIRST MESSAGE ROOM...
-                    this.selected_room = this.rooms[0];
+                    // this.selectRoom(this.rooms[0]);
+
                     this.fetchMessages(this.selected_room._id);
 
                 }catch(error){
@@ -201,7 +212,8 @@ export default {
                     console.log("available message rooms: ", response.data);
                     
                     // AUTO OPEN FIRST MESSAGE ROOM...
-                    this.selected_room = this.rooms[0];
+                    // this.selectRoom(this.rooms[0]);
+
                     this.fetchMessages(this.selected_room._id);
                 }catch(error){
                     console.log("error fetching rooms: ", error)
@@ -247,6 +259,11 @@ export default {
 
         // FOR SENDING MESSAGE >>>
         async sendMessage() {
+            this.input_value = this.message_text.trim();
+            if(!this.input_value){
+                document.getElementById("send_message_btn").disabled = true;
+            };
+
             const payload = {
                 text: this.message_text,
                 userId: this.user._id,
@@ -255,7 +272,8 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/message/room/${this.selected_room._id}`, payload);
                 console.log("response from msg snt: ", response);
-                this.messages.unshift(response.data.message);
+                // pushing message by send function not necessary since its done by socket.io
+                // this.messages.unshift(response.data.message);
             }catch(error){
                 console.log("error sending message: ", error);
             };
