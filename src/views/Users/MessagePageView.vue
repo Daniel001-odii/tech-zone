@@ -159,7 +159,7 @@ export default {
             this.fetchMessages(room._id);
 
             // Initialize WebSocket connection for real-time updates
-            const socket = io('http://localhost:8000', { autoConnect: true});
+            const socket = io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true});
             socket.emit('join', room._id);
             socket.on('message', (message) => {
                 // Add received message to the messages array
