@@ -23,6 +23,37 @@
         </template>
     </Modal>
 
+    <Modal :title="'Interview Confirmation'" :modal_active="interview_modal">
+        <template #body>
+            <div class="p-3 flex flex-col gap-3">
+                <span class="text-2xl mb-4"> Are you sure you want to start an interview session with {{ current_user.name }}</span>
+                <p class="text-blue-500 p-3 border border-blue-500 rounded-xl">
+                    sending a message means initiating an interview with the talent, which can further lead to the start of the contract if the interview is successful
+                    confirm if you really want to start a message with  <b>{{ current_user.name }}</b>
+                </p>
+            </div>
+          
+        </template>
+        <template #footer>
+            <div class="flex flex-row gap-3">
+                <button @click="interview_modal = !interview_modal" class="bg-tz_light_blue p-3 rounded-md">cancel</button>
+                <button @click="startMessageRoom(current_job.title, current_user.id, getUserData.user._id)" class="btn">Send Message</button>
+            </div>
+        </template>
+    </Modal>
+
+    <Modal :title="'Contract Offer Confirmation'" :modal_active="contract_modal">
+        <template #body>
+            <span class="text-2xl mb-4"> Are you sure you want to Send the contract offer for the job <b class="text-blue-500">{{  current_job.title }}</b> to <b class="text-blue-500">{{ current_user.name }}</b>?</span>
+        </template>
+        <template #footer>
+            <div class="flex flex-row gap-3">
+                <button @click="contract_modal = !contract_modal" class="bg-tz_light_blue p-3 rounded-md">cancel</button>
+                <button @click="sendContractAndHired(current_user.id, current_job._id)" class="btn">Send Offer</button>
+            </div>
+        </template>
+    </Modal>
+
 <PageTitle>Dashboard</PageTitle>
     <div>
     
@@ -112,8 +143,8 @@
                                             </div>
                                             <div class="flex flex-row flex-wrap gap-3 mt-3">
                                                 <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save freelancer</button>
-                                                <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md" @click="startMessageRoom(job.title, application.user._id, getUserData.user._id)">Interview</button>
-                                                <button @click="sendContractAndHired(application.user._id, application.job)" class="btn">Send Contract Offer</button>
+                                                <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md" @click="sendUserMessage(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job.title)">Interview</button>
+                                                <button @click="confirmContractOfferModal(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job)" class="btn">Send Contract Offer</button>
                                             </div>
                                         </div>
                                     </div>
@@ -194,6 +225,13 @@ export default {
                 name: '',
                 id: '',
             },
+            current_job: {
+                title: '',
+            },
+
+            interview_modal: false,
+
+            contract_modal: false,
 
             loading_posted_jobs: false,
         }
@@ -225,6 +263,21 @@ export default {
             this.assign_job_modal = true;
             this.current_user.name = user_name;
             this.current_user.id = user_id;
+        },
+
+        sendUserMessage(user_id, user_name, job_title){
+            this.interview_modal = !this.interview_modal;
+            this.current_user.name = user_name;
+            this.current_user.id = user_id;
+            this.current_job.title = job_title;
+            // startMessageRoom(job.title, application.user._id, getUserData.user._id)
+        },
+
+        confirmContractOfferModal(user_id, user_name, job){
+            this.contract_modal = !this.contract_modal;
+            this.current_job = job;
+            this.current_user.id = user_id;
+            this.current_user.name = user_name;
         },
 
         async getJobsByEmployer(){
@@ -324,6 +377,9 @@ export default {
                 this.$router.push("/client/messages");
             }catch(error){
                 console.log("error creating room: ", error);
+                if(error.response.status == 400){
+                    this.$router.push("/client/messages");
+                }
                 this.loading = false;
             }
         },
