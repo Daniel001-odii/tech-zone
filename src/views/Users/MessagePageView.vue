@@ -34,7 +34,7 @@
                     <!-- /LEFT SIDE ENDS HERE -->
 
                     <!-- RIGHT SIDE IF A ROOM IS SELECTED -->
-                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class=" hidden absolute top-0 left-0 md:relative md:flex w-[100%] flex-col ">
+                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="absolute top-0 left-0 md:relative md:flex w-[100%] flex-col bg-red-500 h-full">
                         <!-- ROOM HEADER AND TITLE BLOCK -->
                         <div class="h-[70px] border-b dark:border-b-gray-700 flex flex-col justify-center p-3">
                             <span class="font-bold">{{ selected_room.name }}</span>
@@ -88,14 +88,14 @@
                         <!-- </div> -->
                     </div>
 
-                    <div v-else class=" absolute top-0 left-0 md:relative md:flex w-[100%] flex-col justify-center items-center text-center hidden">
+                    <!-- <div v-else class=" absolute top-0 left-0 md:relative md:flex w-[100%] flex-col justify-center items-center text-center hidden">
                         <Vue3Lottie
                             :animationData="blankMessagePage"
                             :height="200"
                             :width="200"
                         />
                         <p class="text-gray-500 text-xl">Start Sending a message <br/>by clicking on any of the rooms</p>
-                    </div>
+                    </div> -->
                     <!-- RIGHT SIDE ENDS HERE -->
                 </div>
     </div>
@@ -144,6 +144,8 @@ export default {
 
            is_valid_message: false,
 
+           socket: io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true}),
+
         }
     },
 
@@ -159,12 +161,10 @@ export default {
             this.fetchMessages(room._id);
 
             // Initialize WebSocket connection for real-time updates
-            const socket = io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true});
-            socket.emit('join', room._id);
-            socket.on('message', (message) => {
+            
+           this.socket.on('message', (message) => {
                 // Add received message to the messages array
                 this.messages.unshift(message);
-                // alert("new msg received");
                 console.log('message: ', message)
                 //scrolls the recipients message box...
             });
@@ -180,6 +180,10 @@ export default {
                 
                 // GET USER MESSAGE ROOMS...
                 this.getMessageRooms();
+                // const socket = io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true});
+                
+               
+                
             }
             catch(error){
                 console.error("error getting user data: ", error)
@@ -202,6 +206,10 @@ export default {
 
                     this.fetchMessages(this.selected_room._id);
 
+                     this.rooms.forEach(room =>{
+                        this.socket.emit('join', room._id);
+                    })
+
                 }catch(error){
                     console.log("error fetching rooms: ", error)
                 }
@@ -215,6 +223,11 @@ export default {
                     // this.selectRoom(this.rooms[0]);
 
                     this.fetchMessages(this.selected_room._id);
+
+                     this.rooms.forEach(room =>{
+                        this.socket.emit('join', room._id);
+                    })
+
                 }catch(error){
                     console.log("error fetching rooms: ", error)
                 }
