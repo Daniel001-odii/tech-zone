@@ -39,6 +39,11 @@
                                     <input class="rounded-xl p-3 dark:bg-transparent w-full" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="form_data.email" required>
                                 </div>
 
+                                <div class="tz_form_control">
+                                    <label for="company_name">Company Name</label>
+                                    <input class="rounded-xl p-3 dark:bg-transparent w-full" type="text" name="company_name" id="company_name" placeholder="John Doe & Co." v-model="form_data.company_name" required>
+                                </div>
+
                                 <div v-if='passHint && passwordValidation.errors.length > 0' class='hints'>
                                     <small v-for='error in passwordValidation.errors'>{{ error }}<br/></small>
                                 </div>
@@ -112,7 +117,8 @@ export default {
                 firstname: '',
                 lastname: '',
                 email: '',
-                password: ''
+                password: '',
+                company_name: '',
             },
 
             passHint: false,

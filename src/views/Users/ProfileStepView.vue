@@ -9,7 +9,7 @@
         </template>
     </FullPageModal>
 
-    <div class=" overflow-y-scroll h-full">
+    <div class=" overflow-y-auto min-h-screen">
         <!-- ALERTS AND NOTIFICS -->
         <div class="fixed bottom-10 right-0 left-0 flex justify-center">
                 <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
@@ -199,6 +199,9 @@ export default {
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 const user = response.data.user;
                 const profile = this.user.profile;
+
+                this.user_form.firstname = user.firstname;
+                this.user_form.lastname = user.lastname;
 
                 // this.user_form.preffered_job_types = user.preffered_job_types;
                 // this.user_form.profile.title = profile.title;

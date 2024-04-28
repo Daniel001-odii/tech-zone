@@ -34,7 +34,7 @@
                     <!-- /LEFT SIDE ENDS HERE -->
 
                     <!-- RIGHT SIDE IF A ROOM IS SELECTED -->
-                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="absolute top-0 left-0 md:relative md:flex w-[100%] flex-col bg-red-500 h-full">
+                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="absolute top-0 left-0 md:relative md:flex w-[100%] flex-col  h-full">
                         <!-- ROOM HEADER AND TITLE BLOCK -->
                         <div class="h-[70px] border-b dark:border-b-gray-700 flex flex-col justify-center p-3">
                             <span class="font-bold">{{ selected_room.name }}</span>
@@ -162,12 +162,7 @@ export default {
 
             // Initialize WebSocket connection for real-time updates
             
-           this.socket.on('message', (message) => {
-                // Add received message to the messages array
-                this.messages.unshift(message);
-                console.log('message: ', message)
-                //scrolls the recipients message box...
-            });
+          
         },
 
         // GET USER DATA >>>
@@ -206,9 +201,16 @@ export default {
 
                     this.fetchMessages(this.selected_room._id);
 
-                     this.rooms.forEach(room =>{
+                    this.rooms.forEach(room =>{
                         this.socket.emit('join', room._id);
-                    })
+                    });
+                    this.socket.on('message', (message) => {
+                        // Add received message to the messages array
+                        this.messages.unshift(message);
+                        console.log('message: ', message)
+                        //scrolls the recipients message box...
+                    });
+                    
 
                 }catch(error){
                     console.log("error fetching rooms: ", error)
@@ -224,9 +226,15 @@ export default {
 
                     this.fetchMessages(this.selected_room._id);
 
-                     this.rooms.forEach(room =>{
+                    this.rooms.forEach(room =>{
                         this.socket.emit('join', room._id);
-                    })
+                    });
+                    this.socket.on('message', (message) => {
+                        // Add received message to the messages array
+                        this.messages.unshift(message);
+                        console.log('message: ', message)
+                        //scrolls the recipients message box...
+                    });
 
                 }catch(error){
                     console.log("error fetching rooms: ", error)
