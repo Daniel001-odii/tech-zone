@@ -9,7 +9,8 @@
 
     <div class="flex flex-row">
         <div class=" h-screen w-full lg:w-3/6 flex flex-col justify-center items-center dark:bg-[#27323F] dark:text-white">
-            <div class=" w-fit p-8 max-w-sm">
+           
+            <div class=" w-fit p-8 max-w-sm" v-if="is_valid_token">
                     <div class="text-start  w-full mb-5">
                         <h1 class="text-3xl font-bold mb-4">Set Your Password</h1>
                         <span class="">Make sure to use a very secure password.</span>
@@ -36,6 +37,10 @@
                         <LoaderButton @click="resetPassword" v-if="form.password != '' && form.password == form.password_confirmation" :buttonText="loading ? 'Loading...' : 'Change Password'" :loading="loading"/>
                     </form>
             </div>
+            <div v-else>
+                <span class="text-red-500">Token invalid or expired</span>
+            </div>
+
         </div>
 
         <div class=" bg-tz_light_blue hidden lg:flex flex-col justify-center items-center w-3/6 dark:bg-[#1F2A36]">
@@ -75,6 +80,8 @@ export default {
 				{ message:"8 characters minimum.", regex:/.{8,}/ },
 				{ message:"One number required.", regex:/[0-9]+/ }
 			],
+
+            is_valid_token: true,
         };
     },
     methods: {
@@ -105,6 +112,17 @@ export default {
                 this.error = error.response.data.message;
                 this.loading = false;
             }
+        },
+
+        async checkResetToken(){
+            try{
+                const response = await axios.get(`${this.api_url}/password/${this.$route.params.reset_token}/check`);
+                console.log("checking reset token: ", response);
+                this.is_valid_token = true;
+            } catch(error){
+                console.log("error checking reset token: ", error);
+                this.is_valid_token = false;
+            }
         }
        
     },
@@ -124,6 +142,10 @@ export default {
 			}
 		}
     },
+
+    mounted(){
+        this.checkResetToken();
+    }
 }
 </script>
 <style scoped>

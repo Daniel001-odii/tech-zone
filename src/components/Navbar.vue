@@ -8,13 +8,13 @@
             <nav>
                 <div class="flex flex-row w-full justify-between p-3 items-center border-b border-gray-200  dark:border-gray-600">
                     <SiteLogo/>
-                    <div class="skeleton text-transparent border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
+                    <!-- <div class="skeleton text-transparent border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
                         <input type="search" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
                         <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-500 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
                             <i class="bi bi-search"></i>
                             <span>Search</span>
                         </button>
-                    </div>
+                    </div> -->
                     <div class="skeleton flex flex-row items-center gap-1 md:mr-2">
                         <div class=" h-10 w-10 bg-gray-300 rounded-full"></div>
                         <i class="bi bi-three-dots-vertical"></i>
@@ -75,13 +75,13 @@
                     <SiteLogo/>
 
                     <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
-                    <div class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
+                    <!-- <div class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
                         <input type="search" :placeholder="user.role == 'user' ? 'Search for jobs':'Search for Talents'" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
                         <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-600 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
                             <i class="bi bi-search"></i>
                             <span>Search</span>
                         </button>
-                    </div>
+                    </div> -->
                     <div  v-if="user" class="flex flex-row items-center gap-1">
                         <div class="relative" v-click-outside="closeDropdown" >
                             <div class=" h-3 w-3 flex justify-center items-center text-white border border-white  rounded-full bg-red-500 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div>

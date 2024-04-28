@@ -85,7 +85,7 @@
                 <div>
                     <div v-if="current_tab == 'jobs'" class="p-3 rounded-lg mt-3">
                         <div v-if="loading_posted_jobs">Loading your jobs...</div>
-                        <div v-if="jobs.length > 0">
+                        <div v-if="jobs && jobs.length > 0">
                             <!-- {{ jobs }} -->
                             <div class=" bg-white p-2 rounded-2xl mb-4  hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]" v-for="(job, job_id) in jobs" :key="job_id">
                                 <!-- {{ showApplicants(job._id) }} -->
@@ -151,11 +151,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-else>You have not posted any job yet. Post now</div>
+                        <div v-else class="text-center p-5 flex flex-col justify-center items-center gap-3">
+                            <img src="../../assets/images/empty open mailbox.svg" class=" h-48">
+                            You have not posted any job yet. <RouterLink to="/client/job" class="underline text-blue-500">Post now</RouterLink>
+                        </div>
                     </div>
                     <div v-if="current_tab == 'saved'" class="p-3 bg-white rounded-lg mt-3 flex flex-col gap-3 dark:bg-transparent">
 
-                        <p v-if="!saved_users"> loading your saved users...</p>
+                        <p v-if="!saved_users && loading_saved_users"> loading your saved users...</p>
 
                         <div v-if="saved_users" class="p-3 flex flex-col gap-3 rounded-xl w-full border items-start dark:bg-[#1F2A36] dark:border-gray-500 dark:hover:bg-none " v-for="(user, user_id) in saved_users" :key="user_id">
                             
@@ -181,7 +184,12 @@
                             </div>
                             
                         </div>
-                        <div v-if="saved_users && saved_users.length <= 0">You have no saved users yet</div>
+                        <div v-if="saved_users && saved_users.length <= 0">
+                            <div class="text-center p-5 flex flex-col justify-center items-center gap-3">
+                                <img src="../../assets/images/empty open mailbox.svg" class=" h-48">
+                                You have not saved any freelancer yet.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -234,6 +242,7 @@ export default {
             contract_modal: false,
 
             loading_posted_jobs: false,
+            loading_saved_users: false,
         }
         
     },
@@ -322,13 +331,16 @@ export default {
         },
 
         async getSavedUsers(){
+            this.loading_saved_users = true;
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/employer/users/saved`, { headers });
                 console.log("saved users: ", response.data)
                 this.saved_users = response.data.saved_users;
+                this.loading_saved_users = false;
             }catch(error){
                 console.log("get saved users error: ", error);
+                this.loading_saved_users = false;
             }
         },
 
