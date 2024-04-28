@@ -1,4 +1,5 @@
 <template>
+    <PageTitle>Contracts & hires</PageTitle>
     <div>
         <!-- <TemplateView :leftNav="true">
             <template #page-title>All Contracts</template>
@@ -57,10 +58,11 @@ import TemplateView from '../TemplateView.vue';
 import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 export default {
     name: "ContractPageView",
-    components: { TemplateView, ContractStatus, SkeletonLoader },
+    components: { TemplateView, ContractStatus, SkeletonLoader, PageTitle },
     data(){
         return{
             contracts: '',

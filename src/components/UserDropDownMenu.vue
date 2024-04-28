@@ -45,8 +45,11 @@
                         <div class="menu_item"><i class="bi bi-sticky"></i> Contracts & Hires</div>
                     </RouterLink>
                     
-                    <div class="menu_item text-slate-300"><i class="bi bi-compass"></i> Billings</div>
-                    <div class="menu_item text-slate-300"><i class="bi bi-gear"></i> Settings</div>
+                    <div class="menu_item text-slate-300"><i class="bi bi-compass"></i> Billings & Payments</div>
+
+                    <RouterLink to="/client/settings">
+                        <div class="menu_item"><i class="bi bi-gear"></i> Settings</div>
+                    </RouterLink>
                 </div>
               
                 <RouterLink to="/support">

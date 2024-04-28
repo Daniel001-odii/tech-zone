@@ -24,6 +24,7 @@ import TaskWatchPageView from '@/views/Users/TaskWatchPageView.vue'
 import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 import ClientDashBoardPage from '@/views/Employers/ClientDashboardPage.vue'
 import ClientPostJobView from '@/views/Employers/ClientPostJobPageView.vue'
+import ClientSettingsPage from '@/views/Employers/SettingsPageView.vue'
 import EarningsPageView from '@/views/Users/EarningsPageView.vue'
 import SettingsPageView from '@/views/Users/SettingsPageView.vue'
 import OverviewPageView from '@/views/Users/OverviewPageView.vue'
@@ -178,6 +179,7 @@ const routes = [
       {path: 'jobs/:job_id/edit', component: ClientPostJobView},
       {path: 'jobs', component: JobsListPageView},
       {path: 'messages', component: MessagePageViewVue},
+      {path: 'settings', component: ClientSettingsPage},
       {path: 'profile', component: ClientProfilePageViewVue},
       {path: 'notifications', component: NotifcationsPageView},
       {path: 'contracts', component: ClientContractsListPageViewVue},

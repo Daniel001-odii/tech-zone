@@ -34,7 +34,7 @@
                     <!-- /LEFT SIDE ENDS HERE -->
 
                     <!-- RIGHT SIDE IF A ROOM IS SELECTED -->
-                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="absolute top-0 left-0 md:relative md:flex w-[100%] flex-col  h-full">
+                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="absolute top-0 left-0 md:relative md:flex w-[100%] flex-col  h-full bg-tz_light_blue">
                         <!-- ROOM HEADER AND TITLE BLOCK -->
                         <div class="h-[70px] border-b dark:border-b-gray-700 flex flex-col justify-center p-3">
                             <span class="font-bold">{{ selected_room.name }}</span>
@@ -51,11 +51,10 @@
                                 <!-- chat box -->
 
                                 <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
-                                    <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-700 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
+                                    <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-white dark:bg-gray-700 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
                                         <span>{{ message.text }}</span>
                                     </div>
                                     <span class="text-[12px] text-gray-">{{ convertTimeToAMPM(message.createdAt) }}</span>
-                                 
                                 </div> 
 
                                 <div v-if="loading_chats" class=" bg-white dark:bg-[#27323F] dark:text-white h-full absolute w-full top-0 bottom-0 left-0 flex flex-col justify-center items-center">

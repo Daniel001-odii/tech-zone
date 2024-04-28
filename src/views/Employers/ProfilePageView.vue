@@ -89,7 +89,7 @@
             <div class="" v-if="user">
                 <div class=" flex flex-col items-center gap-8 p-5">
 
-                    <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border border-gray-600">
+                    <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border border-gray-300  dark:border-gray-600">
                         <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
                             
                             <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
@@ -110,7 +110,7 @@
                                 
                             </div>
                         </div>
-                        <div class="border  border-gray-600 md:inline-block md:h-[200px] hidden"></div>
+                        <div class="border-l border-gray-300  dark:border-gray-600 md:inline-block md:h-[200px] hidden"></div>
                         <div class=" flex flex-col items-start justify-center text-left p-5">
                             <div>
                                 <span v-if="user.is_verified">Account verified</span>
@@ -121,10 +121,10 @@
                             
                             <!-- PROFILE PROGRESS PERCENTAGE -->
                             <div class="flex flex-col mt-3">
-                                <p>Profile Completion ({{  profile_completion  }}%)</p>
-                                <div class=" h-3 w-52 rounded-full overflow-hidden bg-green-700">
+                                <p>Profile Completion - {{  profile_completion  }}%</p>
+                                <!-- <div class=" h-3 w-52 rounded-full overflow-hidden bg-green-700">
                                     <div class=" h-full bg-green-400" :class="`w-[${profile_completion}%]`"></div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="flex flex-row flex-wrap gap-3 mt-3">
                                 <button class="btn" @click="profile_edit_menu = !profile_edit_menu">Edit Profile</button>
@@ -133,7 +133,7 @@
                     </div>
 
                     <div class=" w-full lg:w-3/4">
-                        <div class="border rounded-xl p-3 text-left  border-gray-600">
+                        <div class="border rounded-xl p-3 text-left  border-gray-300  dark:border-gray-600">
                             <h1 class="font-bold"><i class="bi bi-person"></i> Profile</h1>
                         </div>
 
