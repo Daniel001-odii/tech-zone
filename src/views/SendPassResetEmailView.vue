@@ -27,7 +27,7 @@
                 <div class="text-center flex flex-col justify-center items-center  w-full mb-5">
                     <img src="../assets/images/paper-plane.png" class=" h-52">
                         <h1 class="text-3xl font-bold mb-4">Password Reset Link sent!</h1>
-                        <span class="">An email has been sent to {{  email }} with instructions for resetting your password.</span>
+                        <span class="p-5">An email has been sent to {{  email }} with instructions for resetting your password.</span>
                     </div>
             </div>
         </div>

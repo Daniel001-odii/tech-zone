@@ -84,7 +84,7 @@
                     </div> -->
                     <div  v-if="user" class="flex flex-row items-center gap-1">
                         <div class="relative" v-click-outside="closeDropdown" >
-                            <div class=" h-3 w-3 flex justify-center items-center text-white border border-white  rounded-full bg-red-500 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div>
+                            <div class=" h-3 w-3 flex justify-center items-center text-white  rounded-full bg-red-600 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div>
                             
                             <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
                             
