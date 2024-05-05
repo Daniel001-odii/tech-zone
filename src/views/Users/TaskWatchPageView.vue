@@ -1,6 +1,7 @@
 <template>
     <div>
         <PageTitle>Task Watch</PageTitle>
+        {{ timer_error }}
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
             <div class="bg-tz_light_blue text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
 
@@ -10,20 +11,24 @@
                 <div class="bg-tz_blue hover:bg-tz_dark_blue rounded-full w-[300px] flex flex-row items-center p-[3px] justify-between">
                     <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
                         <i class="bi bi-stopwatch"></i>
-                        <span>00:00:00</span>
-                        <button>
-                            <i class="bi bi-pause-fill"></i>
-                        </button>
-                        <button>
-                            <i class="bi bi-play-fill"></i>
+                        <span v-if="timer_loading" class="text-sm text-yellow-500">loading...</span>
+                        <span v-else>{{ formatTime }}</span>
+                       
+                        <button >
+                            <!-- <i v-if="timer_loading" class="bi bi-arrow-clockwise"></i> -->
+                            <i v-if="timerRunning" @click="pauseTimer" class="bi bi-pause-fill"></i>
+                            <i v-if="!timerRunning" class="bi bi-play-circle-fill"></i>
                         </button>
                     </div>
-                    <button class="mx-auto my-0 text-white text-sm font-medium">Clock in</button>
+                    <button @click="startServerTime" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
+                        Clock in
+                        
+                    </button>
                 </div>
             </div>
 
-            <p>{{ formatTime }}</p>
-            <button @click="toggleTimer">{{ timerRunning ? 'Pause' : 'Play' }}</button>
+            <!-- <p>{{ formatTime }}</p>
+            <button @click="toggleTimer">{{ timerRunning ? 'Pause' : 'Play' }}</button> -->
 
 
             <div class="flex flex-row flex-wrap gap-3">
@@ -32,13 +37,13 @@
                 <div class="flex flex-row md:flex-col gap-3 w-full md:w-fit">
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
                         <span class="text-[10px] uppercase">clock in time</span>
-                        <span class="font-medium">09:59:54am</span>
+                        <span class="font-medium">{{ clock_in_time }}</span>
                     </div>
 
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
                         <span class="text-[10px] uppercase">clock out time</span>
                         <span class="font-medium">
-                            09:59:54am
+                            00:00:00 am
                         </span>
                     </div>
                 </div>
@@ -46,28 +51,28 @@
                 <!-- OTHER ITEMS -->
                 <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">WORKED TODAY</span>
-                    <p class="text-[30px]">05:59:54</p>
+                    <p class="text-[30px]">{{ formatTime }}</p>
                     <span class="text-green-500 text-[10px]">
                         <i class="bi bi-caret-up-fill"></i>
-                        04:59:54
+                        00:00:00
                     </span>
                 </div>
 
                 <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">WORKED THIS WEEK</span>
-                    <p class="text-[30px]">05:59:54</p>
+                    <p class="text-[30px]">00:00:00</p>
                     <span class="text-red-500 text-[10px]">
                         <i class="bi bi-caret-down-fill"></i>
-                        04:59:54
+                        00:00:00
                     </span>
                 </div>
 
                 <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">DAYS WORKED</span>
-                    <p class="text-[30px]">5</p>
+                    <p class="text-[30px]">0</p>
                     <span class="text-green-500 text-[10px]">
                         <i class="bi bi-caret-up-fill"></i>
-                        6
+                        0
                     </span>
                 </div>
 
@@ -98,6 +103,8 @@ import PageTitle from '@/components/PageTitle.vue';
 import { BarChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
+
+import { convertTimeToAMPM } from '@/utils/dateFormat';
 
 
     export default {
@@ -140,6 +147,15 @@ Chart.register(...registerables);
                   
                 },
 
+                timer_error: '',
+                timer_loading: false,
+                task_description: 'Starting for the day',
+
+                server_time: '',
+                convertTimeToAMPM,
+                clock_in_time: '',
+                clock_out_time: '',
+
                 // data values for chart...
                 testData: {
                 labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -174,6 +190,13 @@ Chart.register(...registerables);
                 this.timerRunning = true;
             },
 
+            startRealTimer() {
+                this.startTime = this.server_time - this.elapsedTime;
+                console.log("server time :", this.server_time);
+                this.timerInterval = setInterval(this.updateTimer, 1000);
+                this.timerRunning = true;
+            },
+
             pauseTimer() {
                 clearInterval(this.timerInterval);
                 this.timerRunning = false;
@@ -183,11 +206,15 @@ Chart.register(...registerables);
                 this.elapsedTime = Date.now() - this.startTime;
             },
 
+            updateTimer2() {
+                this.elapsedTime = this.server_time - this.startTime;
+            },
+
             async getContract(){
                 const headers = this.headers;
                 try{
                     const response = await axios.get(`${this.api_url}/contracts/${this.$route.params.contract_id}`, { headers });
-                    console.log(response);
+                    // console.log(response);
                     this.contract = response.data.contract;
                 }catch(error){
                     console.log(error);
@@ -196,20 +223,76 @@ Chart.register(...registerables);
                     }
                 }
             },
+
+            async startServerTime(){
+                try{
+                    const form = {
+                        activity_description: this.task_description
+                    };
+
+                    this.timer_loading = true;
+                    const response = await axios.post(`${this.api_url}/watch/${this.$route.params.contract_id}/start`, form);
+                    console.log("started timer for contract: ", response);
+                    this.timer_loading = false;
+                    const TIME = response.data.time_tracking.time_stamp.start_time;
+                    const TIME_OBJECT = new Date(TIME);
+                    this.server_time = TIME_OBJECT.getTime();
+
+                    // now start the counter
+                    this.startRealTimer();
+                }catch(error){
+                    this.timer_error = error;
+                    this.timer_loading = false;
+                }
+            },
+
+            async getServerTime(){
+                try{
+                    this.timer_loading = true;
+                    const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/today`);
+                    console.log("today's log: ", response);
+
+                    if(response.data.watch.time_stamp.start_time){
+                        const TIME = response.data.watch.time_stamp.start_time;
+                        const TIME_OBJECT = new Date(TIME);
+                        this.server_time = TIME_OBJECT.getTime();
+
+                        // set clock in time...
+                        this.clock_in_time = this.convertTimeToAMPM(TIME);
+
+                        this.startRealTimer();
+                    } else {
+                        
+                        // set default clock in time...
+                        this.clock_in_time = "0:00:00"
+                    }
+                    this.timer_loading = false;
+
+                  
+
+                }catch(error){
+                    console.log("error in getting server time: ", error);
+                    this.timer_loading = false;
+                }
+            }
         },
 
         computed: {
             formatTime() {
-                const hours = Math.floor(this.elapsedTime / 120000);
-                const minutes = Math.floor(this.elapsedTime / 60000);
-                const seconds = ((this.elapsedTime % 60000) / 1000).toFixed(0);
-                return `${hours}:${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
-            },
+                // Calculate hours, minutes, and seconds
+                const hours = Math.floor(this.elapsedTime / (60 * 60 * 1000));
+                const minutes = Math.floor((this.elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
+                const seconds = Math.floor((this.elapsedTime % (60 * 1000)) / 1000);
+
+                // Format the time as HH:MM:SS
+                return `${hours}:${(minutes < 10 ? '0' : '')}${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
+            }
         },
 
         mounted(){
             this.getCurrentDate();
             this.getContract();
+            this.getServerTime();
         },
 
 

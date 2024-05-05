@@ -104,7 +104,6 @@ export default {
                 const response = await axios.post(`${this.api_url}/password/reset`, form);
                 console.log("pass reset response: ", response);
                 const message = response.data.message;
-
                 this.loading = false;
                 showAlertBox("success", message);
                 this.$router.push("/login");
