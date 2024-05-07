@@ -143,8 +143,12 @@ export default {
 
             }
             catch (error) {
-                console.log("Login error: ", error.response)
+                console.log("Login error: ", error.response);
                 this.error = error.response.data.message;
+                
+                if(error.response.status == 500){
+                    this.error = "invalid email or password"
+                }
                 this.loading = false;
             }
         },

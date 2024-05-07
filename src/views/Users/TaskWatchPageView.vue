@@ -1,30 +1,30 @@
 <template>
     <div>
         <PageTitle>Task Watch</PageTitle>
-        {{ timer_error }}
+        <span class="text-red-500">{{ timer_error }}</span>
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
             <div class="bg-tz_light_blue text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
+
+<button v-if="!clock_in_time" @click="startTaskWatch" class="bg-red-500 text-white p-3">
+    <span >Clock in</span>
+</button>
+<button v-else @click="stopTaskWatch" class="bg-red-500 text-white p-3">
+    <span >Clock out</span>
+</button>
+
+<!-- {{ stop_time - start_time }}s -->
+{{ convertSecondsToWatchFormat }}
+<button @click="toggleTaskWatch">
+    <span v-if="watch_status == 'active'">pause</span>
+    <span v-else>play</span>
+</button>
+
+<p>watch status: {{ watch_status }}</p>
+
 
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
                 <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div>
 
-                <div class="bg-tz_blue hover:bg-tz_dark_blue rounded-full w-[300px] flex flex-row items-center p-[3px] justify-between">
-                    <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
-                        <i class="bi bi-stopwatch"></i>
-                        <span v-if="timer_loading" class="text-sm text-yellow-500">loading...</span>
-                        <span v-else>{{ formatTime }}</span>
-                       
-                        <button >
-                            <!-- <i v-if="timer_loading" class="bi bi-arrow-clockwise"></i> -->
-                            <i v-if="timerRunning" @click="pauseTimer" class="bi bi-pause-fill"></i>
-                            <i v-if="!timerRunning" class="bi bi-play-circle-fill"></i>
-                        </button>
-                    </div>
-                    <button @click="startServerTime" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
-                        Clock in
-                        
-                    </button>
-                </div>
             </div>
 
             <!-- <p>{{ formatTime }}</p>
@@ -33,17 +33,17 @@
 
             <div class="flex flex-row flex-wrap gap-3">
 
-                <!-- CLOCK IN AND COCK OUT TIME -->
+                <!-- CLOCK IN AND COCK OUT time -->
                 <div class="flex flex-row md:flex-col gap-3 w-full md:w-fit">
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
                         <span class="text-[10px] uppercase">clock in time</span>
-                        <span class="font-medium">{{ clock_in_time }}</span>
+                        <span class="font-medium">{{ convertTimeToAMPM(clock_in_time) }}</span>
                     </div>
 
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
                         <span class="text-[10px] uppercase">clock out time</span>
                         <span class="font-medium">
-                            00:00:00 am
+                            {{ convertTimeToAMPM(clock_out_time) }}
                         </span>
                     </div>
                 </div>
@@ -51,7 +51,8 @@
                 <!-- OTHER ITEMS -->
                 <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">WORKED TODAY</span>
-                    <p class="text-[30px]">{{ formatTime }}</p>
+                    <!-- <p class="text-[30px]">{{ formatTime }}</p> -->
+                    <p class="text-[30px]">{{ convertSecondsToWatchFormat }}</p>
                     <span class="text-green-500 text-[10px]">
                         <i class="bi bi-caret-up-fill"></i>
                         00:00:00
@@ -150,11 +151,18 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                 timer_error: '',
                 timer_loading: false,
                 task_description: 'Starting for the day',
+                watch_status: '',
 
-                server_time: '',
                 convertTimeToAMPM,
                 clock_in_time: '',
                 clock_out_time: '',
+
+                start_time: '',
+                stop_time: '',
+
+                duration: 0,
+                durationCounter: '',
+
 
                 // data values for chart...
                 testData: {
@@ -176,40 +184,6 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                 this.current_date = formattedDate; // Update current_date with the formatted date
             },
 
-            toggleTimer() {
-                if (this.timerRunning) {
-                    this.pauseTimer();
-                } else {
-                    this.startTimer();
-                }
-            },
-
-            startTimer() {
-                this.startTime = Date.now() - this.elapsedTime;
-                this.timerInterval = setInterval(this.updateTimer, 1000);
-                this.timerRunning = true;
-            },
-
-            startRealTimer() {
-                this.startTime = this.server_time - this.elapsedTime;
-                console.log("server time :", this.server_time);
-                this.timerInterval = setInterval(this.updateTimer, 1000);
-                this.timerRunning = true;
-            },
-
-            pauseTimer() {
-                clearInterval(this.timerInterval);
-                this.timerRunning = false;
-            },
-
-            updateTimer() {
-                this.elapsedTime = Date.now() - this.startTime;
-            },
-
-            updateTimer2() {
-                this.elapsedTime = this.server_time - this.startTime;
-            },
-
             async getContract(){
                 const headers = this.headers;
                 try{
@@ -224,24 +198,124 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                 }
             },
 
-            async startServerTime(){
+            startDurationCount(){
+                this.durationCounter = setInterval(() => {
+                    this.duration += 1
+                }, 1000);
+            },
+
+            toggleDuration(){
+                if(this.watch_status == 'active'){
+                    clearInterval(this.durationCounter);
+                } else {
+                    this.startDurationCount();
+                }
+               
+            },
+
+            formatTimeUnit(unit){
+                return unit < 10 ? `0${unit}`:unit;
+            },
+
+            convertDateTimeToSecs(date_time){
+                const time = new Date(date_time);
+                return time.getTime();
+            },
+
+
+            async startTaskWatch(){
+                // set timer to 0 for initial state...
+                this.duration = 0;
+
                 try{
                     const form = {
                         activity_description: this.task_description
                     };
 
                     this.timer_loading = true;
-                    const response = await axios.post(`${this.api_url}/watch/${this.$route.params.contract_id}/start`, form);
-                    console.log("started timer for contract: ", response);
-                    this.timer_loading = false;
-                    const TIME = response.data.time_tracking.time_stamp.start_time;
-                    const TIME_OBJECT = new Date(TIME);
-                    this.server_time = TIME_OBJECT.getTime();
 
-                    // now start the counter
-                    this.startRealTimer();
+
+                    const response = await axios.post(`${this.api_url}/watch/${this.$route.params.contract_id}/start`, form);
+                    // console.log("response from timer watch: ", response);
+                    const watch = response.data.watch;
+
+                    // set clock in time...
+                    this.clock_in_time = watch.time_stamp.clock_in_time;
+
+                    // set watch status...
+                    this.watch_status = watch.status;
+
+                    console.log("watch started: ", watch);
+
+                    // set duration.....
+                    this.duration = watch.time_stamp.duration;
+
+                    // start duration counter...
+                    this.startDurationCount();
+
+
+                    
+                    this.timer_loading = false;
                 }catch(error){
                     this.timer_error = error;
+                    this.timer_loading = false;
+                }
+            },
+
+            async stopTaskWatch(){
+                // set timer to 0 for initial state...
+
+                try{
+                    const form = {
+                        activity_description: this.task_description
+                    };
+
+                    this.timer_loading = true;
+
+
+                    const response = await axios.patch(`${this.api_url}/watch/${this.$route.params.contract_id}/stop`, form);
+                    console.log("response from stopppp: ", response);
+                    const watch = response.data.watch;
+
+                    // set watch status...
+                    this.watch_status = watch.status;
+
+                    // set duration.....
+                    this.duration = Math.floor(watch.time_stamp.duration);
+
+                    // set clock out time...
+                    this.clock_out_time = watch.time_stamp.stop_time;
+
+                    // clear the current count interval animation..
+                    clearInterval(this.durationCounter);
+                    
+                    this.timer_loading = false;
+                }catch(error){
+                    this.timer_error = error;
+                    this.timer_loading = false;
+                }
+            },
+
+            async toggleTaskWatch(){
+                try{
+                    this.timer_loading = true;
+                    const response =  await axios.patch(`${this.api_url}/watch/${this.$route.params.contract_id}/toggle`);
+                    const watch = response.data.watch;
+
+                    console.log("watch toggled: ", watch);
+
+
+                    // adjust timer display here...
+                    this.duration = Math.floor(watch.time_stamp.duration);
+                    this.toggleDuration();
+
+                    // set watch status...
+                    this.watch_status = watch.status;
+
+        
+                    this.timer_loading = false;
+                }catch(error){
+                    console.error("error pausing timer: ", error);
                     this.timer_loading = false;
                 }
             },
@@ -252,52 +326,103 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                     const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/today`);
                     console.log("today's log: ", response);
 
-                    if(response.data.watch.time_stamp.start_time){
-                        const TIME = response.data.watch.time_stamp.start_time;
-                        const TIME_OBJECT = new Date(TIME);
-                        this.server_time = TIME_OBJECT.getTime();
+                    // set watch status for global use...
+                    const watch = response.data.watch;
+                    this.watch_status = watch.status;
 
-                        // set clock in time...
-                        this.clock_in_time = this.convertTimeToAMPM(TIME);
+                    // set clock in time...
+                    this.clock_in_time = watch.time_stamp.clock_in_time;
 
-                        this.startRealTimer();
-                    } else {
-                        
-                        // set default clock in time...
-                        this.clock_in_time = "0:00:00"
+                    // get watch timestamps
+                    const current_time = this.convertDateTimeToSecs(Date.now());
+                    const clock_in_time = this.convertDateTimeToSecs(watch.time_stamp.clock_in_time);
+                    const start_time = this.convertDateTimeToSecs(watch.time_stamp.start_time);
+                    const stop_time = this.convertDateTimeToSecs(watch.time_stamp.stop_time);
+
+
+                    // if theres no start time then start counting from clock_in_time....
+                    if(watch.status == 'active' && !start_time){
+                        // continue count from clock in time...
+                        // duration is set to time from clock in time to current time
+                        // and count is continued from duraiton..
+                        this.duration = Math.floor((current_time - clock_in_time) / 1000);
+
+                          // start count animation
+                          this.startDurationCount();
+
+
+                        console.log("duration without pause: ", this.duration)
+
+                    } else if(watch.status == 'active' && start_time){
+                        // if wwatch is active..
+                        // current_time minus start_time, then add it to the duration available..
+
+                        const currentTimeInSeconds = this.convertDateTimeToSecs(Date.now());
+                        const durationFromStartTime = Math.floor((currentTimeInSeconds - start_time) / 1000);
+                        this.duration = Math.floor(watch.time_stamp.duration) + durationFromStartTime;
+
+                        // start count animation
+                        this.startDurationCount();
                     }
+
+
+                    if(watch.status == 'paused'){
+                        // display a static time via [stop_time]...
+                        // show only static time...
+                        this.duration = Math.floor(watch.time_stamp.duration);
+                    }
+                    if(watch.status == 'stopped'){
+                        // set clock out time...
+                        this.clock_out_time = watch.time_stamp.stop_time;
+
+                        // display total time calculation...
+                        this.duration = Math.floor(watch.time_stamp.duration);
+                    }
+
+
+                    
                     this.timer_loading = false;
-
-                  
-
                 }catch(error){
                     console.log("error in getting server time: ", error);
                     this.timer_loading = false;
                 }
-            }
+            },
+
+
         },
 
         computed: {
             formatTime() {
                 // Calculate hours, minutes, and seconds
-                const hours = Math.floor(this.elapsedTime / (60 * 60 * 1000));
-                const minutes = Math.floor((this.elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
-                const seconds = Math.floor((this.elapsedTime % (60 * 1000)) / 1000);
+                let hours, minutes, seconds;
+                hours = Math.floor(this.elapsedTime / (60 * 60 * 1000));
+                minutes = Math.floor((this.elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
+                seconds = Math.floor((this.elapsedTime % (60 * 1000)) / 1000);
 
                 // Format the time as HH:MM:SS
                 return `${hours}:${(minutes < 10 ? '0' : '')}${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
+            },
+
+            convertSecondsToWatchFormat(){
+                const hours = Math.floor(this.duration / 3600);
+                const minutes = Math.floor((this.duration % 3600) / 60);
+                const seconds = this.duration % 60;
+                return `${this.formatTimeUnit(hours)}:${this.formatTimeUnit(minutes)}:${this.formatTimeUnit(seconds)}`;
             }
+
+            
         },
 
         mounted(){
             this.getCurrentDate();
             this.getContract();
             this.getServerTime();
+           
         },
 
 
         beforeUnmount() {
-            clearInterval(this.timerInterval);
+            clearInterval(this.durationCounter);
         },
     }
 </script>
