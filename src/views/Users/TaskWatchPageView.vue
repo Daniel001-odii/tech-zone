@@ -1,53 +1,43 @@
 <template>
     <div>
         <PageTitle>Task Watch</PageTitle>
-        <span class="text-red-500">{{ timer_error }}</span>
+        
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
             <div class="bg-tz_light_blue text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
+            
+            <p class="text-gray-400">status: {{ watch_status }}</p>
 
-<!-- <button v-if="!clock_in_time" @click="startTaskWatch" class="bg-red-500 text-white p-3">
-    <span >Clock in</span>
-</button>
-<button v-else @click="stopTaskWatch" class="bg-red-500 text-white p-3">
-    <span >Clock out</span>
-</button> -->
-
-<!-- {{ stop_time - start_time }}s -->
-
-<!-- <button @click="toggleTaskWatch">
-    <span v-if="watch_status == 'active'">pause</span>
-    <span v-else>play</span>
-</button> -->
-
-<p class="text-gray-400">status: {{ watch_status }}</p>
+            <!-- display errors here.... -->
+            <span class="text-red-500">{{ timer_error }}</span>
 
 
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
-                <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div>
+                <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div> <br/>
+
                 <div class="bg-tz_blue hover:bg-tz_dark_blue rounded-full w-[300px] flex flex-row items-center p-[3px] justify-between">
                     <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
                         <i class="bi bi-stopwatch"></i>
-                        <span v-if="timer_loading" class="text-sm text-yellow-500">loading...</span>
+                        <span v-if="timer_loading" class="text-sm text-yellow-300">loading...</span>
                         <span v-else>{{ convertSecondsToWatchFormat }}</span>
                        
                         <button @click="toggleTaskWatch">
                             <i v-if="timer_loading" class="bi bi-arrow-clockwise"></i>
-                            <i v-if="!timer_loading && watch_status == 'active'" class="bi bi-pause-fill"></i>
-                            <i v-else class="bi bi-play-circle-fill"></i>
+                            <span v-if="!timer_loading">
+                                <i v-if="watch_status == 'active'" class="bi bi-pause-fill"></i>
+                                <i v-else class="bi bi-play-circle-fill"></i>
+                            </span>
                         </button>
                     </div>
                     <button v-if="!clock_in_time" @click="startTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
                         Clock in
                     </button>
-                    <button v-else @click="startTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
+                    <button v-else @click="stopTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
                         Clock out
                     </button>
                 </div>
             </div>
 
-            <!-- <p>{{ formatTime }}</p>
-            <button @click="toggleTimer">{{ timerRunning ? 'Pause' : 'Play' }}</button> -->
-
+            <!-- <span v-if="clock_in_time">Day: {{ convertDateTimeToDayOfWeek(clock_in_time) }} - labels: {{ testData.labels }}</span> -->
 
             <div class="flex flex-row flex-wrap gap-3">
 
@@ -55,14 +45,18 @@
                 <div class="flex flex-row md:flex-col gap-3 w-full md:w-fit">
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit min-w-[120px]">
                         <span class="text-[10px] uppercase">clock in time</span>
-                        <span class="font-medium">{{ convertTimeToAMPM(clock_in_time) }}</span>
+                        <span v-if="clock_in_time" class="font-medium">
+                            {{ convertTimeToAMPM(clock_in_time) }}
+                        </span>
+                        <span v-else>00:00:00</span>
                     </div>
 
                     <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit min-w-[120px]">
                         <span class="text-[10px] uppercase">clock out time</span>
-                        <span class="font-medium">
+                        <span v-if="clock_out_time" class="font-medium">
                             {{ convertTimeToAMPM(clock_out_time) }}
                         </span>
+                        <span v-else>00:00:00</span>
                     </div>
                 </div>
 
@@ -157,7 +151,7 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                         },
                         title: {
                             display: true,
-                            text: 'Hours worked per day',
+                            text: 'worked per day',
                         },
                         grid: {
                             display: false,
@@ -189,7 +183,7 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                     {
                         label: 'Day',
                         data: [2, 12, 5, 9, 7, 2, 12, 5, 9, 7],
-                        backgroundColor: ['#81AAEA', '#4E79BC', '#4E79BC', '#81AAEA', '#4E79BC', '#4E79BC', '#4E79BC', '#4E79BC', '#4E79BC', '#4E79BC'],
+                        backgroundColor: ['#81AAEA'],
                     },
                 ],
                 },
@@ -238,6 +232,12 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
             convertDateTimeToSecs(date_time){
                 const time = new Date(date_time);
                 return time.getTime();
+            },
+
+            convertDateTimeToDayOfWeek(date_time){
+                const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const index = new Date(date_time).getDay();
+                return days[index];
             },
 
 
@@ -333,12 +333,13 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
         
                     this.timer_loading = false;
                 }catch(error){
-                    console.error("error pausing timer: ", error);
+                    // console.error("error toggling timer: ", error);
+                    this.timer_error = error.response.data.message;
                     this.timer_loading = false;
                 }
             },
 
-            async getServerTime(){
+            async getWatchForToday(){
                 try{
                     this.timer_loading = true;
                     const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/today`);
@@ -406,6 +407,28 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                 }
             },
 
+            async getAllWatches(){
+                try{
+                    const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/all`);
+                  
+                    const days = response.data.watch_list;
+                    
+                    // set lables to empty array...
+                    this.testData.labels = []
+                    this.testData.datasets[0].data = []
+
+                    // push days into chart  labels...
+                    days.forEach(day =>{
+                        this.testData.labels.push(this.convertDateTimeToDayOfWeek(day.time_stamp.clock_in_time));
+                        this.testData.datasets[0].data.push(day.time_stamp.duration);
+                    })
+
+                    console.log("recorded days: ", days);
+                }catch(error){
+                    this.timer_error = error;
+                }
+            }
+
 
         },
 
@@ -434,7 +457,8 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
         mounted(){
             this.getCurrentDate();
             this.getContract();
-            this.getServerTime();
+            this.getWatchForToday();
+            this.getAllWatches();
            
         },
 
