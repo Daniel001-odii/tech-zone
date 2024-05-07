@@ -5,26 +5,44 @@
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
             <div class="bg-tz_light_blue text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
 
-<button v-if="!clock_in_time" @click="startTaskWatch" class="bg-red-500 text-white p-3">
+<!-- <button v-if="!clock_in_time" @click="startTaskWatch" class="bg-red-500 text-white p-3">
     <span >Clock in</span>
 </button>
 <button v-else @click="stopTaskWatch" class="bg-red-500 text-white p-3">
     <span >Clock out</span>
-</button>
+</button> -->
 
 <!-- {{ stop_time - start_time }}s -->
-{{ convertSecondsToWatchFormat }}
-<button @click="toggleTaskWatch">
+
+<!-- <button @click="toggleTaskWatch">
     <span v-if="watch_status == 'active'">pause</span>
     <span v-else>play</span>
-</button>
+</button> -->
 
-<p>watch status: {{ watch_status }}</p>
+<p class="text-gray-400">status: {{ watch_status }}</p>
 
 
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
                 <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div>
-
+                <div class="bg-tz_blue hover:bg-tz_dark_blue rounded-full w-[300px] flex flex-row items-center p-[3px] justify-between">
+                    <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
+                        <i class="bi bi-stopwatch"></i>
+                        <span v-if="timer_loading" class="text-sm text-yellow-500">loading...</span>
+                        <span v-else>{{ convertSecondsToWatchFormat }}</span>
+                       
+                        <button @click="toggleTaskWatch">
+                            <i v-if="timer_loading" class="bi bi-arrow-clockwise"></i>
+                            <i v-if="!timer_loading && watch_status == 'active'" class="bi bi-pause-fill"></i>
+                            <i v-else class="bi bi-play-circle-fill"></i>
+                        </button>
+                    </div>
+                    <button v-if="!clock_in_time" @click="startTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
+                        Clock in
+                    </button>
+                    <button v-else @click="startTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
+                        Clock out
+                    </button>
+                </div>
             </div>
 
             <!-- <p>{{ formatTime }}</p>
@@ -35,12 +53,12 @@
 
                 <!-- CLOCK IN AND COCK OUT time -->
                 <div class="flex flex-row md:flex-col gap-3 w-full md:w-fit">
-                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
+                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit min-w-[120px]">
                         <span class="text-[10px] uppercase">clock in time</span>
                         <span class="font-medium">{{ convertTimeToAMPM(clock_in_time) }}</span>
                     </div>
 
-                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit">
+                    <div class="flex flex-col border rounded-md p-2 dark:bg-gray-800 dark:border-gray-700 grow md:grow-0 md:w-fit min-w-[120px]">
                         <span class="text-[10px] uppercase">clock out time</span>
                         <span class="font-medium">
                             {{ convertTimeToAMPM(clock_out_time) }}
