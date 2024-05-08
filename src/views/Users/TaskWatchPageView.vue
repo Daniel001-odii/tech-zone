@@ -56,7 +56,7 @@
                         <span v-if="timer_loading" class="text-sm text-yellow-300">loading...</span>
                         <span v-else>{{ convertSecondsToWatchFormat }}</span>
                        
-                        <button v-if="!watch_status == 'stopped'" @click="toggleTaskWatch">
+                        <button @click="toggleTaskWatch">
                             <i v-if="timer_loading" class="bi bi-arrow-clockwise"></i>
                             <span v-if="!timer_loading">
                                 <i v-if="watch_status == 'active'" class="bi bi-pause-fill"></i>
@@ -230,6 +230,10 @@ import Modal from '@/components/Modal.vue';
                     },
                 ],
                 },
+
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
+                },
             }
         },
         methods:{
@@ -298,6 +302,8 @@ import Modal from '@/components/Modal.vue';
                 // set timer to 0 for initial state...
                 this.duration = 0;
 
+                const headers = this.headers;
+
                 try{
                     const form = {
                         activity_description: this.task_description
@@ -306,7 +312,7 @@ import Modal from '@/components/Modal.vue';
                     this.timer_loading = true;
 
 
-                    const response = await axios.post(`${this.api_url}/watch/${this.$route.params.contract_id}/start`, form);
+                    const response = await axios.post(`${this.api_url}/watch/${this.$route.params.contract_id}/start`, form, { headers });
                     // console.log("response from timer watch: ", response);
                     const watch = response.data.watch;
 
@@ -335,6 +341,7 @@ import Modal from '@/components/Modal.vue';
 
             async stopTaskWatch(){
                 // set timer to 0 for initial state...
+                const headers = this.headers;
 
                 try{
                     const form = {
@@ -344,7 +351,7 @@ import Modal from '@/components/Modal.vue';
                     this.timer_loading = true;
 
 
-                    const response = await axios.patch(`${this.api_url}/watch/${this.$route.params.contract_id}/stop`, form);
+                    const response = await axios.patch(`${this.api_url}/watch/${this.$route.params.contract_id}/stop`, form, { headers });
                     console.log("response from stopppp: ", response);
                     const watch = response.data.watch;
 
@@ -371,9 +378,10 @@ import Modal from '@/components/Modal.vue';
             },
 
             async toggleTaskWatch(){
+                const headers = this.headers;
                 try{
                     this.timer_loading = true;
-                    const response =  await axios.patch(`${this.api_url}/watch/${this.$route.params.contract_id}/toggle`);
+                    const response =  await axios.patch(`${this.api_url}/watch/${this.$route.params.contract_id}/toggle`, {}, { headers });
                     const watch = response.data.watch;
 
                     console.log("watch toggled: ", watch);
@@ -389,16 +397,17 @@ import Modal from '@/components/Modal.vue';
         
                     this.timer_loading = false;
                 }catch(error){
-                    // console.error("error toggling timer: ", error);
+                    console.error("error toggling timer: ", error);
                     this.timer_error = error.response.data.message;
                     this.timer_loading = false;
                 }
             },
 
             async getWatchForToday(){
+                const headers = this.headers;
                 try{
                     this.timer_loading = true;
-                    const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/today`);
+                    const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/today`, { headers });
                     console.log("today's log: ", response);
 
                     // set watch status for global use...
@@ -464,8 +473,11 @@ import Modal from '@/components/Modal.vue';
             },
 
             async getAllWatches(){
+
+                const headers = this.headers;
+
                 try{
-                    const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/all`);
+                    const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/all`, { headers });
                   
                     const days = response.data.watch_list;
                     

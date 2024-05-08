@@ -108,6 +108,7 @@ export default {
                 showAlertBox("success", message);
                 this.$router.push("/login");
             }catch(error){
+                console.log("error resetting password: ", error);
                 this.error = error.response.data.message;
                 this.loading = false;
             }

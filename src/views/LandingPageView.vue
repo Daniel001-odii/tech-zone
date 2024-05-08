@@ -122,8 +122,8 @@
 
             <section>
                 <div class="flex flex-col justify-center md:flex-row-reverse items-center p-5">
-                    <img data-aos="fade-left" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
-                    <div data-aos="fade-right" class="md:w-fit text-left gap-8 flex flex-col" >
+                    <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
+                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col" >
                         <h1 class="text-[30px]">Unlock your next career move! <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
                         <button class="btn">Upload CV Now</button>
                     </div>
@@ -260,12 +260,12 @@
 
             <section>
                 <div class=" flex items-center flex-col md:flex-row-reverse">
-                    <div data-aos="fade-left" class="md:w-fit text-left gap-8 flex flex-col">
+                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col">
                         <h2 class="section_subtitle">Join us today!</h2>
                         <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
                         <GetStartedNow/>
                     </div>
-                    <img data-aos="fade-right" src="../assets/images/foot_illustration.png" alt="lady image" class="section_img w-96">
+                    <img data-aos="fade-up" src="../assets/images/foot_illustration.png" alt="lady image" class="section_img w-96">
                 </div>
             </section>
         
