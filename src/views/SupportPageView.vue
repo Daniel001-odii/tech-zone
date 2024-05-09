@@ -1,6 +1,6 @@
 <template>
     <HomeNavbar/>
-    <div class=" h-full max-w-screen-2xl mx-auto my-0">
+    <div class="pt-20 h-full max-w-screen-2xl mx-auto my-0">
         <div class="flex flex-row justify-center items-center bg-[#EDEFF3] min-h-[300px] hero" >
             <div class="p-5 w-full text-center">
                 <h2>FAQs</h2>

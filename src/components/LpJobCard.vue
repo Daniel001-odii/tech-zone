@@ -1,5 +1,5 @@
 <template>
-        <div class="rounded-lg p-5 border border-white flex flex-col w-fit min-w-80 hover:bg-slate-200">
+        <div class="rounded-lg p-5 border border-gray-200 flex flex-col w-fit min-w-80 bg-slate-100 max-w-[800px]">
             <div class="flex flex-row justify-between font-medium text-sm">
                 <div class="flex items-center justify-center">
                     <i class="bi bi-building-check"></i> | <span>{{company}}</span>
@@ -21,7 +21,7 @@
 
                 <div>
                     <!-- We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team.  -->
-                    {{ job_description }}
+                    {{ job_description.substring(0,200) }}...
                 </div>
                
                 <div class="mt-3 font-medium flex justify-between items-center">

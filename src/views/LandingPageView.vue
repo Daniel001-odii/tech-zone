@@ -9,12 +9,12 @@
 
 
 
-    <div class=" w-full text-black bg-white">
+    <div class="pt-20 w-full text-black bg-white">
         <div class="flex flex-col justify-center items-center max-w-screen-2xl mt-10" style="margin: 0 auto;">
         
             <section>
                 <div data-aos="zoom-in" class="section_container">
-                    <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6">
+                    <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6 md:w-[50%]">
                         <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
                             <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
                         </div>
@@ -22,11 +22,37 @@
                             Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-[55px] left-0 right-0 li"/></span> Job.<br/> Hire the right talents.
                         </div>
                         <div class=" text-[16px]">
-                            At Apex Technologies, we serve as a comprehensive marketplace, facilitating seamless connections between companies seeking tech expertise and skilled professionals looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects, whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
+                            At Apex Technologies, we serve as a comprehensive marketplace, <br/>
+                            facilitating seamless connections between companies seeking tech expertise and skilled professionals
+                             looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects,
+                             whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
                         </div>
                         <GetStartedNow/>
                     </div>
-                    <img data-aos="zoom-in" src="../assets/images/Group 303.png" class="section_img">
+                  
+                    <div class="w-full md:w-[50%] relative flex justify-center items-center">
+                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute top-5 -right-6 z-10 rounded-xl shadow-lg items-center gap-3">
+                            <div>
+                                <i class="bi bi-check text-2xl bg-green-100 p-3 rounded-lg text-green-500"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-2xl"><b>1K+</b></span>
+                                <span class="text-sm">Talents Hired</span>
+                            </div>
+                        </div>
+                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute bottom-5 -left-6 z-10 rounded-xl shadow-lg items-center gap-3">
+                            <div>
+                                <i class="bi bi-briefcase text-2xl bg-tz_light_blue p-3 rounded-lg text-blue-500"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-2xl"><b>3K+</b></span>
+                                <span class="text-sm">JObs Available</span>
+                            </div>
+                        </div>
+                        <img data-aos="zoom-in" src="../assets/images/hero-image.jpg" class=" rounded-[40px] w-[600px]">
+                    </div>
+                    <!-- <img data-aos="zoom-in" src="../assets/images/Group 303.png" class="section_img"> -->
+                    
                 </div>
                 
             </section>
@@ -76,7 +102,7 @@
 
 
             <!-- STEPS FOR EMPLOYERS -->
-            <section class=" bg-[#EDEFF3]">
+            <section class=" bg-[#EDEFF3] border-t-2 border-dashed border-blue-700">
                 <div data-aos="fade-up" class="flex flex-col text-center py-6">
                     <div class="text-center flex flex-col-reverse">
                         <span class="font-medium text-[16px] capitalize">We are here to help you, Just follow these steps</span>
@@ -124,7 +150,7 @@
                 <div class="flex flex-col justify-center md:flex-row-reverse items-center p-5">
                     <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
                     <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col" >
-                        <h1 class="text-[30px]">Unlock your next career move! <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
+                        <h1 class="text-[30px]">Unlock your next career move!<br/> <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
                         <button class="btn">Upload CV Now</button>
                     </div>
                 </div>
@@ -171,7 +197,7 @@
             </section>
 
             <section class=" bg-white">
-                    <div data-aos="zoom-in-up" class="text-left flex flex-col gap-5">
+                    <div data-aos="zoom-in-up" class="text-left flex flex-col gap-5  w-full">
                         <div class="flex flex-col justify-around">
                             <span class="text-[16px] capitalize">FEATURED JOBS</span>
                             <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
@@ -184,8 +210,33 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col justify-start items-center md:flex-row gap-3border border-red-200 overflow-x-auto">
-                            <LpJobCard v-for="(job, index) in jobPostings" :key="index"
+                        <div class="flex flex-col justify-center items-center md:flex-row relative gap-3border border-red-200">
+                            <button @click="prevJob" class=" bg-tz_blue text-white p-3 rounded-lg absolute -left-5 border border-tz_blue disabled:text-tz_blue">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+
+
+                           <!-- {{  job  }} -->
+                           <span v-if="loading_jobs">loading...</span>
+
+
+                                <LpJobCard v-if="jobs"  :key="index"
+                                :company = "jobs[job_index].employer.profile.company_name"
+                                :job_time = "formatTimestamp(jobs[job_index].created)"
+                                :job_title = "jobs[job_index].title"
+                                :job_location = "jobs[job_index].location"
+                                :job_duration = "jobs[job_index].period"
+                                :job_description = "jobs[job_index].description"
+                                :job_url = "'/'"
+                                :budget = "jobs[job_index].budget"
+                                />
+
+
+                            <button @click="nextJob" class="bg-tz_blue text-white p-3 rounded-lg absolute -right-5 disabled:bg-white border border-tz_blue">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+
+                            <!-- <LpJobCard v-for="(job, index) in jobPostings" :key="index"
                             :company = "job.company"
                             :job_time = "job.job_time"
                             :job_title = "job.job_title"
@@ -194,9 +245,9 @@
                             :job_description = "job.job_description"
                             :job_url = "'/'"
                             :budget = "job.budget"
-                            />
+                            /> -->
                         </div>
-
+<!-- 
                         <div class="flex flex-row justify-center gap-3 p-5">
                             <button class="slide_btn">
                                 <i class="bi bi-arrow-left"></i>
@@ -204,7 +255,7 @@
                             <button class="slide_btn sb_active">
                                 <i class="bi bi-arrow-right"></i>
                             </button>
-                        </div>
+                        </div> -->
                     </div>
             </section>
 
@@ -291,50 +342,56 @@ import 'aos/dist/aos.css'
 import LpJobCard from '@/components/LpJobCard.vue';
 import HomeNavbar from '@/components/HomeNavbar.vue';
 
+import { formatTimestamp } from '@/utils/dateFormat';
+
+import axios from 'axios';
+
 export default {
     name: "LandingPage",
     components: { Navbar, StatsBox, StepBox, JobCat, StrikeLineSvg, GetStartedNow, Footer, LpJobCard, SiteLogo, HomeNavbar },
     data(){
         return{
-            jobPostings: [
-            {
-                company: 'Tech Solutions Ltd',
-                job_time: '2 days ago',
-                job_title: 'Web Developer',
-                job_location: 'Lagos, Lagos State',
-                job_duration: '3 months',
-                job_description: 'Exciting opportunity for a skilled web developer to join our team.',
-                budget: 5000, // Replace with a random amount as needed
-            },
-            {
-                company: 'Design Innovations',
-                job_time: '1 month ago',
-                job_title: 'Graphic Designer',
-                job_location: 'Abuja, FCT',
-                job_duration: '6 months',
-                job_description: 'Looking for a creative graphic designer to work on exciting projects.',
-                budget: 8000, // Replace with a random amount as needed
-            },
-           
-            {
-                company: 'Data Analytics',
-                job_time: '3 months ago',
-                job_title: 'Data Analyst',
-                job_location: 'Ibadan, Oyo State',
-                job_duration: '2 months',
-                job_description: 'Exciting opportunity for a data analyst to work on interesting data projects.',
-                budget: 7000, // Replace with a random amount as needed
-            },
-                ],
+            jobs:'',
             alert_banner: true,
             mobile_menu: false,
+
+            job_index: 1,
+            loading_jobs: false,
+            formatTimestamp,
         }
     },
-  
-  
+
+    methods:{
+        prevJob(){
+            if(this.job_index > 0){
+                this.job_index -= 1;
+            }
+        },
+
+        nextJob(){
+            if(this.job_index < this.jobs.length - 1){
+                this.job_index += 1;
+            }
+        },
+        
+        async getAllJobs(){
+            try{
+                this.loading_jobs = true;
+                const response = await axios.get(`${this.api_url}/jobs`);
+                this.jobs = response.data.jobs;
+                console.log("fetched jobs: ", this.jobs);
+                this.loading_jobs = false;
+            }catch(error){
+                console.log("error getting jobs: ", error);
+                this.loading_jobs = false;
+            }
+        }
+    },
 
     mounted() {
-    AOS.init()
+    AOS.init();
+
+    this.getAllJobs();
   },
 }
 </script>
@@ -385,5 +442,21 @@ export default {
 
     section{
         @apply flex justify-center items-center mx-0 my-auto p-8 w-full
+    }
+
+
+    .floating {  
+        animation-name: floating;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        margin-left: 30px;
+        margin-top: 5px;
+    }
+    
+    @keyframes floating {
+        0% { transform: translate(0,  0px); }
+        50%  { transform: translate(0, 15px); }
+        100%   { transform: translate(0, -0px); }    
     }
 </style>
