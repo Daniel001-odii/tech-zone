@@ -148,7 +148,7 @@ const routes = [
       {path: 'settings', component: SettingsPageView},
       {path: 'contracts/:contract_id/watch', component: TaskWatchPageView},
     ],
-    meta: { requiresAuth: true, role: 'user' },
+    // meta: { requiresAuth: true, role: 'user' },
   },
 
   // {
