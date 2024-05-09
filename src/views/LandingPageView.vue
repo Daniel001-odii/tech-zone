@@ -12,7 +12,7 @@
     <div class="pt-20 w-full text-black bg-white">
         <div class="flex flex-col justify-center items-center max-w-screen-2xl mt-10" style="margin: 0 auto;">
         
-            <section>
+            <section class="flex flex-col">
                 <div data-aos="zoom-in" class="section_container">
                     <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6 md:w-[50%]">
                         <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
@@ -40,19 +40,32 @@
                                 <span class="text-sm">Talents Hired</span>
                             </div>
                         </div>
-                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute bottom-5 -left-6 z-10 rounded-xl shadow-lg items-center gap-3">
+                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute bottom-5 -left-10 z-10 rounded-xl shadow-lg items-center gap-3">
                             <div>
                                 <i class="bi bi-briefcase text-2xl bg-tz_light_blue p-3 rounded-lg text-blue-500"></i>
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-2xl"><b>3K+</b></span>
-                                <span class="text-sm">JObs Available</span>
+                                <span class="text-sm">Jobs Available</span>
                             </div>
                         </div>
                         <img data-aos="zoom-in" src="../assets/images/hero-image.jpg" class=" rounded-[40px] w-[600px]">
                     </div>
                     <!-- <img data-aos="zoom-in" src="../assets/images/Group 303.png" class="section_img"> -->
                     
+                </div>
+
+                <div class="w-[90%] h-28  bg-white shadow-lg flex flex-row p-10 rounded-lg justify-center items-center gap-3">
+                    <div class="flex flex-row items-center gap-3 w-[50%] border-b">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search Jobs here" class="border-none w-full">
+                    </div>
+                    <div class="border-l h-full"></div>
+                    <div class="flex flex-row items-center gap-3 w-[50%] border-b">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <input type="text" placeholder="Search Jobs here" class="border-none w-full">
+                    </div>
+                    <button class="btn">Search</button>
                 </div>
                 
             </section>
