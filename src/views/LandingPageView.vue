@@ -31,7 +31,7 @@
                     </div>
                   
                     <div class="w-full md:w-[50%] relative flex justify-center items-center">
-                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute top-5 -right-6 z-10 rounded-xl shadow-lg items-center gap-3">
+                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute top-6 -left-[60px] z-10 rounded-xl shadow-lg items-center gap-3">
                             <div>
                                 <i class="bi bi-check text-2xl bg-green-100 p-3 rounded-lg text-green-500"></i>
                             </div>
@@ -40,7 +40,7 @@
                                 <span class="text-sm">Talents Hired</span>
                             </div>
                         </div>
-                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute bottom-5 -left-10 z-10 rounded-xl shadow-lg items-center gap-3">
+                        <div class="floating bg-white hidden md:flex p-5 w-52 absolute bottom-5 -right-10 z-10 rounded-xl shadow-lg items-center gap-3">
                             <div>
                                 <i class="bi bi-briefcase text-2xl bg-tz_light_blue p-3 rounded-lg text-blue-500"></i>
                             </div>
