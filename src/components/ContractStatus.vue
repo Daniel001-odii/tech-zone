@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="text-[12px]">
         <span v-if="type === 'closed'" class="bg-gray-600">
             closed
         </span>
@@ -24,6 +24,6 @@ export default {
 </script>
 <style>
     .tag{
-        @apply px-4 py-1 text-white rounded-full text-sm
+        @apply px-4 py-1 text-white rounded-full
     }
 </style>

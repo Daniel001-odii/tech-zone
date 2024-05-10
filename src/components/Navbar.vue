@@ -43,15 +43,17 @@
 
                     <RouterLink to="/in/contracts" class="nav_link">Contracts</RouterLink>
 
-                    <RouterLink to="/in/notifications" class="nav_link">Notifications</RouterLink>
-
                     <RouterLink :to="'/in/users/' + user._id" class="nav_link">My Profile</RouterLink>
 
                     <RouterLink to="/in/applications" class="nav_link">My Applications</RouterLink>
 
+                    <RouterLink to="/in/overview" class="nav_link">Overview</RouterLink>
+
+                    <RouterLink to="/in/notifications" class="nav_link">Notifications</RouterLink>
+
                     <RouterLink to="/in/settings" class="nav_link">Settings</RouterLink>
 
-                    <RouterLink to="/" class="nav_link">Help & Support</RouterLink>
+                    <RouterLink to="/support" class="nav_link">Help & Support</RouterLink>
                 </div>
                 <div class="flex flex-col text-left gap-2 mt-8 w-full p-2 " @click="mobile_nav = !mobile_nav" v-if="user_type == 'employer'">
                     <RouterLink to="/client/dashboard" class="nav_link">Dashboard</RouterLink>
@@ -59,8 +61,8 @@
                     <RouterLink to="/messages" class="nav_link">Messages</RouterLink>
                     <RouterLink to="/client/profile" class="nav_link">My Profile</RouterLink>
                     <RouterLink to="/client/contracts" class="nav_link">Contracts & Hires</RouterLink>
-                    <div class="menu_item text-slate-300 nav_link"><i class="bi bi-compass"></i> Billings</div>
-                    <div class="menu_item text-slate-300 nav_link"><i class="bi bi-gear"></i> Settings</div>
+                    <div class="menu_item text-slate-300 nav_link"><i class="bi bi-compass"></i> Billings & payments</div>
+                    <RouterLink to="/client/settings" class="nav_link"> Settings</RouterLink>
 
                 </div>
 
@@ -125,7 +127,7 @@
                 </div>
             </nav>
 
-            <HomeNavbar v-else/>
+            <HomeNavbar v-if="!is_authenticated && !user"/>
 </div>
 </template>
 <script>
