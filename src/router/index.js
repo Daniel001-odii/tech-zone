@@ -7,6 +7,7 @@ import MessagePageViewVue from '@/views/Users/MessagePageView.vue'
 import SavedJobsViewVue from '@/views/Users/SavedJobsView.vue'
 import ApplicationPageViewVue from '@/views/Users/ApplicationPageView.vue'
 import ContractPageViewVue from '@/views/Users/ContractPageView.vue'
+
 import ContractsListPageViewVue from '@/views/Users/ContractsListPageView.vue'
 import MyApplicationsPageViewVue from '@/views/Users/MyApplicationsPageView.vue'
 import ProfilePageViewVue from '@/views/Users/ProfilePageView.vue'
@@ -25,6 +26,7 @@ import ClientSignupViewVue from '@/views/ClientSignupView.vue'
 import ClientDashBoardPage from '@/views/Employers/ClientDashboardPage.vue'
 import ClientPostJobView from '@/views/Employers/ClientPostJobPageView.vue'
 import ClientSettingsPage from '@/views/Employers/SettingsPageView.vue'
+import ClientContractPageViewVue from '@/views/Employers/ContractPageView.vue'
 import EarningsPageView from '@/views/Users/EarningsPageView.vue'
 import SettingsPageView from '@/views/Users/SettingsPageView.vue'
 import OverviewPageView from '@/views/Users/OverviewPageView.vue'
@@ -191,7 +193,7 @@ const routes = [
       {path: 'profile', component: ClientProfilePageViewVue},
       {path: 'notifications', component: NotifcationsPageView},
       {path: 'contracts', component: ClientContractsListPageViewVue},
-      {path: 'contracts/:contract_id', component: ContractPageViewVue},
+      {path: 'contracts/:contract_id', component: ClientContractPageViewVue},
 
     ],
     meta: { requiresAuth: true, role: 'employer' },
