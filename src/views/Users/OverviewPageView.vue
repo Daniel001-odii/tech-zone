@@ -39,7 +39,7 @@
            <div class="flex flex-col mt-5">
                 <h2 class="font-bold">Contracts Details</h2>
                 
-                <div class="flex overflow-x-auto">
+                <div class="flex overflow-x-auto overflow-y-visible">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -107,8 +107,22 @@
                                     <button class="btn min-w-[180px]" v-if="contract.employer_feedback.rating > 0">open review <i class="bi bi-arrow-right ml-2"></i></button>
                                     <span v-else>No review yet</span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <button><i class="bi bi-three-dots-vertical"></i></button>
+                                <td class="px-6 py-4 relative">
+                                    <!-- <button class="p-2 bg-red-500 text-white" @click="dropdown[contract_id] = !dropdown[contract_id]">menu: {{ dropdown[contract_id] }}</button>
+                                    <div v-if="dropdown[contract_id]" class="flex-col min-w-[150px] bg-white border p-3 rounded-md absolute right-5 group-hover:flex">
+                                        <span>View contract</span>
+                                        <span>Open taskwatch</span>
+                                    </div> -->
+                                    <ActionDropwdown>
+                                        <RouterLink :to="`/in/contracts/${contract._id}`" class="hover:bg-slate-100 p-3">
+                                            <i class="bi bi-gift"></i> 
+                                            View Contract
+                                        </RouterLink>
+                                        <RouterLink :to="`/in/contracts/${contract._id}/watch`" class="hover:bg-slate-100 p-3">
+                                            <i class="bi bi-clock-history"></i> 
+                                            Open in Taskwatch
+                                        </RouterLink>
+                                    </ActionDropwdown>
                                 </td>
                             </tr>
                         </tbody>
@@ -117,8 +131,11 @@
            </div>
        </div>
 
-        
+       <!-- http://localhost:8080/in/contracts/662b86852547590a09cc96f5/watch -->
     </div>
+
+
+
 </template>
 <script>
 import JobDetailCard from '@/components/JobDetailCard.vue';
@@ -128,9 +145,14 @@ import axios from 'axios';
 import PageTitle from '@/components/PageTitle.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 
+import { Dropdown } from 'flowbite';
+
+import ActionDropwdown from '@/components/ActionDropdown.vue';
+
+
 export default {
     name: "OverviewPageView",
-    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading },
+    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading, ActionDropwdown },
     data(){
         return{
             contracts: '',
@@ -140,9 +162,14 @@ export default {
             completed_contracts: [],
             user: '',
             loading: false,
+
+            dropdown: [],
         }
     },
     methods:{
+        closeContractMenu(index){
+            this.contract_menu[index] = false;
+        },
         // get user...
         async getUser(){
             try{
@@ -179,6 +206,42 @@ export default {
             }
         }
        
+    },
+ 
+    mounted(){
+        // initialize flowbite dropwdown..
+        // const dropdownMenut = document.getElementById("dropdownMenu");
+        const dropdownMenut = document.getElementsByClassName("dropdownMenu");
+        const dropdownTrigger = document.getElementsByClassName("dropdownButton");
+        // const dropdownTrigger = document.getElementById("dropdownButton");
+
+        const options = {
+            placement: 'bottom',
+            offsetSkidding: 0,
+            offsetDistance: 10,
+            onHide: () => {
+                console.log('dropdown has been hidden');
+            },
+            onShow: () => {
+                console.log('dropdown has been shown');
+            }
+        };
+
+        // for(let i = 0; i < dropdownMenut.length; i++){
+        //     const dropdown = new Dropdown(dropdownMenut, dropdownTrigger, options);
+        // }
+
+        // if (dropdownMenut) {
+            /*
+            * targetEl: required
+            * triggerEl: required
+            * options: optional
+            */
+            // const dropdown = new Dropdown(dropdownMenut, dropdownTrigger, options);
+
+            // show the dropdown
+            // dropdown.show();
+        // }
     },
     created() {
         this.getContracts();

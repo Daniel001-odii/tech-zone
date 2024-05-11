@@ -90,7 +90,7 @@
                                 <!-- <span class="hidden md:inline-block ">{{job_filter_form.posted}}</span> -->
                             </button>
 
-                            <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-scroll md:overflow-visible">
+                            <form @submit.prevent="searchJob" class="gap-2 flex flex-row overflow-x-auto md:overflow-visible">
                                 <input type="search" class=" min-w-28 px-4 py-2 bg-tz_light_blue rounded-md form_input" placeholder="Search all types of jobs" v-model="job_search">
                                 <button type="submit" class="bg-tz_light_blue text-tz_blue px-4 py-2 rounded-md hover:bg-tz_blue hover:text-white dark:text-white">
                                     <i class="bi bi-search"></i> 
