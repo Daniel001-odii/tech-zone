@@ -5,7 +5,7 @@
     <template #body>
         <div class="flex flex-col gap-2">
             <p class="">You are about to clock-in for today's work session.</p>
-            <span class="text-blue-300 bg-tz_light_blue p-3 rounded">you cannot clock in twice after now, you can only pause, resume or clockout after the work session.</span>
+            <span class="dark:text-blue-300 text-blue-500 bg-tz_light_blue p-3 rounded">you cannot clock in twice after now, you can only pause, resume or clockout after clock-in.</span>
 
                 <div class="p-3">
                     <p>What are you working on?</p>
@@ -24,14 +24,14 @@
     <template #body>
         <div class="flex flex-col gap-2">
             <p class="text-xl">You are about to clock-out for today's work session.</p>
-            <span class="text-red-300 bg-red-900 p-3 rounded">
+            <span class="dark:text-red-300 text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded">
                 <i class="bi bi-info-circle"></i> 
                 you cannot revert this action once done.</span>
         </div>
         
     </template>
     <template #footer>
-        <button class="font-bold rounded-md p-3 bg-red-600 hover:bg-red-700" @click="stopTaskWatchConfirm">Stop watch</button>
+        <button class="font-bold text-white rounded-md p-3 bg-red-600 hover:bg-red-700" @click="stopTaskWatchConfirm">Stop watch</button>
     </template>
 </Modal>
 
@@ -39,7 +39,7 @@
         <PageTitle>Task Watch</PageTitle>
         
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
-            <div class="bg-tz_light_blue text-blue-300 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
+            <div class="bg-tz_light_blue dark:text-blue-300 text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
             
             <p class="text-gray-400">watch status: {{ watch_status }}</p>
 
@@ -50,13 +50,13 @@
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
                 <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div> <br/>
 
-                <div class=" rounded-full w-[300px] flex flex-row items-center justify-between" :class="clock_out_time ? 'bg-green-500':'bg-tz_blue hover:bg-tz_dark_blue'">
+                <div class=" rounded-full w-[300px] flex flex-row items-center justify-between p-1" :class="clock_out_time ? 'bg-green-500':'bg-tz_blue hover:bg-tz_dark_blue'">
                     <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
                         <i class="bi bi-stopwatch"></i>
                         <span v-if="timer_loading" class="text-sm text-yellow-300">loading...</span>
                         <span v-else>{{ convertSecondsToWatchFormat }}</span>
                        
-                        <button @click="toggleTaskWatch">
+                        <button v-if="!watch_status == 'stopped'" @click="toggleTaskWatch">
                             <i v-if="timer_loading" class="bi bi-arrow-clockwise"></i>
                             <span v-if="!timer_loading">
                                 <i v-if="watch_status == 'active'" class="bi bi-pause-fill"></i>
@@ -70,7 +70,7 @@
                     <button v-if="clock_in_time && !clock_out_time" @click="stop_task_watch_modal = !stop_task_watch_modal" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5 ">
                         Clock out
                     </button>
-                    <span v-if="watch_status == 'stopped'" class="mx-auto my-0">completed</span>
+                    <span v-if="watch_status == 'stopped'" class="mx-auto my-0 text-white">completed</span>
                 </div>
             </div>
 
