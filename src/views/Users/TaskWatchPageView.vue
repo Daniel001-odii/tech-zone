@@ -1,11 +1,47 @@
 <template>
+
+<!-- START TASK WATCH MODAL -->
+<Modal :modal_active="start_task_watch_modal" :title="'Start task-watch'">
+    <template #body>
+        <div class="flex flex-col gap-2">
+            <p class="">You are about to clock-in for today's work session.</p>
+            <span class="text-blue-300 bg-tz_light_blue p-3 rounded">you cannot clock in twice after now, you can only pause, resume or clockout after the work session.</span>
+
+                <div class="p-3">
+                    <p>What are you working on?</p>
+                    <input type="text" class="form_input w-full" v-model="task_description">
+                </div>
+            
+        </div>
+    </template>
+    <template #footer>
+        <button class="btn" @click="startTaskWatchConfirm" :disabled="!task_description">Start watch</button>
+    </template>
+</Modal>
+
+<!-- STOP TASK WATCH MODAL -->
+<Modal :modal_active="stop_task_watch_modal" :title="'Stop task-watch'">
+    <template #body>
+        <div class="flex flex-col gap-2">
+            <p class="text-xl">You are about to clock-out for today's work session.</p>
+            <span class="text-red-300 bg-red-900 p-3 rounded">
+                <i class="bi bi-info-circle"></i> 
+                you cannot revert this action once done.</span>
+        </div>
+        
+    </template>
+    <template #footer>
+        <button class="font-bold rounded-md p-3 bg-red-600 hover:bg-red-700" @click="stopTaskWatchConfirm">Stop watch</button>
+    </template>
+</Modal>
+
     <div>
         <PageTitle>Task Watch</PageTitle>
         
         <div class="flex flex-col flex-wrap p-5 items-start justify-start gap-3">
-            <div class="bg-tz_light_blue text-blue-500 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
+            <div class="bg-tz_light_blue text-blue-300 p-3 rounded-md" v-if="contract">{{ contract.job.title }}</div>
             
-            <p class="text-gray-400">status: {{ watch_status }}</p>
+            <p class="text-gray-400">watch status: {{ watch_status }}</p>
 
             <!-- display errors here.... -->
             <span class="text-red-500">{{ timer_error }}</span>
@@ -14,7 +50,7 @@
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
                 <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div> <br/>
 
-                <div class="bg-tz_blue hover:bg-tz_dark_blue rounded-full w-[300px] flex flex-row items-center p-[3px] justify-between">
+                <div class=" rounded-full w-[300px] flex flex-row items-center justify-between" :class="clock_out_time ? 'bg-green-500':'bg-tz_blue hover:bg-tz_dark_blue'">
                     <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
                         <i class="bi bi-stopwatch"></i>
                         <span v-if="timer_loading" class="text-sm text-yellow-300">loading...</span>
@@ -28,12 +64,13 @@
                             </span>
                         </button>
                     </div>
-                    <button v-if="!clock_in_time" @click="startTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
+                    <button v-if="!clock_in_time" @click="start_task_watch_modal = !start_task_watch_modal" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5 ">
                         Clock in
                     </button>
-                    <button v-else @click="stopTaskWatch" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5">
+                    <button v-if="clock_in_time && !clock_out_time" @click="stop_task_watch_modal = !stop_task_watch_modal" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5 ">
                         Clock out
                     </button>
+                    <span v-else class="mx-auto my-0">completed</span>
                 </div>
             </div>
 
@@ -82,7 +119,7 @@
 
                 <div class="stat_card min-w-[250px] w-full md:w-fit">
                     <span class="text-[10px] uppercase">DAYS WORKED</span>
-                    <p class="text-[30px]">0</p>
+                    <p class="text-[30px]">{{ days_worked }}</p>
                     <span class="text-green-500 text-[10px]">
                         <i class="bi bi-caret-up-fill"></i>
                         0
@@ -118,6 +155,7 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 import { convertTimeToAMPM } from '@/utils/dateFormat';
+import Modal from '@/components/Modal.vue';
 
 
     export default {
@@ -125,7 +163,8 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
         components: {
             PageTitle,
             Chart,
-            BarChart
+            BarChart,
+            Modal
         },
         data(){
             return{
@@ -162,18 +201,22 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
 
                 timer_error: '',
                 timer_loading: false,
-                task_description: 'Starting for the day',
+                task_description: '',
                 watch_status: '',
 
                 convertTimeToAMPM,
                 clock_in_time: '',
                 clock_out_time: '',
+                days_worked: 0,
 
                 start_time: '',
                 stop_time: '',
 
                 duration: 0,
                 durationCounter: '',
+
+                start_task_watch_modal: false,
+                stop_task_watch_modal: false,
 
 
                 // data values for chart...
@@ -238,6 +281,16 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                 const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
                 const index = new Date(date_time).getDay();
                 return days[index];
+            },
+
+            stopTaskWatchConfirm(){
+                this.stopTaskWatch();
+                this.stop_task_watch_modal = !this.stop_task_watch_modal;
+            },
+
+            startTaskWatchConfirm(){
+                this.startTaskWatch();
+                this.start_task_watch_modal = !this.start_task_watch_modal
             },
 
 
@@ -308,6 +361,9 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                     clearInterval(this.durationCounter);
                     
                     this.timer_loading = false;
+
+                    // reload page to show work chart for current day...
+                    window.location.reload();
                 }catch(error){
                     this.timer_error = error;
                     this.timer_loading = false;
@@ -416,6 +472,8 @@ import { convertTimeToAMPM } from '@/utils/dateFormat';
                     // set lables to empty array...
                     this.testData.labels = []
                     this.testData.datasets[0].data = []
+
+                    this.days_worked = days.length - 1;
 
                     // push days into chart  labels...
                     days.forEach(day =>{
