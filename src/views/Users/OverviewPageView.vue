@@ -45,7 +45,8 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="font-bold text-lg">Jobs Completed</span>
-                        <span>{{ completed_contracts }}</span>
+                        <span v-if="completed_contracts.length > 0">{{ completed_contracts }}</span>
+                        <span v-else>0</span>
                     </div>
                 </div>
 
@@ -60,81 +61,93 @@
                 </div>
            </div>
 
-           <div class="flex flex-col mt-5">
-                <h2 class="font-bold">Contracts Details</h2>
+           <div class="flex flex-col mt-5">   
+                <span></span>
+                <div v-if="contracts.length > 0">
+                    <h2 class="font-bold">Contracts Details</h2>
                 
-                <div class="flex overflow-x-auto overflow-y-visible">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <!-- <th scope="col" class="p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                    </div>
-                                </th> -->
-                                <th scope="col" class="px-6 py-3">
-                                    Contract Name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Rating
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Earnings
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                Status
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(contract, contract_id) in contracts" :key="contract_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <img class="h-10 w-10 rounded-full" :src="contract.employer.profile.image_url" alt="company image">
-                                    <div class="ps-3">
-                                        <div class="text-base font-semibold">{{ contract.job.title }}</div>
-                                        <div class="font-normal text-gray-500">at {{ contract.employer.profile.company_name }}</div>
-                                        <div class="font-normal text-gray-500" v-if="contract.employer.profile.location">
-                                            <i class="bi bi-geo-alt-fill"></i>
-                                            {{ contract.employer.profile.location.city }}, {{ contract.employer.profile.location.state }} State
+                    <div class="flex overflow-x-auto overflow-y-visible">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <!-- <th scope="col" class="p-4">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span v-if="contract.employer_feedback.rating > 0">{{ contract.employer_feedback.rating }}</span>
-                                    <span v-else>-</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                N0.00
-                                </td>
-                                <td class="px-6 py-4">
-                                    <ContractStatus :type="`${contract.status}`"/>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <button class="btn min-w-[180px]" v-if="contract.employer_feedback.rating > 0" @click="showContractReview(contract.employer, contract.user_feedback)">open review <i class="bi bi-arrow-right ml-2"></i></button>
-                                    <span v-else>No review yet</span>
-                                </td>
-                                <td class="px-6 py-4 relative">
-                                    <ActionDropwdown>
-                                        <RouterLink :to="`/in/contracts/${contract._id}`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
-                                            <i class="bi bi-gift"></i> 
-                                            View Contract
-                                        </RouterLink>
-                                        <RouterLink :to="`/in/contracts/${contract._id}/watch`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
-                                            <i class="bi bi-clock-history"></i> 
-                                            Open in Taskwatch
-                                        </RouterLink>
-                                    </ActionDropwdown>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </th> -->
+                                    <th scope="col" class="px-6 py-3">
+                                        Contract Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Rating
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Earnings
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                    Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(contract, contract_id) in contracts" :key="contract_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <img class="h-10 w-10 rounded-full" :src="contract.employer.profile.image_url" alt="company image">
+                                        <div class="ps-3">
+                                            <div class="text-base font-semibold">{{ contract.job.title }}</div>
+                                            <div class="font-normal text-gray-500">at {{ contract.employer.profile.company_name }}</div>
+                                            <div class="font-normal text-gray-500" v-if="contract.employer.profile.location">
+                                                <i class="bi bi-geo-alt-fill"></i>
+                                                {{ contract.employer.profile.location.city }}, {{ contract.employer.profile.location.state }} State
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span v-if="contract.employer_feedback.rating > 0">{{ contract.employer_feedback.rating }}</span>
+                                        <span v-else>-</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                    N0.00
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <ContractStatus :type="`${contract.status}`"/>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button class="btn min-w-[180px]" v-if="contract.employer_feedback.rating > 0" @click="showContractReview(contract.employer, contract.user_feedback)">open review <i class="bi bi-arrow-right ml-2"></i></button>
+                                        <span v-else>No review yet</span>
+                                    </td>
+                                    <td class="px-6 py-4 relative">
+                                        <ActionDropwdown>
+                                            <RouterLink :to="`/in/contracts/${contract._id}`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
+                                                <i class="bi bi-gift"></i> 
+                                                View Contract
+                                            </RouterLink>
+                                            <RouterLink :to="`/in/contracts/${contract._id}/watch`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
+                                                <i class="bi bi-clock-history"></i> 
+                                                Open in Taskwatch
+                                            </RouterLink>
+                                        </ActionDropwdown>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div v-else class="flex flex-col justify-center items-center mt-5">
+                    
+                    <Vue3Lottie
+                        :animationData="emptyBox"
+                        :height="200"
+                        :width="200"
+                    />
+                    <span class="text-gray-400">You have no contracts yet...</span>
                 </div>
            </div>
        </div>
@@ -159,6 +172,7 @@ import ActionDropwdown from '@/components/ActionDropdown.vue';
 import Modal from '@/components/Modal.vue';
 
 import { generateStarRatingFromInteger } from '@/utils/ratingStars';
+import emptyBox from '../../lottie/emptyBox.json'
 
 export default {
     name: "OverviewPageView",
@@ -189,6 +203,7 @@ export default {
                 rating: ''
             },
             generateStarRatingFromInteger,
+            emptyBox,
         }
     },
     methods:{
@@ -236,39 +251,7 @@ export default {
     },
  
     mounted(){
-        // initialize flowbite dropwdown..
-        // const dropdownMenut = document.getElementById("dropdownMenu");
-        const dropdownMenut = document.getElementsByClassName("dropdownMenu");
-        const dropdownTrigger = document.getElementsByClassName("dropdownButton");
-        // const dropdownTrigger = document.getElementById("dropdownButton");
-
-        const options = {
-            placement: 'bottom',
-            offsetSkidding: 0,
-            offsetDistance: 10,
-            onHide: () => {
-                console.log('dropdown has been hidden');
-            },
-            onShow: () => {
-                console.log('dropdown has been shown');
-            }
-        };
-
-        // for(let i = 0; i < dropdownMenut.length; i++){
-        //     const dropdown = new Dropdown(dropdownMenut, dropdownTrigger, options);
-        // }
-
-        // if (dropdownMenut) {
-            /*
-            * targetEl: required
-            * triggerEl: required
-            * options: optional
-            */
-            // const dropdown = new Dropdown(dropdownMenut, dropdownTrigger, options);
-
-            // show the dropdown
-            // dropdown.show();
-        // }
+     
     },
     created() {
         this.getContracts();
