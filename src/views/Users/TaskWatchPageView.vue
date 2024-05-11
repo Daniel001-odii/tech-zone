@@ -70,7 +70,7 @@
                     <button v-if="clock_in_time && !clock_out_time" @click="stop_task_watch_modal = !stop_task_watch_modal" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5 ">
                         Clock out
                     </button>
-                    <span v-else class="mx-auto my-0">completed</span>
+                    <span v-if="watch_status == 'stopped'" class="mx-auto my-0">completed</span>
                 </div>
             </div>
 
@@ -190,7 +190,7 @@ import Modal from '@/components/Modal.vue';
                         },
                         title: {
                             display: true,
-                            text: 'worked per day',
+                            text: 'hours worked per day',
                         },
                         grid: {
                             display: false,
@@ -478,7 +478,7 @@ import Modal from '@/components/Modal.vue';
                     // push days into chart  labels...
                     days.forEach(day =>{
                         this.testData.labels.push(this.convertDateTimeToDayOfWeek(day.time_stamp.clock_in_time));
-                        this.testData.datasets[0].data.push(day.time_stamp.duration);
+                        this.testData.datasets[0].data.push((day.time_stamp.duration) / 3600);
                     })
 
                     console.log("recorded days: ", days);
