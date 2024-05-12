@@ -125,7 +125,7 @@
                 </div>
             </nav>
 
-            <HomeNavbar/>
+            <HomeNavbar v-else/>
 </div>
 </template>
 <script>
