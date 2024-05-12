@@ -44,7 +44,7 @@
                     <span v-for="skill in skills" class="bg-tz_light_blue text-tz_blue dark:text-blue-300 px-3 py-2 rounded-md">{{ skill }}</span>
                 </div>
             </div>
-            <div class="border-b border-gray-600"></div>
+            <div class="border-b dark:border-gray-600 "></div>
             <div class="font-bold">
                 Job Description
             </div>

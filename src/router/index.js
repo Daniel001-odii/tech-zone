@@ -151,10 +151,18 @@ const routes = [
     meta: { requiresAuth: true, role: 'user' },
   },
 
+  // {
+  //   path: '/jobs',
+  //   name: 'jobs',
+  //   component: JobsPageViewVue,
+  // },
+
   {
-    path: '/jobs',
-    name: 'jobs',
-    component: JobsPageViewVue,
+    path: '/',
+    component: TemplateView,
+    children: [
+      {path: 'jobs', component: UserJobsPageViewVue},
+    ],
   },
 
   // 404 PAGES CONFIG...

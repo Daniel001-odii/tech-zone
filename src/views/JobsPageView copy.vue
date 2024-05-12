@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex flex-col">
+    <div class="h-full flex flex-col">
 
         <!-- ALERTS AND NOTIFICS -->
         <div class="fixed right-0 z-50 flex flex-col m-3">
@@ -103,7 +103,7 @@
                         </div>
 
                         <!-- <div class="flex flex-row h-14 pl-5 border-b items-end dark:border-gray-600"> -->
-                        <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full">
+                            <div class="flex flex-row gap-4 overflow-x-scroll md:overflow-x-visible w-full">
                             <div class="flex flex-row flex-wrap gap-4 w-full">
                                 <button @click="showTab = 'tab-1'" :class="{ 'active_tab': showTab == 'tab-1' }" class="p-2 border-b-4 border-b-transparent">Available</button>
                                 <button v-if="user" @click="showTab = 'tab-2'" :class="{ 'active_tab': showTab == 'tab-2' }" class="p-2 border-b-4 border-b-transparent">Applied</button>
@@ -186,7 +186,151 @@
                        
                     </div>
 
-                    
+                    <!------------APPLIED JOBS------------ -->
+                    <div v-if="showTab == 'tab-2'" class="h-full flex flex-row gap-3 relative">
+                        <div class="h-full absolute w-full overflow-y-scroll flex flex-col">
+                            <div class=" h-full items-start flex flex-col gap-3">
+                            <div v-for="(job, index) in applications" :key="index" class="w-full">
+                                <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
+                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
+                                        
+                                        @flagJob="console.log('job flagged')"
+                                        :budget="job.budget" 
+                                        :period="job.period" 
+                                        :remote="job.location.remote"
+                                        :is_applied="checkIfJobIsApplied(job._id)">
+                                            <template #save-button>
+                                                <button class="icon_btn" @click="addJobToSaves(job._id)">
+                                                    <i v-if="checkIfJobIsSaved(job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
+                                                    <i v-else class="bi bi-bookmark-check"></i>
+                                                </button>
+                                            </template>
+                                            <template #job-title>
+                                            <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                            </template>
+                                            <template #job-location>
+                                                <span v-if="job.location.remote == 'true'">remote</span>
+                                                <span v-else>{{  job.location.address }}, {{  job.location.state }}</span>
+                                            </template>
+                                            <template #job-description>{{  job.description.substring(0, 200) }}...
+                                            </template>
+                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                        </MainJobCard>
+                            </div>
+                            <div v-if="applications.length <= 0">No applied jobs</div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- ------------ASSIGNED JOBS---------- -->
+                    <div v-if="showTab == 'tab-3'">
+                        <div class="flex flex-col gap-3">
+                            <div v-for="contract in contracts" :key="contract._id">
+                                <div v-if="contract.type == 'assigned'">
+                                    <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                        
+                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-700">
+                                            <div class="flex flex-row justify-between items-center">
+                                                <RouterLink :to="'/in/contracts/' + contract._id">
+                                                    <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
+                                                </RouterLink>
+                                            </div>
+                                            <div>
+                                                <div>{{ contract.employer.company_name }}</div>
+                                                <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                            </div>
+                                            <div class="flex flex-row gap-3">
+                                                <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                :class="[contract.status == 'open'?'bg-tz_blue':'', 
+                                                        contract.status == 'paused'?'bg-orange-500':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
+                                                        contract.status == 'closed'?'bg-gray-500':''
+                                                        ]">
+                                                    {{ contract.status }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div v-if="!contracts" class="flex flex-col justify-center items-center w-full mt-6">
+                                <img class=" h-40 w-40" src="../assets/images/empty tin can.svg">
+                                <span class="font-bold mt-4 text-gray-400">Assigned Jobs Not Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ------------COMPLETED JOBS--------- -->
+                    <div v-if="showTab == 'tab-4'">
+                        <div class="flex flex-col gap-3">
+                            <div v-for="contract in contracts" :key="contract._id">
+                                <div v-if="contract.status == 'completed'">
+                                    <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                        
+                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue  dark:border-gray-700">
+                                            <div class="flex flex-row justify-between items-center">
+                                                <RouterLink :to="'/in/contracts/' + contract._id">
+                                                    <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
+                                                </RouterLink>
+                                            </div>
+                                            <div>
+                                                <div>{{ contract.employer.company_name }}</div>
+                                                <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                            </div>
+                                            <div class="flex flex-row gap-3">
+                                                <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                :class="[contract.status == 'open'?'bg-tz_blue':'', 
+                                                        contract.status == 'paused'?'bg-orange-500':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
+                                                        contract.status == 'closed'?'bg-gray-500':''
+                                                        ]">
+                                                    {{ contract.status }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ------------DECLINDED JOBS------- -->
+                    <div v-if="showTab == 'tab-5'">
+                        <div class="flex flex-col gap-3">
+                            <div v-for="contract in contracts" :key="contract._id">
+                                <div v-if="contract.action == 'declined'">
+                                    <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                        
+                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue  dark:border-gray-700">
+                                            <div class="flex flex-row justify-between items-center">
+                                                <RouterLink :to="'/in/contracts/' + contract._id">
+                                                    <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
+                                                </RouterLink>
+                                            </div>
+                                            <div>
+                                                <div>{{ contract.employer.company_name }}</div>
+                                                <div>${{ contract.job.budget.toLocaleString() }} Budget</div>
+                                            </div>
+                                            <div class="flex flex-row gap-3">
+                                                <span class="px-4 py-1 text-white rounded-md text-xl" 
+                                                :class="[contract.status == 'open'?'bg-tz_blue':'', 
+                                                        contract.status == 'paused'?'bg-orange-500':'',
+                                                        contract.status == 'completed'?'bg-green-500':'',
+                                                        contract.status == 'closed'?'bg-gray-500':''
+                                                        ]">
+                                                    {{ contract.status }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
               </div> 
@@ -309,16 +453,29 @@ export default {
 
         async getJobs(){
             this.loading = true;
+            const headers = this.headers;
+            console.log("checking for user: ", this.user)
+            if(this.user){
                 try{
-                    const response = await axios.get(`${this.api_url}/jobs`);
-                    console.log("all jobs for none auth users: ", response);
+                    const response = await axios.get(`${this.api_url}/user/jobs`, { headers } )
+                    // console.log(response.data.jobs)
                     this.jobs = response.data.jobs.reverse();
                     this.loading = false;
                 }catch(error){
                     // handle error here...
-                    console.log("erro getting jobs: ", error);
                     this.loading = true;
                 }
+            } else if(!this.user){
+                try{
+                    const response = await axios.get(`${this.api_url}/jobs`);
+                    // console.log(response)
+                    this.jobs = response.data.jobs.reverse();
+                    this.loading = false;
+                }catch(error){
+                    // handle error here...
+                    this.loading = true;
+                }
+            }
             
         },
 
@@ -429,21 +586,21 @@ export default {
     },
 
     mounted(){
-        // this.getUserData()
+        this.getUserData()
         this.getJobs();
-        // this.getAllApplications();
-        // this.getContracts();
-        // this.getSavedJobs();
+        this.getAllApplications();
+        this.getContracts();
+        this.getSavedJobs();
 
-        // if(this.$route.params.tab == 'assigned'){
-        //     this.showTab = 'tab-2';
-        // }
-        // if(this.$route.params.tab == 'completed'){
-        //     this.showTab = 'tab-3';
-        // }
-        // if(this.$route.params.tab == 'declined'){
-        //     this.showTab = 'tab-4';
-        // }
+        if(this.$route.params.tab == 'assigned'){
+            this.showTab = 'tab-2';
+        }
+        if(this.$route.params.tab == 'completed'){
+            this.showTab = 'tab-3';
+        }
+        if(this.$route.params.tab == 'declined'){
+            this.showTab = 'tab-4';
+        }
          
 
 

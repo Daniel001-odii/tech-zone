@@ -125,9 +125,7 @@
                 </div>
             </nav>
 
-        <!-- </div> -->
-
-    <!-- </div> -->
+            <HomeNavbar/>
 </div>
 </template>
 <script>
@@ -138,11 +136,17 @@ import axios from 'axios'
 import { io } from 'socket.io-client';
 
 import SessionExpiredModal from './SessionExpiredModal.vue'
+import HomeNavbar from './HomeNavbar.vue';
 
 
 export default {
     name: "Navbar",
-    components: { SiteLogo, UserDropDownMenu, SessionExpiredModal },
+    components: { 
+        SiteLogo, 
+        UserDropDownMenu, 
+        SessionExpiredModal,
+        HomeNavbar, 
+    },
     props: {
         type: String,
         jobs_from_search: '',
