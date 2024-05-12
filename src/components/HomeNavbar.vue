@@ -7,7 +7,7 @@
         </p>
     
    <nav>
-        <div class="bg-white text-black start-0 relative z-30 shadow-xl">
+        <div class="bg-white text-black start-0 relative z-30 shadow-md">
         <div class="p-3 flex flex-row justify-between items-center mx-auto my-0 max-w-screen-2xl">
             <!-- <SiteLogo/> -->
             <img src="../../public/apex-tek.svg" class=" h-[35px] md:h-[50px] ">

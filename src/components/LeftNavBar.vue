@@ -78,9 +78,9 @@
 
             <div v-if="user.role != 'user' && user.role != 'employer'">
                 <RouterLink to="/jobs" >
-                    <div class="nav_item" :class="{ 'active': isWorkExplorer }">
-                        <i class="bi bi-briefcase" v-if="!isWorkExplorer"></i> 
-                        <i class="bi bi-briefcase-fill" v-if="isWorkExplorer"></i>
+                    <div class="nav_item" :class="{ 'active': isPublicWorkExplorer }">
+                        <i class="bi bi-briefcase" v-if="!isPublicWorkExplorer"></i> 
+                        <i class="bi bi-briefcase-fill" v-if="isPublicWorkExplorer"></i>
                         <span class="md:hidden lg:inline-block">Work Explorer</span>
                     </div>
                 </RouterLink>
@@ -95,6 +95,7 @@ export default {
     name: "LeftnavBar",
     
     computed: {
+        isPublicWorkExplorer() { return this.$route.path.startsWith("/jobs"); },
         isWorkExplorer() { return this.$route.path.startsWith("/in/jobs"); },
         isSavedJobs() { return this.$route.path.startsWith("/in/saved"); },
         isContracts() { return this.$route.path.startsWith("/in/contracts"); },
