@@ -114,10 +114,12 @@
                         </tbody>
                     </table>
                     
+                    <!-- CONTRACT ACTIONS -->
                     <div class="mt-6">
                         <h2 class="font-bold text-xl">Contract Actions</h2>
-                        <p class=" mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
-                            <i class="bi bi-exclamation-circle"></i> The Freelancer will be notified for any action you perform on the contract
+                        <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> 
+                            <span>The Freelancer will be notified for any action you perform on the contract.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-3 justify-start mt-3">
                             <div class="flex flex-row gap-3 w-full">
@@ -127,13 +129,31 @@
                             <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="contrac_activity_btn bg-green-500" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
                             <button v-if="contract.action == 'accepted' && contract.status == 'paused'" @click="resumeContract" class="contrac_activity_btn bg-tz_blue" :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume contract</button>
                         </div>
-                        <!-- <p>close - Pause - Mark as complete - Fund</p> -->
                     </div>
 
+                    <!-- CONTRACT WATCH -->
+                    <div v-if="contract.action == 'accepted'" class="mt-6">
+                        <h2 class="font-bold text-xl mt-6">Contract Watch</h2>
+                        <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> 
+                            <span>Review tracked time spent on completing the contract by the Freelancer</span>
+                        </p>
+                        <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
+                            <RouterLink :to="`/client/contracts/${contract._id}/watch`">
+                                <button class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white">
+                                    <i class="bi bi-stopwatch"></i>
+                                   Review Contract watch
+                                </button>
+                            </RouterLink>
+                        </div>
+                    </div>
+
+                    <!-- FEEDBACK AND REVIEW -->
                     <div v-if="contract.action == 'accepted'" class="mt-6">
                         <h2 class="font-bold text-xl">Feedback & Review</h2>
-                        <p class=" mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
-                            <i class="bi bi-exclamation-circle"></i>  Feedback submission will only be available when contract is completed.
+                        <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> 
+                            <span>Feedback submission will only be available when contract is completed.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
                             <button @click="feedbackModal = !feedbackModal" class="contrac_activity_btn" :disabled="contract.status != 'completed' || contract.user_feedback.review">
@@ -142,6 +162,8 @@
                             </button>
                         </div>
                     </div>
+
+                    
                     <p class="text-gray-400">contract status: {{ contract.status }}</p>
                 </div>
 

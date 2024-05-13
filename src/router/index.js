@@ -194,6 +194,7 @@ const routes = [
       {path: 'notifications', component: NotifcationsPageView},
       {path: 'contracts', component: ClientContractsListPageViewVue},
       {path: 'contracts/:contract_id', component: ClientContractPageViewVue},
+      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView},
 
     ],
     meta: { requiresAuth: true, role: 'employer' },

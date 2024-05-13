@@ -151,22 +151,15 @@
                             <button @click="acceptOffer" class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.action != 'pending'">Accept Offer</button>
                         </div>
                     </div>
-                
-                    <!-- FEEDBACK AND REVIEW  -->
-                    <div v-if="contract.action == 'accepted'" class="mt-6">
-                        <h2 class="font-bold text-xl">Feedback & Review</h2>
-                        <p class=" bg-blue-300 bg-opacity-20 p-3 rounded-lg text-blue-500 dark:text-blue-300">
-                            <i class="bi bi-exclamation-circle"></i> Feedback submission will only be available when contract is completed.
-                        </p>
-                        <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
-                                <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
-                                <span v-else>Send Feedback to client</span>
-                            </button>
-                        </div>
-                        
-                        
+
+
+                    <!-- CONTRACT WATCH  -->
+                    <div v-if="contract.action == 'accepted'">
                         <h2 class="font-bold text-xl mt-6">Contract Watch</h2>
+                        <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> 
+                            <span>Track time spent on completing contracts, particularly for hourly paid contracts.</span>
+                        </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
                             <RouterLink :to="`/in/contracts/${contract._id}/watch`">
                                 <button class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white">
@@ -176,12 +169,34 @@
                             </RouterLink>
                         </div>
                     </div>
+                    
+                
+                    <!-- FEEDBACK AND REVIEW  -->
+                    <div v-if="contract.action == 'accepted'" class="mt-6">
+                        <h2 class="font-bold text-xl">Feedback & Review</h2>
+                        <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> 
+                            <span> Feedback submission will only be available when contract is completed.</span>
+                        </p>
+                        <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
+                                <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
+                                <span v-else>Send Feedback to client</span>
+                            </button>
+                        </div>
+                        
+                        
+                        
+                    </div>
                 </div>
 
                 <!-- EMPLOYER DETAIL AREA -->
                 <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0">
                     <div class="flex flex-row flex-wrap gap-3">
-                        <img :src="contract.employer.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
+                        <!-- <img :src="contract.employer.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4"> -->
+                        <div class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4 font-bold text-3xl text-gray-400 flex justify-center items-center bg-slate-200">
+                            <span>{{ contract.employer.firstname[0] }}{{ contract.employer.lastname[0] }}</span>
+                        </div>
                         <div>
                             <p class=" block text-xl font-bold">{{ contract.employer.profile.company_name }}</p>
                             <p class=" blocks">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>

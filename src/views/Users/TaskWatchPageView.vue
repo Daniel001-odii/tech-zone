@@ -50,7 +50,8 @@
             <div class="flex flex-row flex-wrap items-center gap-5 mt-3">
                 <div class="p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700">{{ current_date }}</div> <br/>
 
-                <div class=" rounded-full w-[300px] flex flex-row items-center justify-between p-1" :class="clock_out_time ? 'bg-green-500':'bg-tz_blue hover:bg-tz_dark_blue'">
+                <!-- STOP WATCH BOX WITH CONTROL BUTTONS AVAILABLE FOR USERS ONYLY -->
+                <div v-if="user_type == 'user'" class=" rounded-full w-[300px] flex flex-row items-center justify-between p-1" :class="clock_out_time ? 'bg-green-500':'bg-tz_blue hover:bg-tz_dark_blue'">
                     <div class="flex flex-row gap-5 bg-white dark:bg-gray-700 h-full p-2 rounded-l-full px-4">
                         <i class="bi bi-stopwatch"></i>
                         <span v-if="timer_loading" class="text-sm text-yellow-300">loading...</span>
@@ -74,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- <span v-if="clock_in_time">Day: {{ convertDateTimeToDayOfWeek(clock_in_time) }} - labels: {{ testData.labels }}</span> -->
 
             <div class="flex flex-row flex-wrap gap-3">
 
@@ -137,9 +137,9 @@
                 <button class="bg-tz_light_blue p-3 rounded-lg text-tz_blue">Last 5 months</button>
             </div>
 
-            <!-- TIME STAMP TABLE GOES BELOW -->
-            <div>
-                <h2 class="font-bold">Time Stamp</h2>
+            <!-- TIME STAMP TABLE FOR USERS -->
+            <div v-if="user_type == 'user'" class="w-full mt-6">
+                <h2 class="font-bold">Tracked time</h2>
                 <!-- {{  all_watches }} -->
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -153,10 +153,13 @@
                     <tbody>
                         <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ convertDateTimeToDayOfWeek(watch.date) }}
+                                {{ convertDateTimeToDayOfWeek(watch.date) }} 
                             </td>
                             <td class="px-6 py-4">
-                                <span v-if="watch.time_stamp.clock_in_time"> {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }}</span>
+                                <span v-if="watch.time_stamp.clock_in_time"> 
+                                    {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }}<br/>
+                                    <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
+                                </span>
                                 <span v-else>-</span>
                             </td>
                             <td class="px-6 py-4">
@@ -164,7 +167,47 @@
                                 <span v-else>-</span>
                             </td>
                             <td class="px-6 py-4 text-orange-300">pending</td>
-                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TIME STAMP TABLE FOR EMPLOYERS -->
+            <div v-if="user_type == 'employer'" class="w-full mt-6">
+                <h2 class="font-bold">Tracked time</h2>
+                <!-- {{  all_watches }} -->
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Day</th>
+                            <th scope="col" class="px-6 py-3">Clock-in time</th>
+                            <th scope="col" class="px-6 py-3">Clock-out time</th>
+                            <th scope="col" class="px-6 py-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ convertDateTimeToDayOfWeek(watch.date) }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span v-if="watch.time_stamp.clock_in_time" class="text-white">
+                                    {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }} <br/>
+                                    <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
+                                </span>
+                                <span v-else>-</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span v-if="watch.time_stamp.stop_time" class="text-white"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
+                                <span v-else>-</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div v-if="watch.time_stamp.clock_in_time" class="flex flex-row gap-3">
+                                    <button class="bg-green-500 px-3 py-1 text-white rounded-md">Approve</button>
+                                    <button class="bg-red-500 px-3 py-1 text-white rounded-md">Decline</button>
+                                </div>
+                                <div v-else>-</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -256,6 +299,9 @@ import Modal from '@/components/Modal.vue';
                 duration_type: '',
 
 
+                user_type: '',
+
+
                 // data values for chart...
                 testData: {
                     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -333,7 +379,6 @@ import Modal from '@/components/Modal.vue';
                 this.startTaskWatch();
                 this.start_task_watch_modal = !this.start_task_watch_modal
             },
-
 
             async startTaskWatch(){
                 // set timer to 0 for initial state...
@@ -557,6 +602,17 @@ import Modal from '@/components/Modal.vue';
                 }catch(error){
                     this.timer_error = error;
                 }
+            },
+
+            async getCurrentWatchUser(){
+                const headers = this.headers;
+                try{
+                    const response = await axios.get(`${this.api_url}/user`, { headers });
+                    console.log("user: ", response.data);
+                    this.user_type = response.data.user.role;
+                }catch(error){
+                    console.log("error getting user: ", error);
+                }
             }
 
 
@@ -585,6 +641,7 @@ import Modal from '@/components/Modal.vue';
         },
 
         mounted(){
+            this.getCurrentWatchUser();
             this.getCurrentDate();
             this.getContract();
             this.getWatchForToday();
