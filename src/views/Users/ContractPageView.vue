@@ -52,13 +52,12 @@
                 <button class="font-bold rounded-2xl px-6 py-3 bg-gray-300 text-transparent">Accept Offer</button>
             </div>
         </div>
-        <!-- LOADED CONTRACT HERE -->
-        <!-- CONTRACT VIEWING FOR USERS.... -->
-        
-        <div v-if="contract" class="flex flex-col">
-            
-            <span v-if="contract.action == 'accepted'" class=" bg-green-200 text-green-700 p-5 rounded-lg m-3"> You accepted this offer </span>
-            <span v-if="contract.action == 'declined'" class=" bg-red-100 text-red-700 p-5 rounded-lg m-3"> You declined this offer </span>
+
+        <!-- LOADED CONTRACT HERE -->        
+        <div v-if="contract" class="flex flex-col p-5">
+            <!-- TALENT DECISION TOAST -->
+            <span v-if="contract.action == 'accepted'" class=" bg-green-300 bg-opacity-20 text-green-300 p-5 rounded-lg mb-3"> You accepted this offer </span>
+            <span v-if="contract.action == 'declined'" class=" bg-red-300 bg-opacity-20 text-red-300 p-5 rounded-lg mb-3"> You declined this offer </span>
 
 
 
@@ -68,143 +67,142 @@
                 :height="200"
                 :width="200"
             />
+
             <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">{{ user.firstname }} you received a job contract offer!</h1>
+            <h1 class="font-bold text-2xl bg-tz_light_blue p-5 rounded-lg">{{ contract.job.title }}</h1>
 
-            <div class="gap-3 flex flex-col p-3">
-                <h1 class="font-bold text-2xl bg-tz_light_blue p-5 rounded-lg">
-                    <!-- <i class="bi bi-briefcase"></i> -->
-                    {{ contract.job.title }}
-                </h1>
+            <div class="gap-3 flex flex-col md:flex-row p-3">
+                <div class="flex flex-col md:w-[50%]">
+                    <!-- <div>
+                        <h2 class="font-bold text-lg">Descripton</h2>
+                        <p>{{  contract.job.description }}</p>
+                    </div> -->
 
-                <div>
-                    <h2 class="font-bold text-lg">Descripton</h2>
-                    <p>{{  contract.job.description }}</p>
-                </div>
-
-                <div>
-                    <h2 class="font-bold text-lg">Contract Details</h2>
-                    <div>
-                        <table>
-                            <tbody>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Start Date</td>
-                                    <td class="px-6 py-4">09/05/2024</td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">End Date</td>
-                                    <td class="px-6 py-4">09/05/2024</td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Job Type</td>
-                                    <td class="px-6 py-4">
-                                        <span v-if="contract.job.location.remote">Remote</span>
-                                        <span v-else>On site</span>
-                                    </td>
-                                </tr>
-                               
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Budget</td>
-                                    <td class="px-6 py-4">N{{ contract.job.budget.toLocaleString() }}</td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">ApexTek Service Fee</td>
-                                    <td class="px-6 py-4">-15%</td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Budget Type</td>
-                                    <td class="px-6 py-4">{{ contract.job.budget_type }}</td>
-                                </tr>
-
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Job Location</td>
-                                    <td class="px-6 py-4">
-                                        <span v-if="contract.job.location.remote">Remote</span>
-                                        <span v-else>{{ contract.job.location.state }}</span>
-                                    </td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Job Category</td>
-                                    <td class="px-6 py-4">Not categorised yet...</td>
-                                </tr>
-                                <!-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Working Hours</td>
-                                    <td class="px-6 py-4"></td>
-                                </tr> -->
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Offer Date</td>
-                                    <td class="px-6 py-4">{{ contract.createdAt }}</td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Offer Expiry</td>
-                                    <td class="px-6 py-4">{{ contract.createdAt }}</td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">Contract terms</td>
-                                    <td class="px-6 py-4">here are my terms for termination of contract</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <p>Budget - ₦{{ contract.job.budget.toLocaleString() }}</p>
-                <p>ApexTek Service fee: -15%</p>
-                <p>Expected amount you will receive: ₦{{ (contract.job.budget - (contract.job.budget * 15)/100).toLocaleString() }}</p>
-                <div>
-                    <p>Contract offer from</p>
-                    <!-- <p>{{ contract.employer }}</p> -->
-                    <div class="flex flex-row justify-center items-center gap-3">
-                        <div class=" h-8 w-8 rounded-lg overflow-hidden">
-                            <img :src="contract.employer.profile.image_url">
-                        </div>
+                    <div class="mt-3">
+                        <h2 class="font-bold text-lg">Contract Details</h2>
                         <div>
-                            <p class=" block">{{ contract.employer.profile.company_name }}</p>
-                            <p class=" blocks">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>
+                            <table>
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Start Date</td>
+                                        <td class="px-6 py-4">09/05/2024</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">End Date</td>
+                                        <td class="px-6 py-4">09/05/2024</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Job Type</td>
+                                        <td class="px-6 py-4">
+                                            <span v-if="contract.job.location.remote">Remote</span>
+                                            <span v-else>On site</span>
+                                        </td>
+                                    </tr>
+                                
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Budget</td>
+                                        <td class="px-6 py-4">₦{{ contract.job.budget.toLocaleString() }}</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">ApexTek Service Fee</td>
+                                        <td class="px-6 py-4">-15%</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Amount you should receive</td>
+                                        <td class="px-6 py-4">₦{{ (contract.job.budget - (contract.job.budget * 15)/100).toLocaleString() }}</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Budget Type</td>
+                                        <td class="px-6 py-4">{{ contract.job.budget_type }}</td>
+                                    </tr>
+
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Job Location</td>
+                                        <td class="px-6 py-4">
+                                            <span v-if="contract.job.location.remote">Remote</span>
+                                            <span v-else>{{ contract.job.location.state }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Job Category</td>
+                                        <td class="px-6 py-4">Not categorised yet...</td>
+                                    </tr>
+                                    <!-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Working Hours</td>
+                                        <td class="px-6 py-4"></td>
+                                    </tr> -->
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Offer Date</td>
+                                        <td class="px-6 py-4">{{ contract.createdAt }}</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4 text-red-500">Offer Expiry</td>
+                                        <td class="px-6 py-4 text-red-500">{{ contract.createdAt }}</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Contract terms</td>
+                                        <td class="px-6 py-4">ApexTek terms of service</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <p class=" text-sm text-gray-400 mt-3">sent {{ readableTimeFormat(contract.created) }}</p>
-                    
-                </div>
-                <div class="mt-6 flex flex-col justify-center">
-                    <p class="text-gray-600">Once you accept the offer you can begin working on the contract right away</p>
-                    <div class="flex flex-row gap-5 justify-center mt-3">
-                        <button @click="declineOffer" class="font-bold border rounded-2xl px-6 py-3 hover:bg-slate-50 disabled:bg-gray-200 disabled:text-gray-400 " :disabled="contract.action != 'pending'">Decline Offer</button>
-                        <button @click="acceptOffer" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.action != 'pending'">Accept Offer</button>
-                    </div>
-                </div>
 
-                <hr/>
-
-                <div v-if="contract.action == 'accepted'" class="mt-6">
-                    <h2 class="font-bold text-xl">Feedback & Review</h2>
-                    <p class="text-gray-600 mt-3 bg-tz_light_blue p-3 rounded-lg text-tz_blue">
-                        <i class="bi bi-exclamation-circle"></i> Feedback submission will only be available when contract is completed.
-                    </p>
-                    <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                        <button @click="feedbackModal = !feedbackModal" class="font-bold rounded-2xl px-6 py-3 bg-tz_blue text-white hover:bg-tz_dark_blue disabled:bg-gray-200 disabled:text-gray-400" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
-                            <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
-                            <span v-else>Send Feedback to client</span>
-                        </button>
-                    </div>
-                    
-                    <hr class="mt-3"/>
-                    <h2 class="font-bold text-xl mt-3">Contract Watch</h2>
-                    <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                        <RouterLink :to="`/in/contracts/${contract._id}/watch`">
-                            <button class="border p-3 rounded-xl">
-                                <i class="bi bi-stopwatch"></i>
-                                Watch Contract
-                            </button>
-                        </RouterLink>
+                    <!-- CONTRACT ACCEPT AND DECLINE BUTTON -->
+                    <div class="mt-3 flex flex-col justify-center" v-if="contract.action == 'pending'">
+                        <p class="text-gray-400">Once you accept the offer you can begin working on the contract right away</p>
+                        <div class="flex flex-row gap-3 mt-3 items-stretch justify-stretch">
+                            <button @click="declineOffer" class="font-bold px-12 rounded-md py-2 border border-tz_blue text-tz_blue" :disabled="contract.action != 'pending'">Decline Offer</button>
+                            <button @click="acceptOffer" class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.action != 'pending'">Accept Offer</button>
+                        </div>
                     </div>
                 
+                    <!-- FEEDBACK AND REVIEW  -->
+                    <div v-if="contract.action == 'accepted'" class="mt-6">
+                        <h2 class="font-bold text-xl">Feedback & Review</h2>
+                        <p class=" bg-blue-300 bg-opacity-20 p-3 rounded-lg text-blue-500 dark:text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> Feedback submission will only be available when contract is completed.
+                        </p>
+                        <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
+                            <button @click="feedbackModal = !feedbackModal" class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
+                                <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
+                                <span v-else>Send Feedback to client</span>
+                            </button>
+                        </div>
+                        
+                        
+                        <h2 class="font-bold text-xl mt-6">Contract Watch</h2>
+                        <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
+                            <RouterLink :to="`/in/contracts/${contract._id}/watch`">
+                                <button class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white">
+                                    <i class="bi bi-stopwatch"></i>
+                                    Watch Contract
+                                </button>
+                            </RouterLink>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EMPLOYER DETAIL AREA -->
+                <div class="flex flex-col md:w-[50%] md:items-center mt-6 md:m-0">
+                    <div class="flex flex-row flex-wrap gap-3">
+                        <!-- <div class="border-4 border-tz_blue h-20 w-20 rounded-full overflow-hidden p-1"> -->
+                            <img :src="contract.employer.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
+                        <!-- </div> -->
+                        <div>
+                            <p class=" block text-xl font-bold">{{ contract.employer.profile.company_name }}</p>
+                            <p class=" blocks">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>
+                            <p class=" text-sm text-gray-400 mt-1">sent {{ readableTimeFormat(contract.created) }}</p>
+                        </div>
+                        
+                    </div>
                     
                 </div>
             </div>
         </div>
         
 
-        <p class="text-left pt-5 pl-8 text-gray-400">contract status: {{ contract.status }}</p>
+       
  
 
     </div>  
@@ -419,7 +417,7 @@ export default {
     computed: {
         
     },
-    mounted(){
+    created(){
         this.getUser();
         this.getContract();
         
@@ -460,6 +458,10 @@ export default {
 
 .tz_rate {
     @apply border dark:border-gray-500 rounded-md w-[35px] h-[35px] flex justify-center items-center cursor-pointer;
+}
+
+button:disabled{
+    @apply cursor-not-allowed
 }
 
 .contrac_activity_btn{

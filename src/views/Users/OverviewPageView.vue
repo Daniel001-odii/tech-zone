@@ -45,14 +45,15 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="font-bold text-lg">Jobs Completed</span>
-                        <span v-if="completed_contracts.length > 0">{{ completed_contracts }}</span>
+                        <span v-if="completed_contracts > 0">{{ completed_contracts }}</span>
                         <span v-else>0</span>
                     </div>
                 </div>
 
                 <div class="flex flex-row items-center justify-center gap-3 bg-green-500 bg-opacity-20 p-3 min-w-60">
                     <div class="p-3 rounded-full bg-green-500 h-12 w-12 flex justify-center items-center text-white">
-                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-bookmark-star"></i>
+                        
                     </div>
                     <div class="flex flex-col">
                         <span class="font-bold text-lg">Average Rating</span>
@@ -63,7 +64,7 @@
 
            <div class="flex flex-col mt-5">   
                 <span></span>
-                <div v-if="contracts.length > 0">
+                <div v-if="!loading && contracts.length > 0">
                     <h2 class="font-bold">Contracts Details</h2>
                 
                     <div class="flex overflow-x-auto overflow-y-visible">
@@ -99,14 +100,14 @@
                             <tbody>
                                 <tr v-for="(contract, contract_id) in contracts" :key="contract_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <img class="h-10 w-10 rounded-full" :src="contract.employer.profile.image_url" alt="company image">
+                                        <!-- <img class="h-10 w-10 rounded-full" :src="contract.employer.profile.image_url" alt="company image"> -->
                                         <div class="ps-3">
                                             <div class="text-base font-semibold">{{ contract.job.title }}</div>
-                                            <div class="font-normal text-gray-500">at {{ contract.employer.profile.company_name }}</div>
-                                            <div class="font-normal text-gray-500" v-if="contract.employer.profile.location">
+                                            <div class="font-normal text-gray-500">{{ contract.employer.profile.company_name }}</div>
+                                            <!-- <div class="font-normal text-gray-500" v-if="contract.employer.profile.location">
                                                 <i class="bi bi-geo-alt-fill"></i>
                                                 {{ contract.employer.profile.location.city }}, {{ contract.employer.profile.location.state }} State
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
@@ -140,7 +141,7 @@
                         </table>
                     </div>
                 </div>
-                <div v-else class="flex flex-col justify-center items-center mt-5">
+                <div v-if="!loading && contracts.length <= 0" class="flex flex-col justify-center items-center mt-5">
                     
                     <Vue3Lottie
                         :animationData="emptyBox"
@@ -152,7 +153,6 @@
            </div>
        </div>
 
-       <!-- http://localhost:8080/in/contracts/662b86852547590a09cc96f5/watch -->
     </div>
 
 

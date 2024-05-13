@@ -137,7 +137,41 @@
                 <button class="bg-tz_light_blue p-3 rounded-lg text-tz_blue">Last 5 months</button>
             </div>
 
+            <!-- TIME STAMP TABLE GOES BELOW -->
+            <div>
+                <h2 class="font-bold">Time Stamp</h2>
+                <!-- {{  all_watches }} -->
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Day</th>
+                            <th scope="col" class="px-6 py-3">Clock-in time</th>
+                            <th scope="col" class="px-6 py-3">Clock-out time</th>
+                            <th scope="col" class="px-6 py-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ convertDateTimeToDayOfWeek(watch.date) }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span v-if="watch.time_stamp.clock_in_time"> {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }}</span>
+                                <span v-else>-</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span v-if="watch.time_stamp.stop_time"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
+                                <span v-else>-</span>
+                            </td>
+                            <td class="px-6 py-4 text-orange-300">pending</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <div class=" bg-gray-100 dark:bg-gray-700 w-full min-h-80">
+                <p class="text-center p-3 text-gray-300">{{ duration_type }} worked per day</p>
                 <BarChart :chartData="testData" :options="options"/>
             </div>
 
@@ -189,8 +223,8 @@ import Modal from '@/components/Modal.vue';
                             display: false,
                         },
                         title: {
-                            display: true,
-                            text: 'hours worked per day',
+                            display: false,
+                            text:  `${this.duration_type} worked per day`,
                         },
                         grid: {
                             display: false,
@@ -218,17 +252,20 @@ import Modal from '@/components/Modal.vue';
                 start_task_watch_modal: false,
                 stop_task_watch_modal: false,
 
+                all_watches: '',
+                duration_type: '',
+
 
                 // data values for chart...
                 testData: {
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                datasets: [
-                    {
-                        label: 'Day',
-                        data: [2, 12, 5, 9, 7, 2, 12, 5, 9, 7],
-                        backgroundColor: ['#81AAEA'],
-                    },
-                ],
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    datasets: [
+                        {
+                            label: 'Day',
+                            data: [2, 12, 5, 9, 7, 2, 12, 5, 9, 7],
+                            backgroundColor: ['#81AAEA'],
+                        },
+                    ],
                 },
 
                 headers: {
@@ -480,6 +517,8 @@ import Modal from '@/components/Modal.vue';
                     const response = await axios.get(`${this.api_url}/watch/${this.$route.params.contract_id}/all`, { headers });
                   
                     const days = response.data.watch_list;
+
+                    this.all_watches = response.data.watch_list;
                     
                     // set lables to empty array...
                     this.testData.labels = []
@@ -487,11 +526,32 @@ import Modal from '@/components/Modal.vue';
 
                     this.days_worked = days.length - 1;
 
+                    let duration_type;
+
                     // push days into chart  labels...
                     days.forEach(day =>{
                         this.testData.labels.push(this.convertDateTimeToDayOfWeek(day.time_stamp.clock_in_time));
-                        this.testData.datasets[0].data.push((day.time_stamp.duration) / 3600);
-                    })
+
+                        // if durations are in seconds
+                        if(day.time_stamp.duration < 60){
+                            // then its in seconds...
+                            this.testData.datasets[0].data.push(day.time_stamp.duration);
+                            duration_type = "seconds"
+                        }           
+                        else if(day.time_stamp.duration < 3600){
+                            // then its in minutes...
+                            this.testData.datasets[0].data.push((day.time_stamp.duration) / 60);
+                            duration_type = "minutes"
+                        } else {
+                            // then its hours..
+                            this.testData.datasets[0].data.push((day.time_stamp.duration) / 3600);
+                            duration_type = "hours"
+                        }
+                        
+                    });
+
+                    this.duration_type = duration_type;
+
 
                     console.log("recorded days: ", days);
                 }catch(error){
