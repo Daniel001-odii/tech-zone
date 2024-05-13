@@ -166,7 +166,10 @@
                                 <span v-if="watch.time_stamp.stop_time"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
                                 <span v-else>-</span>
                             </td>
-                            <td class="px-6 py-4 text-orange-300">pending</td>
+                            <td class="px-6 py-4 text-orange-300">
+                                <span v-if="watch.time_stamp.clock_in_time">pending</span>
+                                <span v-else>-</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -304,7 +307,7 @@ import Modal from '@/components/Modal.vue';
 
                 // data values for chart...
                 testData: {
-                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                     datasets: [
                         {
                             label: 'Day',

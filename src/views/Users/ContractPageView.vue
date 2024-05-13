@@ -144,7 +144,7 @@
                     </div>
 
                     <!-- CONTRACT ACCEPT AND DECLINE BUTTON -->
-                    <div class="mt-3 flex flex-col justify-center" v-if="contract.action == 'pending'">
+                    <div v-if="contract.action == 'pending'" class="mt-3 flex flex-col justify-center" >
                         <p class="text-gray-400">Once you accept the offer you can begin working on the contract right away</p>
                         <div class="flex flex-row gap-3 mt-3 items-stretch justify-stretch">
                             <button @click="declineOffer" class="font-bold px-12 rounded-md py-2 border border-tz_blue text-tz_blue" :disabled="contract.action != 'pending'">Decline Offer</button>
