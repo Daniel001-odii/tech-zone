@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-col justify-between border p-3 rounded-md text-left gap-3 max-h-fit hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
+        <div class="flex flex-col justify-between border p-3 rounded-md text-left gap-3 hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
             
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between items-center">
@@ -44,7 +44,7 @@
 
             <div class="">
                 <slot name="job-description">
-                    We are seeking a highly experienced and skilled Senior Software Developer to join our dynamic team. The successful candidate will have a proven track... 
+                    Sample job description
                 </slot>
             </div>
 

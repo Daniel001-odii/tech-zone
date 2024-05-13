@@ -10,7 +10,7 @@
        
        <Modal :title="'Job Filters'" :modal_active="job_filter_modal" >
             <template #body>
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3 md:min-w-full">
                     <div class="flex flex-row flex-wrap gap-3">              
                         <div class=" flex flex-col grow">
                             <span class="font-bold text-lg">Minimum Budget</span>
@@ -57,6 +57,22 @@
                             :maxSelectedLabels="3" class="form_input" />
                         </div>
                     </div>
+
+                    <div class="grow flex flex-col">
+                        <span class="font-bold text-lg">Job Category</span>
+                        <MultiSelect v-model="job_filter_form.categories" 
+                        :options="jobCategories" 
+                        optionLabel="name" 
+                        optionValue="name" 
+                        placeholder="Select Job Category"
+                        :maxSelectedLabels="3" class="form_input" />
+                    </div>
+
+
+                    <!-- <select class="p-3 rounded-md" >
+                        <option>Select category</option>
+                        <option v-for="category in jobCategories">{{ category }}</option>
+                    </select> -->
                 </div>
             </template>
             <template #footer>
@@ -341,6 +357,8 @@ import ContractStatus from '@/components/ContractStatus.vue';
 
 import MultiSelect from 'primevue/multiselect';
 
+import jobCategories from '../../utils/jobCategories.json';
+
 export default {
     name: "JobsPageView",
     components: { 
@@ -387,10 +405,14 @@ export default {
                 },
                 posted: '',
                 budget_type: '',
+                categories: '',
             },
             nigerianStates,
             job_type: ["small", "medium", "large"],
             budget_type: [{name: "fixed-price"}, {name: "hourly"}],
+            job_categories: [],
+
+            jobCategories,
 
             states_to_filter: '',
             // job_time: ["under 24 hrs", "under a week", "under a month", "over a month"]
