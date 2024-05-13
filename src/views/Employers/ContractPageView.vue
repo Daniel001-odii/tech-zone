@@ -59,7 +59,7 @@
             <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">you sent {{ contract.user.firstname }} {{ contract.user.lastname }} a job contract offer!</h1>
             <h1 class="font-bold text-2xl bg-tz_light_blue p-5 rounded-lg">{{ contract.job.title }}</h1>
 
-            <div class="flex flex-col md:flex-row gap-3 items-start">
+            <div class="flex flex-col md:flex-row gap-3">
                 <div class="text-left gap-3 flex flex-col mt-3 md:w-[70%]">
                     <table>
                         <tbody>
@@ -146,17 +146,14 @@
                 </div>
 
                 <!-- CONTRACT USER DETAILS AREA -->
-                <div class="mt-6 md:m-0 flex justify-center items-center w-[30%]">
-                    <div class="flex flex-row items-start flex-wrap gap-6 mt-6">
-                        
+                <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0">
+                    <div class="flex flex-row items-start gap-6 mt-6 flex-wrap">
                         <img :src="contract.user.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
-                        
                         <div>
-                            <p class="block text-xl font-bold">{{ contract.user.firstname }} {{ contract.user.lastname }}</p>
+                            <p class="text-xl font-bold">{{ contract.user.firstname }} {{ contract.user.lastname }}</p>
                             <p class="text-gray-300">{{  contract.user.profile.title }}</p>
                             <p class="text-gray-300">{{  contract.user.created }}</p>
                         </div>
-                        
                     </div>
                 </div>
             </div>

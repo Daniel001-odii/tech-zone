@@ -72,16 +72,11 @@
             <h1 class="font-bold text-2xl bg-tz_light_blue p-5 rounded-lg">{{ contract.job.title }}</h1>
 
             <div class="gap-3 flex flex-col md:flex-row p-3">
-                <div class="flex flex-col md:w-[50%]">
-                    <!-- <div>
-                        <h2 class="font-bold text-lg">Descripton</h2>
-                        <p>{{  contract.job.description }}</p>
-                    </div> -->
-
+                <div class="flex flex-col md:w-[70%]">
                     <div class="mt-3">
                         <h2 class="font-bold text-lg">Contract Details</h2>
                         <div>
-                            <table>
+                            <table class="w-full">
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Start Date</td>
@@ -184,11 +179,9 @@
                 </div>
 
                 <!-- EMPLOYER DETAIL AREA -->
-                <div class="flex flex-col md:w-[50%] md:items-center mt-6 md:m-0">
+                <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0">
                     <div class="flex flex-row flex-wrap gap-3">
-                        <!-- <div class="border-4 border-tz_blue h-20 w-20 rounded-full overflow-hidden p-1"> -->
-                            <img :src="contract.employer.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
-                        <!-- </div> -->
+                        <img :src="contract.employer.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
                         <div>
                             <p class=" block text-xl font-bold">{{ contract.employer.profile.company_name }}</p>
                             <p class=" blocks">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>
