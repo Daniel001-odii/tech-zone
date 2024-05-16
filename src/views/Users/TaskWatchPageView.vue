@@ -4,14 +4,18 @@
 <Modal :modal_active="start_task_watch_modal" :title="'Start task-watch'">
     <template #body>
         <div class="flex flex-col gap-2">
+            <Vue3Lottie
+                :animationData="timerWatch"
+                :height="200"
+                :width="200"
+            />
             <p class="">You are about to clock-in for today's work session.</p>
             <span class="dark:text-blue-300 text-blue-500 bg-tz_light_blue p-3 rounded">you cannot clock in twice after now, you can only pause, resume or clockout after clock-in.</span>
 
-                <div class="p-3">
+                <div class="mt-3">
                     <p>What are you working on?</p>
                     <input type="text" class="form_input w-full" v-model="task_description">
                 </div>
-            
         </div>
     </template>
     <template #footer>
@@ -71,7 +75,11 @@
                     <button v-if="clock_in_time && !clock_out_time" @click="stop_task_watch_modal = !stop_task_watch_modal" class="mx-auto my-0 text-white text-sm font-medium flex items-center gap-5 ">
                         Clock out
                     </button>
-                    <span v-if="watch_status == 'stopped'" class="mx-auto my-0 text-white">completed</span>
+                    <span data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" v-if="watch_status == 'stopped'" class="mx-auto my-0 text-white">completed</span>
+                    <div id="tooltip-bottom" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                        You clocked out for today,<br/> come back tomorrow to clock-in.
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
                 </div>
             </div>
 
@@ -141,79 +149,92 @@
             <div v-if="user_type == 'user'" class="w-full mt-6">
                 <h2 class="font-bold">Tracked time</h2>
                 <!-- {{  all_watches }} -->
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Day</th>
-                            <th scope="col" class="px-6 py-3">Clock-in time</th>
-                            <th scope="col" class="px-6 py-3">Clock-out time</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ convertDateTimeToDayOfWeek(watch.date) }} 
-                            </td>
-                            <td class="px-6 py-4">
-                                <span v-if="watch.time_stamp.clock_in_time"> 
-                                    {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }}<br/>
-                                    <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Day</th>
+                                <th scope="col" class="px-6 py-3">Clock-in time</th>
+                                <th scope="col" class="px-6 py-3">Clock-out time</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white capitalize">
+                                    {{ convertDateTimeToDayOfWeek(watch.date) }} 
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span v-if="watch.time_stamp.clock_in_time"> 
+                                        {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }}<br/>
+                                        <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
+                                    </span>
+                                    <span v-else>-</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span v-if="watch.time_stamp.stop_time"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
+                                    <span v-else>-</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span  class="flex flex-row gap-2"
+                                    :class="{
+                                        'text-slate-300': watch.time_stamp.action === 'pending',
+                                        'text-green-300': watch.time_stamp.action === 'approved',
+                                        'text-red-300': watch.time_stamp.action === 'declined'
+                                        }"
+                                    >{{ watch.time_stamp.action }} 
+                                    <i v-if="watch.time_stamp.action == 'approved'" class="bi bi-check-circle-fill"></i>
+                                    <i v-if="watch.time_stamp.action == 'declined'" class="bi bi-x-circle-fill"></i>
                                 </span>
-                                <span v-else>-</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span v-if="watch.time_stamp.stop_time"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
-                                <span v-else>-</span>
-                            </td>
-                            <td class="px-6 py-4 text-orange-300">
-                                <span v-if="watch.time_stamp.clock_in_time">pending</span>
-                                <span v-else>-</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- TIME STAMP TABLE FOR EMPLOYERS -->
             <div v-if="user_type == 'employer'" class="w-full mt-6">
                 <h2 class="font-bold">Tracked time</h2>
                 <!-- {{  all_watches }} -->
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Day</th>
-                            <th scope="col" class="px-6 py-3">Clock-in time</th>
-                            <th scope="col" class="px-6 py-3">Clock-out time</th>
-                            <th scope="col" class="px-6 py-3">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ convertDateTimeToDayOfWeek(watch.date) }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span v-if="watch.time_stamp.clock_in_time" class="text-white">
-                                    {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }} <br/>
-                                    <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
-                                </span>
-                                <span v-else>-</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span v-if="watch.time_stamp.stop_time" class="text-white"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
-                                <span v-else>-</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div v-if="watch.time_stamp.clock_in_time" class="flex flex-row gap-3">
-                                    <button class="bg-green-500 px-3 py-1 text-white rounded-md">Approve</button>
-                                    <button class="bg-red-500 px-3 py-1 text-white rounded-md">Decline</button>
-                                </div>
-                                <div v-else>-</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Day</th>
+                                <th scope="col" class="px-6 py-3">Clock-in time</th>
+                                <th scope="col" class="px-6 py-3">Clock-out time</th>
+                                <th scope="col" class="px-6 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(watch, index) in all_watches" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white capitalize">
+                                    {{ convertDateTimeToDayOfWeek(watch.date) }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span v-if="watch.time_stamp.clock_in_time" class="text-white">
+                                        {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }} <br/>
+                                        <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
+                                    </span>
+                                    <span v-else>-</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span v-if="watch.time_stamp.stop_time" class="text-white"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
+                                    <span v-else>-</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div v-if="watch.time_stamp.action == 'pending'" class="flex flex-row gap-3">
+                                        <button @click="approveTimeStamp(watch._id)" class="bg-green-500 px-3 py-1 text-white rounded-md">Approve</button>
+                                        <button @click="declineTimeStamp(watch._id)" class="bg-red-500 px-3 py-1 text-white rounded-md">Decline</button>
+                                    </div>
+                                    <div v-else>{{ watch.time_stamp.action }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class=" bg-gray-100 dark:bg-gray-700 w-full min-h-80">
@@ -237,6 +258,10 @@ Chart.register(...registerables);
 import { convertTimeToAMPM } from '@/utils/dateFormat';
 import Modal from '@/components/Modal.vue';
 
+import timerWatch from '../../lottie/timerWatch.json';
+
+import Tooltip from 'primevue/tooltip';
+
 
     export default {
         name: "TaskWatchPageView",
@@ -253,6 +278,9 @@ import Modal from '@/components/Modal.vue';
                 elapsedTime: 0,
                 timerRunning: false,
                 timerInterval: null,
+
+                // lottie animation data
+                timerWatch,
 
                 contract: '',
                 headers: {
@@ -616,7 +644,31 @@ import Modal from '@/components/Modal.vue';
                 }catch(error){
                     console.log("error getting user: ", error);
                 }
-            }
+            },
+
+
+            async approveTimeStamp(watch_id){
+                const headers = this.headers;
+                try{
+                    const response = await axios.post(`${this.api_url}/watch/${watch_id}/approve`, {}, { headers });
+                    console.log("watch action: ", response);
+                    this.getAllWatches();
+                }catch(error){
+                    this.timer_error = error.response;
+                }
+            },
+
+            async declineTimeStamp(watch_id){
+                const headers = this.headers;
+                try{
+                    const response = await axios.post(`${this.api_url}/watch/${watch_id}/decline`, {}, { headers });
+                    console.log("watch action: ", response);
+                    this.getAllWatches();
+                }catch(error){
+                    this.timer_error = error.response;
+                }
+            },
+
 
 
         },

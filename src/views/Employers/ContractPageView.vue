@@ -168,13 +168,14 @@
                 </div>
 
                 <!-- CONTRACT USER DETAILS AREA -->
-                <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0">
+                <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0 md:pl-5">
                     <div class="flex flex-row items-start gap-6 mt-6 flex-wrap">
                         <img :src="contract.user.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
                         <div>
                             <p class="text-xl font-bold">{{ contract.user.firstname }} {{ contract.user.lastname }}</p>
                             <p class="text-gray-300">{{  contract.user.profile.title }}</p>
-                            <p class="text-gray-300">{{  contract.user.created }}</p>
+                            <p class="text-gray-300">joined: {{  formatTimestampWithoutTime(contract.user.created) }}</p>
+                            <p class="text-gray-300 bg-blue-500 bg-opacity-50 rounded-full px-5 w-fit">Freelancer</p>
                         </div>
                     </div>
                 </div>
@@ -196,6 +197,8 @@ import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import contractOffer from '../../lottie/contract-offer.json';
+import { formatTimestampWithoutTime } from '@/utils/dateFormat';
+
 
 export default {
     name: "ContractsListPageView",
@@ -206,6 +209,8 @@ export default {
             show_alert: false,
             alert_type: '',
             alert_message: '',
+
+            formatTimestampWithoutTime,
 
             loading: '',
             user: '',

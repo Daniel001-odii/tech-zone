@@ -56,8 +56,8 @@
         <!-- LOADED CONTRACT HERE -->        
         <div v-if="contract" class="flex flex-col p-5">
             <!-- TALENT DECISION TOAST -->
-            <span v-if="contract.action == 'accepted'" class=" bg-green-300 bg-opacity-20 text-green-300 p-5 rounded-lg mb-3"> You accepted this offer </span>
-            <span v-if="contract.action == 'declined'" class=" bg-red-300 bg-opacity-20 text-red-300 p-5 rounded-lg mb-3"> You declined this offer </span>
+            <span v-if="contract.action == 'accepted'" class=" bg-green-300 bg-opacity-20 text-green-300 p-5 rounded-lg mb-3"> You accepted this offer on {{  formatTimestampWithoutTime(contract.action_date)}}</span>
+            <span v-if="contract.action == 'declined'" class=" bg-red-300 bg-opacity-20 text-red-300 p-5 rounded-lg mb-3"> You declined this offer on {{ formatTimestampWithoutTime(contract.action_date) }}</span>
 
 
 
@@ -191,7 +191,7 @@
                 </div>
 
                 <!-- EMPLOYER DETAIL AREA -->
-                <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0">
+                <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0 pt-12 md:pl-5">
                     <div class="flex flex-row flex-wrap gap-3">
                         <!-- <img :src="contract.employer.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4"> -->
                         <div class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4 font-bold text-3xl text-gray-400 flex justify-center items-center bg-slate-200">
@@ -200,7 +200,8 @@
                         <div>
                             <p class=" block text-xl font-bold">{{ contract.employer.profile.company_name }}</p>
                             <p class=" blocks">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>
-                            <p class=" text-sm text-gray-400 mt-1">sent {{ readableTimeFormat(contract.created) }}</p>
+                            <p class=" text-sm text-gray-400 mt-1">joined {{ formatTimestampWithoutTime(contract.employer.created) }}</p>
+                            <p class="text-gray-300 bg-blue-500 bg-opacity-50 rounded-full px-5 w-fit">Employer</p>
                         </div>
                         
                     </div>
@@ -225,6 +226,8 @@ import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import contractOffer from '../../lottie/contract-offer.json';
+import { formatTimestampWithoutTime } from '@/utils/dateFormat';
+
 
 export default {
     name: "ContractsListPageView",
@@ -235,6 +238,8 @@ export default {
             show_alert: false,
             alert_type: '',
             alert_message: '',
+
+            formatTimestampWithoutTime,
 
             loading: '',
             user: '',

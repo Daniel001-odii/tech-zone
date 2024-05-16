@@ -50,7 +50,18 @@ export function formatTimestamp(timestamp) {
   };
   return date.toLocaleString(undefined, options);
 };
+//  March 3, 2024 at 9:05 PM 
 
+export function formatTimestampWithoutTime(timestamp) {
+  const date = new Date(timestamp);
+  const options = { 
+    year: "numeric", 
+    month: "long", 
+    day: "numeric",
+  };
+  return date.toLocaleString(undefined, options);
+};
+// returns March 3, 2024
 
 export function convertTimeToAMPM(dateTimeString) {
   const date = new Date(dateTimeString);

@@ -5,6 +5,7 @@
     <!-- Job assignment modal... -->
     <Modal :title="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
         <template #body>
+            <span v-if="message" class="text-orange-300 my-3">{{ message.message }}</span>
             <div class=" flex flex-col gap-3">
                 <div class="flex flex-col gap-3 rounded-md group hover:bg-gray-100 p-3 items-start justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
                     <div clas="flex flex-col">
@@ -243,6 +244,8 @@ export default {
 
             loading_posted_jobs: false,
             loading_saved_users: false,
+
+            message: '',
         }
         
     },
@@ -359,9 +362,10 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/assign`, {}, { headers });
-                console.log("res from sending contract: ", response)
-                const message = response.data.message
-                alert(message)
+                // console.log("res from sending contract: ", response)
+                this.message = response.data;
+                console.log("msg from assign: ", typeof(response.data))
+                // alert(response.data);
             }catch(error){
                 console.log("error sending Contract:", error)
             }
