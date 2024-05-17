@@ -57,7 +57,7 @@
         <div v-if="contract" class="flex flex-col p-5">
             <!-- TALENT DECISION TOAST -->
             <span v-if="contract.action == 'accepted'" class=" bg-green-300 bg-opacity-20 text-green-700 dark:text-green-300 p-5 rounded-lg mb-3"> You accepted this offer on {{  formatTimestampWithoutTime(contract.action_date)}}</span>
-            <span v-if="contract.action == 'declined'" class="bg-red-300 text-red-700 dark:text-red-300 bg-opacity-20 text-red-300 p-5 rounded-lg mb-3"> You declined this offer on {{ formatTimestampWithoutTime(contract.action_date) }}</span>
+            <span v-if="contract.action == 'declined'" class="bg-red-300 text-red-700 dark:text-red-300 bg-opacity-20 p-5 rounded-lg mb-3"> You declined this offer on {{ formatTimestampWithoutTime(contract.action_date) }}</span>
 
 
 
@@ -70,6 +70,8 @@
 
             <h1 v-if="contract.action == 'pending'" class="text-3xl font-bold p-3">{{ user.firstname }} you received a job contract offer!</h1>
             <h1 class="font-bold text-2xl bg-tz_light_blue p-5 rounded-lg">{{ contract.job.title }}</h1>
+
+            <span v-if="contract.status == 'closed'" class="p-3 bg-red-300 bg-opacity-20 dark:text-red-200 rounded-lg my-3">Contract has been closed</span>
 
             <div class="gap-3 flex flex-col md:flex-row p-3">
                 <div class="flex flex-col md:w-[70%]">
@@ -162,7 +164,7 @@
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
                             <RouterLink :to="`/in/contracts/${contract._id}/watch`">
-                                <button class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white">
+                                <button class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.status == 'closed'">
                                     <i class="bi bi-stopwatch"></i>
                                     Watch Contract
                                 </button>
@@ -474,7 +476,7 @@ export default {
 }
 
 button:disabled{
-    @apply cursor-not-allowed
+    @apply cursor-not-allowed bg-white border text-gray-400 dark:border-gray-500 dark:text-gray-500
 }
 
 .contrac_activity_btn{

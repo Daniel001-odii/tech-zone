@@ -447,7 +447,7 @@ import Tooltip from 'primevue/tooltip';
                     
                     this.timer_loading = false;
                 }catch(error){
-                    this.timer_error = error;
+                    this.timer_error = error.response.data.message;
                     this.timer_loading = false;
                 }
             },
@@ -631,7 +631,7 @@ import Tooltip from 'primevue/tooltip';
 
                     console.log("recorded days: ", days);
                 }catch(error){
-                    this.timer_error = error;
+                    this.timer_error = error.response.data.message;
                 }
             },
 
@@ -654,7 +654,7 @@ import Tooltip from 'primevue/tooltip';
                     console.log("watch action: ", response);
                     this.getAllWatches();
                 }catch(error){
-                    this.timer_error = error.response;
+                    this.timer_error = error.response.data.message;
                 }
             },
 
@@ -665,7 +665,7 @@ import Tooltip from 'primevue/tooltip';
                     console.log("watch action: ", response);
                     this.getAllWatches();
                 }catch(error){
-                    this.timer_error = error.response;
+                    this.timer_error = error.response.data.message;
                 }
             },
 
