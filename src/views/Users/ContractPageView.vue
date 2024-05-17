@@ -56,8 +56,8 @@
         <!-- LOADED CONTRACT HERE -->        
         <div v-if="contract" class="flex flex-col p-5">
             <!-- TALENT DECISION TOAST -->
-            <span v-if="contract.action == 'accepted'" class=" bg-green-300 bg-opacity-20 text-green-300 p-5 rounded-lg mb-3"> You accepted this offer on {{  formatTimestampWithoutTime(contract.action_date)}}</span>
-            <span v-if="contract.action == 'declined'" class=" bg-red-300 bg-opacity-20 text-red-300 p-5 rounded-lg mb-3"> You declined this offer on {{ formatTimestampWithoutTime(contract.action_date) }}</span>
+            <span v-if="contract.action == 'accepted'" class=" bg-green-300 bg-opacity-20 text-green-700 dark:text-green-300 p-5 rounded-lg mb-3"> You accepted this offer on {{  formatTimestampWithoutTime(contract.action_date)}}</span>
+            <span v-if="contract.action == 'declined'" class="bg-red-300 text-red-700 dark:text-red-300 bg-opacity-20 text-red-300 p-5 rounded-lg mb-3"> You declined this offer on {{ formatTimestampWithoutTime(contract.action_date) }}</span>
 
 
 
@@ -122,10 +122,10 @@
                                         <td class="px-6 py-4">Job Category</td>
                                         <td class="px-6 py-4">Not categorised yet...</td>
                                     </tr>
-                                    <!-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td class="px-6 py-4">Working Hours</td>
-                                        <td class="px-6 py-4"></td>
-                                    </tr> -->
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Requires Taskwatch</td>
+                                        <td class="px-6 py-4">{{ contract.job.requires_taskwatch }}</td>
+                                    </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Offer Date</td>
                                         <td class="px-6 py-4">{{ contract.createdAt }}</td>
@@ -198,10 +198,10 @@
                             <span>{{ contract.employer.firstname[0] }}{{ contract.employer.lastname[0] }}</span>
                         </div>
                         <div>
-                            <p class=" block text-xl font-bold">{{ contract.employer.profile.company_name }}</p>
-                            <p class=" blocks">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>
+                            <p class="text-xl font-bold">{{ contract.employer.profile.company_name }}</p>
+                            <p class="">{{ contract.employer.firstname }} {{ contract.employer.lastname }}</p>
                             <p class=" text-sm text-gray-400 mt-1">joined {{ formatTimestampWithoutTime(contract.employer.created) }}</p>
-                            <p class="text-gray-300 bg-blue-500 bg-opacity-50 rounded-full px-5 w-fit">Employer</p>
+                            <p class="text-white bg-blue-500 rounded-full px-5 w-fit">Employer</p>
                         </div>
                         
                     </div>

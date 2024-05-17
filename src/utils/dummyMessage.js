@@ -1,5 +1,4 @@
 export function getMessages(){
-
 const messages = [
     {
       "_id": 123456,

@@ -9,6 +9,7 @@
 <div class="flex flex-col justify-between dark:bg-[#27323F] dark:text-white w-full h-full">
 
 <div class="flex flex-col gap-3">
+
     <div v-if="form_errors" class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 m-8" role="alert">
         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -19,8 +20,9 @@
         </div>
     </div>
 
+    <span>index: {{ currentIndex }}</span>
+
     <div class="flex flex-row justify-center items-center">
-       
             <!-- FOR SECTION 1 JOB TITLE -->
             <Transition name="formSlide">
                 <div v-if="currentIndex === 0" class="form_section">
@@ -29,10 +31,10 @@
                         <p class="text-2xl font-bold">Give your job a very descriptive Name.</p>
                         <span>Giving a descriptive name helps attract the right talent and save you time</span>
                     </div>
-                    <div class="border"></div>
+                    <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="job_title">
                         <p>Write a name for your job posting</p>
-                        <textarea class="form_input" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
+                        <textarea @input="validateText(job_post.title)" class="form_input" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
                         <span class="text-sm text-gray-400">Examples : Product Designer, Web Designer, Flutter Developer</span>
                     </div>
                 </div>
@@ -46,12 +48,12 @@
                         <p class="text-2xl font-bold">Give a list of skills required for your job.</p>
                         <span>Skills, qualifications, necessary tools required should be listed here,  For more reach and better result, input 3 or more skills..</span>
                     </div>
-                    <div class="border"></div>
+                    <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="skills">
                         <p>Search Skill here or Manually add your own</p>
                         <!-- {{ job_post.skills }} -->
                         
-                        <input class="form_input" placeholder="Skill seperated by comma e.g HTML, CSS, JavaScript" v-model="inputValue" @keyup.enter="addTag">
+                        <input @input="validateText(inputValue)" class="form_input" placeholder="Skill seperated by comma e.g HTML, CSS, JavaScript" v-model="inputValue" @keyup.enter="addTag">
                         <div class="flex flex-row flex-wrap gap-2">
                             <div v-for="(tag, index) in tags" :key="index" class="p-3 rounded-xl bg-tz_light_blue">
                                 {{ tag }}<span class="ml-3" @click="removeTag(index)">&times;</span>
@@ -69,7 +71,7 @@
                         <h1>Work Period</h1>
                         <p class="text-2xl font-bold">Estimate the period the work will last for.</p>
                     </div>
-                    <div class="border"></div>
+                    <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="period">
                         <p>How long will the job last?</p>
                         <select class="form_input" placeholder="Product Designer" v-model="job_post.period">
@@ -89,25 +91,26 @@
                         <h1>Budget</h1>
                         <p class="text-2xl font-bold">What is your budget for the job?</p>
                     </div>
-                    <div class="border"></div>
+                    <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="budget">
                         <p>Select the budget type</p>
                         <div class="flex flex-row gap-6">
                             <label for="fixed-price" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'fixed-price' ? 'bg-tz_light_blue border-tz_blue':''">
-                                <input type="radio" value="fixed-price" id="fixed-price" name="budget-type" v-model="job_post.budget_type">
+                                <input type="radio" value="fixed-price" id="fixed-price" name="budget-type" v-model="job_post.budget_type" @change="updateTracker">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-receipt"></i> <span>Fixed Price</span>
                                 </div>
                             </label>
                             <label for="hourly" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.budget_type == 'hourly' ? 'bg-tz_light_blue border-tz_blue':''">
-                                <input type="radio" value="hourly" id="hourly" name="budget-type" v-model="job_post.budget_type">
+                                <input type="radio" value="hourly" id="hourly" name="budget-type" v-model="job_post.budget_type" @change="updateTracker">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-clock"></i> <span>Hourly Rate</span>
                                 </div>
                             </label>
                         </div>
                         <p class="mt-3">Project Budget <span v-if="job_post.budget_type == 'hourly'">per hour</span></p>
-                        <input placeholder="$100,000" class="form_input" v-model="job_post.budget" required>
+                        <input type="number" placeholder="N100,000" class="form_input" v-model="job_post.budget" required>
+                        <!-- <AmountInput v-model="job_post.budget"/> -->
                         <span>
                             After Project is completed  and satisfied, payment will be released to talent.
                         </span>
@@ -123,19 +126,19 @@
                         <p class="text-2xl font-bold">Where will this job be carried out?</p>
                         <!-- <span>Giving a descriptive name helps attract the right talent and save you time</span> -->
                     </div>
-                    <div class="border"></div>
+                    <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="location">
                         <p>write a correct and exisitng location, dont stress the talents...</p>
                         <div class="flex flex-row gap-6">
                             <!-- {{ job_post.location.remote }} -->
                             <label for="remote" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote === 'true' ? 'bg-tz_light_blue border-tz_blue':''">
-                                <input type="radio" value="true" id="remote" name="job-location" v-model="job_post.location.remote">
+                                <input type="radio" value="true" id="remote" name="job-location" v-model="job_post.location.remote" @change="updateTracker">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-geo-alt-fill"></i> <span>Remote</span>
                                 </div>
                             </label>
                             <label for="on-site" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.location.remote == 'false' ? 'bg-tz_light_blue border-tz_blue':''">
-                                <input type="radio" value="false" id="on-site" name="job-location" v-model="job_post.location.remote">
+                                <input type="radio" value="false" id="on-site" name="job-location" v-model="job_post.location.remote" @change="updateTracker">
                                 <div class="flex flex-row gap-3">
                                     <i class="bi bi-buildings"></i> <span>On Site</span>
                                 </div>
@@ -143,12 +146,15 @@
                         </div>
                         <div v-if="job_post.location.remote != 'true'" class="flex flex-col gap-3">
                             <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="form_input">
+                           
                             <select @change="whatState" v-model="job_post.location.state" class="form_input ">
+                                <option>Select State</option>
                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                             </select>
-                            <!-- <select class="" @change="whatState" v-model="job_post.location.state" :disabled="isRemote">
-                                <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
-                            </select> -->
+                            <button class="btn" @click.prevent="getJobCordinates" :disabled="loading_g_location || job_post.location.address == ''">
+                                <span v-if="loading_g_location">searching...</span>
+                                <span v-if="!loading_g_location">confirm location</span>
+                            </button>
                             <div class=" bg-cyan-100 p-3 rounded-md text-cyan-700 border border-cyan-200">
                                 <i class="bi bi-exclamation-circle-fill"></i>
                                 In order to help the talents locate this place, this location would be displayed on a map in the job post. Please be precise</div>
@@ -157,24 +163,60 @@
                 </div>
             </Transition>
 
-            <!-- FOR SECTION 6 JOB DESCRIPTION -->
+            <!-- FORM SECTION 5 TASK WATCH -->
             <Transition name="formSlide">
                 <div v-if="currentIndex === 5" class="form_section">
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start">
+                        <h1>Task watch</h1>
+                        <p class="text-2xl font-bold">Will you require the talent to track time while working on the project?</p>
+                    </div>
+                    <div class="border-l border-gray-600"></div>
+                    <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="location">
+                        <p>our time tracking system allows users track the time spent while working on a task or project.</p>
+                        <div class="flex flex-row gap-6">
+                            <label for="require_tracker" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.requires_taskwatch == 'true' ? 'bg-tz_light_blue border-tz_blue':''">
+                                <input type="radio" value="true" id="require_tracker" name="tracker" v-model="job_post.requires_taskwatch">
+                                <div class="flex flex-row gap-3">
+                                    <i class="bi bi-clock-history"></i> <span>Track time</span>
+                                </div>
+                            </label>
+                            <label for="require_no_tracker" class="border p-4 flex flex-col w-fit justify-end items-end rounded-lg" :class="job_post.requires_taskwatch == 'false' ? 'bg-tz_light_blue border-tz_blue':''">
+                                <input type="radio" value="false" id="require_no_tracker" name="tracker" v-model="job_post.requires_taskwatch">
+                                <div class="flex flex-row gap-3">
+                                    <i class="bi bi-x-circle"></i> <span>No need</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <span v-if="job_post.budget_type == 'hourly'">We have suggested to track time since its an hourly budget payment.</span>
+                            <div class=" bg-cyan-100 p-3 rounded-md text-cyan-700 border border-cyan-200">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                Jobs that are on-site, and have an hourly budget have the time tracker feature turned on by default.
+                                otherwise it is optional. this is to enable process the  talents pay per hour.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+
+            <!-- FOR SECTION 6 JOB DESCRIPTION -->
+            <Transition name="formSlide">
+                <div v-if="currentIndex === 6" class="form_section">
                     <div class=" w-full md:w-3/6 h-full p-5 text-start">
                         <h1>Job Description</h1>
                         <p class="text-2xl font-bold">Final Step, Write a clear description of the job, including deliverables, skills, experience and other necessary details..</p>
                     </div>
-                    <div class="border"></div>
+                    <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="description">
                         <p>Describe your job</p>
-                        <textarea class="form_input h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
+                        <textarea @input="validateText(job_post.description)" class="form_input h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
                     </div>
                 </div>
             </Transition>
 
             <!-- FORM SECTION 7 JOB REVIEW -->
             <Transition name="formSlide">
-                <div v-if="currentIndex === 6" class="form_section">
+                <div v-if="currentIndex === 7" class="form_section">
                 
                     <!-- LEFT -->
                     <div class=" flex flex-col text-left w-full md:w-3/6 overflow-y-scroll h-[600px]">
@@ -302,7 +344,6 @@
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col">
                         <JobDetailCard class="h-full"
                             :company="'Your company name here'"
-                        
                             :remote="job_post.location.remote ? true : false"
                             :location="job_post.location" 
                             :posted="'now'" 
@@ -327,10 +368,16 @@
 </div>
 
 <div class="flex p-4 flex-col justify-center  items-center gap-6 w-full">
-    <div class=" w-4/5 h-4 bg-tz_blue rounded-lg"></div>
+
+    <!-- STEP COUNTER -->
+    <div class=" w-4/5 h-4 dark:bg-gray-600 bg-gray-gray-300 rounded-lg overflow-hidden">
+        <div class="h-full bg-blue-600 rounded-full"role="progressbar" :style="{ width: (currentIndex + 1) * 14 + '%' }" :aria-valuenow="(currentIndex + 1) * 14" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+
+
     <div class="w-full justify-between flex flex-row">
-        <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex === 0">Previous</button>
-        <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="next" :disabled="currentIndex === 6" >Next</button>
+        <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="prev" :disabled="currentIndex == 0">Previous</button>
+        <button type="button" class="bg-tz_blue py-3 px-6 rounded-3xl text-white disabled:bg-gray-300" @click="next" :disabled="checkCurrentIndex" >Next</button>
         
     </div>
 </div>
@@ -345,9 +392,17 @@ import JobDetailCard from '@/components/JobDetailCard.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import axios from 'axios'
 
+import states from '../../utils/states.json'
+
+import AmountInput from '@/components/AmountInput.vue';
+
     export default {
         name: "ClientPostJobView",
-        components: { JobDetailCard, FullPageModal, PageTitle },
+        components: { 
+            JobDetailCard, 
+            FullPageModal, 
+            AmountInput,
+            PageTitle },
         data(){
             return{
                 currentIndex: 0,
@@ -364,23 +419,23 @@ import axios from 'axios'
                     skills: [],
                     period: '',
                     location: {
-                        remote: 'true',
+                        remote: 'false',
                         state: 'Select State',
                         city: '',
                         address: '',
+                        latitude: '',
+                        longitude: '',
                     },
                     budget: '',
                     budget_type: 'fixed-price',
                     description: '',
+                    requires_taskwatch: false,
+                    category: '',
                 },
+
+                states,
             
-                states: ['Select State',
-                    'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue',
-                    'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT',
-                    'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi',
-                    'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo',
-                    'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
-                ],
+                
                 // tags for job skills...
                 tags: [],
                 inputValue: '',
@@ -390,7 +445,12 @@ import axios from 'axios'
 
                 preview: {
                     title: '',
-                }
+                },
+
+                loading_g_location: false,
+                location_found: false,
+
+                is_valid_text: false,
             }
         },
         methods:{
@@ -418,6 +478,23 @@ import axios from 'axios'
             removeTag(index){
                 this.tags.splice(index, 1)
                 this.job_post.skills.splice(index, 1);
+            },
+
+            validateText(dynamic_model){
+                const trimmed_msg = dynamic_model.trim();
+                this.is_valid_text = trimmed_msg.length > 0;
+            },
+
+            updateTracker(){
+                if(this.job_post.budget_type == "hourly"){
+                    this.job_post.requires_taskwatch = 'true';
+                } else if(this.job_post.budget_type == "fixed-price"){
+                    this.job_post.requires_taskwatch = 'false';
+                }
+                
+                if(this.job_post.location.remote == 'false'){
+                    this.job_post.requires_taskwatch = 'true';
+                };
             },
 
             // post job..
@@ -469,6 +546,27 @@ import axios from 'axios'
                 }
             },
 
+            async getJobCordinates() {
+                this.loading_g_location = true;
+                const geocoder = new google.maps.Geocoder();
+                const address = this.job_post.location.address;
+
+                geocoder.geocode({ address }, (results, status) => {
+                    if (status === 'OK' && results && results.length > 0) {
+                    const { lat, lng } = results[0].geometry.location;
+                    this.location_found = true;
+                    this.job_post.location.latitude = lat();
+                    this.job_post.location.longitude = lng();
+                    console.log("Lat: ", this.latitude, "Long: ", this.longitude, "general result: ");
+                    this.loading_g_location = false;
+                    } else{
+                    alert("geo code was not successful...");
+                    this.location_found = false;
+                    }
+                });
+                this.loading_g_location = false;
+            },
+
             
         },
         mounted(){
@@ -477,7 +575,41 @@ import axios from 'axios'
             }
         },
         computed:{
+            checkCurrentIndex(){
+                if(this.currentIndex == 0){
+                    if(this.job_post.title == '' || this.is_valid_text == false){
+                        return true
+                    } 
+                };
 
+                if(this.currentIndex == 1){
+                    if(this.is_valid_text == false || this.tags.length <= 0){
+                        return true
+                    }
+                    return false
+                };
+
+                if(this.currentIndex == 2 && this.job_post.period == ''){
+                    return true
+                };
+
+                if(this.currentIndex == 3 && this.job_post.budget == ''){
+                    return true
+                };
+
+                if(this.currentIndex == 4 && this.job_post.location.remote !=  'true'){
+                    if(this.job_post.location.address == '' || this.job_post.location.state == ''){
+                        return true
+                    }
+                    return false
+                }
+                if(this.currentIndex == 6 && this.is_valid_text == false){
+                    return true
+                };
+                if(this.currentIndex == 7){
+                    return true;
+                }
+            }
         }
     }
 </script>

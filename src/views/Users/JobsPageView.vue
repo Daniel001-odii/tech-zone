@@ -84,7 +84,7 @@
        </Modal>
                 
     
-                <div class="relative">
+                <div class="relative" :class="!user ? 'mt-20':''">
                     <PageTitle>Work Explorer</PageTitle>
                     <div>
                         <div class="flex flex-row gap-2 p-2 md:p-2 border-b dark:border-gray-600">
@@ -180,6 +180,7 @@
                         <div class="h-full w-full md:w-3/6 hidden md:flex absolute right-0">
                             
                                 <JobDetailCard class="h-full w-full"
+                                :apply_button="true"
                                 @visitJobPost="this.$router.push('/in/jobs/' + jobs[selectedJob]._id + '/application')"
                                 :company="jobs[selectedJob].employer.profile.company_name" 
                                 :remote="jobs[selectedJob].location.remote"

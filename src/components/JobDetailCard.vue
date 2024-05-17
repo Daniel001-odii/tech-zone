@@ -10,7 +10,7 @@
                         </slot>
                     </span>
                     <div class="text-lg gap-4 flex flex-row-reverse">
-                        <button class="bg-tz_blue text-white px-5 py-2 rounded-md hover:bg-tz_dark_blue" @click="openJob">
+                        <button v-if="apply_button" class="bg-tz_blue text-white px-5 py-2 rounded-md hover:bg-tz_dark_blue" @click="openJob">
                             <span v-if="is_applied">View Application</span>
                             <span v-else>Apply here</span>
                         </button>
@@ -70,6 +70,7 @@ export default {
         skills: Array,
         remote: Boolean,
         is_applied: Boolean,
+        apply_button: Boolean,
     },
     components: { RouterLink },
     methods: {

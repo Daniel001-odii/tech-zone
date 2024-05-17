@@ -5,7 +5,7 @@
     <!-- Job assignment modal... -->
     <Modal :title="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
         <template #body>
-            <span v-if="message" class="text-orange-300 my-3">{{ message.message }}</span>
+            <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
             <div class=" flex flex-col gap-3">
                 <div class="flex flex-col gap-3 rounded-md group hover:bg-gray-100 p-3 items-start justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
                     <div clas="flex flex-col">
@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-else class="text-center p-5 flex flex-col justify-center items-center gap-3">
+                        <div v-if="jobs && jobs.length <= 0" class="text-center p-5 flex flex-col justify-center items-center gap-3">
                             <img src="../../assets/images/empty open mailbox.svg" class=" h-48">
                             You have not posted any job yet. <RouterLink to="/client/job" class="underline text-blue-500">Post now</RouterLink>
                         </div>
@@ -363,8 +363,8 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/assign`, {}, { headers });
                 // console.log("res from sending contract: ", response)
-                this.message = response.data;
-                console.log("msg from assign: ", typeof(response.data))
+                this.message = response.data.message;
+                // console.log("msg from assign: ", response)
                 // alert(response.data);
             }catch(error){
                 console.log("error sending Contract:", error)
