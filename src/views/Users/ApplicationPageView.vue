@@ -54,7 +54,7 @@
                         </div>
                         <div>
                             <slot name="job-description">
-                                {{ job.description }}
+                                <p v-html="job.description" class="whitespace-pre-line"></p>
                             </slot>
                         </div>
 

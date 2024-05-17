@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <span>index: {{ currentIndex }}</span>
+    <!-- <span>index: {{ currentIndex }}</span> -->
 
     <div class="flex flex-row justify-center items-center">
             <!-- FOR SECTION 1 JOB TITLE -->
@@ -34,7 +34,7 @@
                     <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="job_title">
                         <p>Write a name for your job posting</p>
-                        <textarea @input="validateText(job_post.title)" class="form_input" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
+                        <textarea @input="validateText(job_post.title)" class="form_input max-h-[200px]" placeholder="A very descriptive title" v-model="job_post.title" required></textarea>
                         <span class="text-sm text-gray-400">Examples : Product Designer, Web Designer, Flutter Developer</span>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                     <div class="border-l border-gray-600"></div>
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="description">
                         <p>Describe your job</p>
-                        <textarea @input="validateText(job_post.description)" class="form_input h-40" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
+                        <textarea @input="validateText(job_post.description)" class="form_input h-[350px] max-h-[400px]" placeholder="Dscribe the job in full details here" v-model="job_post.description" required></textarea>
                     </div>
                 </div>
             </Transition>
@@ -219,7 +219,7 @@
                 <div v-if="currentIndex === 7" class="form_section">
                 
                     <!-- LEFT -->
-                    <div class=" flex flex-col text-left w-full md:w-3/6 overflow-y-scroll h-[600px]">
+                    <div class=" flex flex-col text-left w-full md:w-3/6 overflow-y-auto h-[600px]">
                         <h1>Job Review</h1>
                         <div class="w-full flex flex-col gap-2">
                             <!-- REVIEW ESCTION 1 -->

@@ -204,7 +204,7 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import Modal from '@/components/Modal.vue';
-import { nigerianStates } from '@/utils/states';
+import nigerianStates from '@/utils/states.json';
 
 
 import MultiSelect from 'primevue/multiselect';

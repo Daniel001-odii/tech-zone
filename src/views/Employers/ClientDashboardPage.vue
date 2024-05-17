@@ -45,7 +45,8 @@
 
     <Modal :title="'Contract Offer Confirmation'" :modal_active="contract_modal">
         <template #body>
-            <span class="text-2xl mb-4"> Are you sure you want to Send the contract offer for the job <b class="text-blue-500">{{  current_job.title }}</b> to <b class="text-blue-500">{{ current_user.name }}</b>?</span>
+            <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
+            <span class="text-2xl mb-4 block"> Are you sure you want to Send the contract offer for the job <b class="text-blue-500">{{  current_job.title }}</b> to <b class="text-blue-500">{{ current_user.name }}</b>?</span>
         </template>
         <template #footer>
             <div class="flex flex-row gap-3">
@@ -352,6 +353,7 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/send`, {}, { headers });
                 console.log("res from sending contract: ", response);
+                this.message = response.data.message;
                 // alert(response.data.message);
             }catch(error){
                 console.log("error sending Contract:", error);

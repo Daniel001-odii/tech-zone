@@ -18,35 +18,25 @@
                     <!-- {{ job }} -->
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-500">
                         <div class="flex flex-row justify-between items-center">
-                            <!-- <RouterLink :to="'/jobs/' + contract._id"> -->
-                                <div class="text-2xl font-bold text-tz_blue underline">{{ job.title }}</div>
-                            <!-- </RouterLink> -->
-                            <button  :id="`dropdownHoverButton`" :data-dropdown-toggle="`dropdownHover${job_id}`" >
-                                <i class="bi bi-three-dots"></i>
-                            </button>
-                           
-                            <!-- Dropdown menu -->
-                        <div :id="`dropdownHover${job_id}`" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-                            <li>
-                                <RouterLink :to="'/client/jobs/' + job._id + '/edit'" class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    <i class="bi bi-pencil-fill"></i>
-                                    Edit Job
+                            <div class="text-2xl font-bold text-tz_blue underline">{{ job.title }}</div>
+                          <!-- DROP DOWN -->
+                            <ActionDropdown>
+                                <RouterLink :to="job.status != 'closed' ? '/client/jobs/':'#' + job._id + '/edit'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <button :disabled="job.status == 'closed'">
+                                        <i class="bi bi-pencil-fill"></i> Edit Job
+                                    </button>
+                                   
                                 </RouterLink>
-                            </li>
-                            <li>
-                                <span @click="closeJob(job._id)" class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <span v-if="job.status != 'closed'" @click="closeJob(job._id)" 
+                                class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     <i class="bi bi-x-circle-fill"></i>
-                                    Close Job</span>
-                            </li>
-                            <li>
-                                <span @click="deleteJob(job._id)" class="block cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-700">
+                                    Close Job
+                                </span>
+                                <span @click="deleteJob(job._id)" class="cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-700">
                                     <i class="bi bi-trash-fill"></i>
                                     Delete Job
                                 </span>
-                            </li>
-                            </ul>
-                        </div>
+                            </ActionDropdown>
 
                         </div>
                         <div>
@@ -75,10 +65,18 @@ import ContractStatus from '@/components/ContractStatus.vue';
 import axios from 'axios';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import PageTitle from '@/components/PageTitle.vue';
+import ActionDropdown from '@/components/ActionDropdown.vue';
+
 
 export default {
     name: "JobsListPageView",
-    components: { TemplateView, ContractStatus, SkeletonLoader, PageTitle },
+    components: { 
+        TemplateView, 
+        ContractStatus, 
+        SkeletonLoader, 
+        ActionDropdown,
+        PageTitle 
+    },
     data(){
         return{
             jobs: '',

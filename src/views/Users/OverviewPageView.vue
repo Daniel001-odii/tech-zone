@@ -125,7 +125,7 @@
                                         <span v-else>No review yet</span>
                                     </td>
                                     <td class="px-6 py-4 relative">
-                                        <ActionDropwdown>
+                                        <ActionDropdown>
                                             <RouterLink :to="`/in/contracts/${contract._id}`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
                                                 <i class="bi bi-gift"></i> 
                                                 View Contract
@@ -134,7 +134,7 @@
                                                 <i class="bi bi-clock-history"></i> 
                                                 Open in Taskwatch
                                             </RouterLink>
-                                        </ActionDropwdown>
+                                        </ActionDropdown>
                                     </td>
                                 </tr>
                             </tbody>
@@ -168,7 +168,7 @@ import FullPageLoading from '@/components/FullPageLoading.vue';
 
 import { Dropdown } from 'flowbite';
 
-import ActionDropwdown from '@/components/ActionDropdown.vue';
+import ActionDropdown from '@/components/ActionDropdown.vue';
 import Modal from '@/components/Modal.vue';
 
 import { generateStarRatingFromInteger } from '@/utils/ratingStars';
@@ -181,7 +181,7 @@ export default {
         ContractStatus, 
         PageTitle, 
         FullPageLoading, 
-        ActionDropwdown,
+        ActionDropdown,
         Modal,
      },
     data(){

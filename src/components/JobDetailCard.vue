@@ -48,7 +48,7 @@
             <div class="font-bold">
                 Job Description
             </div>
-            <div class="overflow-y-scroll">
+            <div class="overflow-y-auto">
                 <slot name="job-description">
                    job description goes here...
                 </slot>

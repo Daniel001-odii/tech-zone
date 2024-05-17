@@ -195,7 +195,7 @@
                                         {{ jobs[selectedJob].title }}
                                     </template>
                                     <template #job-description>
-                                        {{ jobs[selectedJob].description }}
+                                        <p v-html="jobs[selectedJob].description" class="whitespace-pre-line"></p>
                                     </template>
                                 </JobDetailCard>
         
@@ -352,7 +352,7 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import Modal from '@/components/Modal.vue';
-import { nigerianStates } from '../../utils/states';
+import nigerianStates from '@/utils/states.json';
 
 import ContractStatus from '@/components/ContractStatus.vue';
 

@@ -193,7 +193,7 @@ import axios from 'axios';
 import LoaderButton from '@/components/LoaderButton.vue';
 import { generateStarRating } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
-import { nigerianStates } from '@/utils/states';
+import nigerianStates from '@/utils/states.json';
 
 export default {
     name: "ProfilePage",

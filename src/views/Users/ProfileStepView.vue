@@ -127,7 +127,7 @@
 </template>
 <script>
 import TemplateView from '../TemplateView.vue';
-import { nigerianStates } from '@/utils/states'
+import nigerianStates from '@/utils/states.json';
 import LoaderButton from '@/components/LoaderButton.vue';
 import axios from 'axios';
 import FullPageModal from '@/components/FullPageModal.vue';
