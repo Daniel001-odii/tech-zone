@@ -37,7 +37,7 @@
                     <!-- /LEFT SIDE ENDS HERE -->
 
                     <!-- RIGHT SIDE IF A ROOM IS SELECTED -->
-                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="fixed top-0 left-0 md:relative  w-[100%] flex-col  h-full bg-white z-30">
+                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="fixed top-0 left-0 md:relative  w-[100%] flex-col  h-full bg-white dark:bg-gray-700 z-30">
                         <!-- ROOM HEADER AND TITLE BLOCK -->
                         <div class="min-h-[70px] border-b dark:border-b-gray-700 flex flex-row justify-start p-3 gap-3">
                             <button @click="show_chat_room = !show_chat_room">
@@ -59,6 +59,9 @@
                                 <!-- chat box -->
 
                                 <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
+                                    <!-- <ActionDropdown>
+                                        <button>edit message</button>
+                                    </ActionDropdown> -->
                                     <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-700 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
                                         <span v-html="message.text" class="whitespace-pre-line"></span>
                                     </div>
@@ -96,7 +99,7 @@
                         <!-- </div> -->
                     </div>
 
-                    <div v-else class="hidden md:flex w-[100%] h-full bg-gray-100  flex-col justify-center items-center p-8 text-center">
+                    <div v-else class="hidden md:flex w-[100%] h-full bg-gray-100 dark:bg-[#27323F] flex-col justify-center items-center p-8 text-center">
                         <!-- <i class="bi bi-file-earmark-lock text-4xl"></i> -->
                         <!-- <p>Your chats are secured</p> -->
                         <Vue3Lottie
@@ -104,7 +107,7 @@
                             :height="200"
                             :width="200"
                         />
-                        <p class="text-gray-500">Start Sending a message by clicking on any of the rooms</p>
+                        <p :class="`text-gray-500`">Start Sending a message by clicking on any of the rooms</p>
                     </div>
                     <!-- RIGHT SIDE ENDS HERE -->
                 </div>
@@ -119,12 +122,13 @@ import { formatTimestamp } from '../../utils/dateFormat'
 import { formatToRelativeTime } from '../../utils/dateFormat';
 import { convertTimeToAMPM } from '../../utils/dateFormat';
 
+import ActionDropdown from '@/components/ActionDropdown.vue';
 // socket io for real time messaging...
 import io from "socket.io-client";
 
 export default {
     name: "MessagePageView",
-    components: { PageTitle },
+    components: { PageTitle, ActionDropdown },
     data(){
         return{
             user: '',
