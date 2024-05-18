@@ -14,13 +14,15 @@
                         <div class=" h-[90%] overflow-y-auto">
                             <!-- MESSAGE ROOMS FOR EMPLOYERS -->
                             <div v-if="user && user.role == 'employer'" @click="selectRoom(room)"  v-for="(room, index) in employer_rooms_list()" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3 relative" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
                                     <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.user.profile.image_url})`"></div>
                                     <div  class="flex flex-col w-[60%]">
                                         <div class="font-bold">{{ room.user.firstname}} {{ room.user.lastname}} </div>
                                         <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
                                     </div>
-                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white">+9</span>
+                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5" v-if="room.unread_messages > 0">
+                                        {{ room.unread_messages }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -35,7 +37,9 @@
                                         <div class="font-bold">{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
                                         <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
                                     </div>
-                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white">+9</span>
+                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5" v-if="room.unread_messages > 0">
+                                        {{ room.unread_messages }}
+                                    </span>
                                 </div>
                             </div>
                             <div v-if="!rooms || rooms.length <= 0" class="text-gray-500 text-center p-8">No Message rooms</div>
@@ -47,7 +51,7 @@
                     <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="fixed top-0 left-0 md:relative  w-[100%] flex-col  h-full bg-white dark:bg-gray-700 z-30">
                         <!-- ROOM HEADER AND TITLE BLOCK -->
                         <div class="min-h-[70px] border-b dark:border-b-gray-800 flex flex-row justify-start p-3 gap-3">
-                            <button @click="show_chat_room = !show_chat_room">
+                            <button class="md:hidden" @click="show_chat_room = !show_chat_room">
                                 <i class="bi bi-arrow-left"></i>
                             </button>
                             <div class="flex flex-col">
@@ -213,6 +217,12 @@ export default {
 
             // get messages for room
             this.fetchMessages(room._id); 
+
+            // mark messages as read since user opend room..
+            this.markBulkMessagesAsRead(room._id);
+
+            // re-fetch message room to update...
+            this.getMessageRooms();
         },
 
         // GET USER DATA >>>
@@ -343,6 +353,17 @@ export default {
             this.message_text = '';
             
         },
+
+        // MARK ROOM MESSAGES AS READ WHEN OPENED
+        async markBulkMessagesAsRead(room_id){
+            const headers = this.headers;
+            try{
+                const response = await axios.put(`${this.api_url}/message/${room_id}/read`, {}, { headers });
+                console.log("marked messages as read: ", response);
+            }catch(error){  
+                console.log("error marking messages as read: ", error);
+            }
+        }
     },
 
     mounted(){
