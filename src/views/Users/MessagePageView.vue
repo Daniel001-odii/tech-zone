@@ -48,7 +48,7 @@
                                 <span class="text-gray-400">initiated {{ formatTimestamp(selected_room.createdAt) }}</span>
                             </div>
                         </div>
-                        <div class="p-2 border-b dark:border-b-gray-700 flex flex-row gap-3 text-sm justify-center">
+                        <div class="pl-10 py-2 border-b dark:border-b-gray-700 flex flex-row gap-3 text-sm">
                             <span class="text-blue-400">Go to Contract</span>
                             <span class="text-blue-400">See Job Application</span>
                         </div>
@@ -60,7 +60,7 @@
 
                                 <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
                                     <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-700 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
-                                        <span>{{ message.text }}</span>
+                                        <span v-html="message.text" class="whitespace-pre-line"></span>
                                     </div>
                                     <span class="text-[12px] text-gray-">{{ convertTimeToAMPM(message.createdAt) }}</span>
                                 </div> 
@@ -83,8 +83,9 @@
                                     <button type="button" class="h-10 w-10 flex justify-center items-center bg-transparent p-3 text-gray-500 text-xl">
                                         <i class="bi bi-paperclip"></i>
                                     </button>
-                                    <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text">
-                                    <!-- <textarea type="text" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"></textarea> -->
+                                    <!-- <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"> -->
+                                   
+                                    <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
 
                                     <button id="send_message_btn" :disabled="!is_valid_message" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
                                         <i class="bi bi-send-fill"></i>
