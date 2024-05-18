@@ -1,7 +1,7 @@
 <template>
 <SessionExpiredModal v-if="session_expired_modal"/>
 
-<div class=" bg-white dark:bg-[#1f2a36] border-b border-gray-200  dark:border-gray-600">
+<div class=" bg-white dark:bg-[#000000] border-b border-gray-200  dark:border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
         <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
         <div v-if="is_authenticated && !user">
@@ -120,14 +120,17 @@
                         
                         <i class="bi bi-three-dots-vertical"></i>
                         <div class="flex flex-row items-center gap-3 relative group">
-                            <img @click="mobile_nav = !mobile_nav" v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
+                            <img @click="mobile_nav = !mobile_nav" v-if="user.role == 'user' && user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
+                            <div v-else class="rounded-full h-9 w-9 flex font-bold justify-center items-center bg-slate-200 text-slate-600">{{ user.firstname[0] }}{{ user.lastname[0] }}</div>
                             <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
                         </div>
                     </div>
                 </div>
             </nav>
-
-            <HomeNavbar v-if="!is_authenticated && !user"/>
+            <div v-if="!is_authenticated && !user" class=" bg-white dark:bg-[#131920] border-b border-gray-200  dark:border-gray-600">
+                <HomeNavbar />
+            </div>
+            
 </div>
 </template>
 <script>

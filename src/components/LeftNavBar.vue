@@ -77,6 +77,7 @@
             </div>
 
             <div v-if="user.role != 'user' && user.role != 'employer'">
+                <div class=" md:h-20"></div>
                 <RouterLink to="/jobs" >
                     <div class="nav_item" :class="{ 'active': isPublicWorkExplorer }">
                         <i class="bi bi-briefcase" v-if="!isPublicWorkExplorer"></i> 

@@ -92,10 +92,11 @@
                     <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border border-gray-300  dark:border-gray-600">
                         <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
                             
-                            <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover">
-                                <div class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex">
+                            <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover bg-gray-100 flex justify-center items-center">
+                                <!-- <div class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex">
                                     <i class="bi bi-camera text-2xl"></i>
-                                </div>
+                                </div> -->
+                                <span class="text-5xl font-bold text-gray-500">{{ user.firstname[0] }}{{ user.lastname[0] }}</span>
                             </div>
                                 <!-- <img v-if="user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" h-28 w-28 rounded-full"> -->
                             
@@ -116,7 +117,7 @@
                                 <span v-if="user.is_verified">Account verified</span>
                                 <span v-else="user.is_verified">Account is not verified</span>
                             </div>
-                            <p>Joined: {{ user.created }}</p>
+                            <p>Joined: {{ formatTimestampWithoutTime(user.created) }}</p>
                             <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
                             
                             <!-- PROFILE PROGRESS PERCENTAGE -->
@@ -195,6 +196,8 @@ import { generateStarRating } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import nigerianStates from '@/utils/states.json';
 
+import { formatTimestampWithoutTime } from '@/utils/dateFormat';
+
 export default {
     name: "ProfilePage",
     components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader },
@@ -225,6 +228,7 @@ export default {
 
                 contracts: '',
                 isAllowed: false,
+                formatTimestampWithoutTime,
 
             headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
         }

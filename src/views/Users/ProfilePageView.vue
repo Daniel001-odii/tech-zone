@@ -158,9 +158,13 @@
         <Modal v-if="user" :title="`${user.firstname} ${user.lastname} Resume`" :modal_active="resume_upload_menu">
                 <template #body>
                     <div class="md:w-[500px]">
-                        <div v-if="user.portfolio_url" class="py-5">
-                            Current Resume: <a :href="user.portfolio_url" target="_blank" class="text-blue-400">Download</a>
+                        <div class="flex flex-row gap-3">
+                            <i class="bi bi-file-earmark-pdf-fill text-6xl text-red-500"></i>
+                            <div v-if="user.portfolio_url" class="py-5">
+                                Current Resume: <a :href="user.portfolio_url" target="_blank" class="text-blue-400">Download</a>
+                            </div>
                         </div>
+                        
                         <FileUpload v-if="isAllowed" accept="application/pdf,image/*,.doc,.docx,.pdf" name="file" :url="`${api_url}/profile/resume`" :withCredentials="true" @before-send="addHeaders"
                         :file-limit="1" 
                         :multiple="false" 

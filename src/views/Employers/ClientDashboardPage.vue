@@ -96,7 +96,7 @@
                                         <i class="bi bi-caret-down-fill"></i>
                                     </button> -->
                                     <div class="flex flex-row justify-between flex-wrap w-full">
-                                        <span class="text-lg font-bold">{{ job.title }}</span>
+                                        <span class="text-lg font-bold" :class="job.is_deleted ? 'text-red-500':''">{{ job.title }}</span>
                                         <span>posted {{ formattedDate(job.created) }}</span>
                                     </div>
                                 </div>
@@ -109,9 +109,12 @@
                                 </div>
                                 
                                 <div class="flex flex-col gap-3" v-if="job.show_applicants">
-                                    <div class="w-full p-3 bg-slate-50 rounded-lg text-lg font-bold text-left flex flex-row justify-center items-center dark:bg-tz_light_blue">
-                                        <i class="bi bi-people mr-3"></i>
-                                        <span>Applicants</span>
+                                    <div class="w-full p-3 bg-slate-50 rounded-lg text-lg font-bold text-left flex flex-row justify-center items-center dark:bg-tz_light_blue relative">
+                                        <div>
+                                            <i class="bi bi-people mr-3"></i>
+                                            <span>Applicants</span>
+                                        </div>
+                                        <button @click="getJobApplicants(job._id, job_id)" class=" absolute right-5 font-thin text-sm rounded-full p-1 hover:bg-gray-500 w-5 h-5 flex justify-center items-center"><i class="bi bi-arrow-clockwise"></i></button>
                                     </div>
                                     <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
                                     <div class="p-3 flex flex-row flex-wrap gap-3 hover:bg-slate-50 rounded-xl w-full border relative items-start dark:hover:bg-tz_light_blue dark:border-gray-500" v-for="(application, application_id) in applicants[job_id]" :key="application_id">

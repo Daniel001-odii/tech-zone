@@ -18,9 +18,9 @@
                     <!-- {{ job }} -->
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-500">
                         <div class="flex flex-row justify-between items-center">
-                            <div class="text-2xl font-bold text-tz_blue underline">{{ job.title }}</div>
+                            <div class="text-2xl font-bold underline" :class="job.is_deleted ? 'text-red-500':'text-tz_blue '">{{ job.title }}</div>
                           <!-- DROP DOWN -->
-                            <ActionDropdown>
+                            <ActionDropdown v-if="!job.is_deleted">
                                 <RouterLink :to="job.status != 'closed' ? '/client/jobs/':'#' + job._id + '/edit'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     <button :disabled="job.status == 'closed'">
                                         <i class="bi bi-pencil-fill"></i> Edit Job
@@ -32,7 +32,7 @@
                                     <i class="bi bi-x-circle-fill"></i>
                                     Close Job
                                 </span>
-                                <span @click="deleteJob(job._id)" class="cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-700">
+                                <span @click="deleteJob(job._id)" class="cursor-pointer px-4 py-2 hover:bg-red-500 hover:text-white dark:hover:text-white">
                                     <i class="bi bi-trash-fill"></i>
                                     Delete Job
                                 </span>
@@ -42,8 +42,9 @@
                         <div>
                             <div class="text-sm">{{ job.description.substring(0, 400) }}..</div>
                             <div class="font-bold mt-3">₦{{job.budget.toLocaleString() }} Budget</div>
-                            <div class="mt-2">posted {{job.created }}</div>
-                            <div class="mt-2">status: {{job.status }}</div>
+                            <div class="">posted: {{ formatTimestampWithoutTime(job.created) }}</div>
+                            <div class="">status: {{ job.status }}</div>
+                            <span class="px-3 bg-red-500 text-white rounded-full text-sm py-1" v-if="job.is_deleted">deleted</span>
                         </div>
                     </div>
                 </div>
@@ -66,6 +67,7 @@ import axios from 'axios';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import ActionDropdown from '@/components/ActionDropdown.vue';
+import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 
 
 export default {
@@ -80,6 +82,7 @@ export default {
     data(){
         return{
             jobs: '',
+            formatTimestampWithoutTime,
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },

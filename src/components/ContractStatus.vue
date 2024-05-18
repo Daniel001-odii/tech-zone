@@ -1,12 +1,12 @@
 <template>
     <div class="text-[12px]">
-        <span v-if="type === 'closed'" class="bg-gray-600">
+        <span v-if="type === 'closed'" class="bg-red-600 tag">
             closed
         </span>
         <span v-if="type === 'open'" class="tag bg-blue-500">
             open
         </span>
-        <span v-if="type === 'paused'" class="tag bg-orange-500">
+        <span v-if="type === 'paused'" class="tag bg-orange-400">
             Paused
         </span>
         <span v-if="type === 'completed'" class="tag bg-green-500">

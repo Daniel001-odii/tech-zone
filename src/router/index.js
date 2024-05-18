@@ -57,12 +57,7 @@ const routes = [
     component: LandingPageViewVue
   },
 
-  {
-    path: '/users/:user_id',
-    name: 'Public profile',
-    component: ProfilePageViewVue
-  },
-
+ 
   {
     path: '/about',
     name: 'about',
@@ -80,12 +75,6 @@ const routes = [
     name: 'login',
     component: LoginViewVue
   },
-
-  // {
-  //   path: '/profile/update',
-  //   name: 'new user',
-  //   component: ProfileStepViewVue
-  // },
 
   {
     path: '/register',
@@ -137,35 +126,38 @@ const routes = [
     path: '/in',
     component: TemplateView,
     children: [
-      {path: 'jobs', component: UserJobsPageViewVue},
-      {path: 'saved', component: SavedJobsViewVue},
-      {path: 'messages', component: MessagePageViewVue},
-      {path: 'contracts', component: ContractsListPageViewVue},
-      {path: 'contracts/:contract_id/', component: ContractPageViewVue},
-      {path: 'users/:user_id', component: ProfilePageViewVue},
-      {path: 'applications', component: MyApplicationsPageViewVue},
-      {path: 'jobs/:job_id/application', component: ApplicationPageViewVue},
-      {path: 'overview', component: OverviewPageView},
-      {path: 'notifications', component: NotifcationsPageView},
-      {path: 'settings', component: SettingsPageView},
-      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView},
+      {path: 'jobs', component: UserJobsPageViewVue, name: "jobs"},
+      {path: 'saved', component: SavedJobsViewVue, name: "saved jobs"},
+      {path: 'messages', component: MessagePageViewVue, name: "user messages"},
+      {path: 'contracts', component: ContractsListPageViewVue, name: "user contracts"},
+      {path: 'contracts/:contract_id/', component: ContractPageViewVue, name: "contract details"},
+      {path: 'users/:user_id', component: ProfilePageViewVue, name: "profile"},
+      {path: 'applications', component: MyApplicationsPageViewVue, name: "my applications"},
+      {path: 'jobs/:job_id/application', component: ApplicationPageViewVue, name: "job application"},
+      {path: 'overview', component: OverviewPageView, name: "overview"},
+      {path: 'notifications', component: NotifcationsPageView, name: "notifications"},
+      {path: 'settings', component: SettingsPageView, name: "settings"},
+      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "contract task-watch"},
     ],
     meta: { requiresAuth: true, role: 'user' },
   },
 
-  // {
-  //   path: '/jobs',
-  //   name: 'jobs',
-  //   component: JobsPageViewVue,
-  // },
+
 
   {
     path: '/',
     component: TemplateView,
     children: [
-      {path: 'jobs', component: UserJobsPageViewVue},
+      {path: 'jobs', component: UserJobsPageViewVue, name: "public jobs"},
+      {
+        path: '/users/:user_id',
+        name: 'public profile',
+        component: ProfilePageViewVue
+      }
     ],
   },
+
+ ,
 
   // 404 PAGES CONFIG...
   {
@@ -184,17 +176,17 @@ const routes = [
     path: '/client',
     component: TemplateView,
     children: [
-      {path: 'dashboard', component: ClientDashBoardPage},
-      {path: 'job', component: ClientPostJobView},
-      {path: 'jobs/:job_id/edit', component: ClientPostJobView},
-      {path: 'jobs', component: JobsListPageView},
-      {path: 'messages', component: MessagePageViewVue},
-      {path: 'settings', component: ClientSettingsPage},
-      {path: 'profile', component: ClientProfilePageViewVue},
-      {path: 'notifications', component: NotifcationsPageView},
-      {path: 'contracts', component: ClientContractsListPageViewVue},
-      {path: 'contracts/:contract_id', component: ClientContractPageViewVue},
-      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView},
+      {path: 'dashboard', component: ClientDashBoardPage, name: "dashboard"},
+      {path: 'job', component: ClientPostJobView, name: "create job"},
+      {path: 'jobs/:job_id/edit', component: ClientPostJobView, name: "edit job"},
+      {path: 'jobs', component: JobsListPageView, name: "my jobs"},
+      {path: 'messages', component: MessagePageViewVue, name: "client messages"},
+      {path: 'settings', component: ClientSettingsPage, name: "settings"},
+      {path: 'profile', component: ClientProfilePageViewVue, name: "user profile"},
+      {path: 'notifications', component: NotifcationsPageView, name: "notifications"},
+      {path: 'contracts', component: ClientContractsListPageViewVue, name: "my contracts"},
+      {path: 'contracts/:contract_id', component: ClientContractPageViewVue, name: "contract"},
+      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "task-watch"},
 
     ],
     meta: { requiresAuth: true, role: 'employer' },
@@ -228,46 +220,6 @@ const routes = [
     ],
     meta: { requiresAdminAuth: true, role: 'admin'}
   },
-
-
- 
-/*
-// CLIENT BASED ROUTES STARTS HERE
-*/
-// {
-//   path: "/client/dashboard",
-//   name: "dashboard",
-//   component: ClientDashBoardPage,
-//   meta: { requiresAuth: true, role: 'employer' }
-// },
-
-// {
-//   path: "/client/job",
-//   name: "job",
-//   component: ClientPostJobView,
-//   meta: { requiresAuth: true, role: 'employer' }
-// },
-
-// {
-//   path: "/client/jobs",
-//   name: "my jobs",
-//   component: JobsListPageView,
-//   meta: { requiresAuth: true, role: 'employer' }
-// },
-
-// {
-//   path: '/client/contracts',
-//   name: 'client contracts',
-//   component: ClientContractsListPageViewVue,
-//   meta: { requiresAuth: true, role: 'employer' }
-// },
-
-// {
-//   path: '/client/profile',
-//   name: 'client profile',
-//   component: ClientProfilePageViewVue,
-//   meta: { requiresAuth: true, role: 'employer' }
-// },
 
 ]
 

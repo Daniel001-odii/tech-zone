@@ -192,7 +192,10 @@
                                 :skills="jobs[selectedJob].skills"
                                 >
                                     <template #job-title>
-                                        {{ jobs[selectedJob].title }}
+                                        <span :class="jobs[selectedJob].is_deleted ? 'text-red-500':'text-text-white '">
+                                            {{ jobs[selectedJob].title }}
+                                        </span>
+                                        
                                     </template>
                                     <template #job-description>
                                         <p v-html="jobs[selectedJob].description" class="whitespace-pre-line"></p>
@@ -207,7 +210,7 @@
                     <div v-if="showTab == 'tab-2'" class="h-full flex flex-row gap-3 relative">
                         <div class="h-full absolute w-full overflow-y-scroll flex flex-col">
                             <div class=" h-full items-start flex flex-col gap-3">
-                            <div v-for="(job, index) in applications" :key="index" class="w-full">
+                            <div v-for="(job, job_index) in applications" :key="job_index" class="w-full">
                                 <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
                                         :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
                                         

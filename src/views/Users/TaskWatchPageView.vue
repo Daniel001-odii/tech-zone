@@ -214,14 +214,14 @@
                                     {{ convertDateTimeToDayOfWeek(watch.date) }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span v-if="watch.time_stamp.clock_in_time" class="text-white">
+                                    <span v-if="watch.time_stamp.clock_in_time" class="text-gray-500 text-gray-500">
                                         {{ convertTimeToAMPM(watch.time_stamp.clock_in_time) }} <br/>
                                         <span class="text-gray-400 text-[12px]">{{  watch.time_stamp.activity_description }}</span>
                                     </span>
                                     <span v-else>-</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span v-if="watch.time_stamp.stop_time" class="text-white"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
+                                    <span v-if="watch.time_stamp.stop_time" class="text-gray-500"> {{ convertTimeToAMPM(watch.time_stamp.stop_time) }}</span>
                                     <span v-else>-</span>
                                 </td>
                                 <td class="px-6 py-4">

@@ -163,7 +163,7 @@
                             <span>Track time spent on completing contracts, particularly for hourly paid contracts.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <RouterLink :to="`/in/contracts/${contract._id}/watch`">
+                            <RouterLink :to="contract.status != 'closed' || contract.requires_taskwatch ? `/in/contracts/${contract._id}/watch`:'#'">
                                 <button class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.status == 'closed'">
                                     <i class="bi bi-stopwatch"></i>
                                     Watch Contract
@@ -186,9 +186,6 @@
                                 <span v-else>Send Feedback to client</span>
                             </button>
                         </div>
-                        
-                        
-                        
                     </div>
                 </div>
 

@@ -48,6 +48,17 @@ app.use(Vue3Lottie);
 app.config.globalProperties.api_url = process.env.VUE_APP_API_URL;
 app.config.globalProperties.msg_api_url = process.env.VUE_APP_MSG_API_URL;
 
+app.mixin({
+    data() {
+      return {
+        title: 'Apexteks',
+      };
+    },
+    mounted(){
+      var title = this.$route.name
+      document.title = title
+    },
+});
 
 app.use(store).use(router).mount('#app');
 

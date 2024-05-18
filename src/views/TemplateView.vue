@@ -20,15 +20,6 @@
    </div>
 </template>
 
-<!-- <div class="page-content h-full w-full border border-green-500 overflow-y-auto flex flex-col justify-start">
-    <div class="h-full w-full flex flex-col justify-start ">
-        <div v-for="item in 10" :key="item.id">
-            {{ item }}
-            <div class=" h-40 bg-orange-700"></div>
-        </div>
-        <router-view></router-view>
-    </div>
-</div> -->
 
 <script>
 import LeftNavBar from '@/components/LeftNavBar.vue';
