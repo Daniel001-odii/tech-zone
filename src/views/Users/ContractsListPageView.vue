@@ -3,7 +3,7 @@
     <div class="h-full flex flex-col">
                 <div>
                     <div class="gap-2 flex flex-row p-2 md:p-5  border-b dark:border-gray-600">
-                        <input type="search" class=" form_input" placeholder="Search all types of jobs" v-model="search_term">
+                        <input type="search" class=" form_input" placeholder="Search contract titles here" v-model="search_term">
                     </div>
                 </div>
 

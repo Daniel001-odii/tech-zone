@@ -5,6 +5,8 @@ import axios from 'axios'
 export default createStore({
   state: {
     userData: null,
+    // messages...
+    messages: [],
   },
   getters: {
     getUserData: (state) => state.userData,
@@ -13,6 +15,17 @@ export default createStore({
     setUserData(state, data) {
       state.userData = data;
     },
+
+    setMessages(state, messages){
+      state.messages = messages;
+    },
+    markAsRead(state, messageIds){
+      state.messages.forEach(message => {
+          if (messageIds.includes(message._id)) {
+              message.isRead = true;
+          }
+      });
+    }
   },
   actions: {
     async fetchUserData({ commit }) {
@@ -21,7 +34,7 @@ export default createStore({
         const token = localStorage.getItem('life-gaurd');
 
         // Correct axios syntax
-        const response = await axios.get('http://127.0.0.1:8000/api/user', {
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/user`, {
           headers: {
             Authorization: `JWT ${token}`,
           },
@@ -37,6 +50,16 @@ export default createStore({
         console.log('error from store/index.js:', error);
       }
     },
+
+    async fetchMessages({ commit }, roomId){
+      const response = await axios.get(`${process.env.VUE_APP_API_URL}/room/${roomId}/messages`);
+      commit('setMessages', response.data);
+    },
+
+    async markMessagesAsRead({ commit }, messageIds){
+      await axios.put(`${process.env.VUE_APP_API_URL}/messages/read`, { messageIds });
+      commit('markAsRead', messageIds);
+    }
   },
   modules: {},
 });
