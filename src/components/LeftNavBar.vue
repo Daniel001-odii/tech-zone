@@ -12,10 +12,11 @@
                     </div>
                 </RouterLink>
                 <RouterLink to="/client/messages" >
-                    <div class="nav_item" :class="{ 'active': isClientMessages }">
+                    <div class="nav_item relative" :class="{ 'active': isClientMessages }">
                         <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
                         <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
                         <span class="md:hidden lg:inline-block">Messages</span>
+                        <span class=" bg-red-600 p-2 rounded-full h-2 w-2 absolute top-6 right-9 lg:relative lg:top-0 lg:right-0 text-white text-[10px] font-normal justify-center items-center flex" v-if="unreadMessagesCount > 0" >{{ unreadMessagesCount  }}</span>
                     </div>
                 </RouterLink>
                 <RouterLink to="/client/jobs" >
@@ -57,7 +58,7 @@
                         <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
                         <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
                         <span class="md:hidden lg:inline-block">Messages</span>
-                        <span class=" bg-red-600 p-2 rounded-full h-2 w-2 absolute top-6 right-9 lg:relative lg:top-0 lg:right-0 text-white text-[10px] font-normal justify-center items-center flex">3</span>
+                        <span class=" bg-red-600 p-2 rounded-full h-2 w-2 absolute top-6 right-9 lg:relative lg:top-0 lg:right-0 text-white text-[10px] font-normal justify-center items-center flex" v-if="unreadMessagesCount > 0">{{ unreadMessagesCount  }}</span>
                     </div>
                 </RouterLink>
                 <RouterLink to="/in/contracts" >
@@ -92,6 +93,8 @@
 </template>
 <script>
 import axios from 'axios';
+import { mapGetters } from 'vuex';
+
 export default {
     name: "LeftnavBar",
     
@@ -108,10 +111,16 @@ export default {
         isMyJobs() { return this.$route.path.startsWith("/client/jobs"); },
         isClientMessages() { return this.$route.path.startsWith("/client/messages") },
         isClientContracts() { return this.$route.path.startsWith("/client/contracts") },
+
+
+        // unread messages...
+        ...mapGetters(['unreadMessagesCount']),
     },
     data(){
         return{
             user: '',
+            unread_msg: 0,
+            
         }
     },
     methods: {
@@ -131,6 +140,7 @@ export default {
     },
     mounted(){
         this.getUserData();
+
     }
     
 }

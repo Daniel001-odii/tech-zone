@@ -5,27 +5,30 @@ import axios from 'axios'
 export default createStore({
   state: {
     userData: null,
-    // messages...
-    messages: [],
+
+    unreadMessagesCount: 0,
+
   },
   getters: {
     getUserData: (state) => state.userData,
+
+    unreadMessagesCount: (state) => state.unreadMessagesCount,
   },
   mutations: {
     setUserData(state, data) {
       state.userData = data;
     },
 
-    setMessages(state, messages){
-      state.messages = messages;
+    SET_UNREAD_MESSAGES_COUNT(state, count) {
+      state.unreadMessagesCount = count;
     },
-    markAsRead(state, messageIds){
-      state.messages.forEach(message => {
-          if (messageIds.includes(message._id)) {
-              message.isRead = true;
-          }
-      });
-    }
+    INCREMENT_UNREAD_MESSAGES_COUNT(state) {
+      state.unreadMessagesCount++;
+    },
+    DECREMENT_UNREAD_MESSAGES_COUNT(state) {
+      state.unreadMessagesCount--;
+    },
+
   },
   actions: {
     async fetchUserData({ commit }) {
@@ -51,15 +54,16 @@ export default createStore({
       }
     },
 
-    async fetchMessages({ commit }, roomId){
-      const response = await axios.get(`${process.env.VUE_APP_API_URL}/room/${roomId}/messages`);
-      commit('setMessages', response.data);
+    setUnreadMessagesCount({ commit }, count) {
+      commit('SET_UNREAD_MESSAGES_COUNT', count);
+    },
+    incrementUnreadMessagesCount({ commit }) {
+      commit('INCREMENT_UNREAD_MESSAGES_COUNT');
+    },
+    decrementUnreadMessagesCount({ commit }) {
+      commit('DECREMENT_UNREAD_MESSAGES_COUNT');
     },
 
-    async markMessagesAsRead({ commit }, messageIds){
-      await axios.put(`${process.env.VUE_APP_API_URL}/messages/read`, { messageIds });
-      commit('markAsRead', messageIds);
-    }
   },
   modules: {},
 });

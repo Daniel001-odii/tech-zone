@@ -8,7 +8,7 @@
                             <input type='search' class="w-full h-[40px] form_input" placeholder="search for rooms here" v-model="room_search_term">
                         </div>
 
-                        <!-- {{ chat }} -->
+                        <!-- {{ this.$route.path }} -->
 
                         <!-- {{ rooms }} -->
                         <div class=" h-[90%] overflow-y-auto">
@@ -28,7 +28,7 @@
 
                             <!-- MESSAGE ROOMS FOR USERS -->
                             <div v-if="user && user.role == 'user'" @click="selectRoom(room)"  v-for="(room, index) in user_rooms_list()" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
+                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3 relative" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
                                     <!-- <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div> -->
                                     <div class="rounded-full h-12 w-12 flex justify-center items-center bg-gray-100 text-gray-500 font-bold profile_image">
                                         {{ room.employer.firstname[0] }}{{ room.employer.lastname[0] }} 
@@ -137,6 +137,8 @@ import ActionDropdown from '@/components/ActionDropdown.vue';
 // socket io for real time messaging...
 import io from "socket.io-client";
 
+import { mapActions } from 'vuex';
+
 export default {
     name: "MessagePageView",
     components: { PageTitle, ActionDropdown },
@@ -215,14 +217,16 @@ export default {
             // display chat for room..
             this.show_chat_room = true;
 
-            // get messages for room
-            this.fetchMessages(room._id); 
-
             // mark messages as read since user opend room..
             this.markBulkMessagesAsRead(room._id);
 
+            // get messages for room
+            this.fetchMessages(room._id); 
+
+            
+
             // re-fetch message room to update...
-            this.getMessageRooms();
+            // this.getMessageRooms();
         },
 
         // GET USER DATA >>>
@@ -261,8 +265,10 @@ export default {
                     });
                     this.socket.on('message', (message) => {
                         // Add received message to the messages array
-                        // this.messages.unshift(message);
-                        console.log('message: ', message)
+                        if(message.room == this.selected_room._id){
+                            this.messages.unshift(message);
+                            console.log('message: ', message)
+                        }
                         //scrolls the recipients message box...
                     }); 
                     
@@ -281,8 +287,10 @@ export default {
                     });
                     this.socket.on('message', (message) => {
                         // Add received message to the messages array
-                        this.messages.unshift(message);
-                        console.log('message: ', message)
+                        if(message.room == this.selected_room._id){
+                            this.messages.unshift(message);
+                            console.log('message: ', message)
+                        }
                         //scrolls the recipients message box...
                     });
 
@@ -339,13 +347,13 @@ export default {
                 text: this.message_text,
                 userId: this.user._id,
             }
-            console.log("preparing the send :", payload);
+            // console.log("preparing the send :", payload);
             
             try{
                 const response = await axios.post(`${this.api_url}/message/room/${this.selected_room._id}`, payload);
-                console.log("response from msg snt: ", response);
+                // console.log("response from msg snt: ", response);
                 // pushing message by send function not necessary since its done by socket.io
-                this.messages.unshift(response.data.message);
+                // this.messages.unshift(response.data.message);
             }catch(error){
                 console.log("error sending message: ", error);
             };
@@ -363,11 +371,34 @@ export default {
             }catch(error){  
                 console.log("error marking messages as read: ", error);
             }
-        }
+        },
+
+        // SENDING MSG ALERT TO SIDEBAR
+        ...mapActions(['setUnreadMessagesCount', 'incrementUnreadMessagesCount', 'decrementUnreadMessagesCount']),
     },
 
     mounted(){
         this.getUserData();
+
+        this.socket.on('message', (message) => {
+            // Add received message to the messages array
+            const room = this.rooms.find(room => room._id == message.room);
+            if(room){
+                if(room._id != this.selected_room._id){
+                    room.unread_messages += 1;
+                    console.log("new message for room: ", room);
+                    // console.log("check loop room: ", room._id, "and selected room: ", this.selected_room._id)
+                }
+
+                if(this.$route.path != '/in/messages' ){
+                    // Set the unread messages count
+                    this.setUnreadMessagesCount(room.unread_messages);
+                } else if (this.$route.path != '/client/messages' ){
+                    // Set the unread messages count
+                    this.setUnreadMessagesCount(room.unread_messages);
+                }
+            }
+        });
     },
 
     created(){
