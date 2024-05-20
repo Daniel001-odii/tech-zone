@@ -34,8 +34,8 @@
                         <span class="font-bold">&#8358;</span>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-bold text-lg">Total Earnings</span>
-                        <span>N0.00</span>
+                        <span class="font-bold text-lg">Total Expenses</span>
+                        <span>&#8358;0.00</span>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
                         <i class="bi bi-briefcase"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-bold text-lg">Jobs Completed</span>
+                        <span class="font-bold text-lg">Total Jobs Posted</span>
                         <span v-if="completed_contracts > 0">{{ completed_contracts }}</span>
                         <span v-else>0</span>
                     </div>

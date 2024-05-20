@@ -1,8 +1,11 @@
 <template>
     <!-- <div class="p-8 flex flex-col justify-center items-center mx-auto text-center w-full h-screen dark:bg-[#27323F] dark:text-white"> -->
     <!-- <div class="p-8 flex flex-col justify-center items-center mx-auto text-center w-full h-screen bg-[#E7F1FF]"> -->
-    <div class="flex flex-col justify-center items-center mt-10 p-6">
-        <img src="../../public/apex-tek.svg" class=" inline-block h-[35px] md:h-[50px] ">
+    <div class="flex flex-col justify-center items-center p-6">
+        <RouterLink to="/" class="mt-40">
+            <img src="../../public/apex-tek.svg" class=" inline-block h-[35px] md:h-[50px] ">
+        </RouterLink>
+        
         <div class=" flex flex-col justify-center items-center">
             <h1 class="text-4xl p-4 mt-8">Join as an employer or freelancer</h1>
             <div class="flex flex-row flex-wrap gap-4 justify-center p-4">

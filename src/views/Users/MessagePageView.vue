@@ -20,7 +20,7 @@
                                         <div class="font-bold">{{ room.user.firstname}} {{ room.user.lastname}} </div>
                                         <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
                                     </div>
-                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5" v-if="room.unread_messages > 0">
+                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5 border border-white" v-if="room.unread_messages > 0">
                                         {{ room.unread_messages }}
                                     </span>
                                 </div>
@@ -37,7 +37,7 @@
                                         <div class="font-bold">{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
                                         <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
                                     </div>
-                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5" v-if="room.unread_messages > 0">
+                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5 border border-white" v-if="room.unread_messages > 0">
                                         {{ room.unread_messages }}
                                     </span>
                                 </div>
@@ -136,6 +136,8 @@ import { convertTimeToAMPM } from '../../utils/dateFormat';
 import ActionDropdown from '@/components/ActionDropdown.vue';
 // socket io for real time messaging...
 import io from "socket.io-client";
+
+
 
 import { mapActions } from 'vuex';
 

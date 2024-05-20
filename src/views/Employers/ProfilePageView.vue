@@ -92,7 +92,8 @@
                     <div class="flex w-full rounded-xl justify-evenly items-start  flex-col md:flex-row p-4 md:p-8 lg:w-3/4 border border-gray-300  dark:border-gray-600">
                         <div class="flex flex-row justify-start md:justify-center items-center p-5 gap-3 flex-wrap">
                             
-                            <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover bg-gray-100 flex justify-center items-center">
+                            <!-- <div v-if="user.profile.image_url" :style="`background-image: url(${user.profile.image_url})`" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover bg-gray-100 flex justify-center items-center"> -->
+                            <div v-if="user.profile.image_url" class=" group relative h-28 w-28 rounded-full border-4 outline outline-tz_blue bg-cover bg-gray-100 flex justify-center items-center">
                                 <!-- <div class="bg-black absolute top-0 bottom-0 h-full w-full rounded-full hidden justify-center items-center opacity-50 group-hover:flex">
                                     <i class="bi bi-camera text-2xl"></i>
                                 </div> -->

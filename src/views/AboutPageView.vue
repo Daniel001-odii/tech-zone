@@ -73,6 +73,9 @@ export default {
         HomeNavbar, 
         Footer,
     },
+    mounted(){
+        window.scrollTo(0, 0);
+    }
 }
 </script>
 <style scoped>

@@ -18,6 +18,7 @@ import ProfileStepViewVue from '@/views/Users/ProfileStepView.vue'
 import RegistrationDecisionVue from '@/views/RegistrationDecision.vue'
 import PageNotFoundViewVue from '@/views/PageNotFoundView.vue'
 import AboutPageViewVue from '@/views/AboutPageView.vue'
+import PrivacyPolicyPage from '@/views/PrivacyPolicyPage.vue'
 import MissionPageViewVue from '@/views/MissionPageView.vue'
 
 import TaskWatchPageView from '@/views/Users/TaskWatchPageView.vue'
@@ -30,6 +31,7 @@ import ClientContractPageViewVue from '@/views/Employers/ContractPageView.vue'
 import EarningsPageView from '@/views/Users/EarningsPageView.vue'
 import SettingsPageView from '@/views/Users/SettingsPageView.vue'
 import OverviewPageView from '@/views/Users/OverviewPageView.vue'
+import ClientOverviewPageView from '@/views/Employers/OverviewPageView.vue'
 
 import ClientContractsListPageViewVue from '@/views/Employers/ContractsListPageView.vue'
 import ClientProfilePageViewVue from '@/views/Employers/ProfilePageView.vue'
@@ -121,6 +123,11 @@ const routes = [
     component: SupportPageView
   },
 
+  {
+    path: '/privacy',
+    name: 'privacy-policy',
+    component: PrivacyPolicyPage
+  },
 
   {
     path: '/in',
@@ -185,6 +192,7 @@ const routes = [
       {path: 'profile', component: ClientProfilePageViewVue, name: "user profile"},
       {path: 'notifications', component: NotifcationsPageView, name: "notifications"},
       {path: 'contracts', component: ClientContractsListPageViewVue, name: "my contracts"},
+      {path: 'overview', component: ClientOverviewPageView, name: "my overview"},
       {path: 'contracts/:contract_id', component: ClientContractPageViewVue, name: "contract"},
       {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "task-watch"},
 

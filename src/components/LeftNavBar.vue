@@ -16,7 +16,7 @@
                         <i class="bi bi-chat-square-text" v-if="!isMessages"></i> 
                         <i class="bi bi-chat-square-text-fill" v-if="isMessages"></i> 
                         <span class="md:hidden lg:inline-block">Messages</span>
-                        <span class=" bg-red-600 p-2 rounded-full h-2 w-2 absolute top-6 right-9 lg:relative lg:top-0 lg:right-0 text-white text-[10px] font-normal justify-center items-center flex" v-if="unreadMessagesCount > 0" >{{ unreadMessagesCount  }}</span>
+                        <span class=" bg-red-600 p-2 rounded-full h-2 w-2 absolute top-6 right-9 lg:relative lg:top-0 lg:right-0 text-white text-[10px] font-normal justify-center items-center flex" v-if="unreadMessagesCount" >{{ unreadMessagesCount  }}</span>
                     </div>
                 </RouterLink>
                 <RouterLink to="/client/jobs" >

@@ -30,13 +30,21 @@
                 <div class="flex flex-row  flex-wrap gap-5">
 
                     <ul class="list">
-                        <li class="list_header">Job by type</li>
-                        <li v-for="(job, index) in onsiteJobs" :key="index">{{ job }}</li>
+                        <li class="list_header">Job by categories</li>
+                        <li v-for="(job, index) in jobCategories" :key="index">
+                            <RouterLink to="/jobs">
+                                {{ job.name }}
+                            </RouterLink>
+                        </li>
                     </ul>
 
                     <ul class="list">
                         <li class="list_header">Job by location</li>
-                        <li v-for="(state, index) in availableStates" :key="index">{{ `Jobs in ${state}` }}</li>
+                        <li v-for="(state, index) in availableStates" :key="index">
+                            <RouterLink to="/jobs">
+                                {{ `Jobs in ${state}` }}
+                            </RouterLink>
+                        </li>
                     </ul>
 
                     <ul class="list">
@@ -57,12 +65,24 @@
      <div class=" p-3 w-full bg-[#EDEFF3] justify-center items-center text-sm flex flex-row gap-5">
             
             <div class="flex-row gap-3 hidden md:flex text-center justify-center items-center">
-                <span>About Us</span>
-                <span>Privacy Policy</span>
-                <span>Cookie Policy</span>
-                <span>Billing/Payment T&Cs</span>
-                <span>Use of software T&Cs</span>
-                <span>FAQs</span>
+                <span>
+                    <RouterLink to='/about'>About Us</RouterLink>
+                </span>
+                <span>
+                    <RouterLink to='/about'>Privacy Policy</RouterLink>
+                </span>
+                <span>
+                    <RouterLink to='/about'>Cookie Policy</RouterLink>
+                </span>
+                <span>
+                    <RouterLink to='/about'>Billing/Payment T&Cs</RouterLink>
+                </span>
+                <span> 
+                    <RouterLink to='/about'>Use of software T&Cs</RouterLink>
+                </span>
+                <span>
+                    <RouterLink to='/about'>FAQs</RouterLink>
+                </span>
             </div>
             <p>&copy;2024 ApexTeks all rights reserved.</p>
     </div>
@@ -71,26 +91,14 @@
 </template>
 <script>
 import SiteLogo from './SiteLogo.vue';
+import jobCategories from '../utils/jobCategories.json';
 
 export default {
     name: "Footer",
     components: { SiteLogo },
     data(){
         return{
-            onsiteJobs: [
-            "Web Developer",
-            "UI/UX Designer",
-            "Mobile App Developer",
-            "Graphic Designer",
-            "Digital Marketing Specialist",
-            "Data Analyst",
-            "Software Engineer (Full Stack)",
-            "Content Writer",
-            "Network Administrator",
-            "Video Editor",
-            "SEO Specialist",
-            "Game Developer",
-            ],
+            jobCategories,
 
             availableStates: [
             "Lagos",

@@ -44,6 +44,10 @@
                     <RouterLink to="/client/contracts">
                         <div class="menu_item"><i class="bi bi-sticky"></i> Contracts & Hires</div>
                     </RouterLink>
+
+                    <RouterLink to="/client/overview">
+                        <div class="menu_item"><i class="bi bi-compass"></i> Overview</div>
+                    </RouterLink>
                     
                     <div class="menu_item text-slate-300"><i class="bi bi-compass"></i> Billings & Payments</div>
 
