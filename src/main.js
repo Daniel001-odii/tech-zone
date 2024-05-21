@@ -29,12 +29,18 @@ import VueSocketIO from 'vue-3-socket.io'
 
 
 // PRIME VUE THE ULTIMATE COMPONENT STUFF
-import PrimeVue from 'primevue/config'
 import 'primevue/resources/themes/aura-light-green/theme.css'
-app.use(PrimeVue);
+// import 'primevue/resources/themes/lara-dark-blue/theme.css'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice';
+
+
+
 // app.use(PrimeVue, {
 //   unstyled: true
 // });
+
+
 
 // GOOGLE LOGIN.....
 app.use(vue3GoogleLogin, {
@@ -61,5 +67,9 @@ app.mixin({
 });
 
 app.use(store).use(router).mount('#app');
+
+
+app.use(PrimeVue);
+app.use(ToastService);
 
 app.directive('click-outside', clickOutside)

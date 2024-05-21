@@ -7,6 +7,7 @@
                 <DismissableAlert  :type="alert_type">{{ alert }}</DismissableAlert>
             </div>
         </div>
+        
        
        <Modal :title="'Job Filters'" :modal_active="job_filter_modal" >
             <template #body>
@@ -86,6 +87,8 @@
     
                 <div class="relative" :class="!user ? 'mt-20':''">
                     <PageTitle>Work Explorer</PageTitle>
+                    <Toast />
+        <button @click="showToast()">Show</button>
                     <div>
                         <div class="flex flex-row gap-2 p-2 md:p-2 border-b dark:border-gray-600">
 
@@ -363,6 +366,9 @@ import MultiSelect from 'primevue/multiselect';
 
 import jobCategories from '../../utils/jobCategories.json';
 
+import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/toast';
+
 export default {
     name: "JobsPageView",
     components: { 
@@ -373,7 +379,8 @@ export default {
         PageTitle, 
         Modal, 
         MultiSelect,
-        ContractStatus 
+        ContractStatus,
+        Toast 
     },
     data(){
         return{
@@ -429,6 +436,12 @@ export default {
             this.show_alert = !this.show_alert;
             this.alert_type = type;
             this.alert_message = message;
+        },
+        showToast(){
+            this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Message Content', life: 3000 });
+            this.$toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3050 });
+            this.$toast.add({ severity: 'warn', summary: 'Warning', detail: 'Message Content', life: 3100 });
+            this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Message Content', life: 3150 });
         },
 
         getUser(){
