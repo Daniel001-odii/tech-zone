@@ -69,19 +69,19 @@
                     <RouterLink to='/about'>About Us</RouterLink>
                 </span>
                 <span>
-                    <RouterLink to='/about'>Privacy Policy</RouterLink>
+                    <RouterLink to='/privacy'>Privacy Policy</RouterLink>
                 </span>
                 <span>
-                    <RouterLink to='/about'>Cookie Policy</RouterLink>
+                    <RouterLink to='/privacy'>Cookie Policy</RouterLink>
                 </span>
                 <span>
-                    <RouterLink to='/about'>Billing/Payment T&Cs</RouterLink>
+                    <RouterLink to='/privacy'>Billing/Payment T&Cs</RouterLink>
                 </span>
                 <span> 
-                    <RouterLink to='/about'>Use of software T&Cs</RouterLink>
+                    <RouterLink to='/privacy'>Use of software T&Cs</RouterLink>
                 </span>
                 <span>
-                    <RouterLink to='/about'>FAQs</RouterLink>
+                    <RouterLink to='/support'>FAQs</RouterLink>
                 </span>
             </div>
             <p>&copy;2024 ApexTeks all rights reserved.</p>
