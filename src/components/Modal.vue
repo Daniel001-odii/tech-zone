@@ -7,7 +7,7 @@
                 <div class="  bg-white rounded-lg text-left flex flex-col h-fit max-h-[80vh] dark:bg-[#1F2A36] dark:text-white absolute bottom-0 left-0 right-0 w-full md:w-fit md:min-w-[500px] md:max-w-[1000px] md:relative">
                 <!-- <div class=" w-fit md:w-5/6 lg:w-3/4 bg-white rounded-lg text-left flex flex-col h-fit max-h-[80vh] dark:bg-[#1F2A36] dark:text-white"> -->
                     <div class="text-2xl md:text-4xl p-8 flex flex-row justify-between items-center">
-                        <span>{{ title }}</span>
+                        <span>{{ name }}</span>
                         <button @click="modal_active = !modal_active" class="">
                             <i class="bi bi-x-lg text-2xl"></i>
                         </button>
@@ -32,13 +32,8 @@
 <script>
 export default {
     name: "Modal",
-    data(){
-        return{
-            // modal_active: false,
-        }
-    },
     props: {
-        title: String,
+        name: String,
         modal_active: Boolean,
     },
     methods:{

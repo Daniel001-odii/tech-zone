@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- PROFILE EDIT MODAL HERE -->
-        <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
+        <Modal :name="'Edit your profile'" :modal_active="profile_edit_menu">
             <template #body>
                 <div>
                 <form @submit.prevent="updateUserProfile" v-if="user">
@@ -106,8 +106,8 @@
                                 <h2 class="text-sm text-gray-500">{{ user.profile.company_name }}</h2>
                                 <p>{{ user.email }}</p>
                                 <div clas="flex flex-row gap-3">
-                                    <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.ratings)"></p>
-                                    <span>({{ userRating(user.ratings) }}) {{ user.ratings.length }} reviews</span>
+                                    <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.rating)"></p>
+                                    <span>({{ userRating(user.rating) }}) {{ user.rating_count }} reviews</span>
                                 </div>
                                 
                             </div>

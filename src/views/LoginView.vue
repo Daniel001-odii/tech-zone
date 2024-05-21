@@ -8,6 +8,9 @@
     </template>
 </Modal>
 
+<!-- TOAST HERE -->
+<Toast/>
+<!-- ********* -->
 
    <FullPageLoading v-if="loading"/>
 <!-- <div class=" dark:text-white bg-[#E7F1FF] dark:bg-[#121212]"> -->
@@ -99,10 +102,20 @@ import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 // import {  } from 'vue3-google-login';
 
 import MiniFooter from '@/components/MiniFooter.vue';
+import Toast from 'primevue/toast';
+
 
 export default {
     name: "LoginView",
-    components: { FullPageLoading, Alert, LoaderButton, Modal, SiteLogo, MiniFooter },
+    components: { 
+        FullPageLoading, 
+        Alert, 
+        LoaderButton, 
+        Modal, 
+        SiteLogo, 
+        MiniFooter,
+        Toast, 
+    },
     data() {
         return {
             error: '',
@@ -123,7 +136,10 @@ export default {
                 const response = await axios.post(`${this.api_url}/login`, this.form_data);
                 // console.log(response);
                
-                alert('login successful!');
+                // alert('login successful!');
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: 'Login Successful', life: 3000 });
+
+                setTimeout(function(){
                 if(response.data.user.role == "user"){
                     localStorage.setItem('life-gaurd', response.data.accessToken);
                     window.location.reload();
@@ -137,7 +153,7 @@ export default {
                     localStorage.setItem('life-gaurd', response.data.accessToken);
                     window.location.reload();
                     this.$router.push('/client/dashboard');
-                }
+                }}, 2000);
                 
                 this.loading = false;
 
@@ -148,6 +164,7 @@ export default {
                 
                 if(error.response.status == 500){
                     this.error = "invalid email or password"
+                    this.$toast.add({ severity: 'error', summary: 'Error Message', detail: 'Login Failed', life: 3000 });
                 }
                 this.loading = false;
             }

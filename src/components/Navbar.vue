@@ -121,7 +121,7 @@
                         <i class="bi bi-three-dots-vertical"></i>
                         <div class="flex flex-row items-center gap-3 relative group">
                             <img @click="mobile_nav = !mobile_nav" v-if="user.role == 'user' && user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
-                            <div v-else class="rounded-full h-9 w-9 flex font-bold justify-center items-center bg-slate-200 text-slate-600">{{ user.firstname[0] }}{{ user.lastname[0] }}</div>
+                            <div @click="mobile_nav = !mobile_nav" v-else class="rounded-full h-9 w-9 flex font-bold justify-center cursor-pointer items-center bg-slate-200 text-slate-600">{{ user.firstname[0] }}{{ user.lastname[0] }}</div>
                             <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
                         </div>
                     </div>

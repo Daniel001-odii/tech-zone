@@ -1,15 +1,11 @@
 <template>
      <!-- ALERTS AND NOTIFICS -->
-     <div class="fixed bottom-10 right-0 left-0 flex justify-center">
-            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
-            </div>
-    </div>
+     <Toast/>
 
     <PageTitle>Contracts</PageTitle>
     <FullPageLoading v-if="loading"/>
 
-    <Modal :title="'Submit a review'" :modal_active="feedbackModal">
+    <Modal :name="'Submit a review'" :modal_active="feedbackModal">
         <template #body>
             <form @submit.prevent="submitFeedback">
                 <div class="flex flex-col gap-3 text-2xl">
@@ -227,10 +223,19 @@ import DismissableAlert from '@/components/DismissableAlert.vue';
 import contractOffer from '../../lottie/contract-offer.json';
 import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 
+import Toast from 'primevue/toast';
 
 export default {
     name: "ContractsListPageView",
-    components: { TemplateView, SkeletonLoader, Modal, FullPageLoading, PageTitle, DismissableAlert },
+    components: { 
+        TemplateView, 
+        SkeletonLoader, 
+        Modal, 
+        FullPageLoading, 
+        PageTitle, 
+        DismissableAlert,
+        Toast 
+    },
     data(){
         return{
             alerts: [],
@@ -319,19 +324,23 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/accept/${this.$route.params.contract_id}`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.showAlertBox("success", response.data.message);
+                // this.showAlertBox("success", response.data.message);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `${response.data.message}`, life: 3000 });
                 window.location.reload();
             }catch(error){
-                console.log("accept contract error: ", error)
+                console.log("accept contract error: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
+
 
         async declineOffer(){
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/decline/${this.$route.params.contract_id}`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.showAlertBox("danger",response.data.message);
+                // this.showAlertBox("danger",response.data.message);
+                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
                 window.location.reload();
             }catch(error){
                 console.log("accept contract error: ", error)
@@ -343,34 +352,26 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/complete`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.showAlertBox("success", response.data.message);
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
                 window.location.reload();
             }catch(error){
-                console.log("complete contract error: ", error)
+                // console.log("complete contract error: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
-        async pauseContract(){
-            const headers = this.headers;
-            try{
-                const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/pause`, {}, { headers } );
-                console.log("accept contract res: ", response);
-                this.showAlertBox("warning", response.data.message);
-                window.location.reload();
-            }catch(error){
-                console.log("pause contract error: ", error)
-            }
-        },
+        
 
         async closeContract(){
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/close`, {}, { headers } );
-                console.log("accept contract res: ", response);
-                this.showAlertBox("danger", response.data.message);
+                // console.log("accept contract res: ", response);
+                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
                 window.location.reload();
             }catch(error){
-                console.log("close contract error: ", error)
+                console.log("close contract error: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -379,10 +380,11 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/resume`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.showAlertBox("success",response.data.message);
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
                 window.location.reload();
             }catch(error){
-                console.log("close contract error: ", error)
+                console.log("close contract error: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -398,32 +400,20 @@ export default {
                     this.feedback.rating = calculated_rating;
                 };
             // RATING CALCULATION ENDS HERE....
-
-
-            // LOGGED IN AS USER AND RATING THE EMPLOYER >>>>>>>>>
-            if(this.user.role == 'user'){
                 try{
                     const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/user-feedback`, this.feedback, { headers });
-                    // console.log(response);
+                    console.log("feedback sent: ", response);
                     this.loading = false;
-                    this.showAlertBox("success", "Feedback sent!");
-                    window.location.reload()
+                    this.$toast.add({ severity: 'success', summary: 'Success Message', detail: 'Your feedback was sent!', life: 3000 });
+
+                    setTimeout(function(){
+                        window.location.reload()
+                    }, 3000)
+                    
                 }catch(error){
-                    console.log(error)
+                    console.log(error);
+                    this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
                 }
-            } 
-            // LOGGED IN AS EMPLOYER AND RATING THE USER >>>>>>>>>>
-            if(this.user.role == 'employer'){
-                try{
-                    const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/employer-feedback`, this.feedback, { headers });
-                    // console.log(response);
-                    this.loading = false;
-                    this.showAlertBox("success", "Feedback sent!");
-                    window.location.reload()
-                }catch(error){
-                    console.log(error)
-                }
-            }
         }
     },
     computed: {

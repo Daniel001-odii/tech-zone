@@ -1,11 +1,8 @@
 <template>
     <div>
-         <!-- ALERTS AND NOTIFICS -->
-    <div class="fixed bottom-10 right-0 left-0 flex justify-center">
-            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
-            </div>
-    </div>
+            <!-- TOAST -->
+                <Toast/>
+            <!-- TOAST STOPS HERE -->
 
 
                 <PageTitle>Saved Jobs</PageTitle>
@@ -72,10 +69,17 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 
+import Toast from 'primevue/toast';
 
 export default {
     name: "SavedJobsView",
-    components: { TemplateView, SkeletonLoader, PageTitle, DismissableAlert },
+    components: { 
+        TemplateView,
+        SkeletonLoader, 
+        PageTitle, 
+        DismissableAlert,
+        Toast 
+    },
     data(){
         return{
             alerts: [],
@@ -145,8 +149,8 @@ export default {
                const headers = this.headers;
                const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
             //    console.log(res)
-            this.showAlertBox("success", "Job removed from saved");
-
+            // this.showAlertBox("success", "Job removed from saved");
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job unsaved Successfully', life: 3000 });
                 this.getSavedJobs();
           }catch(error){
            console.log(error)

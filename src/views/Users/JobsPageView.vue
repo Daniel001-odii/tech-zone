@@ -2,12 +2,12 @@
     <div class="h-full flex flex-col">
 
         <!-- ALERTS AND NOTIFICS -->
-        <div class="fixed right-0 z-50 flex flex-col m-3">
+        <!-- <div class="fixed right-0 z-50 flex flex-col m-3">
             <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
                 <DismissableAlert  :type="alert_type">{{ alert }}</DismissableAlert>
             </div>
-        </div>
-        
+        </div> -->
+        <Toast />
        
        <Modal :title="'Job Filters'" :modal_active="job_filter_modal" >
             <template #body>
@@ -88,7 +88,6 @@
                 <div class="relative" :class="!user ? 'mt-20':''">
                     <PageTitle>Work Explorer</PageTitle>
                     <Toast />
-        <button @click="showToast()">Show</button>
                     <div>
                         <div class="flex flex-row gap-2 p-2 md:p-2 border-b dark:border-gray-600">
 
@@ -366,7 +365,6 @@ import MultiSelect from 'primevue/multiselect';
 
 import jobCategories from '../../utils/jobCategories.json';
 
-import { useToast } from 'primevue/usetoast';
 import Toast from 'primevue/toast';
 
 export default {
@@ -427,6 +425,7 @@ export default {
 
             states_to_filter: '',
             // job_time: ["under 24 hrs", "under a week", "under a month", "over a month"]
+            save_index: 0,
         }
         
     },
@@ -438,7 +437,7 @@ export default {
             this.alert_message = message;
         },
         showToast(){
-            this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Message Content', life: 3000 });
+            this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job Saved Successfully', life: 3000 });
             this.$toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3050 });
             this.$toast.add({ severity: 'warn', summary: 'Warning', detail: 'Message Content', life: 3100 });
             this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Message Content', life: 3150 });
@@ -500,6 +499,7 @@ export default {
                 }catch(error){
                     // handle error here...
                     this.loading = true;
+                    this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Error Loading Jobs', life: 3000 });
                 }
             } else if(!this.user){
                 try{
@@ -516,13 +516,17 @@ export default {
         },
 
         async addJobToSaves(job_id){
-          
            try{
+                this.save_index += 1;
                 const headers = this.headers;
                 const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
                 console.log(res);
                 this.getSavedJobs();
-                this.showAlertBox("success", res.data.message);
+                if(this.save_index % 2 > 0){
+                    this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job saved successfully', life: 3000 });
+                } else {
+                    this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job unsaved Successfully', life: 3000 });
+                }
            }catch(error){
             console.log(error)
            }
