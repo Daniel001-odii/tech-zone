@@ -144,6 +144,9 @@ import HomeNavbar from '@/components/HomeNavbar.vue'
             show_answer2(index){
                 this.answer_active2[index] = !this.answer_active2[index];
             }
+        },
+        mounted(){
+            window.scrollTo(0, 0);
         }
     }
 </script>

@@ -99,7 +99,7 @@
                                     </button>
                                     <!-- <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"> -->
                                    
-                                    <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
+                                    <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none overflow-hidden" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
 
                                     <button id="send_message_btn" :disabled="!is_valid_message" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
                                         <i class="bi bi-send-fill"></i>

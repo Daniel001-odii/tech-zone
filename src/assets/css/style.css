@@ -31,20 +31,24 @@ nav{
 
 /* width */
 ::-webkit-scrollbar {
-width: 15px;
-border-radius: 40px;
+width: 12px;
+/* border-radius: 40px; */
+
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #EDEFF3;
-    border-radius: 40px; 
+    /* background: #EDEFF3; */
+    /* border-radius: 40px;  */
+    @apply bg-blue-200 bg-opacity-20
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #4E79BC99;
-    border-radius: 40px;
+    /* background: #4E79BC99;
+    border-radius: 10px; */
+
+    @apply bg-blue-300 dark:bg-tz_blue hover:bg-tz_dark_blue font-bold
 }
 
 /* Handle on hover */
