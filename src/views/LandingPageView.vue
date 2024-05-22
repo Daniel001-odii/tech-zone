@@ -224,51 +224,38 @@
                         </div>
 
                         <div class="flex flex-col justify-center items-center md:flex-row relative gap-3border border-red-200">
-                            <button @click="prevJob" class=" bg-tz_blue text-white p-3 rounded-lg absolute -left-5 border border-tz_blue disabled:text-tz_blue">
+                            <button @click="prev" class="absolute z-50 -left-5 top-1/2 transform -translate-y-1/2 bg-tz_blue text-white p-2 rounded-md">
                                 <i class="bi bi-arrow-left"></i>
                             </button>
-
-
-                           <!-- {{  job  }} -->
-                           <span v-if="loading_jobs">loading...</span>
-
-
-                                <LpJobCard v-if="jobs"  :key="index"
-                                :company = "jobs[job_index].employer.profile.company_name"
-                                :job_time = "formatTimestamp(jobs[job_index].created)"
-                                :job_title = "jobs[job_index].title"
-                                :job_location = "jobs[job_index].location"
-                                :job_duration = "jobs[job_index].period"
-                                :job_description = "jobs[job_index].description"
-                                :job_url = "'/'"
-                                :budget = "jobs[job_index].budget"
-                                />
-
-
-                            <button @click="nextJob" class="bg-tz_blue text-white p-3 rounded-lg absolute -right-5 disabled:bg-white border border-tz_blue">
+                            <div class="testimonial-slider relative overflow-hidden w-full ">
+                                <div class="flex flex-row gap-3 transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` }">
+                                    <div v-for="(job, index) in jobs" :key="index" class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 flex items-center justify-center">
+                                        <LpJobCard class="w-full" v-if="jobs"  :key="index"
+                                        :company = "job.employer.profile.company_name"
+                                        :job_time = "formatTimestamp(job.created)"
+                                        :job_title = "job.title"
+                                        :job_location = "job.location"
+                                        :job_duration = "job.period"
+                                        :job_description = "job.description"
+                                        :job_url = "'/'"
+                                        :budget = "job.budget"
+                                        >
+                                        <span>
+                                            <i class="bi bi-geo-alt-fill"></i> 
+                                            <span v-if="job.location.remote"> remote</span>
+                                            <span v-else> {{ job.location.address }}, {{  job.location.state }}</span>
+                                        </span>
+                                        <span>
+                                            <i class="bi bi-clock"></i> <span>{{job.period}}</span>
+                                        </span>
+                                    </LpJobCard>
+                                    </div>
+                                </div>
+                            </div>
+                            <button @click="next" class="absolute z-50 -right-5 top-1/2 transform -translate-y-1/2 bg-tz_blue text-white p-2 rounded-md">
                                 <i class="bi bi-arrow-right"></i>
                             </button>
-
-                            <!-- <LpJobCard v-for="(job, index) in jobPostings" :key="index"
-                            :company = "job.company"
-                            :job_time = "job.job_time"
-                            :job_title = "job.job_title"
-                            :job_location = "job.job_location"
-                            :job_duration = "job.job_duration"
-                            :job_description = "job.job_description"
-                            :job_url = "'/'"
-                            :budget = "job.budget"
-                            /> -->
                         </div>
-<!-- 
-                        <div class="flex flex-row justify-center gap-3 p-5">
-                            <button class="slide_btn">
-                                <i class="bi bi-arrow-left"></i>
-                            </button>
-                            <button class="slide_btn sb_active">
-                                <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div> -->
                     </div>
             </section>
 
@@ -373,7 +360,17 @@ export default {
             job_index: 1,
             loading_jobs: false,
             formatTimestamp,
-        }
+
+            currentIndex: 0,
+            testimonials: [
+            { message: "This is a fantastic product!", author: "John Doe" },
+            { message: "I loved the service!", author: "Jane Smith" },
+            { message: "Highly recommend to everyone.", author: "Bob Johnson" },
+            { message: "Exceptional quality and support!", author: "Alice Brown" },
+            { message: "Five stars for sure!", author: "Chris Wilson" }
+            ],
+            visibleCount: 3
+            }
     },
 
     methods:{
@@ -393,21 +390,56 @@ export default {
             try{
                 this.loading_jobs = true;
                 const response = await axios.get(`${this.api_url}/jobs`);
-                this.jobs = response.data.jobs;
+                this.jobs = response.data.jobs.splice(0, 5);
                 console.log("fetched jobs: ", this.jobs);
                 this.loading_jobs = false;
             }catch(error){
                 console.log("error getting jobs: ", error);
                 this.loading_jobs = false;
             }
+        },
+
+        prev() {
+            const maxIndex = this.jobs.length - this.visibleCount;
+            this.currentIndex = (this.currentIndex === 0) ? maxIndex : this.currentIndex - 1;
+        },
+        next() {
+            const maxIndex = this.jobs.length - this.visibleCount;
+            this.currentIndex = (this.currentIndex === maxIndex) ? 0 : this.currentIndex + 1;
+        },
+        updateVisibleCount() {
+            this.visibleCount = this.responsiveVisibleCount;
         }
     },
 
-    mounted() {
-    AOS.init();
+    computed: {
+      responsiveVisibleCount() {
+        if (window.innerWidth >= 1024) {
+          return 3;
+        } else if (window.innerWidth >= 768) {
+          return 1;
+        } else {
+          return 1;
+        }
+      }
+    },
 
-    this.getAllJobs();
-  },
+    mounted() {
+        AOS.init();
+
+        this.getAllJobs();
+
+        this.updateVisibleCount();
+        window.addEventListener('resize', this.updateVisibleCount);
+
+        // setInterval(function(){
+        //     this.currentIndex += 1;
+        // }, 2000);
+    },
+
+  beforeDestroy() {
+      window.removeEventListener('resize', this.updateVisibleCount);
+    }
 }
 </script>
 <style scoped>

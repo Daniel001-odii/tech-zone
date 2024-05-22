@@ -1,5 +1,5 @@
 <template>
-        <div class="rounded-lg p-5 border border-gray-200 flex flex-col w-fit min-w-80 bg-slate-100 max-w-[800px]">
+        <div class="rounded-lg h-full justify-between p-5 border border-gray-200 flex flex-col min-w-[320px] bg-slate-100">
             <div class="flex flex-row justify-between font-medium text-sm">
                 <div class="flex items-center justify-center">
                     <i class="bi bi-building-check"></i> | <span>{{company}}</span>
@@ -11,12 +11,7 @@
             <div class="flex flex-col gap-3">
                 <span class="font-bold mt-4">{{ job_title }}</span>
                 <div class="flex flex-row justify-between text-sm"> 
-                    <span>
-                        <i class="bi bi-geo-alt-fill"></i> <span>{{job_location}}</span>
-                    </span>
-                    <span>
-                        <i class="bi bi-clock"></i> <span>{{job_duration}}</span>
-                    </span>
+                    <slot></slot>
                 </div>
 
                 <div>
@@ -25,10 +20,10 @@
                 </div>
                
                 <div class="mt-3 font-medium flex justify-between items-center">
-                    <RouterLink :to="job_url">
-                        <button class=" hover:bg-tz_blue hover:text-white px-5 py-3 rounded-md">Apply here</button>
+                    <RouterLink to="/login">
+                        <button class=" hover:bg-tz_blue hover:text-white px-5 py-3 rounded-md border bg-gray-300">Apply here</button>
                     </RouterLink>
-                    <span class="text-xl">#{{budget}}</span>
+                    <span class="text-xl">	&#8358; {{ budget }}</span>
                 </div>
 
             </div>
