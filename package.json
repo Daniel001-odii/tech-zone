@@ -20,6 +20,7 @@
     "vue-advanced-cropper": "^2.8.8",
     "vue-animate-onscroll": "^1.0.8",
     "vue-chart-3": "^3.1.8",
+    "vue-cookie-accept-decline": "^6.1.0",
     "vue-file-agent": "^1.7.3",
     "vue-head": "^2.2.0",
     "vue-router": "^4.0.3",

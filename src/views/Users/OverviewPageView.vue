@@ -1,7 +1,7 @@
 <template>
     <FullPageLoading v-if="loading"/>
 
-    <Modal :title="'Contract Review'" :modal_active="show_review_modal">
+    <Modal :name="'Contract Review'" :modal_active="show_review_modal">
         <template #body>
           <div class="flex flex-row gap-3 w-96">
             <img :src="employer.profile.image_url" class="h-10 w-10 rounded-full"/>
@@ -103,7 +103,7 @@
                                         <!-- <img class="h-10 w-10 rounded-full" :src="contract.employer.profile.image_url" alt="company image"> -->
                                         <div class="ps-3">
                                             <div class="text-base font-semibold">{{ contract.job.title }}</div>
-                                            <div class="font-normal text-gray-500">{{ contract.employer.profile.company_name }}</div>
+                                            <div class="font-normal text-gray-500">{{ contract.user.profile.company_name }}</div>
                                             <!-- <div class="font-normal text-gray-500" v-if="contract.employer.profile.location">
                                                 <i class="bi bi-geo-alt-fill"></i>
                                                 {{ contract.employer.profile.location.city }}, {{ contract.employer.profile.location.state }} State

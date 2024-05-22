@@ -7,7 +7,7 @@
         </div>
 
         <!-- PROFILE EDIT MODAL HERE -->
-        <Modal :title="'Edit your profile'" :modal_active="profile_edit_menu">
+        <Modal :name="'Edit your profile'" :modal_active="profile_edit_menu">
                 <template #body>
                     <div>
                     <form @submit.prevent="updateUserProfile" v-if="user">
@@ -74,7 +74,7 @@
         </Modal>
 
         <!-- PROFILE IMAGE UPLOAD MODAL -->
-        <Modal :title="'Upload a profile image'" :modal_active="profile_image_menu">
+        <Modal :name="'Upload a profile image'" :modal_active="profile_image_menu">
             <template #body>
                 <div class="flex flex-row flex-wrap gap-5 p-8 justify-center items-center">
                     <div class="flex flex-col">
@@ -209,7 +209,7 @@
                             <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                             <p>{{ user.email }}</p>
                             <div clas="flex flex-row gap-3">
-                                <p class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(user.rating)"></p>
+                                <p class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(user.rating)"></p>
                                 <span>({{ user.rating }}) {{ user.rating_count }} reviews</span>
                             </div>
                             <div v-if="user" class="flex flex-row flex-wrap gap-3 mt-3">
@@ -234,7 +234,7 @@
                             <span v-if="user.is_verified">user email is verified</span>
                             <span v-else="user.is_verified">user email is not verified</span>
                         </div>
-                        <p>Joined: {{ readableDate(user.created) }}</p>
+                        <p>Joined: {{ formatTimestamp(user.created) }}</p>
                         <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
 
                          <!-- VIEW PROFILE AS OTHERS -->
@@ -291,7 +291,7 @@
                         <div class="profile_section">
                             <h2 class="font-bold">Date Joined</h2>
                             <div>
-                                {{ user.created }}
+                                {{ formatTimestampWithoutTime(user.created) }}
                             </div>
                         </div>
 
@@ -316,11 +316,11 @@
                                     
                                     <template #star-rating>
                                         <div>
-                                            <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="useStarFromInteger(contract.user_feedback.rating)"></p>
+                                            <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(contract.user_feedback.rating)"></p>
                                             <p v-else class="py-3">No feedback yet</p>
                                         </div>
                                     </template>
-                                    <template #date>{{ readableDate(contract.created) }}</template>
+                                    <template #date>{{ formatTimestampWithoutTime(contract.created) }}</template>
                                     <template #status>
                                         <ContractStatus :type="contract.status"/>
                                     </template>
@@ -348,6 +348,7 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import { formatTimestamp } from '@/utils/dateFormat';
+import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import { CircleStencil, Cropper, Preview } from 'vue-advanced-cropper';
 import ContractStatus from '@/components/ContractStatus.vue';
@@ -440,6 +441,9 @@ export default {
                     }
                 },
             ],
+            generateStarRatingFromInteger,
+            formatTimestamp,
+            formatTimestampWithoutTime,
         }
     },
     methods: {
@@ -531,14 +535,6 @@ export default {
             }catch(error){
                 console.log(error)
             }
-        },
-
-        useStarFromInteger(rating){
-            return generateStarRatingFromInteger(rating);
-        },
-
-        readableDate(date){
-            return formatTimestamp(date);
         },
         
 

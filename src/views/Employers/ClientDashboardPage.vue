@@ -1,9 +1,12 @@
 <template>
 
+<!-- TOAST -->
+    <Toast/>
+<!-- ***** -->
     <FullPageLoading v-if="loading"/>
 
     <!-- Job assignment modal... -->
-    <Modal :title="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
+    <Modal :name="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
         <template #body>
             <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
             <div class=" flex flex-col gap-3">
@@ -24,7 +27,7 @@
         </template>
     </Modal>
 
-    <Modal :title="'Interview Confirmation'" :modal_active="interview_modal">
+    <Modal :name="'Interview Confirmation'" :modal_active="interview_modal">
         <template #body>
             <div class="p-3 flex flex-col gap-3">
                 <span class="text-2xl mb-4"> Are you sure you want to start an interview session with {{ current_user.name }}</span>
@@ -43,7 +46,7 @@
         </template>
     </Modal>
 
-    <Modal :title="'Contract Offer Confirmation'" :modal_active="contract_modal">
+    <Modal :name="'Contract Offer Confirmation'" :modal_active="contract_modal">
         <template #body>
             <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
             <span class="text-2xl mb-4 block"> Are you sure you want to Send the contract offer for the job <b class="text-blue-500">{{  current_job.title }}</b> to <b class="text-blue-500">{{ current_user.name }}</b>?</span>
@@ -81,7 +84,7 @@
                     </button>
                     <button @click="switchTab('saved')" :class="{ 'active_tab': current_tab == 'saved' }" class="tab_btn ">
                         <i class="bi bi-people"></i>
-                        <span>Saved Freelancers</span>
+                        <span>Saved Freelancers ({{saved_users.length}})</span>
                     </button>
                 </div>
                 <div>
@@ -176,7 +179,7 @@
                                 <div class="flex flex-col justify-between items-start flex-wrap">
                                     <a :href="`/users/${user._id}`" target="_blank" class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</a>
                                     <p class="text-gray-400">{{ user.profile.title }}</p>
-                                    <Rating :modelValue="user.rating" readonly :cancel="false"></Rating>
+                                    <Rating class="p-rating-item" :modelValue="user.rating" readonly :cancel="false"></Rating>
                                     <p class="text-gray-400">{{ user.rating }}</p>
                                     <div class="flex flex-row gap-3">
                                         <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>
@@ -215,10 +218,19 @@ import FullPageLoading from '@/components/FullPageLoading.vue';
 
 // prime vue rating component
 import Rating from 'primevue/rating';
+import Toast from 'primevue/toast';
 
 export default {
     name: "ClientDashboardPage",
-    components: { TemplateView, SkeletonLoader, Modal, PageTitle, FullPageLoading, Rating },
+    components: { 
+        TemplateView, 
+        SkeletonLoader, 
+        Modal, 
+        PageTitle, 
+        FullPageLoading, 
+        Rating,
+        Toast, 
+    },
     data(){
         return{
             store: useStore(),
@@ -330,10 +342,11 @@ export default {
             try{
                 const res = await axios.post(`${this.api_url}/employer/${user_id}/save-user`, {}, { headers });
                 // console.log(res);
-                alert(res.data.message);
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${res.data.message}`, life: 3000 });
                 this.getSavedUsers();
             }catch(error){ 
-                console.log("user saving error: ", error);
+                // console.log("user saving error: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -346,7 +359,8 @@ export default {
                 this.saved_users = response.data.saved_users;
                 this.loading_saved_users = false;
             }catch(error){
-                console.log("get saved users error: ", error);
+                // console.log("get saved users error: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
                 this.loading_saved_users = false;
             }
         },
@@ -355,11 +369,13 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/send`, {}, { headers });
-                console.log("res from sending contract: ", response);
-                this.message = response.data.message;
+                // console.log("res from sending contract: ", response);
+                // this.message = response.data.message;
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
                 // alert(response.data.message);
             }catch(error){
-                console.log("error sending Contract:", error);
+                // console.log("error sending Contract:", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -368,23 +384,11 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/assign`, {}, { headers });
                 // console.log("res from sending contract: ", response)
-                this.message = response.data.message;
-                // console.log("msg from assign: ", response)
-                // alert(response.data);
+                // this.message = response.data.message;
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
             }catch(error){
-                console.log("error sending Contract:", error)
-            }
-        },
-
-        async getUserRating(user_id){
-            try{
-                const response = await axios.get(`${this.api_url}/user/${user_id}/rating`);
-                this.user_rating = response.data.averageRating;
-                this.user_rating_count = response.data.totalRatingsCount;
-                const user_feedbacks = {user_rating, user_rating_count};
-                return user_feedbacks
-            }catch(error){
-
+                console.log("error sending Contract:", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -411,11 +415,6 @@ export default {
                 return this.getUserData.user.saved_users.includes(user_id);
             }
         },
-
-        userStars(ratings){
-            return generateStarRating(ratings);
-        },
-
 
         seeUserProfile(user_id) {
             const route = this.$router.resolve({name: "Public profile", params: { user_id: user_id } });

@@ -335,6 +335,8 @@
         
     
         </div>
+
+
     <Footer/>
     </div>
     <!-- <Navbar :type="'wesbite'"/> -->

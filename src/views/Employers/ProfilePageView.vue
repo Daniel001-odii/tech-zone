@@ -1,10 +1,11 @@
 <template>
+    <Toast/>
     <div>
         <!-- PROFILE EDIT MODAL HERE -->
         <Modal :name="'Edit your profile'" :modal_active="profile_edit_menu">
             <template #body>
                 <div>
-                <form @submit.prevent="updateUserProfile" v-if="user">
+                <form @submit.prevent="updateUserProfile">
                     <div>
                         <div class="flex flex-row flex-wrap gap-3 mb-3">
                             <div class="w-3/6 flex flex-col grow">
@@ -79,7 +80,7 @@
            
             </template>
             <template #footer>
-                <LoaderButton type="button" @click="updateUserProfile" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
+                <button type="button" class="btn" @click="updateUserProfile">save</button>
             </template>
            
         </Modal>
@@ -106,8 +107,8 @@
                                 <h2 class="text-sm text-gray-500">{{ user.profile.company_name }}</h2>
                                 <p>{{ user.email }}</p>
                                 <div clas="flex flex-row gap-3">
-                                    <p class="inline-block mr-2 text-tz_blue" v-html="userStars(user.rating)"></p>
-                                    <span>({{ userRating(user.rating) }}) {{ user.rating_count }} reviews</span>
+                                    <p class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(user.rating)"></p>
+                                    <span>({{ user.rating }}) {{ user.rating_count }} reviews</span>
                                 </div>
                                 
                             </div>
@@ -177,11 +178,45 @@
                                 </div>
                             </div>
 
+                            <div class="profile_section">
+                                <div class="border rounded-xl p-3 text-left  border-gray-300  dark:border-gray-600">
+                                    <h2 class="font-bold"><i class="bi bi-briefcase"></i> Completed Jobs</h2>
+                                </div>
+                                <div>
+                                    <SkeletonLoader v-if="contracts_loading"/>
+                                    
+                                    <div v-if="!contracts_loading && contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
+                                        <!-- {{ contract.user_feedback }} -->
+                                        <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
+                                            <template v-if="contract.employer_feedback.review" #feedback>"{{ contract.employer_feedback.review }}"</template>
+                                            <template v-else #feedback></template>
+                                            <template #star-rating>
+                                                <div>
+                                                    <p v-if="contract.employer_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(contract.user_feedback.rating)"></p>
+                                                    <p v-else class="py-3">No feedback yet</p>
+                                                </div>
+                                            </template>
+                                            <template #date>{{ formatTimestamp(contract.created) }}</template>
+                                            <template #status>
+                                                <ContractStatus :type="contract.status"/>
+                                            </template>
+                                        </JobReviewCard>
+                                    </div>
+                                    
+                                    <div v-else class="p-3 text-center">No Completed Jobs Yet</div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
+                   
+
                     
                 </div>
+
+                
+
             </div>
 
     </div>
@@ -193,15 +228,28 @@ import JobReviewCard from '@/components/JobReviewCard.vue';
 import Modal from '@/components/Modal.vue';
 import axios from 'axios';
 import LoaderButton from '@/components/LoaderButton.vue';
-import { generateStarRating } from '@/utils/ratingStars';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import nigerianStates from '@/utils/states.json';
 
 import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 
+import { generateStarRatingFromInteger } from '@/utils/ratingStars';
+
+import { formatTimestamp } from '@/utils/dateFormat';
+
+import Toast from 'primevue/toast';
+
 export default {
     name: "ProfilePage",
-    components: { Navbar, TemplateView, JobReviewCard, Modal, LoaderButton, SkeletonLoader },
+    components: { 
+        Navbar, 
+        TemplateView, 
+        JobReviewCard, 
+        Modal, 
+        LoaderButton, 
+        SkeletonLoader,
+        Toast, 
+    },
     data(){
         return{
             user: null,
@@ -227,32 +275,21 @@ export default {
                     },
                 },
 
+                contracts_loading: false,
+
                 contracts: '',
                 isAllowed: false,
                 formatTimestampWithoutTime,
+                generateStarRatingFromInteger,
+                formatTimestamp,
 
             headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`}
         }
     },
     methods: {
-        async getPublicUserData(){
-            try{
-                const response = await axios.get(`${this.api_url}/user/${this.$route.params.user_id}`);
-                this.user = response.data.user;
-                console.log("pulic user: ", response);
-                // this.checkCurrentViewer();
-            }catch(error){
-                console.log("error fetching public user data", error)
-            }
-        },
-
         async getUserData(){
+            const headers = this.headers;
             try{
-                 // Get the token from localStorage
-                const token = localStorage.getItem('life-gaurd');
-                const headers = {
-                    Authorization: `JWT ${token}`, // Assuming it's a JWT token
-                };
 
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 console.log("profile page :", response);
@@ -273,7 +310,6 @@ export default {
                 // this.user_form = response.data.user;
 
                 this.calculateProfileCompletion();
-                // this.checkCurrentViewer();
                 
             }
             catch(error){
@@ -286,23 +322,29 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.patch(`${this.api_url}/employer/profile/update`, this.user_form, { headers });
-                console.log(response)
+                // console.log(response)
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
                 this.user_form.loading = false;
             }
             catch(error){
                 // display any possible error here...
-                console.log("error updating profile data");
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                // console.log("error updating profile data");
             }
         },
 
         async getActiveAndCompletedContracts(){
             const headers = this.headers;
             try{
-                const response = await axios.get(`${this.api_url}/contracts/good/${this.$route.params.user_id}`, { headers });
-                // console.log("good contracts: ", response);
+                this.contracts_loading = true;
+                const response = await axios.get(`${this.api_url}/employer/contracts/completed`, { headers });
+                console.log("completed contracts: ", response);
                 this.contracts = response.data.contracts;
+                this.contracts_loading = false;
             }catch(error){
-                console.log(error)
+                this.contracts_loading = false;
+                console.log(error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 4000 });
             }
         },
 
@@ -318,16 +360,6 @@ export default {
 
         userStars(ratings){
             return generateStarRating(ratings);
-        },
-
-        checkCurrentViewer(){
-            const token = localStorage.getItem('life-gaurd');
-            const user = token ? JSON.parse(atob(token.split('.')[1])) : null;
-            // console.log("user roleeee: ", user_id, "parsed data: ", parsed_item);
-            if(user.id == this.$route.params.user_id || user.googleId == this.user.googleId){
-                this.isAllowed = true;
-            }
-            else{this.isAllowed = false};
         },
 
         calculateProfileCompletion(){
@@ -369,12 +401,7 @@ export default {
 
     },
     mounted(){
-        if(this.$route.params.user_id){
-            this.getPublicUserData();
-        } else{
-            this.getUserData();
-        }
-      
+        this.getUserData();
         this.getActiveAndCompletedContracts();
 
         // check profile completion percentage ...

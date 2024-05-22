@@ -1,14 +1,10 @@
 <template>
     <PageTitle>Notifications</PageTitle>
+    <!-- TOAST -->
+        <Toast/>
+    <!-- ***** -->
     <div>
-            <!-- ALERTS AND NOTIFICS -->
-            <div class="fixed right-0 z-50 flex flex-col m-3">
-                <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                    <DismissableAlert  :type="alert_type">{{ alert }}</DismissableAlert>
-                </div>
-            </div>
-
-
+    
                 <div class="p-3 flex flex-col gap-3 justify-start text-left items-start">
                     <div class="flex flex-row justify-between w-full">
 
@@ -66,11 +62,17 @@ import PageTitle from '@/components/PageTitle.vue';
 import { formatTimestamp } from '@/utils/dateFormat';
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import DismissableAlert from '@/components/DismissableAlert.vue';
-
+import Toast from 'primevue/toast';
 
 export default {
     name: "NotificationsPageView",
-    components: { TemplateView, ContractStatus, PageTitle, DismissableAlert },
+    components: { 
+        TemplateView, 
+        ContractStatus, 
+        PageTitle, 
+        DismissableAlert,
+        Toast,
+    },
     data(){
         return{
             showAllNotifications: false,
@@ -84,13 +86,7 @@ export default {
         }
     },
     methods:{
-        showAlertBox(type, message){
-            this.alerts.push(message);
-            this.show_alert = !this.show_alert;
-            this.alert_type = type;
-            this.alert_message = message;
-        },
-
+    
         // get all user notifications...
         async getNotifications(){
             const headers = this.headers;
@@ -114,11 +110,11 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/notifications/${notification_id}/read`, {}, { headers });
-                console.log(response);
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
                 this.getNotifications();
-                this.showAlertBox("success", "notification marked as read!");
+                
             }catch(error){
-                console.log("error marking notification as read...", error)
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -128,11 +124,10 @@ export default {
                 const response = await axios.post(`${this.api_url}/notifications/clear`, {}, { headers } );
                 console.log("user notifications: ", response);
                 this.getNotifications();
-                this.showAlertBox("success", "All notifications cleared");
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
 
             }catch(error){
-                console.log("error clear notifics: ", error);
-                this.showAlertBox("danger", error.response.data.message);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
     },

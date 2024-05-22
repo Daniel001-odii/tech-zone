@@ -35,6 +35,11 @@ import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice';
 
 
+// COOKIES CONSENT BANNER
+import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
+import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
+
+
 
 // app.use(PrimeVue, {
 //   unstyled: true
@@ -72,4 +77,6 @@ app.use(store).use(router).mount('#app');
 app.use(PrimeVue);
 app.use(ToastService);
 
-app.directive('click-outside', clickOutside)
+app.directive('click-outside', clickOutside);
+
+app.component('vue-cookie-accept-decline', VueCookieAcceptDecline);

@@ -74,6 +74,7 @@
 
             <nav v-if="user">
                 <div class="flex flex-row w-full justify-between p-3 items-center">
+                    
                     <SiteLogo/>
 
                     <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->

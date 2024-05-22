@@ -8,7 +8,7 @@
             </div>
         </div>
        
-       <Modal :title="'Job Filters'" :modal_active="job_filter_modal" >
+       <Modal :name="'Job Filters'" :modal_active="job_filter_modal" >
             <template #body>
                 <div class="flex flex-col gap-3">
                     <div class="flex flex-row flex-wrap gap-3">              

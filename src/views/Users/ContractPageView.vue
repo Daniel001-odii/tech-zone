@@ -78,12 +78,12 @@
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Start Date</td>
-                                        <td class="px-6 py-4">09/05/2024</td>
+                                        <td class="px-6 py-4">{{ formatTimestampWithoutTime(contract.createdAt) }}</td>
                                     </tr>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <!-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">End Date</td>
                                         <td class="px-6 py-4">09/05/2024</td>
-                                    </tr>
+                                    </tr> -->
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Job Type</td>
                                         <td class="px-6 py-4">
@@ -118,7 +118,7 @@
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Job Category</td>
-                                        <td class="px-6 py-4">Not categorised yet...</td>
+                                        <td class="px-6 py-4">Not categorised</td>
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Requires Taskwatch</td>
@@ -126,12 +126,12 @@
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Offer Date</td>
-                                        <td class="px-6 py-4">{{ contract.createdAt }}</td>
+                                        <td class="px-6 py-4">{{ formatTimestampWithoutTime(contract.createdAt) }}</td>
                                     </tr>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <!-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4 text-red-500">Offer Expiry</td>
                                         <td class="px-6 py-4 text-red-500">{{ contract.createdAt }}</td>
-                                    </tr>
+                                    </tr> -->
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Contract terms</td>
                                         <td class="px-6 py-4">ApexTek terms of service</td>

@@ -1,10 +1,8 @@
 <template>
-    <!-- ALERTS AND NOTIFICS -->
-    <div class="fixed flex-col bottom-10 right-0 left-0 flex justify-center items-center z-50">
-            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
-            </div>
-    </div>
+    <!-- TOAST -->
+        <Toast/>
+    <!-- ***** -->
+   
    
 
 
@@ -218,10 +216,21 @@ import DismissableAlert from '@/components/DismissableAlert.vue';
 
 import Password from 'primevue/password'
 import Alert from '@/components/Alert.vue';
+import Toast from 'primevue/toast';
+
 
 export default {
     name: "ClientSettingsPageView",
-    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading, DismissableAlert, Password, Alert },
+    components: { 
+        TemplateView, 
+        ContractStatus, 
+        PageTitle, 
+        FullPageLoading, 
+        DismissableAlert, 
+        Password, 
+        Alert,
+        Toast, 
+    },
     data(){
         return{
             alerts: [],
@@ -350,16 +359,13 @@ export default {
             try{
                 const user = this.user;
                 user.settings = this.settings;
-
-                // console.log(user)
-
                 const response = await axios.patch(`${this.api_url}/user/profile`, user, { headers });
                 // console.log("set successful: ", response);
-                this.showAlertBox("success", "settings updated successfully!");
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: 'settings updated successfully!', life: 3000 });
                 this.loading = false;
             }catch(error){
-                console.log("error updating user profile: ", error);
-                this.showAlertBox("danger", "error updating settings");
+                // console.log("error updating user profile: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
                 this.loading = false;
             }
         },
@@ -370,11 +376,12 @@ export default {
             console.log("form: ", this.security, " headers ;", headers)
             try{
                 const response = await axios.post(`${this.api_url}/user/password/change`, this.security, { headers });
-                console.log("password response: ", response);
-                alert("Password Updated Successfully!")
+                // console.log("password response: ", response);
+                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: 'Password updated successfully!', life: 3000 });
                 this.loading = false;
             }catch(error){
                 // console.log("error changing password: ", error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
                 this.password_errors = error.response.data.message;
                 this.loading = false;
             }

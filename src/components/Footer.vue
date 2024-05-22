@@ -81,7 +81,7 @@
                     <RouterLink to='/privacy'>Use of software T&Cs</RouterLink>
                 </span>
                 <span>
-                    <RouterLink to='/support'>FAQs</RouterLink>
+                    <RouterLink to='/FAQ'>FAQs</RouterLink>
                 </span>
             </div>
             <p>&copy;2024 ApexTeks all rights reserved.</p>
@@ -107,7 +107,6 @@ export default {
             "Kano",
             "Oyo",
             "Enugu",
-
             ],
         }
     }

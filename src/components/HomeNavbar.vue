@@ -10,14 +10,15 @@
         <div class="bg-white text-black start-0 fixed z-30 shadow-md w-full">
         <div class="p-3 flex flex-row justify-between items-center mx-auto my-0 max-w-screen-2xl">
             <!-- <SiteLogo/> -->
-            <img src="../../public/apex-tek.svg" class=" h-[35px] md:h-[50px] ">
-            
+            <RouterLink to="/">
+                <img src="../../public/apex-tek.svg" class=" h-[35px] md:h-[50px] ">
+            </RouterLink>
             <div class="bg-white w-full flex-col md:flex-row justify-around items-center md:flex absolute z-10 top-16 left-0 flex md:top-0 md:relative pb-6 md:p-0 opacity-0 md:h-fit md:opacity-100 transition-all duration-500 ease-out shadow-lg md:shadow-none" :class="mobile_menu ? 'h-screen opacity-100':'h-0 opacity-0'">
                 <div class=" flex text-center flex-col md:flex-row gap-6 md:items-center md:mx-auto md:my-0 p-5 md:p-0">
                     <RouterLink to="/" class="" :class="isHome ? 'border-tz_blue border-b-4  text-tz_blue':''">Home</RouterLink>
                     <!-- <RouterLink to="/jobs" class="" :class="isJobs ? 'border-tz_blue border-b-4  text-tz_blue':''"> FInd Job</RouterLink> -->
                     <RouterLink to="/about" class="" :class="isAbout ? 'border-tz_blue border-b-4  text-tz_blue':''">About Us</RouterLink>
-                    <RouterLink to="/support" :class="isFAQ ? 'border-tz_blue border-b-4 text-tz_blue':''">FAQ</RouterLink>
+                    <RouterLink to="/FAQ" :class="isFAQ ? 'border-tz_blue border-b-4 text-tz_blue':''">FAQ</RouterLink>
                 </div>
                 <div class="flex flex-row gap-3 p-5 md:p-0">
                     <RouterLink to="/login">

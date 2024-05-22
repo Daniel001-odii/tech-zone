@@ -59,7 +59,9 @@
 
                 <img src="../assets/images/FAQ-bottomImage.png" class=" hidden lg:inline-block absolute -top-10      vop-10 right-44">
                 
-                <button class="btn">Get in touch</button>
+                <RouterLink to="/support">
+                    <button class="btn">Get in touch</button>
+                </RouterLink>
 
            
                 

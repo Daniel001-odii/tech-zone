@@ -1,5 +1,5 @@
 <template>
-<Modal :title="'Create an Account'" :modal_active="signup_modal">
+<Modal :name="'Create an Account'" :modal_active="signup_modal">
     <template #body>
         <p class="text-3xl">user account not found, please <RouterLink to="register/decide" class="underline text-blue-500">signup</RouterLink> as either a freelancer or employer</p>
     </template>

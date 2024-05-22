@@ -51,6 +51,7 @@ import AdminRegisterPageView from '@/views/Administration/AdminRegisterView.vue'
 import AdminLoginView from '@/views/Administration/AdminLoginView.vue'
 
 import ClientMessagePageView from '@/views/Employers/ClientMessagePageView.vue'
+import HelpAndSupportPageView from '@/views/HelpAndSupportPageView.vue'
 
 const routes = [
   {
@@ -118,9 +119,15 @@ const routes = [
   },
 
   {
+    path: '/FAQ',
+    name: 'FAQ',
+    component: SupportPageView
+  },
+
+  {
     path: '/support',
     name: 'support',
-    component: SupportPageView
+    component: HelpAndSupportPageView
   },
 
   {
@@ -145,6 +152,11 @@ const routes = [
       {path: 'notifications', component: NotifcationsPageView, name: "user notifications"},
       {path: 'settings', component: SettingsPageView, name: "user settings"},
       {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "contract task-watch"},
+      {
+        path: '/support',
+        name: 'in-support',
+        component: HelpAndSupportPageView
+      },
     ],
     meta: { requiresAuth: true, role: 'user' },
   },

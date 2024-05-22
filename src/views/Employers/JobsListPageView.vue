@@ -1,5 +1,6 @@
 <template>
     <PageTitle>My Jobs</PageTitle>
+    <Toast/>
     <div>
         <!-- <TemplateView :leftNav="true">
             <template #page-title>All Jobs</template>
@@ -21,7 +22,7 @@
                             <div class="text-2xl font-bold underline" :class="job.is_deleted ? 'text-red-500':'text-tz_blue '">{{ job.title }}</div>
                           <!-- DROP DOWN -->
                             <ActionDropdown v-if="!job.is_deleted">
-                                <RouterLink :to="job.status != 'closed' ? '/client/jobs/':'#' + job._id + '/edit'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <RouterLink :to="`/client/jobs/${job._id}/edit`" class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     <button :disabled="job.status == 'closed'">
                                         <i class="bi bi-pencil-fill"></i> Edit Job
                                     </button>
@@ -69,6 +70,7 @@ import PageTitle from '@/components/PageTitle.vue';
 import ActionDropdown from '@/components/ActionDropdown.vue';
 import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 
+import Toast from 'primevue/toast';
 
 export default {
     name: "JobsListPageView",
@@ -77,7 +79,8 @@ export default {
         ContractStatus, 
         SkeletonLoader, 
         ActionDropdown,
-        PageTitle 
+        PageTitle,
+        Toast 
     },
     data(){
         return{
@@ -94,7 +97,8 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/jobs/${job_id}/delete`, {}, { headers });
-                console.log(response);
+                // console.log(response);
+                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
                 this.getJobsByEmployer();
             }catch(error){
                 console.log(error)
@@ -105,7 +109,8 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/jobs/${job_id}/close`, {}, { headers });
-                console.log(response);
+                // console.log(response);
+                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
                 this.getJobsByEmployer();
             }catch(error){
                 console.log(error)

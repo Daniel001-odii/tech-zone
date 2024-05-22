@@ -1,7 +1,7 @@
 <template>
     <FullPageLoading v-if="loading"/>
 
-    <Modal :title="'Contract Review'" :modal_active="show_review_modal">
+    <Modal :name="'Contract Review'" :modal_active="show_review_modal">
         <template #body>
           <div class="flex flex-row gap-3 w-96">
             <img :src="employer.profile.image_url" class="h-10 w-10 rounded-full"/>
@@ -9,17 +9,10 @@
                 <p>{{ employer.company_name }}</p>
                 <div class="flex flex-col">
                     <p class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(feedback.rating)"></p>
-                    <span>{{ feedback.review }}</span>
+                    <span class=" italic">"{{ feedback.review }}"</span>
                 </div>
             </div>
           </div>
-
-          
-
-            <!-- {{ employer }} <br/>  
-            {{ feedback }} -->
-           
-            
         </template>
         <template #footer></template>
     </Modal>
@@ -45,8 +38,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="font-bold text-lg">Total Jobs Posted</span>
-                        <span v-if="completed_contracts > 0">{{ completed_contracts }}</span>
-                        <span v-else>0</span>
+                        <span>{{ user.jobs_posted }}</span>
                     </div>
                 </div>
 
@@ -103,11 +95,7 @@
                                         <!-- <img class="h-10 w-10 rounded-full" :src="contract.employer.profile.image_url" alt="company image"> -->
                                         <div class="ps-3">
                                             <div class="text-base font-semibold">{{ contract.job.title }}</div>
-                                            <div class="font-normal text-gray-500">{{ contract.employer.profile.company_name }}</div>
-                                            <!-- <div class="font-normal text-gray-500" v-if="contract.employer.profile.location">
-                                                <i class="bi bi-geo-alt-fill"></i>
-                                                {{ contract.employer.profile.location.city }}, {{ contract.employer.profile.location.state }} State
-                                            </div> -->
+                                            <div class="font-normal text-gray-500">{{ contract.type }} - {{ contract.user.firstname }} {{ contract.user.lastname }} </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
@@ -121,16 +109,16 @@
                                         <ContractStatus :type="`${contract.status}`"/>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <button class="btn min-w-[180px]" v-if="contract.employer_feedback.rating > 0" @click="showContractReview(contract.employer, contract.user_feedback)">open review <i class="bi bi-arrow-right ml-2"></i></button>
+                                        <button class="btn min-w-[180px]" v-if="contract.employer_feedback.rating > 0" @click="showContractReview(contract.user, contract.employer_feedback)">open review <i class="bi bi-arrow-right ml-2"></i></button>
                                         <span v-else>No review yet</span>
                                     </td>
                                     <td class="px-6 py-4 relative">
                                         <ActionDropdown>
-                                            <RouterLink :to="`/in/contracts/${contract._id}`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
+                                            <RouterLink :to="`/client/contracts/${contract._id}`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
                                                 <i class="bi bi-gift"></i> 
                                                 View Contract
                                             </RouterLink>
-                                            <RouterLink :to="`/in/contracts/${contract._id}/watch`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
+                                            <RouterLink :to="`/client/contracts/${contract._id}/watch`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
                                                 <i class="bi bi-clock-history"></i> 
                                                 Open in Taskwatch
                                             </RouterLink>

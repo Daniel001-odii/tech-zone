@@ -1,5 +1,6 @@
 <template>
     <button
+    type="button"
     :disabled="loading"
       :class="{ 'opacity-50 cursor-not-allowed': loading }"
       @click="handleClick"
