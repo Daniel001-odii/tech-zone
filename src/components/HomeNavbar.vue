@@ -57,7 +57,7 @@ import SiteLogo from '../components/SiteLogo';
             isHome(){ return this.$route.path == '/' },
             isJobs(){ return this.$route.path.startsWith("/jobs"); },
             isAbout(){ return this.$route.path.startsWith("/about"); },
-            isFAQ(){ return this.$route.path.startsWith("/support"); },
+            isFAQ(){ return this.$route.path.startsWith("/FAQ"); },
         },
     }
 </script>

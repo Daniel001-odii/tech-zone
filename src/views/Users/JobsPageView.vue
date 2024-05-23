@@ -85,7 +85,7 @@
        </Modal>
                 
     
-                <div class="relative" :class="!user ? 'mt-20':''">
+                <div class="relative" :class="!loading && !user ? 'mt-20':''">
                     <PageTitle>Work Explorer</PageTitle>
                     <Toast />
                     <div>
@@ -195,7 +195,8 @@
                                 >
                                     <template #job-title>
                                         <span :class="jobs[selectedJob].is_deleted ? 'text-red-500':'text-text-white '">
-                                            {{ jobs[selectedJob].title }}
+                                            {{ jobs[selectedJob].title }} 
+                                            <!-- <span class="bg-red-500 text-white font-medium text-sm rounded-full px-2 py-1" v-if="jobs[selectedJob].status == 'closed'">closed</span> -->
                                         </span>
                                         
                                     </template>

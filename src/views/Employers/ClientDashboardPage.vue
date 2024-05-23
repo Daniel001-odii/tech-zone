@@ -1,5 +1,4 @@
 <template>
-
 <!-- TOAST -->
     <Toast/>
 <!-- ***** -->
@@ -49,7 +48,17 @@
     <Modal :name="'Contract Offer Confirmation'" :modal_active="contract_modal">
         <template #body>
             <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
-            <span class="text-2xl mb-4 block"> Are you sure you want to Send the contract offer for the job <b class="text-blue-500">{{  current_job.title }}</b> to <b class="text-blue-500">{{ current_user.name }}</b>?</span>
+            <div class="flex flex-row justify-center items-center gap-5">
+                <div>
+                    <Vue3Lottie
+                            :animationData="blankMessagePage"
+                            :height="200"
+                            :width="200"
+                        />
+                </div>
+                <span class="text-2xl mb-4 block"> Are you sure you want to Send the contract offer for the job <b class="text-blue-500">{{  current_job.title }}</b> to <b class="text-blue-500">{{ current_user.name }}</b>?</span>
+            </div>
+            
         </template>
         <template #footer>
             <div class="flex flex-row gap-3">
@@ -106,7 +115,9 @@
                                 <div class="p-3 text-left">{{ job.description.substring(0, 200) }}..</div>
                                 <div class="flex flex-row justify-start m-3 mb-3">
                                     <button v-if="job.no_of_applications" @click="show_applicants(job_id, job._id)" type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <i class="bi bi-eye-fill mr-3"></i> See {{ job.no_of_applications }} Applications
+                                        <i v-if="!jobs[job_id].show_applicants" class="bi bi-eye-fill mr-3"></i> 
+                                        <i v-else class="bi bi-eye-slash-fill mr-3"></i> 
+                                        See {{ job.no_of_applications }} Applications
                                     </button>
                                     <!-- <span class="p-2 rounded-lg bg-slate-200 text-sm dark:bg-tz_light_blue">applications: {{ job.no_of_applications }}</span> -->
                                 </div>
@@ -150,7 +161,7 @@
                                                 <p><b>Reason:</b> {{ application.reason_for_co }}</p>
                                             </div>
                                             <div class="flex flex-row flex-wrap gap-3 mt-3">
-                                                <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id)">save freelancer</button>
+                                                <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id, job._id, job_id)">save freelancer</button>
                                                 <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md" @click="sendUserMessage(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job.title)">Interview</button>
                                                 <button @click="confirmContractOfferModal(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job)" class="btn">Send Contract Offer</button>
                                             </div>
@@ -182,7 +193,9 @@
                                     <Rating class="p-rating-item" :modelValue="user.rating" readonly :cancel="false"></Rating>
                                     <p class="text-gray-400">{{ user.rating }}</p>
                                     <div class="flex flex-row gap-3">
-                                        <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>
+                                        <RouterLink to="/client/messages">
+                                            <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>
+                                        </RouterLink>
                                         <button class="btn" @click="jobAssignmentModal(user._id, user.firstname)">Assign Job</button>
                                         <button @click="saveUser(user._id)" class="border p-3 rounded-md">
                                             <i class="bi bi-trash-fill"></i>
@@ -215,6 +228,7 @@ import { generateStarRating } from '@/utils/ratingStars';
 import PageTitle from '@/components/PageTitle.vue';
 import FullPageLoading from '@/components/FullPageLoading.vue';
 
+import blankMessagePage from '../../lottie/blankMessagePage.json';
 
 // prime vue rating component
 import Rating from 'primevue/rating';
@@ -262,6 +276,7 @@ export default {
             loading_saved_users: false,
 
             message: '',
+            blankMessagePage,
         }
         
     },
@@ -337,13 +352,17 @@ export default {
             }
         },
 
-        async saveUser(user_id){
+        async saveUser(user_id, job_id, index){
             const headers = this.headers;
             try{
                 const res = await axios.post(`${this.api_url}/employer/${user_id}/save-user`, {}, { headers });
                 // console.log(res);
                 this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${res.data.message}`, life: 3000 });
                 this.getSavedUsers();
+                // this.getJobsByEmployer();
+                if(job_id && index){
+                    this.getJobApplicants(job_id, index);
+                }
             }catch(error){ 
                 // console.log("user saving error: ", error);
                 this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });

@@ -1,8 +1,13 @@
 <template>
+
+    <!-- TOAST -->
+    <Toast/>
+    <!--  -->
+
     <FullPageModal v-if="application_sent" :type="'success'" />
 
     <div class="h-full flex flex-col">
-        <PageTitle>Application</PageTitle>
+        <!-- <PageTitle>Application</PageTitle> -->
         <div class=" top-0 bottom-0 right-0 flex flex-col h-full">
             <FullPageLoading v-if="!job && loading"/>
             <div class="h-full overflow-y-scroll">
@@ -15,7 +20,7 @@
         </div>
 
         <div v-if="job" class="flex flex-col md:flex-row px-5 py-3" >
-            <div class=" md:w-2/4">
+            <div :class="job.status == 'closed' ? 'w-full':'w-2/4'">
                 <div>
                     <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md dark:border-gray-600">
                         <!-- <div class="border border-red-300 w-full">image here</div> -->
@@ -23,7 +28,8 @@
                             <div class="flex flex-row justify-between items-center">
                                 <span class="font-bold text-2xl">
                                     <slot name="job-title">
-                                        {{ job.title }}
+                                        {{ job.title }} 
+                                        <span v-if="job.status == 'closed'" class="text-sm font-medium bg-red-500 rounded-full px-2 py-1 text-white">{{ job.status }}</span>
                                     </slot>
                                 </span>
                             
@@ -100,28 +106,30 @@
 
                         <div>
                             <span class="font-bold">Job Location in Map</span>
-                            <div class=" h-80 w-80 bg-tz_light_blue"></div>
+                            <div class=" h-80 w-full bg-tz_light_blue flex justify-center items-center">
+                                <span class="text-gray-400">coming soon...</span>
+                            </div>
                         </div>
 
                         <div>
                             <span class="font-bold">Activity On This Job</span>
-                            <div>Number of application:</div>
-                            <div>Users Assigned:</div>
-                            <div>Hires:</div>
+                            <div>Number of application: {{ job.no_of_applications }}</div>
+                            <div>Users Assigned: {{ job.no_of_assigned }}</div>
+                            <div>Hires: {{ job.no_of_hires }}</div>
                         </div>
 
                         
 
 
                         <div>
-                            <span class="font-bold">Share this job</span>
-                            <div class="bg-tz_light_blue p-3 border rounded-md w-[200px] overflow-hidden cursor-not-allowed">{{ this.$route.path }}</div>
-                            <button>copy link</button>
+                            <span class="font-bold">Share this job</span><br/>
+                            <input type="text" id="job_link" :value="jobLink" class="bg-tz_light_blue p-3 border rounded-md w-[200px] overflow-hidden cursor-not-allowed" disabled/><br/>
+                            <button @click="copyJobLink">copy link</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <form @submit.prevent="sumbitApplication" class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
+            <form v-if="job.status != 'closed'" @submit.prevent="sumbitApplication" class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
                 
                     <div class="flex flex-col text-left gap-3">
                     <span class="font-bold text-2xl">Cover Letter</span>
@@ -221,11 +229,21 @@ import FullPageModal from '@/components/FullPageModal.vue'
 import FullPageLoading from '@/components/FullPageLoading.vue';
 import PageTitle from '@/components/PageTitle.vue';
 
+import Toast from 'primevue/toast';
+
 import FileUpload from 'primevue/fileupload';
 
 export default {
     name: "ApplicationPageView",
-    components: { TemplateView, JobDetailCard, FullPageModal, FullPageLoading, PageTitle, FileUpload },
+    components: { 
+        TemplateView, 
+        JobDetailCard, 
+        FullPageModal, 
+        FullPageLoading, 
+        PageTitle, 
+        FileUpload,
+        Toast 
+    },
     data(){
         return{
             loading: false,
@@ -258,6 +276,22 @@ export default {
         }
     },
     methods: {
+        copyJobLink(){
+            // Get the text field
+            let copyText = document.getElementById("job_link");
+
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+
+            // alert user on success
+            this.$toast.add({ severity: 'success', summary: 'Success Message', detail: "Job link copied successfuly!", life: 3000 });
+            
+        },
+
         handleFileChange(event) {
             this.application_attachments = event.target.files;
              // Update the selectedFiles array with the names of the selected files
@@ -289,7 +323,8 @@ export default {
                 alert("files uploaded securely...");
 
             } catch (error) {
-                console.error('Error uploading files:', error);
+                // console.error('Error uploading files:', error);
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -329,10 +364,8 @@ export default {
                 
             } catch(error){
                 // handle error here...
-                console.log("error getting applications for job: ", error)
-                // if(error.response.status === 404){
-                //     this.$router.push('/404');
-                // }
+                // console.log("error getting applications for job: ", error)
+                // this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 
@@ -357,12 +390,19 @@ export default {
                 this.submit_loading = false;
                 this.application_sent = true;
             }catch(error){
-                console.log("error submitting application: ", error)
+                // console.log("error submitting application: ", error)
+                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
                 this.submit_loading = false;
             }
         },
 
     
+    },
+
+    computed: {
+        jobLink(){
+            return window.location.href;
+        }
     },
 
     mounted(){
