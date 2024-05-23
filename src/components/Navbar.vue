@@ -85,7 +85,17 @@
                             <span>Search</span>
                         </button>
                     </div> -->
-                    <div  v-if="user" class="flex flex-row items-center gap-1">
+                    <div  v-if="user" class="flex flex-row items-center gap-3">
+                        <button @click="updateTheme" class="p-2 md:hidden rounded-full w-10 h-10 dark:bg-gray-700 bg-gray-200 flex justify-center items-center">
+                            <span>
+                                <span class="dark:hidden">
+                                    <i class="pi pi-sun"></i>
+                                </span>
+                                <span class="hidden dark:inline-block">
+                                    <i class="pi pi-moon"></i>
+                                </span>
+                            </span>
+                        </button>
                         <div class="relative" v-click-outside="closeDropdown" >
                             <div class=" h-3 w-3 flex justify-center items-center text-white  rounded-full bg-red-600 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div>
                             
@@ -283,6 +293,20 @@ export default {
             localStorage.removeItem("theme");
             this.$router.push('/login');
             window.location.reload();
+        },
+
+        updateTheme(){
+            if(localStorage.theme == 'light'){
+                // dark_mode(){
+                    localStorage.setItem('theme', 'dark');
+                    document.documentElement.classList.add("dark");
+                    this.theme = true;
+                // };
+            } else {
+                localStorage.setItem('theme', 'light');
+                document.documentElement.classList.remove("dark");
+                this.theme = false;
+            }
         },
 
         realTimeFormat(time){

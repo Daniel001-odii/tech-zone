@@ -13,7 +13,7 @@
         <FullPageLoading v-if="loading"/>
        
         <div class=" tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
-            <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button>
+            <!-- <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button> -->
             <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
             <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
             <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
@@ -22,20 +22,16 @@
 
 
         <div class=" flex flex-col p-3 gap-5">
-            <div v-if="active_tab == 1" class="section">
+            <div v-if="active_tab == false" class="section">
                 <h1 class="font-bold mb-3 text-lg">Select Preffered theme</h1>
                 
                 <div class="  flex flex-row gap-5">
                     <button @click="system_mode" :class="!current_mode ? 'active_theme':''" class="theme-toggle">System</button>
-                    <button @click="light_mode" :class="current_mode == 'light' ? 'active_theme':''" class="theme-toggle">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z" clip-rule="evenodd"/>
-                        </svg>
+                    <button @click="light_mode()" :class="current_mode == 'light' ? 'active_theme':''" class="theme-toggle">
+                        <i class="pi pi-sun"></i>
                     </button>
-                    <button @click="dark_mode" :class="current_mode == 'dark' ? 'active_theme':''" class="theme-toggle">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M11.675 2.015a.998.998 0 0 0-.403.011C6.09 2.4 2 6.722 2 12c0 5.523 4.477 10 10 10 4.356 0 8.058-2.784 9.43-6.667a1 1 0 0 0-1.02-1.33c-.08.006-.105.005-.127.005h-.001l-.028-.002A5.227 5.227 0 0 0 20 14a8 8 0 0 1-8-8c0-.952.121-1.752.404-2.558a.996.996 0 0 0 .096-.428V3a1 1 0 0 0-.825-.985Z" clip-rule="evenodd"/>
-                        </svg>
+                    <button @click="dark_mode()" :class="current_mode == 'dark' ? 'active_theme':''" class="theme-toggle">
+                        <i class="pi pi-moon"></i>
                     </button>
                 </div>
             </div>
@@ -257,7 +253,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             current_mode: '',
-            active_tab: 1,
+            active_tab: 2,
 
             user: {
                 profile:{
@@ -314,17 +310,14 @@ export default {
         },
 
         light_mode(){
-            window.location.reload()
             localStorage.setItem('theme', 'light');
-            localStorage.theme = 'light'
+            document.documentElement.classList.remove("dark");
             
         },
 
         dark_mode(){
-            window.location.reload()
-            localStorage.setItem('theme', 'light');
-            localStorage.theme = 'dark'
-            
+            localStorage.setItem('theme', 'dark');
+            document.documentElement.classList.add("dark");
         },
 
         showAlertBox(type, message){
@@ -427,7 +420,7 @@ export default {
     }
 
     .theme-toggle{
-        @apply  w-24 h-24 p-5 flex justify-center items-center rounded-xl border-4 dark:border-gray-400 dark:bg-tz_light_blue hover:border-blue-500 hover:bg-tz_dark_blue;
+        @apply  w-24 h-24 p-5 flex justify-center items-center rounded-xl border-4 dark:border-gray-400 dark:bg-tz_light_blue hover:bg-tz_blue hover:text-white ;
     }
     .active_theme{
         @apply border-blue-500 bg-tz_light_blue 

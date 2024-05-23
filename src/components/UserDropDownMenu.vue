@@ -59,6 +59,18 @@
                 <RouterLink to="/support">
                     <div class="menu_item"><i class="bi bi-question-circle"></i> Help & Support</div>
                 </RouterLink>
+                <div class="menu_item p-3 flex flex-row gap-3 justify-between items-center">
+                    <span>
+                        <span class="dark:hidden">
+                            <i class="pi pi-sun"></i>
+                        </span>
+                        <span class="hidden dark:inline-block">
+                            <i class="pi pi-moon"></i>
+                        </span>
+                        theme
+                    </span>
+                    <InputSwitch @change="updateTheme()" v-model="theme" />
+                </div>
                 <button @click="logout" class=" bg-tz_light_blue font-bold p-3 rounded-md text-blue-900 dark:text-blue-300"><i class="bi bi-box-arrow-right"></i> Logout</button>
             </div>
         </div>
@@ -67,10 +79,13 @@
 <script>
 import axios from 'axios'
 
-
+import InputSwitch from 'primevue/inputswitch';
 
 export default {
     name: "UserDropDownMenu",
+    components: {
+        InputSwitch,
+    },
     props: {
         username: String,
         email: String,
@@ -83,6 +98,7 @@ export default {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
+            theme: false,
         }
     },
     methods:{
@@ -102,9 +118,30 @@ export default {
                 console.log("user data error from drop down menu:", error)
             }
         },
+
+        updateTheme(){
+            if(localStorage.theme == 'light'){
+                // dark_mode(){
+                    localStorage.setItem('theme', 'dark');
+                    document.documentElement.classList.add("dark");
+                    this.theme = true;
+                // };
+            } else {
+                localStorage.setItem('theme', 'light');
+                document.documentElement.classList.remove("dark");
+                this.theme = false;
+            }
+        },
+
+        
     },
     mounted(){
-        this.getUserData()
+        this.getUserData();
+        if(localStorage.theme == 'light'){
+            this.theme = false;
+        } else {
+            this.theme = true;
+        }
     }
 }
 </script>
