@@ -185,7 +185,7 @@ export default {
 
     },
 
-    mounted(){
+    created(){
         this.getUserData();
         this.getSavedJobs();
         this.getAllApplications();

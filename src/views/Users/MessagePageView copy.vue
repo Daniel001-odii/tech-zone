@@ -249,7 +249,7 @@ export default {
         },
     },
 
-    mounted(){
+    created(){
         this.getUserData();
     },
 

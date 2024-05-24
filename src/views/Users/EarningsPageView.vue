@@ -29,9 +29,6 @@ export default {
         // get all user contracts...
        
     },
-    mounted(){
-
-    }
 }
 </script>
 <style scoped>

@@ -383,7 +383,7 @@ export default {
     computed: {
         
     },
-    mounted(){
+    created(){
         this.getUser();
         this.getContract();
         

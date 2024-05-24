@@ -31,7 +31,7 @@
 
                     <ul class="list">
                         <li class="list_header">Job by categories</li>
-                        <li v-for="(job, index) in jobCategories" :key="index">
+                        <li v-for="(job, index) in jobCategories.splice(0, 12)" :key="index">
                             <RouterLink to="/jobs">
                                 {{ job.name }}
                             </RouterLink>

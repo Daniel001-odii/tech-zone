@@ -405,7 +405,7 @@ export default {
         }
     },
 
-    mounted(){
+    created(){
         this.getCurrentJobDetails();
         this.getApplicationDetails();
 

@@ -379,7 +379,7 @@ export default {
         ...mapActions(['setUnreadMessagesCount', 'incrementUnreadMessagesCount', 'decrementUnreadMessagesCount']),
     },
 
-    mounted(){
+    created(){
         this.getUserData();
 
         this.socket.on('message', (message) => {

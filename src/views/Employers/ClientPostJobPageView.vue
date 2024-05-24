@@ -569,7 +569,7 @@ import AmountInput from '@/components/AmountInput.vue';
 
             
         },
-        mounted(){
+        created(){
             if(this.$route.params.job_id){
                 this.getCurrentJobDetails();
             }

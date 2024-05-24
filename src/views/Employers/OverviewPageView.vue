@@ -238,9 +238,6 @@ export default {
        
     },
  
-    mounted(){
-     
-    },
     created() {
         this.getContracts();
         this.getUser();

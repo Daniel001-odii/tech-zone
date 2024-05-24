@@ -149,7 +149,7 @@ export default {
         }
     },
 
-    mounted(){
+    created(){
         this.getAdminData();
         this.getCurrentDate();
     }

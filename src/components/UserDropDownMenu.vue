@@ -135,7 +135,7 @@ export default {
 
         
     },
-    mounted(){
+    created(){
         this.getUserData();
         if(localStorage.theme == 'light'){
             this.theme = false;

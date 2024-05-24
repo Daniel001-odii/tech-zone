@@ -277,7 +277,7 @@ export default {
         // },
     },
 
-    mounted(){
+    created(){
         this.getAllRecordsCount();
         // this.getAllJobs();
         this.getAllUsers();

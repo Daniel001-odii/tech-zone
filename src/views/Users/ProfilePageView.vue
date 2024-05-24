@@ -684,7 +684,7 @@ export default {
     computed: {
         
         },
-    mounted(){
+    created(){
             this.getPublicUserData();
             this.getActiveAndCompletedContracts();
         },

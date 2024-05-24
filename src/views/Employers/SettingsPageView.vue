@@ -394,7 +394,7 @@ export default {
 
     },
 
-    mounted(){
+    created(){
         this.theme();
         this.getUserData()
 

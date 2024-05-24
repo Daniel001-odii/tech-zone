@@ -424,7 +424,7 @@ export default {
       }
     },
 
-    mounted() {
+    created() {
         AOS.init();
 
         this.getAllJobs();

@@ -695,7 +695,7 @@ import Tooltip from 'primevue/tooltip';
             
         },
 
-        mounted(){
+        created(){
             this.getCurrentWatchUser();
             this.getCurrentDate();
             this.getContract();

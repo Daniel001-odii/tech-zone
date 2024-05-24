@@ -314,7 +314,7 @@ export default {
         },
 
     },
-    mounted(){
+    created(){
         this.getUserData();
         this.getNotifications();
         if(localStorage.getItem('life-gaurd')){

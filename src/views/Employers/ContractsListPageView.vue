@@ -98,7 +98,7 @@ export default {
             }
         }
     },
-    mounted(){
+    created(){
         this.getContracts();
     }
 }
