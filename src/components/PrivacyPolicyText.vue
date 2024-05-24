@@ -20,7 +20,7 @@
     <h3>Usage Information:</h3>
     <ul>
         <li>IP address, browser type, and device information</li>
-        <li>Usage patterns and interactions with Tech-Zone</li>
+        <li>Usage patterns and interactions with Apex Technologies</li>
     </ul>
 
     <h2>How We Use Your Information:</h2>
@@ -75,7 +75,7 @@
     <p>You have the right to manage your cookie preferences through your browser settings.</p>
 
     <h2>Children's Privacy:</h2>
-    <p>APEX TECHNOLOGIES services are not intended for individuals under the age of 18. We do not knowingly collect personal information from children.</p>
+    <p>Apex Technologies services are not intended for individuals under the age of 18. We do not knowingly collect personal information from children.</p>
 
     <h2>Changes to this Privacy Policy:</h2>
     <p>We reserve the right to update and modify this Privacy Policy. We will notify you of significant changes through our Website or other means.</p>

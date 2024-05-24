@@ -3,9 +3,28 @@ import LeftNavBar from './components/LeftNavBar.vue';
 import Navbar from './components/Navbar.vue';
 import { initFlowbite } from 'flowbite'
 
+// import vue-cookie-accept-decline from '../node_modules/vue-cookie-accept-decline'
+
 export default {
   components: {
     Navbar, LeftNavBar
+  },
+
+  methods: {
+    cookieClickedAccept(){
+
+    },
+    cookieClickedDecline(){
+    },
+    cookieClickedPostpone(){
+
+    },
+    cookieRemovedCookie(){
+
+    },
+    cookieStatus(){
+
+    },
   },
 
   mounted(){

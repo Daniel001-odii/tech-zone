@@ -3,7 +3,7 @@
 
         <h2>1. Acceptance of Terms</h2>
         <ul>
-            <li>1.1. By accessing and using Tech-Zone, you agree to comply with and be bound by these terms and conditions.</li>
+            <li>1.1. By accessing and using Apex Technologies, you agree to comply with and be bound by these terms and conditions.</li>
             <li>1.2. If you do not agree with any part of these terms, you must not use our services.</li>
         </ul>
 
@@ -25,7 +25,7 @@
 
         <h2>4. Job Listings and Applications</h2>
         <ul>
-            <li>4.1. Tech-Zone provides a platform for employers to post job listings and for Freelancers to apply.</li>
+            <li>4.1. Apex Technologies provides a platform for employers to post job listings and for Freelancers to apply.</li>
             <li>4.2. We do not guarantee the accuracy, completeness, or reliability of job listings or the suitability of applicants.</li>
             <li>4.3. Employers and freelancers are responsible for conducting their own due diligence before entering into any employment agreements.</li>
         </ul>
@@ -34,10 +34,10 @@
 
         <h2>5. User Content</h2>
         <ul>
-            <li>5.1. Users are solely responsible for the content they post on Tech-Zone.</li>
+            <li>5.1. Users are solely responsible for the content they post on Apex Technologies.</li>
             <li>5.2. By submitting content, you grant us a non-exclusive, royalty-free, worldwide, perpetual license to use, reproduce, and distribute the content.</li>
             <li>5.3. The content on the Website is provided for general information purposes only. It may be subject to change without notice.</li>
-            <li>5.4. You acknowledge and agree that Tech-Zone reserves the right to remove or modify any content on the Website for any reason, without prior notice.</li>
+            <li>5.4. You acknowledge and agree that Apex Technologies reserves the right to remove or modify any content on the Website for any reason, without prior notice.</li>
         </ul>
 
 
@@ -58,7 +58,7 @@
 
         <h2>8. Disclaimers</h2>
         <ul>
-            <li>8.1. Tech-Zone is provided "as is" without any warranties, express or implied.</li>
+            <li>8.1. Apex Technologies is provided "as is" without any warranties, express or implied.</li>
             <li>8.2. We do not guarantee the availability, accuracy, or reliability of our services.</li>
         </ul>
 
@@ -66,7 +66,7 @@
 
         <h2>9. Limitation of Liability</h2>
         <ul>
-            <li>9.1. In no event shall Tech-Zone be liable for any indirect, consequential, or incidental damages arising out of or in connection with the use of our services.</li>
+            <li>9.1. In no event shall Apex Technologies be liable for any indirect, consequential, or incidental damages arising out of or in connection with the use of our services.</li>
         </ul>
 
 
@@ -81,8 +81,8 @@
 
         <h2>11. Intellectual Property</h2>
         <ul>
-            <li>11.1. All content on the Website, including but not limited to text, graphics, logos, images, and software, is the property of Tech-Zone and is protected by intellectual property laws.</li>
-            <li>11.2. You may not reproduce, distribute, display, or create derivative works of any content on the Website without the express written consent of Tech-Zone.</li>
+            <li>11.1. All content on the Website, including but not limited to text, graphics, logos, images, and software, is the property of Apex Technologies and is protected by intellectual property laws.</li>
+            <li>11.2. You may not reproduce, distribute, display, or create derivative works of any content on the Website without the express written consent of Apex Technologies.</li>
         </ul>
  
 
@@ -104,13 +104,13 @@
         <p class="mt-8 font-normal">If you have any questions about these Terms and Conditions, please contact us at 
             <a href="mailto:operations@tech-zone.com">operations@tech-zone.com</a>.
             These Terms and Conditions are effective as of 01/03/2024.
-            By using Tech-Zone, you acknowledge that you have read, understood, and agree to these terms and conditions.
+            By using Apex Technologies, you acknowledge that you have read, understood, and agree to these terms and conditions.
         </p>
 
 
     <!-- <footer> -->
         <p class="text-sm mt-8">
-            <p class="p-0 m-0">Tech-Zone LLC</p>
+            <p class="p-0 m-0">Apex Technologies LLC</p>
             <a href="mailto:operations@tech-zone.com">operations@tech-zone.com</a><br/>
             Effective Date: 01/03/2024
         </p>

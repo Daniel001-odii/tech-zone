@@ -5,15 +5,18 @@ import axios from 'axios'
 export default createStore({
   state: {
     userData: null,
-
     unreadMessagesCount: 0,
 
+    notifications: '',
+
   },
+
   getters: {
     getUserData: (state) => state.userData,
-
     unreadMessagesCount: (state) => state.unreadMessagesCount,
+    getNotifications: (state) => state.notifications,
   },
+
   mutations: {
     setUserData(state, data) {
       state.userData = data;
@@ -46,7 +49,7 @@ export default createStore({
         // No need to use response.json() with Axios
         const data = response.data;
         this.state.userData = data;
-        console.log("from store: ", data)
+        // console.log("from store: ", data)
 
         commit('setUserData', data);
       } catch (error) {
@@ -54,15 +57,32 @@ export default createStore({
       }
     },
 
-    setUnreadMessagesCount({ commit }, count) {
-      commit('SET_UNREAD_MESSAGES_COUNT', count);
+    async getNotifications({ commit }) {
+      const token = localStorage.getItem('life-gaurd');
+      const headers = {
+        Authorization: `JWT ${token}`,
+      };
+      try{
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/notifications/unread`, { headers } )
+        // console.log("user notifications: ", response);
+        const data = response.data;
+        this.state.notifications = response.data.notifications.reverse();
+        commit('getNotifications', data);
+
+      }catch(error){
+        console.log("error from getting notifications instore: ", error);
+      }
     },
-    incrementUnreadMessagesCount({ commit }) {
-      commit('INCREMENT_UNREAD_MESSAGES_COUNT');
-    },
-    decrementUnreadMessagesCount({ commit }) {
-      commit('DECREMENT_UNREAD_MESSAGES_COUNT');
-    },
+
+    // setUnreadMessagesCount({ commit }, count) {
+    //   commit('SET_UNREAD_MESSAGES_COUNT', count);
+    // },
+    // incrementUnreadMessagesCount({ commit }) {
+    //   commit('INCREMENT_UNREAD_MESSAGES_COUNT');
+    // },
+    // decrementUnreadMessagesCount({ commit }) {
+    //   commit('DECREMENT_UNREAD_MESSAGES_COUNT');
+    // },
 
   },
   modules: {},
