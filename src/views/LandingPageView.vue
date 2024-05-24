@@ -83,13 +83,19 @@
                                 <template #icon>
                                     <i class="bi bi-file-earmark-person"></i>
                                 </template>
+                                <template #title></template>
+                                <template #content>
+                                    Register on our platform to access its features and benefits, opening doors to a world of opportunities and possibilities.
+                                </template>
                             </StepBox>
                             <StepBox :number="2">
                                 <template #icon>
                                     <i class="bi bi-person-check"></i>
                                 </template>
                                 <template #title>Complete User Profile</template>
-                                <template #content></template>
+                                <template #content>
+                                    Complete your Know Your Customer (KYC) process to verify your identity and unlock access to our platform's full functionality.
+                                </template>
                             </StepBox>
                             <StepBox :number="3">
                                 <template #icon>
@@ -98,6 +104,9 @@
                                 <template #title>
                                     Search Your Job Type
                                 </template>
+                                <template #content>
+                                    Explore job listings matching your preferences and qualifications by utilizing our search functionality to find your desired position.
+                                </template>
                             </StepBox>
                             <StepBox :number="4">
                                 <template #icon>
@@ -105,6 +114,9 @@
                                 </template>
                                 <template #title>
                                     Search Your Job Type
+                                </template>
+                                <template #content>
+                                    Apply for your dream job by submitting your application through our platform, taking a step closer to achieving your career aspirations.
                                 </template>
                             </StepBox>
                         <!-- </div> -->
