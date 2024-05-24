@@ -30,7 +30,11 @@ import VueSocketIO from 'vue-3-socket.io'
 
 // PRIME VUE THE ULTIMATE COMPONENT STUFF
 import 'primevue/resources/themes/aura-light-green/theme.css'
-// import 'primevue/resources/themes/lara-dark-blue/theme.css'
+
+// if(localStorage.theme == 'dark'){
+  // import 'primevue/resources/themes/lara-dark-blue/theme.css'
+// }
+
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice';
 import 'primeicons/primeicons.css'

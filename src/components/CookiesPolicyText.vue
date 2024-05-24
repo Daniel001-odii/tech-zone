@@ -45,11 +45,11 @@
 
 <style scoped>
     h3{
-        @apply font-bold text-xl mt-3 text-blue-500
+        @apply font-bold text-lg mt-3 text-blue-500
     }
 
     h2{
-        @apply font-bold text-lg mt-3 text-blue-400
+        @apply font-bold text-xl mt-3 text-blue-700
     }
 
     p{

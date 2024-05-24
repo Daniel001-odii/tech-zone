@@ -36,7 +36,7 @@
                 <CookiesPolicyText/>
             </div>
             <div v-if="current_tab == 'software'" class=" w-[70%] flex flex-col overflow-y-auto h-[500px]">
-                Use of Software Terms and conditions
+                <TermsAndCondition/>
             </div>
             <div v-if="current_tab == 'billing'" class=" w-[70%] flex flex-col overflow-y-auto h-[500px]">
                 Billing Terms and conditions
@@ -59,7 +59,7 @@ import Footer from '../components/Footer'
 
 import PrivacyPolicyText from '@/components/PrivacyPolicyText'
 import CookiesPolicyText from '@/components/CookiesPolicyText'
-
+import TermsAndCondition from '@/components/TermsAndConditionText'
 
 export default {
     name: "PrivacyPolicyPage",
@@ -68,7 +68,8 @@ export default {
         HomeNavbar, 
         Footer,
         PrivacyPolicyText,
-        CookiesPolicyText
+        CookiesPolicyText,
+        TermsAndCondition
     },
     data(){
         return{
@@ -98,13 +99,17 @@ export default {
 }
 </script>
 <style scoped>
-   h2{
-     @apply font-bold text-2xl
-   }
+    h3{
+        @apply font-bold text-lg mt-3 text-blue-500
+    }
 
-   p{
-    @apply mb-5
-   }
+    h2{
+        @apply font-bold text-xl mt-3 text-blue-700
+    }
+
+    p{
+        @apply font-medium
+    }
 
    .hero{
         background-size: contain;
@@ -112,6 +117,9 @@ export default {
         background-position: center top;
     }
 
+    a{
+        @apply text-orange-400
+    }
 
     /* width */
 ::-webkit-scrollbar {

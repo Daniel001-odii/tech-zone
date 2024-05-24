@@ -85,6 +85,26 @@
 
     <p>By using our Website, you consent to the terms of this Privacy Policy.</p>
 
+
+    <h2>Your Rights:</h2>
+    <ul class="p-0 list-none">
+        <li class=" mb-3"><span>a. Right to Access:</span> You have the right to request access to the personal information we hold about you.</li>
+        <li class=" mb-3"><span>b. Right to Rectification:</span> You have the right to request correction of any inaccurate or incomplete personal information.</li>
+        <li class=" mb-3"><span>c. Right to Erasure:</span> You have the right to request deletion of your personal information, subject to certain exceptions (e.g., compliance with legal obligations).</li>
+        <li class=" mb-3"><span>d. Right to Restrict Processing:</span> You have the right to request restriction of processing your personal information under certain conditions.</li>
+        <li class=" mb-3"><span>e. Right to Data Portability:</span> You have the right to request the transfer of your personal information to another service provider in a structured, commonly used, and machine-readable format.</li>
+        <li class=" mb-3"><span>g. Right to Withdraw Consent:</span> Where we rely on your consent to process your personal information, you have the right to withdraw your consent at any time.</li>
+        <li class=" mb-3"><span>h. Right to Lodge a Complaint:</span> You have the right to lodge a complaint with a supervisory authority if you believe that our processing of your personal information violates applicable laws.</li>
+    </ul>
+    
+    <h2>Your Choices</h2>
+    <ul>
+        <li><span>a. Access and Control:</span> Access, correct, or delete your personal information. Opt-out of communications or withdraw consent.</li>
+    </ul>
+
+    <h2>Identity Verification Process</h2>
+    <p>Our partner, Dojah, handles all identity management and verification. For more details about Dojah, please visit their website at <a class="text-orange-500" target="_blank" href="https://dojah.io">dojah.io</a></p>
+
     </div>
 </template>
 
@@ -96,11 +116,11 @@
 
 <style scoped>
     h3{
-        @apply font-bold text-xl mt-3 text-blue-500
+        @apply font-bold text-lg mt-3 text-blue-500
     }
 
     h2{
-        @apply font-bold text-lg mt-3 text-blue-400
+        @apply font-bold text-xl mt-3 text-blue-700
     }
 
     p{
