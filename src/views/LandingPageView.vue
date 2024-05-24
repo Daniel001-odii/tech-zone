@@ -295,8 +295,8 @@
                        
                        <div data-aos="flip-left" data-aos-delay="400" class=" flex flex-col justify-center text-center items-center max-w-[350px]">
                         <img src="../assets/images/ss5.svg">
-                        <p class="font-bold text-[30px]">Secure Alliances</p>
-                        <span>Establishing Trustworthy Interactions. Ensuring Secure Communication Between Employers and Technical Professionals on the Platform</span>
+                        <p class="font-bold text-[30px]">Seamless and Reliable User Experience</p>
+                        <span>Experience unparalleled ease and reliability as you seamlessly connect with top-tier professionals and employers on our platform.</span>
                        </div>
 
                        
