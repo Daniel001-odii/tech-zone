@@ -113,7 +113,7 @@
                                     <i class="bi bi-clipboard-check"></i>
                                 </template>
                                 <template #title>
-                                    Search Your Job Type
+                                    Apply For Dream Job
                                 </template>
                                 <template #content>
                                     Apply for your dream job by submitting your application through our platform, taking a step closer to achieving your career aspirations.
@@ -250,7 +250,7 @@
                             <button @click="prev" class="absolute z-50 -left-5 top-1/2 transform -translate-y-1/2 bg-tz_blue text-white p-2 rounded-md">
                                 <i class="bi bi-arrow-left"></i>
                             </button>
-                            <div class="testimonial-slider relative overflow-hidden w-full ">
+                            <div class="testimonial-slider relative overflow-x-scroll w-full ">
                                 <div class="flex flex-row gap-3 transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` }">
                                     <div v-for="(job, index) in jobs" :key="index" class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 flex items-center justify-center">
                                         <LpJobCard class="w-full" v-if="jobs"  :key="index"

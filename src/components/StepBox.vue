@@ -16,7 +16,7 @@
             </h4>
             <div class="text-sm text-left" style="font-size: 12px;">
                 <slot name="content"></slot>
-                It has survived not only five centuries, but also the leap into electronic typesetting.
+                ...
             </div>
         </div>
         
