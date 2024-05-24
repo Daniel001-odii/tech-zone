@@ -131,7 +131,7 @@
                 <div data-aos="fade-up" class="flex flex-col text-center py-6">
                     <div class="text-center flex flex-col-reverse">
                         <span class="font-medium text-[16px] capitalize">We are here to help you, Just follow these steps</span>
-                        <h1 class="font-bol text-[30px] font-medium">Looking for seasoned professionals for your next project?</h1>
+                        <h1 class="font-bol text-[30px] font-medium">Looking for Temporary Tech Professionals for your next project?</h1>
                     </div>
                     <div class="flex flex-col md:flex-row justify-center items-center mt-8 ">
                         <!-- <div class="flex flex-row"> -->
