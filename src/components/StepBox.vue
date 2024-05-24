@@ -15,8 +15,7 @@
                 <slot name="title">Register Your Account</slot>
             </h4>
             <div class="text-sm text-left" style="font-size: 12px;">
-                <slot name="content"></slot>
-                ...
+                <slot name="content">...</slot>
             </div>
         </div>
         
