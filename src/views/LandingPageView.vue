@@ -10,10 +10,10 @@
 
 
     <div class="pt-20 w-full text-black bg-white">
-        <div class="flex flex-col justify-center items-center max-w-screen-2xl mt-10" style="margin: 0 auto;">
+        <div class="flex flex-col justify-center items-center mt-10" style="margin: 0 auto;">
         
             <section class="flex flex-col">
-                <div data-aos="zoom-in" class="section_container">
+                <div data-aos="zoom-in" class="section_container container">
                     <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6 md:w-[50%]">
                         <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">
                             <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
@@ -55,7 +55,7 @@
                     
                 </div>
 
-                <div class="w-[90%] h-28  bg-white shadow-lg flex flex-row p-10 rounded-lg justify-center items-center gap-3">
+                <div class="h-28 container  bg-white shadow-lg flex flex-row p-10 rounded-lg justify-center items-center gap-3">
                     <div class="flex flex-row items-center gap-3 w-[50%] border-b">
                         <i class="bi bi-search"></i>
                         <input type="text" placeholder="Search Jobs here" class="border-none w-full">
@@ -183,7 +183,7 @@
 
 
             <section>
-                <div class="flex flex-col justify-center md:flex-row-reverse items-center p-5">
+                <div class="container flex flex-col justify-center md:flex-row-reverse items-center p-5">
                     <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
                     <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col" >
                         <h1 class="text-[30px]">Unlock your next career move!<br/> <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
@@ -193,7 +193,7 @@
             </section>
 
             <section class=" bg-[#EDEFF3]">
-                <div data-aos="zoom-in-up" class="flex flex-col">
+                <div data-aos="zoom-in-up" class="flex flex-col container">
                     <!-- <div data-aos="zoom-out"> -->
                     <div class="text-center">
                         <span class="font-medium text-[16px] capitalize">Jobs By Category</span>
@@ -233,7 +233,7 @@
             </section>
 
             <section class=" bg-white">
-                    <div data-aos="zoom-in-up" class="text-left flex flex-col gap-5  w-full">
+                    <div data-aos="zoom-in-up" class="text-left flex flex-col gap-5  w-full container">
                         <div class="flex flex-col justify-around">
                             <span class="text-[16px] capitalize">FEATURED JOBS</span>
                             <div class="flex flex-col gap-4 md:flex-row items-start justify-between">
@@ -283,7 +283,7 @@
             </section>
 
             <section class=" bg-[#EDEFF3]">
-                <div class="flex flex-col">
+                <div class="flex flex-col container">
                     <!-- <div data-aos="zoom-out"> -->
                     <div class="text-center">
                         <span class="font-medium text-[16px] capitalize">Revolutionize Collaboration, <br/> Connecting Companies and Tech Pros Seamlessly</span>
@@ -333,7 +333,7 @@
             </section>
 
             <section>
-                <div class=" flex items-center flex-col md:flex-row-reverse">
+                <div class=" flex items-center flex-col md:flex-row-reverse container">
                     <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col">
                         <h2 class="section_subtitle">Join us today!</h2>
                         <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
