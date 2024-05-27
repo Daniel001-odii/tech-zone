@@ -127,7 +127,7 @@
 
 
             <!-- STEPS FOR EMPLOYERS -->
-            <section class=" bg-[#EDEFF3] border-t-2 border-dashed border-blue-700">
+            <section class="">
                 <div data-aos="fade-up" class="flex flex-col text-center py-6">
                     <div class="text-center flex flex-col-reverse">
                         <span class="font-medium text-[16px] capitalize">We are here to help you, Just follow these steps</span>
@@ -181,17 +181,6 @@
             </section>
 
 
-
-            <section>
-                <div class="container flex flex-col justify-center md:flex-row-reverse items-center p-5">
-                    <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
-                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col" >
-                        <h1 class="text-[30px]">Unlock your next career move!<br/> <span class=" text-[#AF8669] font-bold">Upload your CV</span>  to stand out to recruiters and impact your job search.</h1>
-                        <button class="btn">Upload CV Now</button>
-                    </div>
-                </div>
-            </section>
-
             <section class=" bg-[#EDEFF3]">
                 <div data-aos="zoom-in-up" class="flex flex-col container">
                     <!-- <div data-aos="zoom-out"> -->
@@ -231,6 +220,7 @@
                     </div>
                 </div>
             </section>
+
 
             <section class=" bg-white">
                     <div data-aos="zoom-in-up" class="text-left flex flex-col gap-5  w-full container">
@@ -281,6 +271,47 @@
                         </div>
                     </div>
             </section>
+            
+            <section>
+                <div class="container flex flex-col justify-center md:flex-row items-center p-5 gap-5">
+                    <img data-aos="fade-up" src="../assets/images/pexels-shkrabaanthony-5816293.png" alt="section-image" class="section_img w-96">
+                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col" >
+                        <h2 class="section_subtitle">Precision matching for tech professionals and companies</h2>
+                        <div>We deliver personalized matchmaking services through a blend of advanced algorithms and human expertise, we ensure optimal matches between companies and tech professionals. By evaluating skills, experience, cultural fit and project requirements, we enhance he quality of connections and foster mutually beneficial collaborations.</div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section>
+                <div class="container flex flex-col justify-center md:flex-row-reverse items-center p-5 gap-5">
+                    <img data-aos="fade-up" src="../assets/images/team-3639693_1280 1.png" alt="section-image" class="section_img w-96">
+                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col" >
+                        <h2 class="section_subtitle">What Sets Us Apart?</h2>
+                        <div>Our unwavering commitment to quality networking distinguishes us. We understand that successful partnerships are built on trust, reliability and compatibility. That is why we prioritize the human element in our matchmaking process, going beyond mere skill matching to consider the nuanced dynamics of company culture and project objectives. </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section>
+                <div class="container flex flex-col justify-center md:flex-row-reverse items-center p-5 gap-5">
+                    <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
+                    <div data-aos="fade-up" class="md:w-fit text-left flex flex-col" >
+                        <h1 class="section_subtitle">Unlock your next career move!</h1>
+                        <div>
+                            <span class=" text-[#AF8669] font-bold">Upload your CV</span>  
+                            to stand out to recruiters and impact your job search.
+                            <button class="btn mt-3">Upload CV Now</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+
+          
+
+          
 
             <section class=" bg-[#EDEFF3]">
                 <div class="flex flex-col container">
@@ -333,7 +364,7 @@
             </section>
 
             <section>
-                <div class=" flex items-center flex-col md:flex-row-reverse container">
+                <div class=" flex items-center flex-col md:flex-row-reverse container gap-5">
                     <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col">
                         <h2 class="section_subtitle">Join us today!</h2>
                         <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>

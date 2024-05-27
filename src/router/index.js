@@ -53,12 +53,27 @@ import AdminLoginView from '@/views/Administration/AdminLoginView.vue'
 import ClientMessagePageView from '@/views/Employers/ClientMessagePageView.vue'
 import HelpAndSupportPageView from '@/views/HelpAndSupportPageView.vue'
 
+import WaitListPageView from '@/views/WaitListPageView.vue'
+
 const routes = [
+
+  // FOR WAITLIST.....
+  {
+    path: '/',
+    name: 'home',
+    component: WaitListPageView
+  },
+
+
+  // MAIN LANDING PAGE AFTER LAUNCH
+  /*
   {
     path: '/',
     name: 'home',
     component: LandingPageViewVue
   },
+  */
+
 
  
   {
