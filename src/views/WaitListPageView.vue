@@ -1,62 +1,58 @@
 <template>
-    <div class="flex flex-col justify-center items-center min-h-screen wl-background relative">
-        <!-- <img src="../../public/apex-tek-white.svg" class="  w-52 absolute left-14 top-14"> -->
-        <section class="flex flex-col p-8">
-                <div class="flex md:flex-row  flex-col-reverse gap-5 container">
-                    <div class="flex flex-col text-center md:text-left justify-center items-center md:items-start gap-6 md:w-[50%] text-white">
-                        <img src="../../public/apex-tek-white.svg" class=" w-52">
-                        <!-- <div class="text-sm bg-tz_light_blue p-2 text-center text-tz_blue rounded-md w-fit">                           
-                            <i class="bi bi-hand-thumbs-up-fill"></i> <span>Best Job Solution Platform</span>
-                        </div> -->
-                        <div class=" text-6xl font-medium leading-[85px] ">
-                            Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-[55px] left-0 right-0 li"/></span> Job.<br/> Hire the right talents.
-                        </div>
-                        <div class=" text-[16px]">
-                            At Apex Technologies, we serve as a comprehensive marketplace, <br/>
-                            facilitating seamless connections between companies seeking tech expertise and skilled professionals
-                             looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects,
-                             whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
-                        </div>
-                        
-                    </div>
-                  
-                    <div class="w-full md:w-[50%] relative flex justify-center items-center">
-                        <img class=" w-96 md:w-full" src="../assets/images/waitList_hero.png">
-                    </div>
+        
+        <div class="w-full min-h-screen  flex flex-col justify-center items-center wl-background relative">
+            <img src="../../public/apex-tek-white.svg" class=" w-36 absolute top-10 left-10">
+
+
+
+            <div class="flex flex-col-reverse mt-40 md:mt-0 md:flex-row w-full p-8 text-white justify-center items-center">
+
+                <!-- TEXT WRITE UP -->
+                <div class="flex flex-col w-full md:w-[50%] md:text-left text-center">
+                    <span class=" text-6xl font-medium leading-[85px] ">
+                        Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-[55px] left-0 right-0 li"/></span> Job.<br/> Hire the right talents.
+                    </span>
+                    <span class=" text-[16px]">
+                        At Apex Technologies, we serve as a comprehensive marketplace, <br/>
+                        facilitating seamless connections between companies seeking tech expertise and skilled professionals
+                            looking for temporary contract opportunities. Through our platform, companies can find the right talent for their projects,
+                            whether they're large corporations embarking on ambitious ventures or small businesses in need of specialized skills. 
+                    </span>
+
+                    <!-- FORM AREA -->
+                    <form @submit.prevent="joinWaitList" class="flex  flex-col md:flex-row gap-2 mt-8 w-full">
+                        <input type="email" required class="text-sm rounded-md px-6 h-14 w-full  text-gray-600" placeholder="youemail@gmail.com" v-model="email"/>
+                        <button class="gradient-button text-sm w-full ">
+                            <span class="btn-text font-bold">Join Waitlist</span>
+                        </button>
+                    </form>
                 </div>
 
-                <form @submit.prevent="joinWaitList" class="flex flex-row flex-wrap gap-5  mt-2 w-fit">
-                    <input type="email" required class="rounded-md px-6 h-14 w-auto text-gray-600" placeholder="youemail@gmail.com" v-model="email"/>
-                    <button class="gradient-button">
-                        <span class="btn-text font-bold">Join Waitlist</span>
-                        <!-- <i class="bi bi-arrow-right"></i> -->
-                    </button>
-                </form>
-                
-            </section>
-    </div>
+                <!-- RIGHT SIDE IMAGE -->
+                <div class="w-full h-[400px] md:h-[600px] md:w-[60%] flex-grow-1 relative flex justify-center items-center right-image">
+                </div>
+            </div>
+
+
+        </div>
+        <MiniFooter/>
 </template>
 
 <script>
+    import StrikeLineSvg from '@/components/StrikeLineSvg.vue';
+    import MiniFooter from '@/components/MiniFooter.vue';
 
     export default {
         name: "WaitListPageView",
+        components: {
+            StrikeLineSvg,
+            MiniFooter,
+        },
         data(){
             return {
-                email: '',
-            }
-        },
 
-        methods:{
-            async joinWaitList(){
-                try{
-
-                }catch(error){
-
-                }
             }
         }
-
     }
 </script>
 
@@ -68,56 +64,49 @@
     background-origin: content-box
 }
 
-.gradient-button {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            color: transparent;
-            background: linear-gradient(to right, #8e44ad, #3498db);
-            background-clip: text;
-            -webkit-background-clip: text;
-            border: 2px dotted;
-            border-image-slice: 1;
-            border-width: 2px;
-            border-image-source: linear-gradient(to right, #8e44ad, #3498db);
-            /* border-radius: 15px; */
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        .gradient-button:hover {
-            background: linear-gradient(to right, #8e44ad, #3498db);
-            color: #fff;
-            background-clip: border-box;
-            -webkit-background-clip: border-box;
-            
-        }
-
-        .gradient-button::after {
-            content: '→';
-            display: inline-block;
-            margin-left: 10px;
-            transition: transform 0.3s;
-        }
-
-        .gradient-button:hover::after {
-            transform: translateX(5px);
-        }
-
-
-.button-now{
-    background-image:
-    radial-gradient(circle closest-side, red calc(100% - 0.5px), transparent 100%),
-    radial-gradient(circle closest-side, green calc(100% - 0.5px), transparent 100%),
-    radial-gradient(circle closest-side, blue calc(100% - 0.5px), transparent 100%),
-    radial-gradient(circle closest-side, orange calc(100% - 0.5px), transparent 100%);
-    background-position: 0 0, 100% 0, 0 100%;
-    background-repeat: repeat-x, repeat-y;
-    background-size: 1em 4px, 4px 1em;
-    /* width: 320px;
-    height: 240px; */
+.right-image{
+    background-image: url('../assets/images/waitList_hero.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
+
+.gradient-button {
+    display: inline-block;
+    padding: 10px 20px;
+    /* font-size: 18px; */
+    font-weight: bold;
+    color: transparent;
+    background: linear-gradient(to right, #8e44ad, #3498db);
+    background-clip: text;
+    -webkit-background-clip: text;
+    border: 2px dotted;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-image-source: linear-gradient(to right, #8e44ad, #3498db);
+    /* border-radius: 15px; */
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+.gradient-button:hover {
+    background: linear-gradient(to right, #8e44ad, #3498db);
+    color: #fff;
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
+    
+}
+
+.gradient-button::after {
+    content: '→';
+    display: inline-block;
+    margin-left: 10px;
+    transition: transform 0.3s;
+}
+
+.gradient-button:hover::after {
+    transform: translateX(5px);
+}
 </style>
