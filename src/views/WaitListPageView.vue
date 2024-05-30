@@ -35,7 +35,7 @@
 
 
         </div>
-        <MiniFooter/>
+        <!-- <MiniFooter/> -->
 </template>
 
 <script>
