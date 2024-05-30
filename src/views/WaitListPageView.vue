@@ -50,7 +50,10 @@
         },
         data(){
             return {
-
+                form_filled: false,
+                user_form: {
+                    email: '',
+                }
             }
         }
     }
@@ -58,14 +61,15 @@
 
 <style scoped>
 .title{
-    font-family: 'myfont',
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
-@font-face {
-    font-family: 'myfont';
-    font-style: normal;
-    src: url('../assets/fonts/Inconsolata-VariableFont_wdth\,wght.ttf');
-}
+
 
 @font-face {
     font-family: ;
