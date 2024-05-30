@@ -60,7 +60,7 @@ const routes = [
   // FOR WAITLIST.....
   {
     path: '/',
-    name: 'home',
+    name: 'Coming soon',
     component: WaitListPageView
   },
 

@@ -9,7 +9,7 @@
 
                 <!-- TEXT WRITE UP -->
                 <div class="flex flex-col w-full md:w-[50%] md:text-left text-center">
-                    <span class=" text-6xl font-medium leading-[85px] ">
+                    <span class=" text-6xl font-medium leading-[85px] title">
                         Find Your <span class="relative"> dream <StrikeLineSvg class="absolute top-[55px] left-0 right-0 li"/></span> Job.<br/> Hire the right talents.
                     </span>
                     <span class=" text-[16px]">
@@ -57,6 +57,20 @@
 </script>
 
 <style scoped>
+.title{
+    font-family: 'myfont',
+}
+
+@font-face {
+    font-family: 'myfont';
+    font-style: normal;
+    src: url('../assets/fonts/Inconsolata-VariableFont_wdth\,wght.ttf');
+}
+
+@font-face {
+    font-family: ;
+    src: url();
+}
 .wl-background{
     background-image: url('../assets/images/Waitlist_bg.png');
     background-size: cover;
