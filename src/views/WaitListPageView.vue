@@ -23,8 +23,9 @@
                     <form @submit.prevent="joinWaitList" class="flex  flex-col md:flex-row gap-2 mt-8 w-full">
                         <p class="text-red-400 font-bold p-3 inline-block" v-if="error"> {{  error }}</p>
                         <input type="email" required class="text-sm rounded-md px-6 h-14 w-full md:w-[60%]  text-gray-600" placeholder="youemail@gmail.com" v-model="user_form.email"/>
-                        <button type="submit" class="gradient-button text-sm w-full md:w-[40%]">
-                            <span class="btn-text font-bold">Join Waitlist</span>
+                        <button :disabled="loading" type="submit" class="gradient-button text-sm w-full md:w-[40%]">
+                            <span class="btn-text font-bold" v-if="loading">loading...</span>
+                            <span class="btn-text font-bold" v-else>Join Waitlist</span>
                         </button>
                     </form>
                 </div>
@@ -69,6 +70,7 @@
             return {
                 form_filled: false,
                 contractOffer,
+                loading: false,
                 user_form: {
                     email: '',
                 },
@@ -79,12 +81,15 @@
         methods:{
             async joinWaitList(){
                 try{
+                    this.loading = true;
                     const response = await axios.post(`${this.api_url}/onboard`, this.user_form);
                     console.log(response);
                     this.form_filled = true;
+                    this.loading = false;
                 }catch(error){
                     console.log(error);
                     this.error = error.response.data.message;
+                    this.loading = false;
                 }
             }
         }
@@ -101,12 +106,6 @@
     "wdth" 100;
 }
 
-
-
-@font-face {
-    font-family: ;
-    src: url();
-}
 .wl-background{
     background-image: url('../assets/images/Waitlist_bg.png');
     background-size: cover;
@@ -147,6 +146,10 @@
     background-clip: border-box;
     -webkit-background-clip: border-box;
     
+}
+
+.gradient-button:disabled::after{
+    content: none;
 }
 
 .gradient-button::after {
