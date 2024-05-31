@@ -5,7 +5,7 @@
 
 
 
-            <div class="flex flex-col-reverse mt-40 md:mt-0 md:flex-row w-full p-8 text-white justify-center items-center">
+            <div v-if="!form_filled" class="flex flex-col-reverse mt-40 md:mt-0 md:flex-row w-full p-8 text-white justify-center items-center">
 
                 <!-- TEXT WRITE UP -->
                 <div class="flex flex-col w-full md:w-[50%] md:text-left text-center">
@@ -21,8 +21,9 @@
 
                     <!-- FORM AREA -->
                     <form @submit.prevent="joinWaitList" class="flex  flex-col md:flex-row gap-2 mt-8 w-full">
-                        <input type="email" required class="text-sm rounded-md px-6 h-14 w-full md:w-[60%]  text-gray-600" placeholder="youemail@gmail.com" v-model="email"/>
-                        <button class="gradient-button text-sm w-full md:w-[40%]">
+                        <span class="text-red-400 font-bold p-3" v-if="error"> {{  error }}</span>
+                        <input type="email" required class="text-sm rounded-md px-6 h-14 w-full md:w-[60%]  text-gray-600" placeholder="youemail@gmail.com" v-model="user_form.email"/>
+                        <button type="submit" class="gradient-button text-sm w-full md:w-[40%]">
                             <span class="btn-text font-bold">Join Waitlist</span>
                         </button>
                     </form>
@@ -31,6 +32,20 @@
                 <!-- RIGHT SIDE IMAGE -->
                 <div class="w-full h-[400px] md:h-[600px] md:w-[60%] flex-grow-1 relative flex justify-center items-center right-image">
                 </div>
+            </div>
+            
+
+
+            <div v-else class="flex flex-col justify-center items-center h-full p-8">
+                <Vue3Lottie
+                    :animationData="contractOffer"
+                    :height="200"
+                    :width="200"
+                />
+                <h1 class="font-bold text-2xl text-blue-300">You joined our waitlist!</h1>
+                <p class="text-slate-300 text-center text-xl">
+                    You are the most amazing person! <br/>Thank you for joining our waitlist, We'll ket you know by email as soon as we go live fully, and thanks for your interest in ApexTeks!
+                </p>
             </div>
 
 
@@ -41,6 +56,8 @@
 <script>
     import StrikeLineSvg from '@/components/StrikeLineSvg.vue';
     import MiniFooter from '@/components/MiniFooter.vue';
+    import axios from 'axios';
+    import contractOffer from '../lottie/contract-offer.json'
 
     export default {
         name: "WaitListPageView",
@@ -51,8 +68,23 @@
         data(){
             return {
                 form_filled: false,
+                contractOffer,
                 user_form: {
                     email: '',
+                },
+                error: '',
+            }
+        },
+
+        methods:{
+            async joinWaitList(){
+                try{
+                    const response = await axios.post(`${this.api_url}/onboard`, this.user_form);
+                    console.log(response);
+                    this.form_filled = true;
+                }catch(error){
+                    console.log(error);
+                    this.error = error.response.data.message;
                 }
             }
         }
