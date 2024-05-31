@@ -21,7 +21,7 @@
 
                     <!-- FORM AREA -->
                     <form @submit.prevent="joinWaitList" class="flex  flex-col md:flex-row gap-2 mt-8 w-full">
-                        <span class="text-red-400 font-bold p-3" v-if="error"> {{  error }}</span>
+                        <p class="text-red-400 font-bold p-3 inline-block" v-if="error"> {{  error }}</p>
                         <input type="email" required class="text-sm rounded-md px-6 h-14 w-full md:w-[60%]  text-gray-600" placeholder="youemail@gmail.com" v-model="user_form.email"/>
                         <button type="submit" class="gradient-button text-sm w-full md:w-[40%]">
                             <span class="btn-text font-bold">Join Waitlist</span>
