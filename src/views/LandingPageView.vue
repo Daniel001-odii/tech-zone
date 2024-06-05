@@ -49,7 +49,8 @@
                                 <span class="text-sm">Jobs Available</span>
                             </div>
                         </div>
-                        <img data-aos="zoom-in" src="../assets/images/hero-image.jpg" class=" rounded-[40px] w-[600px]">
+                        <!-- <img data-aos="zoom-in" src="../assets/images/hero-image.jpg" class=" rounded-[40px] w-[600px]"> -->
+                        <img data-aos="zoom-in" src="../assets/images/waitList_hero.png" class=" rounded-[40px] w-[600px]">
                     </div>
                     <!-- <img data-aos="zoom-in" src="../assets/images/Group 303.png" class="section_img"> -->
                     
