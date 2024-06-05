@@ -55,7 +55,7 @@ import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
 
 // GOOGLE LOGIN.....
 app.use(vue3GoogleLogin, {
-    clientId: '546104205241-g4vtopr689l3vb5cfjmphard09e1ia2k.apps.googleusercontent.com'
+    clientId: '1037365822432-afrdrmnt083r2p096veokhoj2omcd4ql.apps.googleusercontent.com'
 })
 
 app.use(Vue3Lottie);
