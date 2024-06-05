@@ -45,7 +45,7 @@
                 />
                 <h1 class="font-bold text-2xl text-blue-300">You joined our waitlist!</h1>
                 <p class="text-slate-300 text-center text-xl">
-                    You are the most amazing person! <br/>Thank you for joining our waitlist, We'll ket you know by email as soon as we go live fully, and thanks for your interest in ApexTeks!
+                    You are the most amazing person! <br/>Thank you for joining our waitlist, We'll let you know by email as soon as we go live fully, and thanks for your interest in ApexTeks!
                 </p>
             </div>
 
