@@ -296,7 +296,7 @@
 
 
             <section>
-                <div class="container flex flex-col justify-center md:flex-row-reverse items-center p-5 gap-5">
+                <div class="container flex flex-col justify-center md:flex-row items-center p-5 gap-5">
                     <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
                     <div data-aos="fade-up" class="md:w-fit text-left flex flex-col" >
                         <h1 class="section_subtitle">Unlock your next career move!</h1>
@@ -374,6 +374,25 @@
                     <img data-aos="fade-up" src="../assets/images/foot_illustration.png" alt="lady image" class="section_img w-96">
                 </div>
             </section>
+
+            <section>
+                <div class=" flex items-center justify-center flex-col container gap-5">
+                    <h2 class="section_subtitle">Frequently Asked Questions</h2>
+                    <div class="w-full mt-5">
+                        <div v-for="(question, question_id) in generalFAQs" :key="question_id">
+                            <div class="flex flex-row justify-between mt-3">
+                                <h4 class="font-bold text-lg max-w-90%">{{ question.text }}</h4>
+                                <button @click="show_answer(question_id)" class="">
+                                    <i v-if="answer_active[question_id]" class="bi bi-dash"></i>
+                                    <i v-else class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        
+                            <p v-if="answer_active[question_id]" class="w-[90%]">{{ question.answer }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         
     
         </div>
@@ -424,7 +443,36 @@ export default {
             { message: "Exceptional quality and support!", author: "Alice Brown" },
             { message: "Five stars for sure!", author: "Chris Wilson" }
             ],
-            visibleCount: 3
+            generalFAQs: [
+                    { text: "Is there a free trial available?",
+                    answer:"Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible." },
+
+                    { text: "How do I find jobs on the platform?", 
+                    answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible."},
+
+                    {
+                        text: "How can I upload my CV to the platform?",
+                        answer: "Simply go to your profile page and click on the <Resume> button. You'll find option to upload and view your CV "
+                    },
+
+                    {
+                        text: "How can I apply for a job listing ",
+                        answer: "To apply for a job listing as a Talent on the platform, follow these steps: 1. Log in to your account and navigate to the Work Explorer page. 2. Browse through the active job listings to find a job that interests you. 3. Click on the job listing to view more details. 4. Use the <apply> here button provided on the job listing page to start and complete the application process. "
+                    },
+
+                    {
+                        text: "How can I save job listings for later ",
+                        answer: "To save job listings for later viewing: 1. Go to the Work Explorer page on the platform. 2. Look for the job listing you want to save. 3. Next to the job listing, you'll see a save icon. Click on this icon to save the job for later. 4. If you wish to remove a job from your saved list, click on the save icon again to deselect it and remove it from your saved list. "
+                    },
+
+                    {
+                        text: "How do I post a job listing as an employer ",
+                        answer: "To post a job listing as an employer, follow these steps: 1. Go to the Employers Console on the platform. 2. Click on the <Post Job> link located in the navigation bar. This action will direct you to the Post Job page. 3. Follow the provided instructions and steps on the Post Job page to successfully create and post your job listing. "
+                    }
+
+            ],
+            answer_active: [],
+            visibleCount: 3,
             }
     },
 
@@ -440,6 +488,10 @@ export default {
                 this.job_index += 1;
             }
         },
+
+        show_answer(index){
+                this.answer_active[index] = !this.answer_active[index];
+            },
         
         async getAllJobs(){
             try{
@@ -535,7 +587,7 @@ export default {
     }
 
     .section_img{
-        @apply md:w-[55%]
+        @apply md:w-[55%] relative rounded-3xl hover:-top-3
     }
 
     .section_subtitle{
