@@ -61,7 +61,7 @@
                             </div>
 
 
-                            <button class="p-3 text-white bg-tz_blue w-full rounded-full" :disabled="!passwordValidation.valid || !acceptedTOS">Sign in</button> 
+                            <button class="p-3 text-white bg-tz_blue w-full rounded-full" :disabled="!passwordValidation.valid || !acceptedTOS">Register</button> 
                             
                             
                             <!-- or -->
