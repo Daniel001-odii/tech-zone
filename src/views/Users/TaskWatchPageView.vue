@@ -39,6 +39,14 @@
     </template>
 </Modal>
 
+<Modal :modal_active="user_loction_error" :title="'Error in clock-in'">
+    <template #body>
+        <div>
+            <p class="text-2xl">You must be atleast 1.5km to job location before you can clock-in</p>
+        </div>
+    </template>
+</Modal>
+
     <div>
         <PageTitle>Task Watch</PageTitle>
         
@@ -348,6 +356,8 @@ import Tooltip from 'primevue/tooltip';
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
                 },
+
+                user_loction_error: false,
             }
         },
         methods:{
@@ -361,7 +371,7 @@ import Tooltip from 'primevue/tooltip';
                 const headers = this.headers;
                 try{
                     const response = await axios.get(`${this.api_url}/contracts/${this.$route.params.contract_id}`, { headers });
-                    // console.log(response);
+                    console.log("contract data: ", response);
                     this.contract = response.data.contract;
                 }catch(error){
                     console.log(error);
@@ -411,12 +421,37 @@ import Tooltip from 'primevue/tooltip';
                 this.start_task_watch_modal = !this.start_task_watch_modal
             },
 
-            async startTaskWatch(){
+            startTaskWatch(){
+               
+
+                if(this.contract.job.location.remote != true){
+            
+                    this.getUserLocation((error, userLocation)=>{
+                        if(error){
+                            alert("could not get user location");
+                            return;
+                        }
+
+                        const jobLat = this.contract.job.location.latitude;
+                        const jobLon = this.contract.job.location.longitude;
+
+                        // user must be atleast 1.5KM to job location before being able to clock in ...
+                        const threshold = 1.5;
+                        this.checkDistanceThreshold(userLocation.lat, userLocation.lon, jobLat, jobLon, threshold);
+                    });
+                }
+                else {
+                    this.startClockIn();
+                }
+
+                
+            },
+
+            async startClockIn(){
                 // set timer to 0 for initial state...
                 this.duration = 0;
 
                 const headers = this.headers;
-
                 try{
                     const form = {
                         activity_description: this.task_description
@@ -442,12 +477,11 @@ import Tooltip from 'primevue/tooltip';
 
                     // start duration counter...
                     this.startDurationCount();
-
-
                     
                     this.timer_loading = false;
                 }catch(error){
                     this.timer_error = error.response.data.message;
+                    // console.log("error clockin: ", error)
                     this.timer_loading = false;
                 }
             },
@@ -525,6 +559,10 @@ import Tooltip from 'primevue/tooltip';
 
                     // set watch status for global use...
                     const watch = response.data.watch;
+                    if(!watch){
+                        this.timer_loading = false;
+                        return []
+                    }
 
                     if(watch.status){
                          this.watch_status = watch.status;
@@ -681,6 +719,57 @@ import Tooltip from 'primevue/tooltip';
                 }
             },
 
+            calculateDistance(lat1, lon1, lat2, lon2) {
+                const toRadians = (degrees) => degrees * Math.PI / 180;
+                const R = 6371; // Earth's radius in kilometers
+
+                const dLat = toRadians(lat2 - lat1);
+                const dLon = toRadians(lon2 - lon1);
+
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                        
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                const distance = R * c; // Distance in kilometers
+
+                return distance;
+            },
+
+            checkDistanceThreshold(userLat, userLon, jobLat, jobLon, threshold) {
+                const distance = this.calculateDistance(userLat, userLon, jobLat, jobLon);
+                if (distance <= threshold) {
+                    // enableFunction();
+                    this.startClockIn();
+                    console.log("enable function called!")
+                } else {
+                    // disableFunction(); 
+                    this.timer_error = "you must be atleast 1.5km to job location before you can clock-in";
+                    this.user_loction_error = true;
+                    console.log("disable function called!")
+                }
+            },
+
+            getUserLocation(callback) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const userLat = position.coords.latitude;
+                            const userLon = position.coords.longitude;
+                            console.log("user location found: ", userLat, userLon)
+                            callback(null, { lat: userLat, lon: userLon });
+                        },
+                        (error) => {
+                            console.error("Error getting user location:", error);
+                            callback(error);
+                        }
+                    );
+                } else {
+                    console.error("Geolocation is not supported by this browser.");
+                    callback(new Error("Geolocation is not supported by this browser."));
+                }
+            }
+
 
 
         },
@@ -713,6 +802,11 @@ import Tooltip from 'primevue/tooltip';
             this.getContract();
             this.getWatchForToday();
             this.getAllWatches();
+  
+        },
+
+        mounted(){
+            // get user's current location...
            
         },
 
