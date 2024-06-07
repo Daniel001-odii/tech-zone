@@ -525,7 +525,13 @@ import Tooltip from 'primevue/tooltip';
 
                     // set watch status for global use...
                     const watch = response.data.watch;
-                    this.watch_status = watch.status;
+
+                    if(watch.status){
+                         this.watch_status = watch.status;
+                    } else {
+                        this.watch_status = "no records yet"
+                    }
+                   
 
                     // set clock in time...
                     this.clock_in_time = watch.time_stamp.clock_in_time;
@@ -600,7 +606,13 @@ import Tooltip from 'primevue/tooltip';
                     this.testData.labels = []
                     this.testData.datasets[0].data = []
 
-                    this.days_worked = days.length - 1;
+                    if(days.length > 0){
+                        this.days_worked = days.length - 1;
+                    } else {
+                        this.days_worked = 0;
+                    }
+
+                    
 
                     let duration_type;
 

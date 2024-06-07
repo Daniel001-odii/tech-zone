@@ -130,7 +130,7 @@
                                                 <i class="bi bi-gift"></i> 
                                                 View Contract
                                             </RouterLink>
-                                            <RouterLink :to="`/in/contracts/${contract._id}/watch`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
+                                            <RouterLink v-if="contract.status != 'closed'" :to="`/in/contracts/${contract._id}/watch`" class="hover:bg-slate-100 dark:hover:bg-slate-600 p-3">
                                                 <i class="bi bi-clock-history"></i> 
                                                 Open in Taskwatch
                                             </RouterLink>
