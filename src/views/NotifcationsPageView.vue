@@ -44,7 +44,13 @@
                         </div>
                     </div>
 
-                    <div class="text-center w-full p-5" v-if="notifications.length <= 0 || !notifications">No new notifications</div>
+                    <div class="text-center w-full p-5" v-if="notifications.length <= 0 || !notifications">
+                        <div class=" text-center text-gray-400 h-[150px] flex flex-col justify-center items-center" v-if="notifications.length == 0">
+                            <i class="bi bi-bell text-3xl"></i>
+                            <p class="text-xl font-bold">You are all caught up</p>
+                            <span>No new notifications</span>
+                        </div>
+                    </div>
                 </div>
                <!-- {{ notifications }} -->
               

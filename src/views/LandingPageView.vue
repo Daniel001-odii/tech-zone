@@ -241,7 +241,7 @@
                             <button @click="prev" class="absolute z-50 -left-5 top-1/2 transform -translate-y-1/2 bg-tz_blue text-white p-2 rounded-md">
                                 <i class="bi bi-arrow-left"></i>
                             </button>
-                            <div class="testimonial-slider relative overflow-x-scroll w-full ">
+                            <div class="testimonial-slider relative overflow-x-hidden w-full ">
                                 <div class="flex flex-row gap-3 transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` }">
                                     <div v-for="(job, index) in jobs" :key="index" class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 flex items-center justify-center">
                                         <LpJobCard class="w-full" v-if="jobs"  :key="index"
@@ -254,14 +254,17 @@
                                         :job_url = "'/'"
                                         :budget = "job.budget"
                                         >
-                                        <span>
-                                            <i class="bi bi-geo-alt-fill"></i> 
-                                            <span v-if="job.location.remote"> remote</span>
-                                            <span v-else> {{ job.location.address }}, {{  job.location.state }}</span>
-                                        </span>
-                                        <span>
-                                            <i class="bi bi-clock"></i> <span>{{job.period}}</span>
-                                        </span>
+                                       <div class="flex flex-col gap-3">
+                                            <span>
+                                                <i class="bi bi-geo-alt-fill mr-1"></i> 
+                                                <span v-if="job.location.remote"> remote</span>
+                                                <span v-else> {{ job.location.address }}, {{  job.location.state }}</span>
+                                            </span>
+                                            <span>
+                                                <i class="bi bi-clock mr-1"></i> <span>{{job.period}}</span>
+                                            </span>
+                                       </div>
+                                        
                                     </LpJobCard>
                                     </div>
                                 </div>
@@ -300,10 +303,15 @@
                     <img data-aos="fade-up" src="../assets/images/Group 285.png" alt="lady-image" class="section_img w-96">
                     <div data-aos="fade-up" class="md:w-fit text-left flex flex-col" >
                         <h1 class="section_subtitle">Unlock your next career move!</h1>
-                        <div>
-                            <span class=" text-[#AF8669] font-bold">Upload your CV</span>  
+                        <div class="flex flex-col">
+                            <span>
+                                <span class=" text-[#AF8669] font-bold">Upload your CV</span>  
                             to stand out to recruiters and impact your job search.
-                            <button class="btn mt-3">Upload CV Now</button>
+                            </span>
+                            <RouterLink to="/login">
+                                 <button class="btn mt-3">Upload CV Now</button>
+                            </RouterLink>
+                           
                         </div>
                         
                     </div>
@@ -468,7 +476,20 @@ export default {
                     {
                         text: "How do I post a job listing as an employer ",
                         answer: "To post a job listing as an employer, follow these steps: 1. Go to the Employers Console on the platform. 2. Click on the <Post Job> link located in the navigation bar. This action will direct you to the Post Job page. 3. Follow the provided instructions and steps on the Post Job page to successfully create and post your job listing. "
-                    }
+                    },
+
+                    {
+                        text: "Are there any fees associated with employers posting jobs? ",
+                        answer: "No, there are no charges for posting jobs on ApexTeks. The platform is free for both employers and talents. However, there is a 15% charge applied to every completed work order."
+                    },
+                    {
+                        text: "Does Apex-Teks have any undisclosed fees or charges? ",
+                        answer: "ApexTeks operates with transparency, and all potential fees are explicitly outlined. Double confirmation is necessary for crucial actions related to payments to prevent inadvertent actions. "
+                    },
+                    {
+                        text: "What is the billing process? ",
+                        answer: "Billing is mainly directed at employers, who are charged the full job listing fee upon a successful job posting. This is facilitated through an escrow payment system. In case a job is canceled 24 hours before its scheduled start, the entire payment is refunded. However, if the work order is canceled within 24 hours of starting, 20 percent of the total payment made will be deducted. Employers are required to provide a valid debit card for payments, and they can manage payment options in the billing information page. All relevant information regarding billing actions is provided for transparency and clarity. "
+                    },
 
             ],
             answer_active: [],
@@ -491,6 +512,7 @@ export default {
 
         show_answer(index){
                 this.answer_active[index] = !this.answer_active[index];
+                
             },
         
         async getAllJobs(){

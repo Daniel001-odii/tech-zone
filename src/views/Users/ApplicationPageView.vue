@@ -20,7 +20,7 @@
         </div>
 
         <div v-if="job" class="flex flex-col md:flex-row px-5 py-3" >
-            <div :class="job.status == 'closed' ? 'w-full':'w-2/4'">
+            <div :class="job.status == 'closed' ? 'md:w-full':'md:w-2/4'">
                 <div>
                     <div class="flex flex-col border h-full p-3 text-left gap-3 rounded-md dark:border-gray-600">
                         <!-- <div class="border border-red-300 w-full">image here</div> -->
@@ -104,10 +104,11 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="flex flex-col gap-3">
                             <span class="font-bold">Job Location in Map</span>
-                            <div class=" h-80 w-full bg-tz_light_blue flex justify-center items-center">
-                                <span class="text-gray-400">coming soon...</span>
+                            <button @click="drawJobMap()">See job in map</button>
+                            <div v-show="job_map_is_visible" class=" h-80 w-full bg-tz_light_blue flex justify-center items-center p-2">
+                                <div  ref="map" class="h-full w-96">map loading...</div>
                             </div>
                         </div>
 
@@ -273,6 +274,8 @@ export default {
             application_sent: false,
 
             submit_loading: false,
+
+            job_map_is_visible: false,
         }
     },
     methods: {
@@ -395,6 +398,79 @@ export default {
                 this.submit_loading = false;
             }
         },
+
+        drawJobMap() {
+            const google = window.google;
+
+            // Create a map instance
+            const map = new google.maps.Map(this.$refs.map, {
+                center: { lat: 0, lng: 0 }, // Default center coordinates
+                mapId: 'Map_preview',
+                zoom: 13 // Default zoom level
+            });
+
+            // Get the user's location (assuming it's available)
+            navigator.geolocation.getCurrentPosition(position => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                // Coordinates of the job location (replace with actual job coordinates)
+                const jobLat = this.job.location.latitude;
+                const jobLng = this.job.location.longitude;
+
+                // Create instances for user marker and job marker
+                const userMarker = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: parseFloat(userLat), lng: parseFloat(userLng) },
+                    map: map,
+                    title: 'Your Current Location',
+                });
+
+                // create custom icon for job marker....
+                const job_icon_img = document.createElement("img");
+                job_icon_img.src = "https://raw.githubusercontent.com/Daniel001-odii/odiiDaniel/main/images/apextek.png"
+
+                const jobMarker = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: parseFloat(jobLat), lng: parseFloat(jobLng) },
+                    map: map,
+                    title: 'Job Location',
+                    content: job_icon_img,
+                });
+
+                // Create a DirectionsService object to use the route from user's location to job location
+                const directionsService = new google.maps.DirectionsService();
+
+                // Create a DirectionsRenderer object to display the route
+                const directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                polylineOptions: {
+                    strokeColor: '#4e79bc',
+                    strokeOpacity: 1,
+                    strokeWeight: 5
+                }
+                });
+
+                // Set the route between user's location and job location
+                const request = {
+                    origin: { lat: parseFloat(userLat), lng: parseFloat(userLng) },
+                    destination: { lat: parseFloat(jobLat), lng: parseFloat(jobLng) },
+                    travelMode: google.maps.TravelMode.DRIVING // Specify the travel mode
+                };
+
+                directionsService.route(request, function(response, status) {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        console.error('Error:', status);
+                    }
+                });
+
+            });
+
+            this.job_map_is_visible = true;
+        },
+
+                
+
 
     
     },

@@ -145,13 +145,15 @@
                             </label>
                         </div>
                         <div v-if="job_post.location.remote != 'true'" class="flex flex-col gap-3">
-                            <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="form_input">
-                           
-                            <select @change="whatState" v-model="job_post.location.state" class="form_input ">
+                            <div class="flex flex-row items-center gap-3 relative">
+                                <input @keyup="location_found = false" type="address" name="address" v-model="job_post.location.address" placeholder="Address line or Str. No, City" class="form_input w-full">
+                                <i v-if="location_found" class="bi bi-check-circle-fill absolute text-green-400 right-3"></i>
+                            </div>
+                            <select @change="location_found = false" v-model="job_post.location.state" class="form_input ">
                                 <option>Select State</option>
                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                             </select>
-                            <button class="btn" @click.prevent="getJobCordinates" :disabled="loading_g_location || job_post.location.address == ''">
+                            <button v-if="location_found == false" class="btn" @click.prevent="getJobCordinates" :disabled="loading_g_location || job_post.location.address == ''">
                                 <span v-if="loading_g_location">searching...</span>
                                 <span v-if="!loading_g_location">confirm location</span>
                             </button>
@@ -307,13 +309,14 @@
                                             </label>
                                         </div>
                                         <div v-if="job_post.location.remote != 'true'" class="flex flex-col gap-3">
-                                            <input type="address" name="address" v-model="job_post.location.address" placeholder="No. 6 Aba Road, Umuahia" class="form_input">
-                                            <select @change="whatState" v-model="job_post.location.state" class="form_input ">
+                                            <div>
+                                                <input type="address" name="address" v-model="job_post.location.address" placeholder="Address line or Str. No, City" class="form_input">
+                                                <i class="bi bi-check"></i>
+                                            </div>
+                        
+                                            <select @change="updateJobState" v-model="job_post.location.state" class="form_input ">
                                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                                             </select>
-                                            <!-- <select class="" @change="whatState" v-model="job_post.location.state" :disabled="isRemote">
-                                                <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
-                                            </select> -->
                                             <div class=" bg-cyan-100 p-3 rounded-md text-cyan-700 border border-cyan-200">
                                                 <i class="bi bi-exclamation-circle-fill"></i>
                                                 In order to help the talents locate this place, this location would be displayed on a map in the job post. Please be precise</div>
@@ -371,7 +374,7 @@
 
     <!-- STEP COUNTER -->
     <div class=" w-4/5 h-4 dark:bg-gray-600 bg-gray-gray-300 rounded-lg overflow-hidden">
-        <div class="h-full bg-blue-600 rounded-full"role="progressbar" :style="{ width: (currentIndex + 1) * 14 + '%' }" :aria-valuenow="(currentIndex + 1) * 14" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="h-full bg-tz_blue rounded-full"role="progressbar" :style="{ width: (currentIndex + 1) * 14 + '%' }" :aria-valuenow="(currentIndex + 1) * 14" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 
 
@@ -529,6 +532,7 @@ import AmountInput from '@/components/AmountInput.vue';
                 }
             },
 
+            // get job details [only for job editing]
             async getCurrentJobDetails(){
                 const headers = this.headers;
                 try{
@@ -546,7 +550,8 @@ import AmountInput from '@/components/AmountInput.vue';
                 }
             },
 
-            async getJobCordinates() {
+            
+            async getJobCordinatesOld() {
                 this.loading_g_location = true;
                 const geocoder = new google.maps.Geocoder();
                 const address = this.job_post.location.address;
@@ -557,7 +562,7 @@ import AmountInput from '@/components/AmountInput.vue';
                     this.location_found = true;
                     this.job_post.location.latitude = lat();
                     this.job_post.location.longitude = lng();
-                    console.log("Lat: ", this.latitude, "Long: ", this.longitude, "general result: ");
+                    console.log("Lat: ", lat(), "Long: ", lng());
                     this.loading_g_location = false;
                     } else{
                     alert("geo code was not successful...");
@@ -566,6 +571,39 @@ import AmountInput from '@/components/AmountInput.vue';
                 });
                 this.loading_g_location = false;
             },
+
+            async getJobCordinates() {
+                try {
+                    this.loading_g_location = true;
+                    const geocoder = new google.maps.Geocoder();
+                    const address = this.job_post.location.address;
+                    const state = this.job_post.location.state;
+                    const country = "Nigeria";
+
+                    // Combine address, state, and country to form a complete address
+                    const fullAddress = `${address}, ${state}, ${country}`;
+
+                    geocoder.geocode({ address: fullAddress }, (results, status) => {
+                        if (status === 'OK' && results && results.length > 0) {
+                            const { lat, lng } = results[0].geometry.location;
+                            this.job_post.location.latitude = lat();
+                            this.job_post.location.longitude = lng();
+                            console.log("Lat: ", lat(), "Long: ", lng(), "general result: ");
+                            this.location_found = true;
+                        } else {
+                            alert("Geocode was not successful: " + status);
+                            this.location_found = false;
+                        }
+                        this.loading_g_location = false;
+                    });
+                } catch (error) {
+                    console.error("Error in getJobCoordinates:", error);
+                    alert("An error occurred while fetching the coordinates.");
+                    this.loading_g_location = false;
+                    this.location_found = false;
+                }
+            }
+
 
             
         },
@@ -600,6 +638,8 @@ import AmountInput from '@/components/AmountInput.vue';
                 if(this.currentIndex == 4 && this.job_post.location.remote !=  'true'){
                     if(this.job_post.location.address == '' || this.job_post.location.state == ''){
                         return true
+                    } else if(this.location_found != true){
+                        return true
                     }
                     return false
                 }
@@ -633,6 +673,6 @@ import AmountInput from '@/components/AmountInput.vue';
         @apply dark:border-gray-500
     }
     button{
-        @apply disabled:bg-tz_light_blue
+        @apply disabled:dark:bg-tz_light_blue
     }
 </style>
