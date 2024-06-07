@@ -1,5 +1,5 @@
 <template>
-    <FullPageLoading v-if="loading"/>
+    <FullPageLoading/>
 
     <Modal :name="'Contract Review'" :modal_active="show_review_modal">
         <template #body>

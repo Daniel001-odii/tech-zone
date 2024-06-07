@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="text-center absolute top-0 bottom-0 w-full flex justify-center items-center z-30 dark:bg-[rgb(0,0,0,70%)] bg-[rgba(255,255,255,0.7)]">
+        <div class="text-center fixed left-0 top-0 bottom-0 w-full flex justify-center items-center z-30 dark:bg-[rgb(0,0,0,70%)] bg-[rgba(255,255,255,0.95)]">
             <img class="glow-animation bg-white" src="../assets/images/dot_logo.svg">
         </div>
     </div>

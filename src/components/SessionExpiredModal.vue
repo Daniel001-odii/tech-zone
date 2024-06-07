@@ -1,6 +1,6 @@
 <template>
 <div>
-        <div class="h-full bg-[rgb(0,0,0,70%)] fixed left-0 z-20 top-0 w-full flex justify-center items-center">
+        <div class="h-full bg-[rgb(0,0,0,70%)] fixed left-0 z-50 top-0 w-full flex justify-center items-center">
             <div class="flex flex-col bg-white justify-center items-center rounded-xl p-5 dark:bg-gray-700 text-center">
                     <Vue3Lottie
                         :animationData="danger"
