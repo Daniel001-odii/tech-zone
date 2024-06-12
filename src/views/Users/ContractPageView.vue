@@ -98,11 +98,11 @@
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">ApexTek Service Fee</td>
-                                        <td class="px-6 py-4">-15%</td>
+                                        <td class="px-6 py-4">-12.99%</td>
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Amount you should receive</td>
-                                        <td class="px-6 py-4">₦{{ (contract.job.budget - (contract.job.budget * 15)/100).toLocaleString() }}</td>
+                                        <td class="px-6 py-4">₦{{ (contract.job.budget - (contract.job.budget * 12.99)/100).toLocaleString() }}</td>
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Budget Type</td>

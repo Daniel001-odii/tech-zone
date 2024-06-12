@@ -101,17 +101,18 @@
                             
                             <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
                             
-                            <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600">
+                            <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600 ">
                             <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
-                            <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="p-3 hover:bg-slate-50 rounded-md flex flex-row gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
-                                <div class="flex flex-col w-[85%]">
-                                    <span class="text-sm font-bold">{{  notification.message }}</span>
-                                    <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
+                            <div class=" max-h-[250px] overflow-y-auto">
+                                <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="flex flex-row p-3 hover:bg-slate-50 rounded-md gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
+                                    <div class="flex flex-col gap-2 w-[88%]">
+                                        <span class="text-sm font-bold">{{  notification.message }}</span>
+                                        <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
+                                    </div>
+                                    <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block">
+                                        <span>&times;</span>
+                                    </button>
                                 </div>
-                                <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block">
-                                    <span>&times;</span>
-                                </button>
-                                
                             </div>
 
                                 <div class=" text-center text-gray-400 h-[150px] flex flex-col justify-center items-center" v-if="notifications.length == 0">

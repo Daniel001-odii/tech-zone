@@ -391,6 +391,7 @@ export default {
                 // console.log("res from sending contract: ", response);
                 // this.message = response.data.message;
                 this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.contract_modal = !this.contract_modal
                 // alert(response.data.message);
             }catch(error){
                 // console.log("error sending Contract:", error);

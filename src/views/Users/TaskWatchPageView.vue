@@ -435,8 +435,8 @@ import Tooltip from 'primevue/tooltip';
                         const jobLat = this.contract.job.location.latitude;
                         const jobLon = this.contract.job.location.longitude;
 
-                        // user must be atleast 1.5KM to job location before being able to clock in ...
-                        const threshold = 1.5;
+                        // user must be atleast 1KM to job location before being able to clock in ...
+                        const threshold = 1;
                         this.checkDistanceThreshold(userLocation.lat, userLocation.lon, jobLat, jobLon, threshold);
                     });
                 }

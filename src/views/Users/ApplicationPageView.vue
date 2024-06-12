@@ -106,9 +106,11 @@
 
                         <div class="flex flex-col gap-3">
                             <span class="font-bold">Job Location in Map</span>
-                            <button @click="drawJobMap()">See job in map</button>
-                            <div v-show="job_map_is_visible" class=" h-80 w-full bg-tz_light_blue flex justify-center items-center p-2">
-                                <div  ref="map" class="h-full w-96">map loading...</div>
+                            <div>
+                                <button @click="drawJobMap()">See job in map</button>
+                                <div v-show="job_map_is_visible" class=" h-80 w-full bg-tz_light_blue flex justify-center items-center p-2">
+                                    <div  ref="map" class="h-full w-96">map loading...</div>
+                                </div>
                             </div>
                         </div>
 

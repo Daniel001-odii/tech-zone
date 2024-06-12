@@ -382,6 +382,10 @@ export default {
     created(){
         this.getUserData();
 
+        this.getMessageRooms();
+
+        
+
         this.socket.on('message', (message) => {
             // Add received message to the messages array
             const room = this.rooms.find(room => room._id == message.room);
@@ -403,9 +407,7 @@ export default {
         });
     },
 
-    created(){
-        
-    }
+
 }
 </script>
 <style scoped>

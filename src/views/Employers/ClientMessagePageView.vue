@@ -242,7 +242,7 @@ export default {
 
     created(){
         this.getUserData();
-        
+        this.getMessageRooms();
     },
 
     created(){

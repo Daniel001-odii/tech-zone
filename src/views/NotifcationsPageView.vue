@@ -24,20 +24,23 @@
                     </div>
 
                     <div v-for="(notification, notification_id) in notifications" :key="notification_id" class="w-full">
-                        <div v-if="!showAllNotifications" class="p-3 border flex flex-row justify-between mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full">
-                            <div class="flex flex-col" :class="notification.isRead ? 'text-gray-500':''">
+                        <div v-if="!showAllNotifications" class="p-5 bg-gray-600 flex flex-row justify-start items-start mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full gap-3" :class="notification.isRead ? 'opacity-30':''">
+                            <div>
+                                <i v-if="notification.type && notification.type == 'contract'" class="bi bi-gift"></i>
+                            </div>
+                            <div class="flex flex-col w-[80%]" >
                                 {{ notification.message }} <br/>
-                                {{ formatTimestamp(notification.created) }} <br/>
+                                <span class="text-gray-400">{{ formatTimestamp(notification.created) }}</span>
                                 <!-- <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink> -->
                             </div>
-                            <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)">Mark as read</button>
+                            <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)" class="underline">Mark as read</button>
                         </div>
 
                         <!-- ONLY UNREADS -->
-                        <div v-if="showAllNotifications && !notification.isRead" class="p-3 border flex flex-row justify-between mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full">
-                            <div class="flex flex-col" :class="notification.isRead ? 'text-gray-500':''">
+                        <div v-if="showAllNotifications && !notification.isRead" class="p-5 border flex flex-row justify-between mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full" :class="notification.isRead ? 'opacity-30':''">
+                            <div class="flex flex-col" >
                                 {{ notification.message }} <br/>
-                                {{ formatTimestamp(notification.created) }} <br/>
+                                <span class="text-gray-400">{{ formatTimestamp(notification.created) }}</span>
                                 <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink>
                             </div>
                             <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)">Mark as read</button>

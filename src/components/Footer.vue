@@ -50,9 +50,9 @@
                     <ul class="list">
                         <li class="list_header">Quick Links</li>
                         <RouterLink to='/about'><li>About Us</li></RouterLink>
-                        <RouterLink to='/vision'><li>Our Vision</li></RouterLink>
-                        <li>Team</li>
-                        <li>Careers</li>
+                        <!-- <RouterLink to='/vision'><li>Our Vision</li></RouterLink> -->
+                        <!-- <li>Team</li> -->
+                        <!-- <li>Careers</li> -->
                     </ul>
                 </div>
             </div>

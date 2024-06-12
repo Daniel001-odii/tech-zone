@@ -373,19 +373,8 @@
             </section>
 
             <section>
-                <div class=" flex items-center flex-col md:flex-row-reverse container gap-5">
-                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col">
-                        <h2 class="section_subtitle">Join us today!</h2>
-                        <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
-                        <GetStartedNow/>
-                    </div>
-                    <img data-aos="fade-up" src="../assets/images/foot_illustration.png" alt="lady image" class="section_img w-96">
-                </div>
-            </section>
-
-            <section>
                 <div class=" flex items-center justify-center flex-col container gap-5">
-                    <h2 class="section_subtitle">Frequently Asked Questions</h2>
+                    <h2 class="section_subtitle">FAQ</h2>
                     <div class="w-full mt-5">
                         <div v-for="(question, question_id) in generalFAQs" :key="question_id">
                             <div class="flex flex-row justify-between mt-3">
@@ -401,6 +390,19 @@
                     </div>
                 </div>
             </section>
+
+            <section>
+                <div class=" flex items-center flex-col md:flex-row-reverse container gap-5">
+                    <div data-aos="fade-up" class="md:w-fit text-left gap-8 flex flex-col">
+                        <h2 class="section_subtitle">Join us today!</h2>
+                        <p>Whether you are a company looking to expand your tech team or an IT professional seeking your next challenge, ApexTeks invites you to join our growing community and be part of the future of tech employment in Nigeria. Together, we can unlock the full potential of Nigeria’s tech industry and pave the way for a brighter, more prosperous future </p>
+                        <GetStartedNow/>
+                    </div>
+                    <img data-aos="fade-up" src="../assets/images/foot_illustration.png" alt="lady image" class="section_img w-96">
+                </div>
+            </section>
+
+           
         
     
         </div>
