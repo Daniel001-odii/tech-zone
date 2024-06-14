@@ -164,6 +164,22 @@
                                                     <i v-else class="bi bi-bookmark-check"></i>
                                                 </button>
                                             </template>
+                                            <template #flag-job>
+                                                <!-- <button class="icon_btn" @click="flagJob(job._id)">
+                                                    
+                                                </button> -->
+                                                <ActionDropdown>
+                                                    <template #icon>
+                                                        <i class="bi bi-hand-thumbs-down"></i>
+                                                    </template>
+                                                    <div class="flex flex-col gap-1 text-sm rounded-sm">
+                                                        <span @click="flagJob(job._id, reason)" class="hover:bg-gray-500 cursor-pointer p-1" v-for="reason in flag_reasons">
+                                                            {{ reason }}
+                                                        </span>
+                                                    </div>
+                                                </ActionDropdown>
+
+                                            </template>
                                             <template #job-title>
                                             <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
                                             </template>
@@ -367,6 +383,7 @@ import MultiSelect from 'primevue/multiselect';
 import jobCategories from '../../utils/jobCategories.json';
 
 import Toast from 'primevue/toast';
+import ActionDropdown from '@/components/ActionDropdown.vue';
 
 export default {
     name: "JobsPageView",
@@ -379,7 +396,8 @@ export default {
         Modal, 
         MultiSelect,
         ContractStatus,
-        Toast 
+        Toast,
+        ActionDropdown 
     },
     data(){
         return{
@@ -417,6 +435,14 @@ export default {
                 budget_type: '',
                 categories: '',
             },
+            flag_reasons: [
+                "Just not interested",
+                "Vague Description",
+                "Unrealistic Expectations",
+                "Poor reviews about the client",
+                "Doesn't Match Skills",
+                "Not in my preferred location"
+              ],
             nigerianStates,
             job_type: ["small", "medium", "large"],
             budget_type: [{name: "fixed-price"}, {name: "hourly"}],
@@ -592,6 +618,23 @@ export default {
                 this.saved_jobs = response.data.savedJobs.map(job => job._id);
             }catch(error){
                 console.log("error saving job")
+            }
+        },
+
+        async flagJob(job_id, reason){
+           
+            try{
+                const headers = this.headers;
+                const body = {
+                    user: this.user._id,
+                    reason,
+                };
+                const response = await axios.post(`${this.api_url}/jobs/${job_id}/flag`, body, { headers });
+                console.log("response from flagged job: ", response);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `${response.data.message}`, life: 3000 });
+
+            }catch(error){
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `${error.response.data.message}`, life: 3000 });
             }
         },
 

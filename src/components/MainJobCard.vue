@@ -3,20 +3,23 @@
         <div class="flex flex-col justify-between border p-3 rounded-md text-left gap-3 hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
             
             <div class="flex flex-col">
-                <div class="flex flex-row justify-between items-center">
+                <div class="flex flex-row justify-between items-start">
                     <span class="font-bold">
                         <slot name="job-title">
                             senior software developer (java)
                         </slot>
                     </span>
-                    <div class="text-lg gap-4 flex flex-row-reverse">
+                    <div class="text-lg gap-3 flex flex-row-reverse items-center pl-5">
                         <slot name="save-button">
-                            <h1>Hello</h1>
+                            <i class="bi bi-bookmark-check"></i>
+                        </slot>
+                        <slot name="flag-job">
+                            <button class="icon_btn" @click="flagJob">
+                                <i class="bi bi-hand-thumbs-down"></i>
+                            </button>
                         </slot>
                         
-                        <button class="icon_btn" @click="flagJob">
-                            <i class="bi bi-hand-thumbs-down"></i>
-                        </button>
+                       
                     </div>
                 </div>
                 <div class=" capitalize flex flex-row gap-3">
