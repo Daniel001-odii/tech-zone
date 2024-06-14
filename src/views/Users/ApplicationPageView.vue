@@ -94,12 +94,12 @@
 
                         <div>
                             <span class="font-bold">About Recruiter</span>
-                            <div class="flex flex-row justify-start items-center gap-4">
-                                <img :src="job.employer.profile.image_url" class=" h-14">
-                                <div class="flex flex-col">
+                            <div class="flex flex-row justify-start items-start gap-4">
+                                <img :src="job.employer.profile.image_url" class=" h-14 w-14 rounded-full">
+                                <div class="flex flex-col text-sm">
                                     <span>{{ job.employer.profile.company_name }}</span>
                                     <span>{{ job.employer.profile.tag_line }}</span>
-                                    <span>member since: {{ job.employer.created }}</span>
+                                    <span class="text-gray-400">member since: {{ formatToRelativeTime(job.employer.created) }}</span>
                                 </div>
                             </div>
                         </div>

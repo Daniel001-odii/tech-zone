@@ -165,15 +165,15 @@
                                                 </button>
                                             </template>
                                             <template #flag-job>
-                                                <!-- <button class="icon_btn" @click="flagJob(job._id)">
-                                                    
-                                                </button> -->
+                                               
                                                 <ActionDropdown>
                                                     <template #icon>
-                                                        <i class="bi bi-hand-thumbs-down"></i>
+                                                        <button class="icon_btn">
+                                                            <i class="bi bi-hand-thumbs-down"></i>
+                                                        </button>
                                                     </template>
                                                     <div class="flex flex-col gap-1 text-sm rounded-sm">
-                                                        <span @click="flagJob(job._id, reason)" class="hover:bg-gray-500 cursor-pointer p-1" v-for="reason in flag_reasons">
+                                                        <span  @click="flagJob(job._id, reason)" class="hover:bg-gray-500 cursor-pointer p-1" v-for="reason in flag_reasons">
                                                             {{ reason }}
                                                         </span>
                                                     </div>

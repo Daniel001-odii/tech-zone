@@ -6,7 +6,7 @@
             </slot>
         </button>
 
-        <div class="dark:text-white p-1 z-10 absolute gap-1 flex flex-col right-0 top-5 min-w-[180px] max-w-200 bg-white shadow-lg dark:bg-gray-700 rounded-sm" v-show="state">
+        <div  @click.prevent="toggleDropdown" class="dark:text-white p-1 z-10 absolute gap-1 flex flex-col right-0 top-5 min-w-[180px] max-w-200 bg-white shadow-lg dark:bg-gray-700 rounded-sm" v-show="state">
             <!-- <ul class="list-unstyled"> -->
                 <slot>
                     <p>Hello world</p>
