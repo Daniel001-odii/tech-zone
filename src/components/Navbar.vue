@@ -314,14 +314,27 @@ export default {
             return formatToRelativeTime(time)
         },
 
+        // Method to clear the interval
+        stopNotifications() {
+            clearInterval(this.notificationInterval);
+        }
+
     },
     created(){
         this.getUserData();
         this.getNotifications();
         if(localStorage.getItem('life-gaurd')){
             this.is_authenticated = true;
-        }
+        };
+
+        setInterval(() => {
+            this.getNotifications()
+        }, 30000);
         
+    },
+
+    unmounted() {
+        this.stopNotifications();
     },
 }
 </script>

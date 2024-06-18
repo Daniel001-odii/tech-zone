@@ -374,7 +374,7 @@
 
             <section>
                 <div class=" flex items-center justify-center flex-col container gap-5">
-                    <h2 class="section_subtitle">FAQ</h2>
+                    <h2 class="section_subtitle font-bold text-[30px]">FAQ</h2>
                     <div class="w-full mt-5">
                         <div v-for="(question, question_id) in generalFAQs" :key="question_id">
                             <div class="flex flex-row justify-between mt-3">
@@ -455,10 +455,10 @@ export default {
             ],
             generalFAQs: [
                     { text: "Is there a free trial available?",
-                    answer:"Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible." },
+                    answer:"Currently, ApexTeks is entirely free for both companies and freelancers. There are no hidden fees or charges for signing up and posting jobs on the website. If there are any changes in the future, all ApexTeks users will be notified through their preferred communication channels. However, freelancers are subject to a 12.99% charge on every completed work order. " },
 
                     { text: "How do I find jobs on the platform?", 
-                    answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible."},
+                    answer: "After registering on ApexTeks, you can personalize your job preferences, and relevant job listings will appear on your feed. Moreover, you can utilize the search bar to actively browse through a variety of jobs that match your expertise."},
 
                     {
                         text: "How can I upload my CV to the platform?",
@@ -492,6 +492,10 @@ export default {
                         text: "What is the billing process? ",
                         answer: "Billing is mainly directed at employers, who are charged the full job listing fee upon a successful job posting. This is facilitated through an escrow payment system. In case a job is canceled 24 hours before its scheduled start, the entire payment is refunded. However, if the work order is canceled within 24 hours of starting, 20 percent of the total payment made will be deducted. Employers are required to provide a valid debit card for payments, and they can manage payment options in the billing information page. All relevant information regarding billing actions is provided for transparency and clarity. "
                     },
+                    {
+                        text: "How often do I get paid as a freelancer?",
+                        answer: "At Apex Technologies, freelancers are paid on a weekly basis. Payments are made for the previous week's work once the submitted work order is reviewed, cleared, and approved by the employer. After approval, the payment is processed and deposited into the freelancer's account within a few business days."
+                    }
 
             ],
             answer_active: [],

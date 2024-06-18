@@ -440,8 +440,6 @@ export default {
                 "Vague Description",
                 "Unrealistic Expectations",
                 "Poor reviews about the client",
-                "Doesn't Match Skills",
-                "Not in my preferred location"
               ],
             nigerianStates,
             job_type: ["small", "medium", "large"],

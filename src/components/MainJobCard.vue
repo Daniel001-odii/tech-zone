@@ -14,9 +14,7 @@
                             <i class="bi bi-bookmark-check"></i>
                         </slot>
                         <slot name="flag-job">
-                            <button class="icon_btn" @click="flagJob">
                                 <i class="bi bi-hand-thumbs-down"></i>
-                            </button>
                         </slot>
                         
                        
