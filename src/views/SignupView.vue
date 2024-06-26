@@ -151,10 +151,11 @@ export default {
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
                     // redirect to user profile...
-                    this.$router.push("/in/jobs")
+                    this.$router.push("/in/jobs");
+                    window.location.reload();
                 } else if(res.data.message == "User registered successfully"){
-                    
-                    this.$router.push("/profile")
+                    this.$router.push("/in/jobs");
+                    window.location.reload();
                 }
                 console.log("response from backend: ", res)
 
