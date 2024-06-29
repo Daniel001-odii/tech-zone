@@ -39,7 +39,7 @@
                 <TermsAndCondition/>
             </div>
             <div v-if="current_tab == 'billing'" class=" w-[70%] flex flex-col overflow-y-auto h-[500px]">
-                Billing Terms and conditions
+                <BillingPolicyText/>
             </div>
         </div>
 
@@ -61,6 +61,9 @@ import PrivacyPolicyText from '@/components/PrivacyPolicyText'
 import CookiesPolicyText from '@/components/CookiesPolicyText'
 import TermsAndCondition from '@/components/TermsAndConditionText'
 
+import BillingPolicyText from '@/components/BillingPolicyText'
+
+
 export default {
     name: "PrivacyPolicyPage",
     components: { 
@@ -69,7 +72,8 @@ export default {
         Footer,
         PrivacyPolicyText,
         CookiesPolicyText,
-        TermsAndCondition
+        TermsAndCondition,
+        BillingPolicyText
     },
     data(){
         return{
