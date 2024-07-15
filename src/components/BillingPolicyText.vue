@@ -195,7 +195,7 @@
     
     <p><strong>Apex Technologies</strong><br>
     <a href="mailto:hello@apexteks.com">hello@apexteks.com</a><br>
-    10/06/2024</p>
+    06/10/2024</p>
     </div>
 </template>
 

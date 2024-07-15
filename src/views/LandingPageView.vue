@@ -388,7 +388,7 @@
                                 </button>
                             </div>
                         
-                            <p v-if="answer_active[question_id]" class="w-[90%]">{{ question.answer }}</p>
+                            <p v-if="answer_active[question_id]" class="w-[90%]" v-html="question.answer"></p>
                         </div>
                     </div>
                     <RouterLink to="/FAQ">
@@ -486,17 +486,17 @@ export default {
 
                     {
                         text: "How can I apply for a job listing ",
-                        answer: "To apply for a job listing as a Talent on the platform, follow these steps: 1. Log in to your account and navigate to the Work Explorer page. 2. Browse through the active job listings to find a job that interests you. 3. Click on the job listing to view more details. 4. Use the <apply> here button provided on the job listing page to start and complete the application process. "
+                        answer: "To apply for a job listing as a Talent on the platform, follow these steps:<ol> <li>1. Log in to your account and navigate to the Work Explorer page. </li> <li>2. Browse through the active job listings to find a job that interests you.</li><li> 3. Click on the job listing to view more details.</li><li> 4. Use the <i>apply</i> here button provided on the job listing page to start and complete the application process. </li></ol>"
                     },
 
                     {
                         text: "How can I save job listings for later ",
-                        answer: "To save job listings for later viewing: 1. Go to the Work Explorer page on the platform. 2. Look for the job listing you want to save. 3. Next to the job listing, you'll see a save icon. Click on this icon to save the job for later. 4. If you wish to remove a job from your saved list, click on the save icon again to deselect it and remove it from your saved list. "
+                        answer: `<div>To save job listings for later viewing: <ol type="1"><li>1. Go to the Work Explorer page on the platform.</li><li>2. Look for the job listing you want to save. </li><li>3. Next to the job listing, you'll see a save icon. </li><li>4. Click on this icon to save the job for later. </li><li>5. If you wish to remove a job from your saved list, click on the save icon again to deselect it and remove it from your saved list. </li></ol></div>`
                     },
 
                     {
                         text: "How do I post a job listing as an employer ",
-                        answer: "To post a job listing as an employer, follow these steps: 1. Go to the Employers Console on the platform. 2. Click on the <Post Job> link located in the navigation bar. This action will direct you to the Post Job page. 3. Follow the provided instructions and steps on the Post Job page to successfully create and post your job listing. "
+                        answer: "To post a job listing as an employer, follow these steps: <ol><li>1. Go to the Employers Console on the platform.</li><li> 2. Click on the <i>Post Job</i> link located in the navigation bar. This action will direct you to the Post Job page.</li><li> 3. Follow the provided instructions and steps on the Post Job page to successfully create and post your job listing.</li> </ol>"
                     },
 
                     {
