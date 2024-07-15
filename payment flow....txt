@@ -1,3 +1,12 @@
+on FAQ make the numbers line by line...
+
+Change fontfor FAQ and add read more button...
+
+change billing policy email to "hello@apexteks.com"
+
+change date at bottom..
+
+
 
 
 1. Charge employer for contract...

@@ -1,5 +1,5 @@
 <template>
-        <div class="rounded-lg h-full justify-between p-5 border border-gray-200 flex flex-col min-w-[320px] bg-slate-100">
+        <div class="rounded-lg h-full justify-between p-5 border border-gray-200 flex flex-col max-w-[400px] bg-slate-100">
             <div>
                     <div class="flex flex-col justify-center font-medium text-sm">
                         <div class="flex gap-2">
@@ -41,7 +41,7 @@ export default {
         company: String,
         job_time: String,
         job_title: String,
-        job_location: String,
+        job_location: Object || String,
         job_duration: String,
         job_description: String,
         job_url: String,

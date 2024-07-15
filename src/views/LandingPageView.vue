@@ -222,7 +222,9 @@
                 </div>
             </section>
 
-
+            <div>New carousel below</div>
+            
+            
             <section class=" bg-white">
                     <div data-aos="zoom-in-up" class="text-left flex flex-col gap-5  w-full container">
                         <div class="flex flex-col justify-around">
@@ -374,8 +376,9 @@
 
             <section>
                 <div class=" flex items-center justify-center flex-col container gap-5">
-                    <h2 class="section_subtitle font-bold text-[30px]">FAQ</h2>
+                    <h2 class="FAQ font-bold text-[50px]">FAQs</h2>
                     <div class="w-full mt-5">
+                        
                         <div v-for="(question, question_id) in generalFAQs" :key="question_id">
                             <div class="flex flex-row justify-between mt-3">
                                 <h4 class="font-bold text-lg max-w-90%">{{ question.text }}</h4>
@@ -388,6 +391,10 @@
                             <p v-if="answer_active[question_id]" class="w-[90%]">{{ question.answer }}</p>
                         </div>
                     </div>
+                    <RouterLink to="/FAQ">
+                        <p class="text-blue-500 underline">See more</p>
+                    </RouterLink>
+                    
                 </div>
             </section>
 
@@ -430,11 +437,23 @@ import HomeNavbar from '@/components/HomeNavbar.vue';
 
 import { formatTimestamp } from '@/utils/dateFormat';
 
+
 import axios from 'axios';
 
 export default {
     name: "LandingPage",
-    components: { Navbar, StatsBox, StepBox, JobCat, StrikeLineSvg, GetStartedNow, Footer, LpJobCard, SiteLogo, HomeNavbar },
+    components: { 
+        Navbar, 
+        StatsBox, 
+        StepBox, 
+        JobCat, 
+        StrikeLineSvg, 
+        GetStartedNow, 
+        Footer, 
+        LpJobCard, 
+        SiteLogo, 
+        HomeNavbar, 
+    },
     data(){
         return{
             jobs:'',
@@ -626,6 +645,12 @@ export default {
         @apply flex justify-center items-center mx-0 my-auto p-8 w-full
     }
 
+
+    .FAQ{
+        font-family: "Bona Nova SC", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
 
     .floating {  
         animation-name: floating;

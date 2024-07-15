@@ -45,8 +45,7 @@ import 'primeicons/primeicons.css'
 import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
 import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
 
-
-
+// IMPORT PRIMEVUE ACCORDION
 // app.use(PrimeVue, {
 //   unstyled: true
 // });

@@ -1,0 +1,15 @@
+VueJs Chat..
+
+https://npm.io/package/vue-quick-chat
+
+https://github.com/MatheusrdSantos/vue-quick-chat
+
+https://www.npmjs.com/package/vue-advanced-chat
+
+
+
+//NPM FOR NIGERIAN STATES, LGA etc..
+https://www.npmjs.com/package/naija-state-local-government
+
+//NPM FOR Nigerian banks...
+https://www.npmjs.com/package/ng-banks
