@@ -49,7 +49,9 @@
                         <div class="menu_item"><i class="bi bi-compass"></i> Overview</div>
                     </RouterLink>
                     
-                    <div class="menu_item text-slate-300"><i class="bi bi-compass"></i> Billings & Payments</div>
+                    <RouterLink to="/client/billings" class="nav_link">
+                        <div class="menu_item"><i class="bi bi-compass"></i> Billings & Payments</div>
+                    </RouterLink>
 
                     <RouterLink to="/client/settings">
                         <div class="menu_item"><i class="bi bi-gear"></i> Settings</div>

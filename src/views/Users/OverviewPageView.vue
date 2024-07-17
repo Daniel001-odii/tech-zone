@@ -35,7 +35,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="font-bold text-lg">Total Earnings</span>
-                        <span>N0.00</span>
+                        <span v-if="user.credits">NGN {{ user.credits.toLocaleString() }}</span>
                     </div>
                 </div>
 

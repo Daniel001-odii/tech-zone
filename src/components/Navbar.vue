@@ -61,7 +61,7 @@
                     <RouterLink to="/messages" class="nav_link">Messages</RouterLink>
                     <RouterLink to="/client/profile" class="nav_link">My Profile</RouterLink>
                     <RouterLink to="/client/contracts" class="nav_link">Contracts & Hires</RouterLink>
-                    <div class="menu_item text-slate-300 nav_link"><i class="bi bi-compass"></i> Billings & payments</div>
+                    <RouterLink to="/client/billings" class="nav_link"><i class="bi bi-compass"></i> Billings & payments</RouterLink>
                     <RouterLink to="/client/settings" class="nav_link"> Settings</RouterLink>
 
                 </div>

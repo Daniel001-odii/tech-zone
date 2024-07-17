@@ -13,3 +13,12 @@ https://www.npmjs.com/package/naija-state-local-government
 
 //NPM FOR Nigerian banks...
 https://www.npmjs.com/package/ng-banks
+
+
+VUE TOAST...
+https://www.npmjs.com/package/vue-numeric-input
+
+
+//REAL TIME NOTIFICATION USING SOCKETS...
+https://medium.com/@rahul.a1739/implementing-real-time-notifications-in-a-node-js-express-application-with-postgresql-and-socket-io-69a6db1c7679
+

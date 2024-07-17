@@ -94,7 +94,7 @@
                                 
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Budget</td>
-                                        <td class="px-6 py-4">₦{{ contract.job.budget.toLocaleString() }}</td>
+                                        <td class="px-6 py-4">₦{{ contract.budget.toLocaleString() }}</td>
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">ApexTek Service Fee</td>
@@ -102,7 +102,7 @@
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Amount you should receive</td>
-                                        <td class="px-6 py-4">₦{{ (contract.job.budget - (contract.job.budget * 12.99)/100).toLocaleString() }}</td>
+                                        <td class="px-6 py-4">₦{{ (contract.budget - (contract.budget * 12.99)/100).toLocaleString() }}</td>
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Budget Type</td>
@@ -123,6 +123,20 @@
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Requires Taskwatch</td>
                                         <td class="px-6 py-4">{{ contract.job.requires_taskwatch }}</td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Funding Status</td>
+                                        <td class="px-6 py-4">
+                                            <span v-if="contract.funded" class="rounded-md text-white bg-green-500 px-4 py-1">funded</span>
+                                            <span v-else class="rounded-md text-white bg-red-500 px-4 py-1">not funded</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">Contract Status</td>
+                                        <td class="px-6 py-4">
+                                            <span class="rounded-md text-white px-4 py-1" 
+                                            :class="{'bg-blue-500':contract.status == 'open', 'bg-orange-500':contract.status == 'paused', 'bg-red-500': contract.status == 'closed', 'bg-green-500':contract.status == 'completed'}"> {{ contract.status }} </span>
+                                        </td>
                                     </tr>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">Offer Date</td>
@@ -174,10 +188,10 @@
                         <h2 class="font-bold text-xl">Feedback & Review</h2>
                         <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
                             <i class="bi bi-exclamation-circle"></i> 
-                            <span> Feedback submission will only be available when contract is completed.</span>
+                            <span> Feedback submission will only be available when contract is completed or closed.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="font-bold px-12 rounded-md py-2 bg-tz_blue text-white" :disabled="contract.status != 'completed' || contract.employer_feedback.review">
+                            <button @click="feedbackModal = !feedbackModal" class="btn" :disabled="contract.status != 'completed' && contract.status != 'closed'">
                                 <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
                                 <span v-else>Send Feedback to client</span>
                             </button>

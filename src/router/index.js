@@ -55,6 +55,9 @@ import HelpAndSupportPageView from '@/views/HelpAndSupportPageView.vue'
 
 import WaitListPageView from '@/views/WaitListPageView.vue'
 
+import ContractFundingStatusView from '@/views/ContractFundingStatusView.vue'
+import BillingsAndOverviewPageView from '@/views/Employers/BillingsAndOverviewPageView.vue'
+
 const routes = [
 
   // FOR WAITLIST.....
@@ -152,6 +155,13 @@ const routes = [
   },
 
   {
+    path: '/contracts/:contract_id/funding/:status',
+    name:'contract funding-status',
+    component: ContractFundingStatusView,
+  },
+
+
+  {
     path: '/in',
     component: TemplateView,
     children: [
@@ -219,6 +229,7 @@ const routes = [
       {path: 'profile', component: ClientProfilePageViewVue, name: "user profile"},
       {path: 'notifications', component: NotifcationsPageView, name: "notifications"},
       {path: 'contracts', component: ClientContractsListPageViewVue, name: "my contracts"},
+      {path: 'billings', component: BillingsAndOverviewPageView, name: "billings & overview"},
       {path: 'overview', component: ClientOverviewPageView, name: "my overview"},
       {path: 'contracts/:contract_id', component: ClientContractPageViewVue, name: "contract"},
       {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "task-watch"},

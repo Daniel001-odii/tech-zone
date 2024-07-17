@@ -8,7 +8,7 @@
 }
 
 .btn:disabled{
-    @apply bg-gray-500 dark:bg-tz_light_blue
+    @apply bg-gray-200 dark:bg-gray-800 dark:text-gray-500
 }
 
 .btn_white{
@@ -24,7 +24,7 @@ nav{
 }
 
 .form_input{
-    @apply border p-3 rounded-md  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+    @apply border p-3 rounded-md  dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
 }
 
 

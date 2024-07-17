@@ -6,6 +6,13 @@ import store from './store'
 import './assets/css/style.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 const app = createApp(App);
+
+// CONFIGURE AXIOS
+import axios from 'axios';
+// axios.defaults.withCredentials = true;
+// axios.defaults.baseURL =  process.env.VUE_APP_API_URL
+
+
 // GOOGLE LOGIN FOR GOOGLE AUTH...
 import vue3GoogleLogin from 'vue3-google-login';
 
@@ -40,10 +47,15 @@ import ToastService from 'primevue/toastservice';
 import 'primeicons/primeicons.css'
 
 
+// toast notification plugin...
+import Toast from "vue-toastification";
 
-// COOKIES CONSENT BANNER
-import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
-import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
+
+const options = {
+  // You can set your default options here...
+};
 
 // IMPORT PRIMEVUE ACCORDION
 // app.use(PrimeVue, {
@@ -82,6 +94,6 @@ app.use(store).use(router).mount('#app');
 app.use(PrimeVue);
 app.use(ToastService);
 
-app.directive('click-outside', clickOutside);
+app.use(Toast, options)
 
-app.component('vue-cookie-accept-decline', VueCookieAcceptDecline);
+app.directive('click-outside', clickOutside);

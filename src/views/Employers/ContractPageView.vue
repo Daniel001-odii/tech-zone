@@ -30,7 +30,7 @@
                             </div>
                     <p>Write an honest review to the Talent</p>
                     <span class=" text-sm bg-blue-100 text-blue-700 p-3 rounded-md">The talent will be able to see your review once submitted</span>
-                    <textarea v-model="feedback.review" placeholder="a very honest review about your experience working with this person" class="form_input text-xl"></textarea>
+                    <textarea v-model="feedback.review" :placeholder="`a very honest review about your experience working with ${contract.user.firstname} ${contract.user.lastname}`" class="form_input text-xl"></textarea>
                 </div>
             </form>
         </template>
@@ -78,7 +78,7 @@
                         
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="px-6 py-4">Your Budget</td>
-                                <td class="px-6 py-4">₦{{ contract.job.budget.toLocaleString() }}</td>
+                                <td class="px-6 py-4">₦{{ contract_budget.toLocaleString() }}</td>
                             </tr>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="px-6 py-4">Budget Type</td>
@@ -101,6 +101,20 @@
                                 <td class="px-6 py-4">{{ contract.job.requires_taskwatch }}</td>
                             </tr>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="px-6 py-4">Funding Status</td>
+                                <td class="px-6 py-4">
+                                    <span v-if="contract.funded" class="rounded-md text-white bg-green-500 px-4 py-1">funded</span>
+                                    <span v-else class="rounded-md text-white bg-red-500 px-4 py-1">not funded</span>
+                                </td>
+                            </tr>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="px-6 py-4">Contract Status</td>
+                                <td class="px-6 py-4">
+                                    <span class="rounded-md text-white px-4 py-1" 
+                                    :class="{'bg-blue-500':contract.status == 'open', 'bg-orange-500':contract.status == 'paused', 'bg-red-500': contract.status == 'closed', 'bg-green-500':contract.status == 'completed'}"> {{ contract.status }} </span>
+                                </td>
+                            </tr>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="px-6 py-4">Offer Date</td>
                                 <td class="px-6 py-4">{{ formatTimestampWithoutTime(contract.createdAt) }}</td>
                             </tr>
@@ -114,21 +128,62 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- CONTRACT BUDGET -->
+                    <div class="mt-6" v-if="contract.status != 'closed' && contract.status != 'completed'">
+                        <h2 class="font-bold text-xl">Contract Budget</h2>
+                        <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
+                            <i class="bi bi-exclamation-circle"></i> 
+                            <span>The contract budget should only be modified when the freelancer has proposed a counter offer.<br/>This will update the contracts budget accordingly while the job budget remains thesame.</span>
+                        </p>
+                        <div class="flex flex-row flex-wrap gap-3 justify-start mt-3">
+                            <form @submit.prevent="updateContractBudget" class="flex flex-row flex-wrap gap-3">
+                                <div class="flex flex-row items-center border pl-3 rounded-md dark:border-gray-600 justify-center ">
+                                    <div class=" border-r pr-3 h-full dark:border-gray-500 flex justify-center items-center">&#8358;</div>
+                                    <input type="number" class="bg-transparent border-none" v-model="contract_budget" :disabled="contract.funded">
+                                </div>
+                               
+
+                                <button class="btn" :disabled="contract.budget == contract_budget">Save changes</button>
+                                <!-- <SplitButton
+                                class="border dark:border-gray-600 pl-3"
+                                pt:ptMenu="dark:bg-gray-600 text-red-500"
+                                :label="funding_loading ? 'loading...':'Save changes'" @click="updateContractBudget" :model="items" outlined/> -->
+                
+                            </form>
+                        </div>
+                    </div>
+
                     
                     <!-- CONTRACT ACTIONS -->
-                    <div class="mt-6">
+                    <div class="mt-6" v-if="contract.status != 'closed' && contract.status != 'completed'">
                         <h2 class="font-bold text-xl">Contract Actions</h2>
                         <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
                             <i class="bi bi-exclamation-circle"></i> 
                             <span>The Freelancer will be notified for any action you perform on the contract.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-3 justify-start mt-3">
-                            <div class="flex flex-row gap-3 w-full">
-                                <button v-if="contract.action == 'accepted'" @click="pauseContract" class="contrac_activity_btn border border-tz_blue text-blue-400" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed' ">Pause contract</button>
+                            <form @submit.prevent="performContractAction" class="flex flex-row gap-3">
+                                <select class="form_input" v-model="contract_action">
+                                    <option  disabled value="">Select Action</option>
+                                    <option v-if="!contract.funded" value="fund">Fund Contract</option>
+                                    <option v-if="contract.action == 'accepted' && contract.status == 'paused'" value="resume" :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume Contract</option>
+                                    <option value="pause" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed' ">Pause Contract</option>
+                                    <option value="complete" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete Contract</option>
+                                    <option  value="close" :disabled="contract.action == 'declined' || contract.status == 'completed' || contract.status == 'closed'">Close Contract</option>
+                                </select>
+
+                                <button class="btn" :disabled="contract_action == ''">
+                                    <span v-if="contract_action == 'fund'">Fund now</span>
+                                    <span v-else>Save changes</span>
+                                </button>
+                            </form>
+                            <!-- <div class="flex flex-row gap-3 w-full">
+                                <button v-if="contract.action == 'accepted'" @click="pauseContract" class="contract_activity_btn border border-tz_blue text-blue-400" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed' ">Pause contract</button>
                                 <button @click="closeContract" class="bg-red-500 rounded-md px-12 font-bold" :disabled="contract.action == 'declined' || contract.status == 'completed' || contract.status == 'closed'">Close</button>
                             </div>
-                            <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="contrac_activity_btn bg-green-500" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
-                            <button v-if="contract.action == 'accepted' && contract.status == 'paused'" @click="resumeContract" class="contrac_activity_btn bg-tz_blue" :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume contract</button>
+                            <button v-if="contract.action == 'accepted'" @click="markAsComplete" class="contract_activity_btn bg-green-500" :disabled="contract.action == 'declined' || contract.status == 'paused' || contract.status == 'closed' || contract.status == 'completed'">Mark as complete</button>
+                            <button v-if="contract.action == 'accepted' && contract.status == 'paused'" @click="resumeContract" class="contract_activity_btn bg-tz_blue" :disabled="contract.status == 'closed' || contract.status == 'completed' ">Resume contract</button> -->
                         </div>
                     </div>
 
@@ -154,26 +209,28 @@
                         <h2 class="font-bold text-xl">Feedback & Review</h2>
                         <p class="flex flex-row gap-3 mt-3 bg-tz_light_blue p-3 rounded-lg text-blue-300">
                             <i class="bi bi-exclamation-circle"></i> 
-                            <span>Feedback submission will only be available when contract is completed.</span>
+                            <span> Feedback submission will only be available when contract is completed or closed.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="contrac_activity_btn bg-blue-500" :disabled="contract.status != 'completed' || contract.user_feedback.review">
+                            <button @click="feedbackModal = !feedbackModal" class="btn" :disabled="contract.status != 'completed' && contract.status != 'closed'">
                                 <span v-if="contract.user_feedback.review">Feedback sent</span>
                                 <span v-else>Send Feedback to Freelancer</span>
                             </button>
                         </div>
                     </div>
 
-                    
-                    <p class="text-gray-400">contract status: {{ contract.status }}</p>
                 </div>
 
                 <!-- CONTRACT USER DETAILS AREA -->
                 <div class="flex flex-col md:w-[30%] md:items-center mt-6 md:m-0 md:pl-5">
                     <div class="flex flex-row items-start gap-6 mt-6 flex-wrap">
-                        <img :src="contract.user.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
+                        <RouterLink :to="`/users/${contract.user._id}`">
+                            <img :src="contract.user.profile.image_url" class="rounded-full w-14 h-14 outline outline-blue-500 outline-offset-4">
+                        </RouterLink>
                         <div>
-                            <p class="text-xl font-bold">{{ contract.user.firstname }} {{ contract.user.lastname }}</p>
+                            <RouterLink :to="`/users/${contract.user._id}`">
+                                <p class="text-xl font-bold">{{ contract.user.firstname }} {{ contract.user.lastname }}</p>
+                            </RouterLink>
                             <p class="text-gray-300">{{  contract.user.profile.title }}</p>
                             <p class="text-gray-300">joined: {{  formatTimestampWithoutTime(contract.user.created) }}</p>
                             <p class="text-white bg-blue-500 rounded-full px-5 w-fit">Freelancer</p>
@@ -201,6 +258,11 @@ import contractOffer from '../../lottie/contract-offer.json';
 import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 
 import Toast from 'primevue/toast';
+import InputNumber from 'primevue/inputnumber';
+
+import { useToast } from "vue-toastification";
+
+import SplitButton from 'primevue/splitbutton';
 
 export default {
     name: "ContractsListPageView",
@@ -212,9 +274,15 @@ export default {
         PageTitle, 
         DismissableAlert,
         Toast,
+        InputNumber,
+        SplitButton
     },
     data(){
         return{
+            funding_loading: false,
+            contract_action: '',
+            contract_budget: '',
+
             alerts: [],
             show_alert: false,
             alert_type: '',
@@ -244,15 +312,23 @@ export default {
                 "Project Clarity and Scope",
                 "Overall Satisfaction"
             ],
-            contractOffer
+            contractOffer,
+            toast: useToast(),
+            items: [
+                {
+                    label: 'Save and Fund Contract',
+                    command: () => {
+                        this.updateContractBudget();
+                    }
+                },
+                
+            ]
         }
     },
     methods: {
-        showAlertBox(type, message){
-            this.alerts.push(message);
-            this.show_alert = !this.show_alert;
-            this.alert_type = type;
-            this.alert_message = message;
+        
+        showAlertBox(){
+            this.$toast("I'm a toast!");
         },
 
         readableTimeFormat(time){
@@ -263,6 +339,50 @@ export default {
             this.rating[section] = value;
         },
 
+        performContractAction(){
+            const action = this.contract_action;
+            if(action == 'pause'){
+                this.pauseContract();
+            } else if(action == 'close'){
+                this.closeContract();
+            } else if(action == 'complete'){
+                this.markAsComplete();
+            } else if(action == 'resume'){
+                this.resumeContract();
+            } else if(action == 'fund'){
+                // fund contract...
+                this.fundContract();
+            }
+        },
+
+        async fundContract(){
+            try{
+                this.loading = true;
+                const headers = this.headers;
+                const response = await axios.post(`${this.api_url}/contracts/${this.contract._id}/funds`, { headers });
+                window.location.href = response.data.checkout_url;
+                console.log("response from funding: ", response);
+            }catch(error){
+                this.toast.error(error.response.data);
+                console.log("error funding contract: ", error);
+                this.loading = false;
+            }
+        },
+
+        async updateContractBudget(){
+            const headers = this.headers;
+            const form = {
+                budget: this.contract_budget,
+            }
+            try{
+                const response = await axios.patch(`${this.api_url}/contracts/${this.contract._id}/budget`, form, { headers });
+                console.log("updated budget: ", response);
+                this.toast.success(response.data.message);
+            }catch(error){
+                console.log("error updating budget: ", error.response);
+                this.toast.error(error.response.data.message);
+            }
+        },
 
         async getUser(){
             const headers = this.headers;
@@ -283,8 +403,14 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/contracts/${this.$route.params.contract_id}`, { headers });
-                console.log(response);
+                console.log("the contract: ", response);
+                const contract = response.data.contract;
                 this.contract = response.data.contract;
+                if(contract.budget){
+                    this.contract_budget = contract.budget;
+                } else {
+                    this.contract_budget = contract.job.budget;
+                }
             }catch(error){
                 console.log(error);
                 if(error.response.status == 404){
@@ -293,17 +419,15 @@ export default {
             }
         },
 
-
         async markAsComplete(){
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/complete`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
                 window.location.reload();
             }catch(error){
-                // console.log("complete contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -312,13 +436,12 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/pause`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
                 setTimeout(function(){
                         window.location.reload()
                     }, 3000)
             }catch(error){
-                // console.log("pause contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -327,13 +450,12 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/close`, {}, { headers } );
                 // console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
                 setTimeout(function(){
                         window.location.reload()
                     }, 3000)
             }catch(error){
-                console.log("close contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -342,13 +464,12 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/resume`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
                 setTimeout(function(){
                         window.location.reload()
                     }, 3000)
             }catch(error){
-                console.log("close contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -368,7 +489,7 @@ export default {
                     const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/employer-feedback`, this.feedback, { headers });
                     console.log("feedback sent: ", response);
                     this.loading = false;
-                    this.$toast.add({ severity: 'success', summary: 'Success Message', detail: 'Your feedback was sent!', life: 3000 });
+                    this.toast.success(response.data.message);
 
                     setTimeout(function(){
                         window.location.reload()
@@ -376,7 +497,7 @@ export default {
                     
                 }catch(error){
                     console.log(error);
-                    this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                    this.toast.error(error.response.data.message);
                 }
         }
     },
@@ -426,7 +547,8 @@ export default {
     @apply border dark:border-gray-500 rounded-md w-[35px] h-[35px] flex justify-center items-center cursor-pointer;
 }
 
-.contrac_activity_btn{
+.contract_activity_btn{
     @apply font-bold rounded-md px-12 py-3 dark:disabled:bg-gray-600 disabled:text-gray-400
 }
+
 </style>
