@@ -45,7 +45,7 @@
                                     <span v-else>{{ job.location.address }}, {{ job.location.state }}</span>
                                 </div>
                                 <div>
-                                    <i class="bi bi-arrow-clockwise"></i> <span>{{ formatToRelativeTime(job.created) }}</span>
+                                    <i class="bi bi-arrow-clockwise"></i> <span>{{ formatDistanceToNow(job.createdAt) }} ago</span>
                                 </div>
                                 <div>
                                     <i class="bi bi-wallet"></i> <span>N{{ job.budget.toLocaleString()}} {{ job.budget_type }}</span>
@@ -99,7 +99,7 @@
                                 <div class="flex flex-col text-sm">
                                     <span>{{ job.employer.profile.company_name }}</span>
                                     <span>{{ job.employer.profile.tag_line }}</span>
-                                    <span class="text-gray-400">member since: {{ formatToRelativeTime(job.employer.created) }}</span>
+                                    <span class="text-gray-400">member since: {{ formatDistanceToNow(job.employer.createdAt, { addSuffix: true }) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -236,6 +236,9 @@ import Toast from 'primevue/toast';
 
 import FileUpload from 'primevue/fileupload';
 
+import { formatDistanceToNow } from 'date-fns'
+import { useToast } from 'vue-toastification';
+
 export default {
     name: "ApplicationPageView",
     components: { 
@@ -249,6 +252,7 @@ export default {
     },
     data(){
         return{
+            formatDistanceToNow,
             loading: false,
             hasCounterOffer: false,
             headers: {

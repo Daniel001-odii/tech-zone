@@ -191,9 +191,12 @@
                             <span> Feedback submission will only be available when contract is completed or closed.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="btn" :disabled="contract.status != 'completed' && contract.status != 'closed'">
-                                <span v-if="contract.status == 'completed' && contract.employer_feedback.review">Feedback sent</span>
-                                <span v-else>Send Feedback to client</span>
+                            {{ contract.employer_feedback.review }}
+                            <button v-if="!contract.employer_feedback.review" @click="feedbackModal = !feedbackModal" class="btn" :disabled="contract.status != 'completed' && contract.status != 'closed'">
+                                Send Feedback to Employer
+                            </button>
+                            <button v-else class="btn" disabled>
+                                feedback sent successfully
                             </button>
                         </div>
                     </div>

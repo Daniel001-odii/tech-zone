@@ -100,12 +100,15 @@ import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 import SiteLogo from '@/components/SiteLogo.vue';
 
 import MiniFooter from '@/components/MiniFooter.vue'
+import { useToast } from 'vue-toastification'
+
 
 export default {
     name: "SignUpView",
     components: { Alert, SiteLogo, MiniFooter },
     data(){
         return{
+            toast: useToast(),
             error: '',
             acceptedTOS: false,
             form_data: {
@@ -130,11 +133,17 @@ export default {
                 const response = await axios.post(`${this.api_url}/register/user`, this.form_data);
                 console.log(response);
                 localStorage.setItem('life-gaurd', response.data.accessToken);
+                
+                // display toast..
+                this.toast.success(response.data.message);
+
                 alert('registration successful, please login')
                 this.$router.push('/login')
             }
             catch(error){
                 this.error = error.response.data.message;
+                // display toast..
+                this.toast.error(response.data.message);
                 console.log("error registering: ", error);
             }
         },
@@ -147,7 +156,8 @@ export default {
                 const res = await axios.post(`${this.api_url}/google-auth`, auth );
                 if(res.data.message == "Sign-in successful"){
                     // alert user of successful sign login..
-                    
+                    // display toast..
+                    this.toast.success(response.data.message);
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
                     // redirect to user profile...
@@ -160,7 +170,8 @@ export default {
                 console.log("response from backend: ", res)
 
             }catch(error){
-                // alert(error);
+                // display toast..
+                this.toast.error(response.data.message);
             }
         },
     },

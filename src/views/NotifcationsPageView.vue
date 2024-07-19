@@ -24,7 +24,7 @@
                     </div>
 
                     <div v-for="(notification, notification_id) in notifications" :key="notification_id" class="w-full">
-                        <div v-if="!showAllNotifications" class="p-5 bg-slate-50 border border-slate-100 dark:bg-gray-600 flex flex-row justify-start items-start mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full gap-3" :class="notification.isRead ? 'opacity-30':''">
+                        <div v-if="!showAllNotifications" class="p-5 bg-slate-50 border border-slate-100 dark:bg-gray-600 flex flex-row justify-start items-start mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full gap-3 relative" :class="notification.isRead ? 'opacity-30':''">
                             <div>
                                 <i v-if="notification.type && notification.type == 'contract'" class="bi bi-gift"></i>
                             </div>
@@ -33,7 +33,7 @@
                                 <span class="text-gray-400">{{ formatTimestamp(notification.created) }}</span>
                                 <!-- <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink> -->
                             </div>
-                            <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)" class=" justify-self-end self-end">
+                            <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)" class="absolute right-2 top-2 p-3 rounded-xl hover:bg-gray-500">
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </div>

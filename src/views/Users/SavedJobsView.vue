@@ -21,7 +21,7 @@
 
                 <div v-if="!loading" class="flex flex-col overscroll-y-scroll" v-for="(job, job_index) in job_list()" :key="job_index">
                     <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-600">
-                        <div>posted {{ formatTime(job.created) }}</div>
+                        <div>posted {{ formatDistanceToNow(job.createdAt, {addSuffix: true}) }}</div>
                         <div class="flex flex-row justify-between items-center">
                             <div class="text-2xl font-bold">
                                 <RouterLink :to="'/in/jobs/' + job._id + '/application'">
@@ -29,7 +29,7 @@
                                 </RouterLink>
                             </div>
                             <div class="text-lg gap-4 flex flex-row-reverse">
-                                <button class="icon_btn bg-tz_light_blue" @click="addJobToSaves(job._id)">
+                                <button class="icon_btn" @click="addJobToSaves(job._id)">
                                     <i v-if="checkIfJobIsSaved(job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
                                     <i v-else class="bi bi-bookmark-check"></i>
                                 </button>
@@ -70,6 +70,8 @@ import PageTitle from '@/components/PageTitle.vue';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 
 import Toast from 'primevue/toast';
+import { formatDistanceToNow } from 'date-fns'
+import { useToast } from 'vue-toastification';
 
 export default {
     name: "SavedJobsView",
@@ -82,6 +84,8 @@ export default {
     },
     data(){
         return{
+            toast: useToast(),
+            formatDistanceToNow,
             alerts: [],
             show_alert: false,
             alert_type: '',
@@ -145,16 +149,19 @@ export default {
         },
 
         async addJobToSaves(job_id){
-          try{
-               const headers = this.headers;
-               const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
-            //    console.log(res)
-            // this.showAlertBox("success", "Job removed from saved");
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job unsaved Successfully', life: 3000 });
+           try{
+                const headers = this.headers;
+                const response = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
+                
                 this.getSavedJobs();
-          }catch(error){
-           console.log(error)
-          }
+                if(response.status == 201){
+                    this.toast.success(response.data.message);
+                } else {
+                    this.toast.warning(response.data.message);
+                }
+           }catch(error){
+            this.toast.error(error.response.data.message);
+           }
         },
 
         async getAllApplications(){

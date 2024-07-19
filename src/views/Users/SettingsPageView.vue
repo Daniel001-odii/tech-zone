@@ -12,11 +12,11 @@
     <div class="h-full flex flex-col relative">
         <FullPageLoading v-if="loading"/>
        
-        <div class=" tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
+        <div class=" bg-white tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
             <!-- <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button> -->
             <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
             <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
-            <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
+            <button @click="bankInfoUpdate" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
             <button @click="active_tab = 5" :class="active_tab == 5 ? 'active_tab':''" class="tab_button">ID & Verification</button>
         </div>
 
@@ -36,6 +36,7 @@
                 </div>
             </div>
 
+            <!-- PROFILE ACCOUNT -->
             <div v-if="active_tab == 2" class="section">
                 <form @submit.prevent="updateUserData" class=" mt-3">
                     <h1 class="font-bold mb-3 text-lg">General Information</h1>
@@ -119,6 +120,7 @@
                 </div>
             </div>
 
+            <!-- NOTIFICATIONS -->
             <form @submit.prevent="updateUserData" v-if="active_tab == 3" class="section mb-3">
                 <h1 class="font-bold mb-3 text-lg">Notification Settings</h1>
                 <!-- <div class=" flex flex-row items-center justify-between justify-center">
@@ -158,10 +160,11 @@
                 </div>
             </form>
 
+            <!-- FUNDS WITHDRAWAL -->
             <form @submit.prevent="updateUserData" v-if="active_tab == 4" class="section mb-3">
                 
-                <div class="  mt-3">
-                    <h1 class="font-bold mb-3 text-lg">Withdrawal Information</h1>
+                <div class="mt-3">
+                    <h1 class="font-bold mb-3 text-lg">Bank information</h1>
                     <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
                         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -170,30 +173,46 @@
                         <div>Available funds will be sent to the provided bank account details when withdrawal is initiated</div>
                     </div>
                     <div class="flex flex-col max-w-sm">
-                        <label for="bank-name">Bank name</label>
-                        <input class="form_input" type="text" name="bank-name" id="bank_name" v-model="settings.bank.name">
+                        <label for="bank-name">Bank name</label>                        
+                        <select class="form_input" v-model="bank.name" @change="setBankCode">
+                            <option value="" disbaled>select bank</option>
+                            <option v-for="bank in banks" :value="bank.name">{{ bank.name }}</option>
+                        </select>
                     </div>
-                    <div class="flex flex-col max-w-sm mt-5">
-                        <label for="sort-code">Bank Sort code</label>
-                        <input class="form_input" type="number" name="sort-code" id="sort_code" v-model="settings.bank.sort_code">
+
+                    <div class="flex flex-col max-w-sm mt-5" v-if="bank.name">
+                        <label for="sort-code">Bank code</label>
+                        <input class="form_input" type="number" name="sort-code" id="sort_code" v-model="bank.code" disabled>
                     </div>
                     <div class="flex flex-col max-w-sm mt-5">
                         <label for="account-number">Account number</label>
                         <input class="form_input" type="number" name="account-number" id="account_number" v-model="settings.bank.account_number">
                     </div>
+                    <button type="button" @click="updateUserData" class="btn mt-3 w-fit">update bank info</button>
                 </div>
-                <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
-                    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                    </svg>
-                    <span class="sr-only">Info</span>
-                    <div>Funds withdrawal is only available on weekends</div>
-                </div>
-                <span class="text-gray-400 underline text-green-500">Get Paid</span>
 
-                <button class="btn mt-3 w-fit">Save bank info</button>
+                
+
+                <div class="mt-3">
+                    <h1 class="font-bold mb-3 text-lg">Withdrawal & Payout</h1>
+                
+
+                    <div class="flex items-center p-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>Funds withdrawal is only available on weekends</div>
+                    </div>
+                    <div class="py-4 ">Current Balance: NGN {{ Math.floor(user.credits).toLocaleString() }}</div>
+                    <RouterLink to="#" class="text-gray-400 underline text-green-500">Withdraw Funds</RouterLink>
+                </div>
+
             </form>
 
+            
+
+            <!-- ID & VERIFICATION -->
             <form @submit.prevent="updateUserData"  v-if="active_tab == 5" class="section mb-3">
                 
                 <div class="mt-3">
@@ -246,11 +265,27 @@ import DismissableAlert from '@/components/DismissableAlert.vue';
 import Password from 'primevue/password'
 import Alert from '@/components/Alert.vue';
 
+import AutoComplete from 'primevue/autocomplete';
+import Dropdown from 'primevue/dropdown';
+
+import { useToast } from 'vue-toastification'
+
 export default {
     name: "SettingsPageView",
-    components: { TemplateView, ContractStatus, PageTitle, FullPageLoading, DismissableAlert, Password, Alert },
+    components: { 
+        TemplateView, 
+        ContractStatus, 
+        PageTitle, 
+        FullPageLoading, 
+        DismissableAlert, 
+        Password, 
+        Alert, 
+        AutoComplete,
+        Dropdown 
+    },
     data(){
         return{
+            toast: useToast(),
             alerts: [],
             show_alert: false,
             alert_type: '',
@@ -262,7 +297,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             current_mode: '',
-            active_tab: 2,
+            active_tab: 4,
 
             user: {
                 profile:{
@@ -277,6 +312,11 @@ export default {
             },
 
             password_errors: '',
+
+            bank: {
+                name: '',
+                code: '',
+            },
 
             settings:{
                 bank: {
@@ -300,6 +340,8 @@ export default {
                 },
                 profile_visibility: '',
             },
+
+            banks: [],
         }
     },
     methods:{
@@ -329,11 +371,29 @@ export default {
             document.documentElement.classList.add("dark");
         },
 
-        showAlertBox(type, message){
-            this.alerts.push(message);
-            this.show_alert = !this.show_alert;
-            this.alert_type = type;
-            this.alert_message = message;
+        bankInfoUpdate(){
+            this.active_tab = 4;
+            this.getBanks();
+        },
+
+        setBankCode() {
+            const bank = this.banks.find(b => b.name === this.bank.name);
+            this.bank.code = bank ? bank.code : '';
+            this.settings.bank.name = this.bank.name;
+            this.settings.bank.sort_code = this.bank.code;
+        },
+
+        async getBanks(){
+            try{
+                this.loading = true;
+                const response = await axios.get(`${this.api_url}/contracts/banks/list`);
+                console.log("bank lists: ", response);
+                this.banks = response.data.result.banks;
+                this.loading = false;
+            }catch(error){
+                this.loading = false;
+                this.toast.error(error.response.data.message);
+            }
         },
 
         async getUserData(){
@@ -346,8 +406,11 @@ export default {
 
                 if(this.user.settings){
                     this.settings.profile_visibility = this.user.settings.profile_visibility;
+                    // this.user.settings.
                     if(this.user.settings.bank){
                         this.settings.bank = this.user.settings.bank
+                        this.bank.name = this.settings.bank.name;
+                        this.bank.code = this.settings.bank.sort_code;
                     }
                     if(this.user.settings.card){
                         this.settings.bank = this.user.settings.bank
@@ -363,7 +426,7 @@ export default {
                 
                 this.loading = false;
             }catch(error){
-                console.log("error getting user details: ", error);
+                this.toast.error(error.response.data.message);
                 this.loading = true;
             }
         },
@@ -374,30 +437,32 @@ export default {
             try{
                 const user = this.user;
                 user.settings = this.settings;
-
-                // console.log(user)
-
                 const response = await axios.patch(`${this.api_url}/user/profile`, user, { headers });
                 // console.log("set successful: ", response);
-                this.showAlertBox("success", "settings updated successfully!");
+                this.toast.success(response.data.message);
                 this.loading = false;
             }catch(error){
-                // console.log("error updating user profile: ", error);
-                showAlertBox("danger", "error updating settings");
+                this.toast.error(error.response.data.message);
             }
         },
 
         async updatePassword(){
-            const headers = this.headers;
-            this.loading = true;
-            console.log("form: ", this.security, " headers ;", headers)
+            
             try{
+                if(this.security.password == '' || this.security.new_password == '' || this.security.new_password_confirmation == ''){
+                    this.toast.error("invalid data provided!");
+                } else {
+                const headers = this.headers;
+                this.loading = true;
                 const response = await axios.post(`${this.api_url}/user/password/change`, this.security, { headers });
                 console.log("password response: ", response);
                 alert("Password Updated Successfully!")
                 this.loading = false;
+                this.toast.success(response.data.message);
+                }
             }catch(error){
                 // console.log("error changing password: ", error);
+                this.toast.error(error.response.data.message);
                 this.password_errors = error.response.data.message;
                 this.loading = false;
             }

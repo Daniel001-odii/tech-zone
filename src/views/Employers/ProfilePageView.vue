@@ -119,7 +119,7 @@
                                 <span v-if="user.email_verified">email verified</span>
                                 <span v-else>email is not verified</span>
                             </div>
-                            <p>Joined: {{ formatTimestampWithoutTime(user.created) }}</p>
+                            <p>Joined: {{ formatDistanceToNow(user.createdAt) }} ago</p>
                             <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
                             
                             <!-- PROFILE PROGRESS PERCENTAGE -->
@@ -174,13 +174,13 @@
                             <div class="profile_section">
                                 <h2 class="font-bold">Date Joined</h2>
                                 <div>
-                                    {{ user.created }}
+                                    {{ formatDistanceToNow(user.createdAt) }} ago
                                 </div>
                             </div>
 
                             <div class="profile_section">
                                 <div class="border rounded-xl p-3 text-left  border-gray-300  dark:border-gray-600">
-                                    <h2 class="font-bold"><i class="bi bi-briefcase"></i> Completed Jobs</h2>
+                                    <h2 class="font-bold"><i class="bi bi-briefcase"></i> Completed Contracts & Talents</h2>
                                 </div>
                                 <div>
                                     <SkeletonLoader v-if="contracts_loading"/>
@@ -237,7 +237,9 @@ import { generateStarRatingFromInteger } from '@/utils/ratingStars';
 
 import { formatTimestamp } from '@/utils/dateFormat';
 
-import Toast from 'primevue/toast';
+import { useToast } from 'vue-toastification';
+import { formatDistanceToNow } from 'date-fns'
+
 
 export default {
     name: "ProfilePage",
@@ -248,10 +250,11 @@ export default {
         Modal, 
         LoaderButton, 
         SkeletonLoader,
-        Toast, 
     },
     data(){
         return{
+            formatDistanceToNow,
+            toast: useToast(),
             user: null,
 
             profile_edit_menu: false,
@@ -323,13 +326,13 @@ export default {
             try{
                 const response = await axios.patch(`${this.api_url}/employer/profile/update`, this.user_form, { headers });
                 // console.log(response)
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
                 this.user_form.loading = false;
+                this.profile_edit_menu = false;
             }
             catch(error){
                 // display any possible error here...
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
-                // console.log("error updating profile data");
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -344,7 +347,7 @@ export default {
             }catch(error){
                 this.contracts_loading = false;
                 console.log(error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 4000 });
+                this.toast.error(error.response.data.message);
             }
         },
 

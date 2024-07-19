@@ -96,45 +96,61 @@
                                 </span>
                             </span>
                         </button>
-                        <div class="relative" v-click-outside="closeDropdown" >
-                            <div class=" h-3 w-3 flex justify-center items-center text-white  rounded-full bg-red-600 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div>
+                        <div class="relative">
+                            <!-- <div class=" h-3 w-3 flex justify-center items-center text-white  rounded-full bg-red-600 absolute right-[0] top-0 z-10" v-if="notifications && notifications.length > 0"></div> -->
                             
-                            <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " @click="notify_menu = !notify_menu"></i>
-                            
-                            <div v-if="notify_menu" class=" max-w-[300px] w-[250px] border absolute bg-white top-9 -right-8 rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600 ">
-                            <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
-                            <div class=" max-h-[250px] overflow-y-auto">
-                                <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="flex flex-row p-3 hover:bg-slate-50 rounded-md gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
-                                    <div class="flex flex-col gap-2 w-[88%]">
-                                        <span class="text-sm font-bold">{{  notification.message }}</span>
-                                        <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
+                            <!-- NOTIFICATION MENU AND BELL ICON AS TRIGGER -->
+                            <CustomDropdown>
+                                <template #trigger>
+                                    <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " ></i>
+                                </template>
+                                <template #menu>
+                                    <div class=" max-w-[300px] w-[250px] border bg-white rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600 ">
+                                        <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
+                                        <div class=" max-h-[250px] overflow-y-auto">
+                                            <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="flex flex-row p-3 hover:bg-slate-50 rounded-md gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
+                                                <div class="flex flex-col gap-2 w-[88%]">
+                                                    <span class="text-sm font-bold">{{  notification.message }}</span>
+                                                    <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
+                                                </div>
+                                                <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class=" text-center text-gray-400 h-[150px] flex flex-col justify-center items-center" v-if="notifications.length == 0">
+                                            <i class="bi bi-bell text-3xl"></i>
+                                            <p class="text-xl font-bold">You are all caught up</p>
+                                            <span>No new notifications</span>
+                                        </div>
+
+                                        <RouterLink v-if="user.role == 'user'" to="/in/notifications" class="text-center border-t p-3 dark:border-gray-600">
+                                                <span class="text-center text-tz_blue">see all notifications</span>
+                                        </RouterLink>
+                                        <RouterLink v-else to="/client/notifications" class="text-center border-t p-3 dark:border-gray-600">
+                                                <span class="text-center text-tz_blue">see all notifications</span>
+                                        </RouterLink>
                                     </div>
-                                    <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block">
-                                        <span>&times;</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                                <div class=" text-center text-gray-400 h-[150px] flex flex-col justify-center items-center" v-if="notifications.length == 0">
-                                    <i class="bi bi-bell text-3xl"></i>
-                                    <p class="text-xl font-bold">You are all caught up</p>
-                                    <span>No new notifications</span>
-                                </div>
-
-                            <RouterLink v-if="user.role == 'user'" to="/in/notifications" class="text-center border-t p-3 dark:border-gray-600">
-                                    <span class="text-center text-tz_blue">see all notifications</span>
-                            </RouterLink>
-                            <RouterLink v-else to="/client/notifications" class="text-center border-t p-3 dark:border-gray-600">
-                                    <span class="text-center text-tz_blue">see all notifications</span>
-                            </RouterLink>
-                            </div>
+                                </template>
+                            </CustomDropdown>
+                            
                         </div>
                         
                         <i class="bi bi-three-dots-vertical"></i>
                         <div class="flex flex-row items-center gap-3 relative group">
-                            <img @click="mobile_nav = !mobile_nav" v-if="user.role == 'user' && user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
-                            <div @click="mobile_nav = !mobile_nav" v-else class="rounded-full h-9 w-9 flex font-bold justify-center cursor-pointer items-center bg-slate-200 text-slate-600">{{ user.firstname[0] }}{{ user.lastname[0] }}</div>
-                            <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
+                            <!-- USER MENU AND PROFILE IAMGE AS TRIGGER -->
+                            <CustomDropdown>
+                                <template #trigger>
+                                    <img @click="mobile_nav = !mobile_nav" v-if="user.role == 'user' && user.profile.image_url" alt="profile image" :src="user.profile.image_url" class=" rounded-full h-9">
+                                    <div @click="mobile_nav = !mobile_nav" v-else class="rounded-full h-9 w-9 flex font-bold justify-center cursor-pointer items-center bg-slate-200 text-slate-600">{{ user.firstname[0] }}{{ user.lastname[0] }}</div>
+                                </template>
+                                <template #menu>
+                                    <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
+                                </template>
+                            </CustomDropdown>
+                     
+                            
                         </div>
                     </div>
                 </div>
@@ -155,6 +171,7 @@ import { io } from 'socket.io-client';
 import SessionExpiredModal from './SessionExpiredModal.vue'
 import HomeNavbar from './HomeNavbar.vue';
 
+import CustomDropdown from '../components//CustomDropdown'
 
 export default {
     name: "Navbar",
@@ -163,6 +180,7 @@ export default {
         UserDropDownMenu, 
         SessionExpiredModal,
         HomeNavbar, 
+        CustomDropdown
     },
     props: {
         type: String,
@@ -327,9 +345,8 @@ export default {
             this.is_authenticated = true;
         };
 
-        setInterval(() => {
-            this.getNotifications()
-        }, 30000);
+        // get notifications...
+        this.getNotifications();
         
     },
 

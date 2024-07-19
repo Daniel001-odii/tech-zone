@@ -69,7 +69,7 @@
             
                 </template>
                 <template #footer>
-                    <LoaderButton @click="updateUserProfile" type="button" class="btn" :buttonText="'save'" :loading="user_form.loading"></LoaderButton>
+                    <button @click="updateUserProfile" type="button" class="btn" :buttonText="'save'" :loading="user_form.loading">Save</button>
                 </template>
         </Modal>
 
@@ -230,12 +230,15 @@
                     </div>
                     <div class="hidden md:block border-r md:h-40 dark:border-gray-500"></div>
                     <div class=" flex flex-col items-start justify-center text-left p-5">
-                        <div>
+                        <!-- <div>
                             <span v-if="user.email_verified">user email is verified</span>
                             <span v-else>user email is not verified</span>
-                        </div>
-                        <p>Joined: {{ formatTimestamp(user.created) }}</p>
-                        <p v-if="user.profile.location">Location: {{ user.profile.location.city }} {{ user.profile.location.state }}</p>
+                        </div> -->
+                        <p>Joined: {{ formatDistanceToNow(user.createdAt) }} ago</p>
+                        <!-- <p>Joined: {{ formatDistance(new Date(user.createdAt)) }} ago</p> -->
+                        
+
+                        <p v-if="user.profile.location">Location: {{ user.profile.location.city }}, {{ user.profile.location.state }}, NG.</p>
 
                          <!-- VIEW PROFILE AS OTHERS -->
                          <!-- <a :href="`/users/${user._id}`" target="_blank" v-if="isAllowed" class="text-blue-500 underline"><i class="bi bi-eye"></i> view profile as others</a> -->
@@ -291,7 +294,7 @@
                         <div class="profile_section">
                             <h2 class="font-bold">Date Joined</h2>
                             <div>
-                                {{ formatTimestampWithoutTime(user.created) }}
+                                {{ formatDistanceToNow(user.createdAt) }} ago
                             </div>
                         </div>
 
@@ -303,28 +306,29 @@
                         <h1 class="font-bold"><i class="bi bi-briefcase"></i> Work History</h1>
                     </div>
 
-                    <div class="profile_section">
+                    <div class="mt-8">
                         <h2 class="font-bold">Completed Jobs</h2>
-                        <div>
+                        <div class="mt-6">
                             <SkeletonLoader v-if="!contracts"/>
                            
-                            <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" v-for="(contract, contract_id) in contracts" :key="contract_id">
+                            <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" >
                                 <!-- {{ contract.user_feedback }} -->
-                                <JobReviewCard :title="contract.job.title" :budget="contract.job.budget">
-                                    <template v-if="contract.user_feedback.review" #feedback>"{{ contract.user_feedback.review }}"</template>
-                                    <template v-else #feedback></template>
-                                    
-                                    <template #star-rating>
-                                        <div>
+                                  <div class="flex flex-col rounded-2xl p-6 gap-3 hover:bg-tz_light_blue border dark:border-gray-500" v-for="(contract, contract_id) in contracts" :key="contract_id">
+                                    <div class="flex flex-col gap-1">
+                                        <p class="text-lg text-blue-600 underline">{{contract.job.title}}</p>
+                                        <span class="text-md text-gray-500" v-if="contract.user_feedback.review">"{{ contract.user_feedback.review }}"</span>
+                                        <div class="text-sm text-gray-500">
                                             <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(contract.user_feedback.rating)"></p>
                                             <p v-else class="py-3">No feedback yet</p>
                                         </div>
-                                    </template>
-                                    <template #date>{{ formatTimestampWithoutTime(contract.created) }}</template>
-                                    <template #status>
+                                        <small>{{ formatTimestampWithoutTime(contract.created) }}</small>
+                                        <div>#{{contract.job.budget}} paid</div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <!-- contract status goes here -->
                                         <ContractStatus :type="contract.status"/>
-                                    </template>
-                                </JobReviewCard>
+                                    </div>
+                                  </div>
                             </div>
                             
                             <div v-else class="p-3 text-center">No Completed Jobs Yet</div>
@@ -356,6 +360,9 @@ import ContractStatus from '@/components/ContractStatus.vue';
 import FileUpload from 'primevue/fileupload';
 import SplitButton from 'primevue/splitbutton';
 
+import { useToast } from 'vue-toastification';
+import { formatDistanceToNow } from 'date-fns'
+
 export default {
     name: "ProfilePage",
     components: { Navbar, TemplateView, 
@@ -375,6 +382,8 @@ export default {
      },
     data(){
         return{
+            toast: useToast(),
+            formatDistanceToNow,
             alerts: [],
             show_alert: false,
             alert_type: '',
@@ -455,13 +464,6 @@ export default {
 			};
 		},
 
-        showAlertBox(type, message){
-            this.alerts.push(message);
-            this.show_alert = !this.show_alert;
-            this.alert_type = type;
-            this.alert_message = message;
-        },
-
         async getPublicUserData(){
             this.loading = true;
             try{
@@ -519,11 +521,13 @@ export default {
             try{
                 const response = await axios.patch(`${this.api_url}/user/profile`, this.user_form, { headers });
                 // console.log(response)
-                this.showAlertBox("success", "Profile Updated successfully!");
+                this.toast.success(response.data.message);
                 this.user_form.loading = false;
+                this.profile_edit_menu = !this.profile_edit_menu;
             }
             catch(error){
                 // display any possible error here...
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -663,9 +667,12 @@ export default {
                             this.image_uploading = false;
                         }
                     }, this.image.type); // Pass original MIME type to toBlob
+                    this.toast.success("profile image changed successfully");
                 }
+
             } catch (error) {
                 console.error("Error uploading profile image:", error);
+                this.toast.error(error.response.data.message);
             }
         },
 

@@ -189,7 +189,7 @@
                                             </template>
                                             <template #job-description>{{  job.description.substring(0, 200) }}...
                                             </template>
-                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                            <template #job-posting-time>posted {{  formatDistanceToNow(job.createdAt) }} ago</template>
                                         </MainJobCard>
                                     </div>
                                 </div>
@@ -385,6 +385,9 @@ import jobCategories from '../../utils/jobCategories.json';
 import Toast from 'primevue/toast';
 import ActionDropdown from '@/components/ActionDropdown.vue';
 
+import { formatDistanceToNow } from 'date-fns'
+import { useToast } from 'vue-toastification';
+
 export default {
     name: "JobsPageView",
     components: { 
@@ -401,6 +404,8 @@ export default {
     },
     data(){
         return{
+            toast: useToast(),
+            formatDistanceToNow,
             store: useStore(),
             loading: false,
             user: '',
@@ -455,18 +460,6 @@ export default {
         
     },
     methods:{
-        showAlertBox(type, message){
-            this.alerts.push(message);
-            this.show_alert = !this.show_alert;
-            this.alert_type = type;
-            this.alert_message = message;
-        },
-        showToast(){
-            this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job Saved Successfully', life: 3000 });
-            this.$toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3050 });
-            this.$toast.add({ severity: 'warn', summary: 'Warning', detail: 'Message Content', life: 3100 });
-            this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Message Content', life: 3150 });
-        },
 
         getUser(){
             this.store.dispatch('fetchUserData')
@@ -479,6 +472,7 @@ export default {
         applyFilter(){
             this.job_filter_modal = !this.job_filter_modal;
             this.searchJob();
+            this.toast.success("filter successfully applied");
         },
 
         clearFilters(){
@@ -493,6 +487,7 @@ export default {
             },
             this.searchJob();
         },
+
         removeBudgetFilter(){
             this.job_filter_form.budgetMax = '';
             this.job_filter_form.budgetMin = '';
@@ -542,18 +537,17 @@ export default {
 
         async addJobToSaves(job_id){
            try{
-                this.save_index += 1;
                 const headers = this.headers;
-                const res = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
-                console.log(res);
+                const response = await axios.post(`${this.api_url}/jobs/${job_id}/save`, {}, { headers } );
+                
                 this.getSavedJobs();
-                if(this.save_index % 2 > 0){
-                    this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job saved successfully', life: 3000 });
+                if(response.status == 201){
+                    this.toast.success(response.data.message);
                 } else {
-                    this.$toast.add({ severity: 'success', summary: 'Success', detail: 'Job unsaved Successfully', life: 3000 });
+                    this.toast.warning(response.data.message);
                 }
            }catch(error){
-            console.log(error)
+            this.toast.error(error.response.data.message);
            }
         },
 
@@ -629,10 +623,10 @@ export default {
                 };
                 const response = await axios.post(`${this.api_url}/jobs/${job_id}/flag`, body, { headers });
                 console.log("response from flagged job: ", response);
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
 
             }catch(error){
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 

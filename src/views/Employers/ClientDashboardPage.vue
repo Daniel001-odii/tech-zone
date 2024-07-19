@@ -72,6 +72,10 @@
     <div>
     
         <div class="bg-tz_light_blue p-3 flex flex-col gap-3 overflow-y-auto">
+           
+        <!-- DISPLAY ALERT HERE -->
+        <Message v-if="profile_completion < 90" severity="error" :closable="false">Please complete your profile to start posting jobs. <RouterLink to="/client/profile" class="underline">complete now</RouterLink></Message>
+
             <div class="p-8 py-12 rounded-lg bg-tz_light_blue flex flex-row justify-between items-center flex-wrap  dark:bg-[#1F2A36]">
                 <div class="text-left">
                     <p>Welcome back,</p>
@@ -79,9 +83,8 @@
                     <h1 class="text-3xl font-bold capitalize" v-if="getUserData">{{ getUserData.user.firstname }} {{ getUserData.user.lastname }}</h1>
                 </div>
                 <div>
-                    <RouterLink to="/client/job">
-                        <button class="btn">+ Create Job</button>
-                    </RouterLink>
+                    <button @click="this.$router.push('/client/job')" class="btn border dark:border-gray-500" :disabled="profile_completion < 90">+ Create Job</button>
+                    
                 </div>
             </div>
 
@@ -109,12 +112,12 @@
                                     </button> -->
                                     <div class="flex flex-row justify-between flex-wrap w-full">
                                         <span class="text-lg font-bold" :class="job.is_deleted ? 'text-red-500':''">{{ job.title }}</span>
-                                        <span>posted {{ formattedDate(job.created) }}</span>
+                                        <span>posted {{ formatDistanceToNow(job.createdAt) }} ago</span>
                                     </div>
                                 </div>
                                 <div class="p-3 text-left">{{ job.description.substring(0, 200) }}..</div>
                                 <div class="flex flex-row justify-start m-3 mb-3">
-                                    <button v-if="job.no_of_applications" @click="show_applicants(job_id, job._id)" type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <button :disabled="!job.no_of_applications" @click="show_applicants(job_id, job._id)" type="button" class="btn">
                                         <i v-if="!jobs[job_id].show_applicants" class="bi bi-eye-fill mr-3"></i> 
                                         <i v-else class="bi bi-eye-slash-fill mr-3"></i> 
                                         See {{ job.no_of_applications }} Applications
@@ -234,6 +237,10 @@ import blankMessagePage from '../../lottie/blankMessagePage.json';
 import Rating from 'primevue/rating';
 import Toast from 'primevue/toast';
 
+import { useToast } from 'vue-toastification'
+import Message from 'primevue/message';
+import { formatDistanceToNow } from 'date-fns'
+
 export default {
     name: "ClientDashboardPage",
     components: { 
@@ -244,9 +251,12 @@ export default {
         FullPageLoading, 
         Rating,
         Toast, 
+        Message,
     },
     data(){
         return{
+            formatDistanceToNow,
+            toast: useToast(),
             store: useStore(),
             loading: false,
             user: '',
@@ -277,10 +287,42 @@ export default {
 
             message: '',
             blankMessagePage,
+            profile_completion: 0,
         }
         
     },
     methods:{
+        calculateProfileCompletion(){
+            const profile = this.user.profile;
+            let percentage = 10;
+
+            if(this.user){
+                if(profile){
+                    percentage += 0;
+                }
+                if(profile.tag_line){
+                    percentage += 10;
+                }
+                if(profile.description){
+                    percentage += 10;
+                }
+                if(profile.location){
+                    percentage += 40;
+                }
+                if(profile.phone){
+                    percentage += 10
+                }
+                if(profile.social){
+                    percentage += 10
+                }
+                if(profile.link){
+                    percentage += 10
+                }
+                
+                this.profile_completion = percentage;
+                // return percentage;
+            }
+        },
         switchTab(tab){
             this.current_tab = tab;
             if(tab == 'saved'){
@@ -355,17 +397,17 @@ export default {
         async saveUser(user_id, job_id, index){
             const headers = this.headers;
             try{
-                const res = await axios.post(`${this.api_url}/employer/${user_id}/save-user`, {}, { headers });
-                // console.log(res);
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${res.data.message}`, life: 3000 });
+                const response = await axios.post(`${this.api_url}/employer/${user_id}/save-user`, {}, { headers });
+               
                 this.getSavedUsers();
                 // this.getJobsByEmployer();
                 if(job_id && index){
                     this.getJobApplicants(job_id, index);
                 }
+                this.toast.success(response.data.message);
             }catch(error){ 
-                // console.log("user saving error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                console.log("error saving user: ", error);
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -379,7 +421,7 @@ export default {
                 this.loading_saved_users = false;
             }catch(error){
                 // console.log("get saved users error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
                 this.loading_saved_users = false;
             }
         },
@@ -390,12 +432,12 @@ export default {
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/send`, {}, { headers });
                 // console.log("res from sending contract: ", response);
                 // this.message = response.data.message;
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
                 this.contract_modal = !this.contract_modal
                 // alert(response.data.message);
             }catch(error){
                 // console.log("error sending Contract:", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -403,12 +445,10 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${user_id}/${job_id}/assign`, {}, { headers });
-                // console.log("res from sending contract: ", response)
-                // this.message = response.data.message;
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(response.data.message);
             }catch(error){
                 console.log("error sending Contract:", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(error.response.data.message);
             }
         },
 
@@ -416,11 +456,13 @@ export default {
             this.loading = true;
             console.log("user: ", userId, "employer: ", employerId);
             try{
+                this.toast.success(response.data.message);
                 const response = await axios.post(`${this.api_url}/message/create-room`, { name, userId, employerId }, {});
                 console.log("new room response: ", response);
                 this.loading = false;
                 this.$router.push("/client/messages");
             }catch(error){
+                this.toast.error(error.response.data.message);
                 console.log("error creating room: ", error);
                 if(error.response.status == 400){
                     this.$router.push("/client/messages");

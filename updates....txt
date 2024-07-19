@@ -1,6 +1,6 @@
-contract budget edit..
+contract budget edit.. [done]
 
-contract payment and funding...
+contract payment and funding... [done]
 
-employer payments and billing page...
+employer payments and billing page... [partial]
 

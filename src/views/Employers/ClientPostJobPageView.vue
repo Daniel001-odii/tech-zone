@@ -75,10 +75,11 @@
                     <div class=" w-full md:w-3/6 h-full p-5 text-start gap-3 flex flex-col" id="period">
                         <p>How long will the job last?</p>
                         <select class="form_input" placeholder="Product Designer" v-model="job_post.period">
-                            <option>less than a month</option>
-                            <option>1 to 3 months</option>
-                            <option>3 to 6 months</option>
-                            <option>6 months plus</option>
+                            <option value="" disabled>select job period</option>
+                            <option value="less than a month">less than a month</option>
+                            <option value="1 to 3 months">1 to 3 months</option>
+                            <option value="3 to 5 months">3 to 6 months</option>
+                            <option value="6 months plus">6 months plus</option>
                         </select>
                     </div>
                 </div>
@@ -150,7 +151,7 @@
                                 <i v-if="location_found" class="bi bi-check-circle-fill absolute text-green-400 right-3"></i>
                             </div>
                             <select @change="location_found = false" v-model="job_post.location.state" class="form_input ">
-                                <option>Select State</option>
+                                <option value="" disabled>Select State</option>
                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                             </select>
                             <button v-if="location_found == false" class="btn" @click.prevent="getJobCordinates" :disabled="loading_g_location || job_post.location.address == ''">
@@ -246,7 +247,8 @@
                                 </div>
                                 <div v-if="prev_period" class=" w-full h-full p-5 text-start gap-3 flex flex-col">
                                     <p>How long will the job last?</p>
-                                    <select class="form_input" placeholder="Product Designer" v-model="job_post.period">
+                                    <select class="form_input" v-model="job_post.period">
+                                        <option value="" disabled>Select job period</option>
                                         <option value="less than a month">Less than a month</option>
                                         <option value="1 to 3 months">1 to 3 months</option>
                                         <option value="3 to 6 months">3 to 6 months</option>
@@ -315,6 +317,7 @@
                                             </div>
                         
                                             <select @change="updateJobState" v-model="job_post.location.state" class="form_input ">
+                                                <option value="" disbaled>select state</option>
                                                 <option v-for="state in states" :value="state" :key="state" >{{ state }}</option>
                                             </select>
                                             <div class=" bg-cyan-100 p-3 rounded-md text-cyan-700 border border-cyan-200">

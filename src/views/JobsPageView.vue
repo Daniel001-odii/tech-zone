@@ -155,7 +155,7 @@
                                             </template>
                                             <template #job-description>{{  job.description.substring(0, 200) }}...
                                             </template>
-                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                            <template #job-posting-time>{{  formatDistanceToNow(job.createdAt) }}</template>
                                         </MainJobCard>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                 :company="jobs[selectedJob].employer.profile.company_name" 
                                 :remote="jobs[selectedJob].location.remote"
                                 :location="`${jobs[selectedJob].location.address} ${jobs[selectedJob].location.state}`" 
-                                :posted="formattedDate(jobs[selectedJob].created)" 
+                                :posted="formatDistanceToNow(jobs[selectedJob].createdAt)" 
                                 :period="jobs[selectedJob].period" 
                                 :budget="`${jobs[selectedJob].budget.toLocaleString()} ${jobs[selectedJob].budget_type}`"
                                 :is_applied="checkIfJobIsApplied(jobs[selectedJob]._id)"
@@ -208,12 +208,24 @@ import nigerianStates from '@/utils/states.json';
 
 
 import MultiSelect from 'primevue/multiselect';
+import { formatDistanceToNow } from 'date-fns'
+
 
 export default {
     name: "JobsPageView",
-    components: { TemplateView, MainJobCard, JobDetailCard, SkeletonLoader, DismissableAlert, PageTitle, Modal, MultiSelect },
+    components: { 
+        TemplateView, 
+        MainJobCard, 
+        JobDetailCard, 
+        SkeletonLoader, 
+        DismissableAlert, 
+        PageTitle, 
+        Modal, 
+        MultiSelect 
+    },
     data(){
         return{
+            formatDistanceToNow,
             store: useStore(),
             loading: false,
             user: '',

@@ -105,12 +105,15 @@ import { googleAuthCodeLogin, decodeCredential } from 'vue3-google-login';
 import SiteLogo from '@/components/SiteLogo.vue';
 
 import MiniFooter from '@/components/MiniFooter.vue'
+import { useToast } from 'vue-toastification';
+
 
 export default {
     name: "SignUpView",
     components: { Alert, SiteLogo, MiniFooter },
     data(){
         return{
+            toast: useToast(),
             error: '',
             acceptedTOS: false,
             form_data: {
@@ -136,11 +139,12 @@ export default {
                 const response = await axios.post(`${this.api_url}/register/employer`, this.form_data);
                 console.log(response);
                 localStorage.setItem('life-gaurd', response.data.accessToken);
-                alert('registration successful, please login')
+                this.toast.success(response.data.message);
                 this.$router.push('/login')
             }
             catch(error){
                 this.error = error.response.data.message;
+                this.toast.error(error.response.data.message);
             }
         },
 

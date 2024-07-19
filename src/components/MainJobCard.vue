@@ -49,7 +49,7 @@
                 </slot>
             </div>
 
-            <div class="text-sm text-tz_blue flex flex-row justify-between items-center">
+            <div class="text-[12px] text-tz_blue flex flex-row justify-between items-center">
                 <slot name="job-posting-time">Posted 1 hour ago</slot>
                 <span v-if="is_applied" class="px-3 py-1 bg-green-500 rounded-lg text-white">applied</span>
             </div>

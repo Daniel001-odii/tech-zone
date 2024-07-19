@@ -1,14 +1,15 @@
 <template>
     <div>
-        <div class=" w-[250px] border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-50 dark:bg-[#1F2A36] dark:border-gray-600">
+        <!-- <div class=" w-[250px] border absolute bg-white top-9 right-3 rounded-lg p-1 hidden group-hover:block z-50 dark:bg-[#1F2A36] dark:border-gray-600"> -->
+        <div class=" w-[250px] border bg-white rounded-lg p-1 dark:bg-[#1F2A36] dark:border-gray-600">
             <div class="flex flex-col text-left gap-1">
-                <div @click="sub_items = !sub_items" class="menu_item flex flex-row justify-between px-1 cursor-pointer">
+                <div class="menu_item flex flex-row justify-between px-1 cursor-pointer">
                     <div class="flex flex-col">
                         <span>{{ username }}</span>
                         <span class="text-tz_blue text-sm">{{ email }}</span>
                         <span class="text-slate-400 capitalize">{{ user_type }}</span>
                     </div>
-                    <i :class="sub_items ? 'bi bi-caret-up-fill':'bi bi-caret-down-fill'" class=""></i>
+                    <!-- <i :class="sub_items ? 'bi bi-caret-up-fill':'bi bi-caret-down-fill'" class=""></i> -->
                 </div>
 
                 <!-- MENU FOR USER ... -->
@@ -94,7 +95,7 @@ export default {
     },
     data(){
         return{
-            sub_items: false,
+            sub_items: true,
             user_type: '',
             user: '',
             headers: {

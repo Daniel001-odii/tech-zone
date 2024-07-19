@@ -212,9 +212,11 @@
                             <span> Feedback submission will only be available when contract is completed or closed.</span>
                         </p>
                         <div class="flex flex-row flex-wrap gap-5 justify-start mt-3">
-                            <button @click="feedbackModal = !feedbackModal" class="btn" :disabled="contract.status != 'completed' && contract.status != 'closed'">
-                                <span v-if="contract.user_feedback.review">Feedback sent</span>
-                                <span v-else>Send Feedback to Freelancer</span>
+                            <button v-if="!contract.user_feedback.review" @click="feedbackModal = !feedbackModal" class="btn" :disabled="contract.status != 'completed' && contract.status != 'closed'">
+                                Send Feedback to Freelancer
+                            </button>
+                            <button v-else class="btn" disabled>
+                                feedback sent successfully
                             </button>
                         </div>
                     </div>
@@ -363,7 +365,7 @@ export default {
                 window.location.href = response.data.checkout_url;
                 console.log("response from funding: ", response);
             }catch(error){
-                this.toast.error(error.response.data);
+                this.toast.error(error.response.data.message);
                 console.log("error funding contract: ", error);
                 this.loading = false;
             }
