@@ -1,10 +1,17 @@
 <template>
-    <!-- ALERTS AND NOTIFICS -->
-    <div class="fixed flex-col bottom-10 right-0 left-0 flex justify-center items-center z-50">
-            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
-            </div>
-    </div>
+
+<!-- PASSWORD 2FA FOR FUNDS WITHDRAWAL -->
+<div v-if="requested_withdrawal" class="flex flex-col fixed left-0 h-screen bg-[rgba(0,0,0,0.5)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+    <form @submit.prevent="checkPassword" class="flex flex-col bg-white dark:bg-black rounded-lg p-12 gap-3">
+        <h1 class="text-xl ">Please input your password to continue</h1>
+        <input name="password" id="password" type="password" class="form_input" v-model="fwp_password">
+        <div class="flex flex-row gap-3">
+            <button @click="requested_withdrawal = !requested_withdrawal" class="bg-gray-100 dark:bg-gray-600 p-3 rounded-md font-bold">cancel</button>
+            <button type="submit" class="btn w-full" :disabled="fwp_password == ''">continue</button>
+        </div>
+      
+    </form>
+</div>
    
 
 
@@ -22,7 +29,7 @@
 
 
         <div class=" flex flex-col p-3 gap-5">
-            <div v-if="active_tab == false" class="section">
+            <div v-if="active_tab == 1" class="section">
                 <h1 class="font-bold mb-3 text-lg">Select Preffered theme</h1>
                 
                 <div class="  flex flex-row gap-5">
@@ -188,7 +195,7 @@
                         <label for="account-number">Account number</label>
                         <input class="form_input" type="number" name="account-number" id="account_number" v-model="settings.bank.account_number">
                     </div>
-                    <button type="button" @click="updateUserData" class="btn mt-3 w-fit">update bank info</button>
+                    <button type="button" @click="updateUserData" class="btn mt-3 w-fit" :disabled="user.settings.bank.name == bank.name">update bank info</button>
                 </div>
 
                 
@@ -204,8 +211,18 @@
                         <span class="sr-only">Info</span>
                         <div>Funds withdrawal is only available on weekends</div>
                     </div>
-                    <div class="py-4 ">Current Balance: NGN {{ Math.floor(user.credits).toLocaleString() }}</div>
-                    <RouterLink to="#" class="text-gray-400 underline text-green-500">Withdraw Funds</RouterLink>
+                    <div class="py-4 ">Wallet Balance: NGN {{ Math.floor(account_balance).toLocaleString() }}</div>
+
+                    <div class="flex flex-col w-fit">
+                        <button type="button" @click="requested_withdrawal = !requested_withdrawal" v-if="!password_approved" class="btn">Initiate withdrawal</button>
+                        <form @submit.prevent="withdrawFunds" class="flex flex-col gap-3 border p-4 rounded-lg dark:border-gray-600" v-if="password_approved">
+                            <span>{{ withdrawal_errors }}</span>
+                            <input type="number" class="form_input" v-model="withdrawal_amount" :placeholder="'NGN '+account_balance">
+                            <button type="submit" class="btn">Withdraw Funds</button>
+                        </form>
+                        <!-- <span class="app_spinner"></span> -->
+                    </div>
+
                 </div>
 
             </form>
@@ -302,6 +319,10 @@ export default {
             user: {
                 profile:{
                     phone: '',
+                },
+                settings: {
+                    bank: '',
+                    name: '',
                 }
             },
 
@@ -342,6 +363,14 @@ export default {
             },
 
             banks: [],
+
+            // user wallet and balance...
+            account_balance: 0,
+            fwp_password: '',
+            requested_withdrawal: false,
+            password_approved: false,
+            withdrawal_errors: '',
+            withdrawal_amount: '',
         }
     },
     methods:{
@@ -388,7 +417,7 @@ export default {
                 this.loading = true;
                 const response = await axios.get(`${this.api_url}/contracts/banks/list`);
                 console.log("bank lists: ", response);
-                this.banks = response.data.result.banks;
+                this.banks = response.data.banks;
                 this.loading = false;
             }catch(error){
                 this.loading = false;
@@ -397,11 +426,11 @@ export default {
         },
 
         async getUserData(){
-            this.loading = true;
+            this.loading = true;   
             const headers = this.headers;
             try{    
                 const response = await axios.get(`${this.api_url}/user`, { headers });
-                console.log(response)
+                console.log("user data: ", response)
                 this.user = response.data.user;
 
                 if(this.user.settings){
@@ -421,7 +450,10 @@ export default {
                     if(this.user.settings.KYC){
                         this.settings.KYC = this.user.settings.KYC
                     }
-                }
+                };
+
+                
+                this.getUserWallet();
                 
                 
                 this.loading = false;
@@ -430,6 +462,20 @@ export default {
                 this.loading = true;
             }
         },
+
+
+        // GET USER WALLET FOR BALANCE DISPLAY...
+        async getUserWallet(){
+            try{
+                const headers = this.headers;
+                const response  = await axios.get(`${this.api_url}/user/wallet/get`, { headers });
+                // console.log("user wallet: ", response.data.wallet);
+                this.account_balance = response.data.wallet.balance;
+            }catch(error){
+                console.error("erro getting user wallet: ", error);
+            }
+        },
+
 
         async updateUserData(){
             this.loading = true;
@@ -465,6 +511,33 @@ export default {
                 this.toast.error(error.response.data.message);
                 this.password_errors = error.response.data.message;
                 this.loading = false;
+            }
+        },
+
+        async checkPassword(){
+            try{
+                const headers = this.headers;
+                const response = await axios.post(`${this.api_url}/password/check`, {password: this.fwp_password}, { headers });
+                console.log("from pass checker: ", response);
+                this.requested_withdrawal = false,
+                this.password_approved = response.data.authenticated;
+                this.fwp_password = ''
+                // this.toast.info(response.data.message);
+            }catch(error){
+                // console.log("problem with pass checker: ", error)
+                this.requested_withdrawal = false,
+                this.fwp_password = ''
+                this.toast.error(error.response.data.message);
+            }
+        },
+
+        async withdrawFunds(){
+            try{
+                const headers = this.headers;
+                const response = await axios.post(`${this.api_url}/funds/withdraw`, { amount: this.withdrawal_amount }, { headers });
+                this.toast.success(response.data.message);
+            }catch(error){
+                this.toast.error(error.response.data.message);
             }
         }
        

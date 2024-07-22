@@ -33,7 +33,7 @@
     
                         <div class="text-red-500 mt-6" v-if="error">{{ error }}</div>
     
-                        <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login">
+                        <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login()">
                             <div class="flex flex-col gap-3">
                                 <div class="tz_form_control">
                                     <label for="email">Email Address</label>
@@ -163,12 +163,12 @@
     
                 }
                 catch (error) {
-                    console.log("Login error: ", error.response);
+                    console.log("Login error: ", error);
                     this.error = error.response.data.message;
                     
                     if(error.response.status == 500){
                         this.error = "invalid email or password"
-                        this.toast.error(response.data.message);
+                        this.toast.error(error.response.data.message);
                     }
                     this.loading = false;
                 }
