@@ -61,20 +61,20 @@ import BillingsAndOverviewPageView from '@/views/Employers/BillingsAndOverviewPa
 const routes = [
 
   // FOR WAITLIST.....
-  // {
-  //   path: '/',
-  //   name: 'Coming soon',
-  //   component: WaitListPageView
-  // },
+  {
+    path: '/',
+    name: 'Coming soon',
+    component: WaitListPageView
+  },
 
 
   // MAIN LANDING PAGE AFTER LAUNCH
   
-  {
-    path: '/',
-    name: 'home',
-    component: LandingPageViewVue
-  },
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   component: LandingPageViewVue
+  // },
   
 
 
