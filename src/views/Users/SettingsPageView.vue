@@ -1,17 +1,80 @@
 <template>
 
 <!-- PASSWORD 2FA FOR FUNDS WITHDRAWAL -->
-<div v-if="requested_withdrawal" class="flex flex-col fixed left-0 h-screen bg-[rgba(0,0,0,0.5)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+<div v-if="requested_withdrawal" class="flex flex-col fixed left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
     <form @submit.prevent="checkPassword" class="flex flex-col bg-white dark:bg-black rounded-lg p-12 gap-3">
         <h1 class="text-xl ">Please input your password to continue</h1>
         <input name="password" id="password" type="password" class="form_input" v-model="fwp_password">
         <div class="flex flex-row gap-3">
-            <button @click="requested_withdrawal = !requested_withdrawal" class="bg-gray-100 dark:bg-gray-600 p-3 rounded-md font-bold">cancel</button>
+            <button type="button" @click="requested_withdrawal = !requested_withdrawal" class="bg-gray-100 dark:bg-gray-600 p-3 rounded-md font-bold">cancel</button>
             <button type="submit" class="btn w-full" :disabled="fwp_password == ''">continue</button>
         </div>
-      
     </form>
 </div>
+
+
+<!-- CARD UPDATE MODAL -->
+ <transition name="formSlide">
+    <div v-if="edit_card_details" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+        <div class="flex flex-col">
+            <div class="card flex flex-col rounded-t-xl w-[300px] relative bg-blue-500 p-6 text-white">
+                <button @click="edit_card_details = !edit_card_details" class="absolute right-4 top-4">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+                <div class="text-xl mt-6">123456789</div>
+                <div class="mt-5">
+                    <span class=" opacity-70 uppercase text-[12px]">account name</span>
+                    <div>Charles Uguwlor</div>
+                </div>
+            </div>
+            <div class="flex flex-col bg-white">
+                <form class="p-5 flex flex-col gap-5">
+                    <div class="flex flex-col">
+                        <span class=" text-gray-500 text-sm">ACCOUNT NUMBER</span>
+                        <div class="border-b border-black">
+                            <input class="border-b border-none outline-none w-full" type="number" name="account-number">
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class=" text-gray-500 text-sm">ACCOUNT NAME</span>
+                        <div class="border-b border-black">
+                            <input class="border-b border-none !outline-none w-full" type="text" name="account-name">
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-3 justify-between items-center">
+                        <div class="flex flex-col">
+                            <span class="text-gray-500 text-sm">BANK NAME</span>
+                            <div class="border-b border-black">
+                                <select class="p-3 border-none">
+                                    <option>Select Bank</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 text-sm">
+                                BANK CODE
+                            </span>
+                            <div class="py-2 text-gray-500 border-b border-black">456</div>
+                        </div>
+                    </div>
+                </form>
+                <button class=" bg-tz_blue text-white p-5 uppercase font-bold text-sm">update card</button>
+            </div>
+        </div>
+    </div>
+</transition>
+
+
+ <!-- REQUEST WITHDRAW MODAL -->
+<transition name="formSlide">
+    <div class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+        <div class="flex flex-col p-5 rounded-lg bg-white w-fit md:w-[700px]">
+            <div class="flex flex-col md:flex-row">
+                <h1 class="font-bold">Withdrawal Method</h1>
+            </div>
+        </div>
+    </div>
+</transition>
    
 
 
@@ -20,7 +83,7 @@
         <FullPageLoading v-if="loading"/>
        
         <div class=" bg-white tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
-            <!-- <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button> -->
+            <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button>
             <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
             <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
             <button @click="bankInfoUpdate" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
@@ -169,62 +232,85 @@
 
             <!-- FUNDS WITHDRAWAL -->
             <form @submit.prevent="updateUserData" v-if="active_tab == 4" class="section mb-3">
-                
-                <div class="mt-3">
-                    <h1 class="font-bold mb-3 text-lg">Bank information</h1>
-                    <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>Available funds will be sent to the provided bank account details when withdrawal is initiated</div>
-                    </div>
-                    <div class="flex flex-col max-w-sm">
-                        <label for="bank-name">Bank name</label>                        
-                        <select class="form_input" v-model="bank.name" @change="setBankCode">
-                            <option value="" disbaled>select bank</option>
-                            <option v-for="bank in banks" :value="bank.name">{{ bank.name }}</option>
-                        </select>
+                <div class="flex flex-col gap-12">
+                    <div class="flex flex-col gap-3">
+                        <p class="font-bold">Current Balance</p>
+                        <div class="text-2xl font-bold flex flex-row gap-1 items-center">
+                            <div class="p-3 bg-gray-800 rounded-full flex justify-center items-center w-[50px] h-[50px] text-white">₦</div>
+                            <span class="inline-block text-5xl"> 500,000</span>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col max-w-sm mt-5" v-if="bank.name">
-                        <label for="sort-code">Bank code</label>
-                        <input class="form_input" type="number" name="sort-code" id="sort_code" v-model="bank.code" disabled>
+                    <!-- card details -->
+                    <div class="flex flex-row flex-wrap gap-12">
+                        <div class="flex flex-col gap-4">
+                            <span class="font-bold">Card Details</span>
+                            <div class="flex flex-row flex-wrap gap-12 overflow-x-auto">
+
+                                <!-- CARD 1 -->
+                                <div class="card h-[215px] w-[360px] rounded-lg bg-blue-600 flex flex-col p-5 justify-between cursor-pointer uppercase text-white">
+                                    <div class="text-sm opacity-60">BANK NAME HERE</div>
+                                    <div class="text-3xl">314 1889 040</div>
+                                    <div class="flex flex-col">
+                                        <span class=" text-sm opacity-60">ACCOUNT NAME</span>
+                                        <span class=" capitalize text-xl">{{ user.firstname }} {{ user.lastname }}</span>
+                                    </div>
+                                </div>
+                                <div class="card h-[215px] w-[360px] rounded-lg bg-green-600"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-col gap-4 bg-gray-50 dark:bg-gray-700 p-6 sm:w-full md:max-w-[300px]">
+                                <span class="dark:bg-gray-800 bg-slate-300 text-center font-bold rounded-lg p-3">Notice on Payment</span>
+                                
+                                <ol start="1" class=" list-decimal p-3">
+                                    <li>All available funds will be sent to provided bank card details only when withdrawal has been requested</li>
+                                    <li>Funds Withdrawal is only available on weekends</li>
+                                </ol>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-col max-w-sm mt-5">
-                        <label for="account-number">Account number</label>
-                        <input class="form_input" type="number" name="account-number" id="account_number" v-model="settings.bank.account_number">
+
+                    <!-- Actions... -->
+                    <div class="flex flex-row flex-wrap gap-6">
+                        <div class="flex flex-col gap-3 bg-gray-50 rounded-lg p-6">
+                            <span class="font-bold">Actions</span>
+                            <div class="flex flex-row flex-wrap gap-20 items-start justify-start px-12">
+                                <button type="button" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
+                                    <i class="bi bi-cash-stack p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
+                                    <span>Request Withdrawal</span>
+                                </button>
+
+                                <button type="button" @click="edit_card_details = !edit_card_details" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
+                                    <i class="bi bi-arrow-repeat p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
+                                    <span>Update Card Details</span>
+                                </button>
+
+                                <button type="button" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
+                                    <i class="bi bi-plus-lg p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
+                                    <span>Add New Card</span>
+                                </button>
+
+
+                                <button type="button" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
+                                    <i class="bi bi-plus-lg p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
+                                    <span>Add New Card</span>
+                                </button>
+
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 bg-gray-50 rounded-lg p-6 w-full md:w-fit">
+                            <span class="font-bold">Recent Transactions</span>
+                            <div class="border overflow-x-auto max-w-screen-lg">
+                                <div class="flex flex-row justify-between items-center  w-[500px]">
+                                    <span>Thursday, 12 April 2024</span>
+                                    <span>Pending</span>
+                                    <span>NGN 150,000</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button type="button" @click="updateUserData" class="btn mt-3 w-fit" :disabled="user.settings.bank.name == bank.name">update bank info</button>
                 </div>
-
-                
-
-                <div class="mt-3">
-                    <h1 class="font-bold mb-3 text-lg">Withdrawal & Payout</h1>
-                
-
-                    <div class="flex items-center p-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>Funds withdrawal is only available on weekends</div>
-                    </div>
-                    <div class="py-4 ">Wallet Balance: NGN {{ Math.floor(account_balance).toLocaleString() }}</div>
-
-                    <div class="flex flex-col w-fit">
-                        <button type="button" @click="requested_withdrawal = !requested_withdrawal" v-if="!password_approved" class="btn">Initiate withdrawal</button>
-                        <form @submit.prevent="withdrawFunds" class="flex flex-col gap-3 border p-4 rounded-lg dark:border-gray-600" v-if="password_approved">
-                            <span>{{ withdrawal_errors }}</span>
-                            <input type="number" class="form_input" v-model="withdrawal_amount" :placeholder="'NGN '+account_balance">
-                            <button type="submit" class="btn">Withdraw Funds</button>
-                        </form>
-                        <!-- <span class="app_spinner"></span> -->
-                    </div>
-
-                </div>
-
             </form>
 
             
@@ -287,6 +373,10 @@ import Dropdown from 'primevue/dropdown';
 
 import { useToast } from 'vue-toastification'
 
+// import ngBanks from 'ng-banks';
+
+
+
 export default {
     name: "SettingsPageView",
     components: { 
@@ -302,6 +392,7 @@ export default {
     },
     data(){
         return{
+            // ngBanks,
             toast: useToast(),
             alerts: [],
             show_alert: false,
@@ -371,6 +462,8 @@ export default {
             password_approved: false,
             withdrawal_errors: '',
             withdrawal_amount: '',
+
+            edit_card_details: false,
         }
     },
     methods:{
@@ -415,7 +508,8 @@ export default {
         async getBanks(){
             try{
                 this.loading = true;
-                const response = await axios.get(`${this.api_url}/contracts/banks/list`);
+                // const response = await axios.get(`${this.api_url}/contracts/banks/list`);
+                const response = await axios.get(`${this.api_url}/banks/all`);
                 console.log("bank lists: ", response);
                 this.banks = response.data.banks;
                 this.loading = false;
@@ -571,5 +665,22 @@ export default {
     }
     .active_theme{
         @apply border-blue-500 bg-tz_light_blue 
+    }
+
+
+    .card{
+        background: url('../../assets/images/card-blue.png');
+        background-size: cover;
+        background-position: center;
+    }
+
+
+    .formSlide-enter-active, .formSlide-leave-active {
+        transition: all 0.5s;
+        opacity: 1;
+    }
+    .formSlide-enter-from, .formSlide-leave-to {
+        opacity: 0;
+        padding-bottom: 50px;
     }
 </style>

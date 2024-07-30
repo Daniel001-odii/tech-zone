@@ -77,3 +77,7 @@ nav{
         transform: rotate(360deg);
     }
     } 
+
+button{
+    @apply hover:bg-opacity-95
+}
