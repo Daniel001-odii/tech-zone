@@ -27,24 +27,24 @@
                     <div>Charles Uguwlor</div>
                 </div>
             </div>
-            <div class="flex flex-col bg-white">
+            <div class="flex flex-col bg-white dark:bg-gray-800">
                 <form class="p-5 flex flex-col gap-5">
                     <div class="flex flex-col">
                         <span class=" text-gray-500 text-sm">ACCOUNT NUMBER</span>
                         <div class="border-b border-black">
-                            <input class="border-b border-none outline-none w-full" type="number" name="account-number">
+                            <input class="border-b border-none outline-none w-full bg-transparent" type="number" name="account-number">
                         </div>
                     </div>
                     <div class="flex flex-col">
                         <span class=" text-gray-500 text-sm">ACCOUNT NAME</span>
                         <div class="border-b border-black">
-                            <input class="border-b border-none !outline-none w-full" type="text" name="account-name">
+                            <input class="border-b border-none !outline-none w-full bg-transparent" type="text" name="account-name">
                         </div>
                     </div>
                     <div class="flex flex-row gap-3 justify-between items-center">
                         <div class="flex flex-col">
                             <span class="text-gray-500 text-sm">BANK NAME</span>
-                            <div class="border-b border-black">
+                            <div class="border-b border-black  bg-transparent">
                                 <select class="p-3 border-none">
                                     <option>Select Bank</option>
                                 </select>
@@ -67,11 +67,101 @@
 
  <!-- REQUEST WITHDRAW MODAL -->
 <transition name="formSlide">
-    <div class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
-        <div class="flex flex-col p-5 rounded-lg bg-white w-fit md:w-[700px]">
-            <div class="flex flex-col md:flex-row">
-                <h1 class="font-bold">Withdrawal Method</h1>
+    <div v-if="withdraw_funds_modal" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+        <div class="flex flex-col p-12 rounded-lg bg-white dark:bg-gray-800 w-fit md:w-[80vw] max-w-[1050px]  max-h-[90vh] relative overflow-auto">
+            <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="absolute top-4 text-xl right-4">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <div class="flex flex-col md:flex-row gap-3 mt-6">
+                <div class=" flex flex-col w-full md:w-[50%]">
+                    <h1 class="font-bold">Withdrawal Method</h1>
+                  <div class="flex flex-col w-full p-5">
+                    <div class="flex flex-row gap-3 mb-6 text-[12px]">
+                        <label for="account_1" class="flex justify-center items-center gap-3">
+                            <span>Account 1</span>
+                            <input type="radio" id="account_1" value="account_1" name="accounts" checked>
+                        </label>
+                        <label for="account_2" class="flex justify-center items-center gap-3">
+                            <span class="text-gray-300">Account 2</span>
+                            <input type="radio" id="account_2" value="account_2" name="accounts" disabled>
+                        </label>
+                    </div>
+                    <div class="flex flex-col">
+                        <form class=" flex flex-col gap-5">
+                            <div class="flex flex-col">
+                                <span class=" text-gray-500 text-sm">ACCOUNT NUMBER</span>
+                                <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300 uppercase">
+                                    3141889040
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class=" text-gray-500 text-sm">ACCOUNT NAME</span>
+                                <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300 uppercase">
+                                    charles ugwulor
+                                </div>
+                            </div>
+                            <div class="flex flex-row gap-3 justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 text-sm">BANK NAME</span>
+                                    <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">
+                                        GT-BANK
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500 text-sm">
+                                        BANK CODE
+                                    </span>
+                                    <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">456</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col w-full mt-6">
+                    <h1  class="font-bold">Withdrawal Details</h1>
+                    <div class="flex flex-col gap-8 p-3">
+                        <label for="amount" class="flex flex-row gap-3 justify-between items-center">
+                            <span class="text-sm">Widthdrawal Amount</span>
+                            <div class="flex flex-row items-center justify-center gap-3">
+                                <span class="text-gray-500">NGN</span>
+                                <input type="number" name="amount" id="amount" class="form_input w-[100px] overflow-auto" placeholder="100,000">
+                            </div>
+                        </label>
+                        <div class="flex flex-col gap-3">
+                            <label for="password">
+                                <span class="text-sm">Account Password</span>
+                                <input type="password" placeholder="Acount password" name="password" id="password" class="form_input w-full">
+                            </label>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class=" flex flex-col w-full md:w-[50%]">
+                    <div class="flex flex-col">
+                        <h1 class="font-bold">Withdrawal Summary</h1>
+                        <div class="flex flex-col gap-3 mt-3 p-3">
+                            <div class="flex flex-row justify-between w-full">
+                                <span>Current Balance</span>
+                                <span>NGN 500,000</span>
+                            </div>
+
+                            <div class="flex flex-row justify-between w-full">
+                                <span>Withdrawal Amount</span>
+                                <span class="text-tz_blue text-xl font-bold">NGN 350,000</span>
+                            </div>
+
+                            <div class="flex flex-row justify-between w-full">
+                                <span>Balance After Withdrawal</span>
+                                <span class="">NGN 800,000</span>
+                            </div>
+                        </div>
+                        <img class="hidden md:flex" src="../../assets/images/withdrawal-image.png">
+                    </div>
+                </div>
             </div>
+            <button class="btn uppercase text-sm mt-6">withdraw funds</button>
         </div>
     </div>
 </transition>
@@ -237,7 +327,7 @@
                         <p class="font-bold">Current Balance</p>
                         <div class="text-2xl font-bold flex flex-row gap-1 items-center">
                             <div class="p-3 bg-gray-800 rounded-full flex justify-center items-center w-[50px] h-[50px] text-white">₦</div>
-                            <span class="inline-block text-5xl"> 500,000</span>
+                            <span class="inline-block text-4xl"> 500,000</span>
                         </div>
                     </div>
 
@@ -260,7 +350,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="flex flex-col gap-4 bg-gray-50 dark:bg-gray-700 p-6 sm:w-full md:max-w-[300px]">
+                            <div class="flex flex-col gap-4 bg-gray-50 dark:bg-gray-700 p-6 sm:w-full rounded-lg md:max-w-[300px]">
                                 <span class="dark:bg-gray-800 bg-slate-300 text-center font-bold rounded-lg p-3">Notice on Payment</span>
                                 
                                 <ol start="1" class=" list-decimal p-3">
@@ -273,35 +363,35 @@
 
                     <!-- Actions... -->
                     <div class="flex flex-row flex-wrap gap-6">
-                        <div class="flex flex-col gap-3 bg-gray-50 rounded-lg p-6">
+                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
                             <span class="font-bold">Actions</span>
                             <div class="flex flex-row flex-wrap gap-20 items-start justify-start px-12">
-                                <button type="button" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
-                                    <i class="bi bi-cash-stack p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
+                                <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="action-btn">
+                                    <i class="bi bi-cash-stack p-3 action-icon"></i>
                                     <span>Request Withdrawal</span>
                                 </button>
 
-                                <button type="button" @click="edit_card_details = !edit_card_details" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
-                                    <i class="bi bi-arrow-repeat p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
+                                <button type="button" @click="edit_card_details = !edit_card_details" class="action-btn">
+                                    <i class="bi bi-arrow-repeat p-3 action-icon"></i>
                                     <span>Update Card Details</span>
                                 </button>
 
-                                <button type="button" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
-                                    <i class="bi bi-plus-lg p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
-                                    <span>Add New Card</span>
+                                <button type="button" class="action-btn">
+                                    <i class="bi bi-plus-lg p-3 action-icon"></i>
+                                    <span>Add New Account</span>
                                 </button>
 
 
-                                <button type="button" class="flex flex-col gap-3 justify-center items-center text-center font-bold">
-                                    <i class="bi bi-plus-lg p-3 justify-center items-center flex rounded-full bg-blue-100 text-blue-500 h-[50px] w-[50px]"></i>
-                                    <span>Add New Card</span>
-                                </button>
+                                <!-- <button type="button" class="action-btn">
+                                    <i class="bi bi-plus-lg p-3 action-icon"></i>
+                                    <span>Add New Account</span>
+                                </button> -->
 
                             </div>
                         </div>
-                        <div class="flex flex-col gap-3 bg-gray-50 rounded-lg p-6 w-full md:w-fit">
+                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 w-full md:w-fit">
                             <span class="font-bold">Recent Transactions</span>
-                            <div class="border overflow-x-auto max-w-screen-lg">
+                            <div class="overflow-x-auto max-w-screen-lg">
                                 <div class="flex flex-row justify-between items-center  w-[500px]">
                                     <span>Thursday, 12 April 2024</span>
                                     <span>Pending</span>
@@ -464,6 +554,7 @@ export default {
             withdrawal_amount: '',
 
             edit_card_details: false,
+            withdraw_funds_modal: false,
         }
     },
     methods:{
@@ -682,5 +773,14 @@ export default {
     .formSlide-enter-from, .formSlide-leave-to {
         opacity: 0;
         padding-bottom: 50px;
+    }
+
+
+    .action-icon{
+        @apply justify-center items-center flex rounded-full bg-blue-50 dark:bg-blue-400 text-blue-500 h-[50px] w-[50px]
+    }
+
+    .action-btn{
+        @apply flex flex-col gap-3 justify-center items-center text-center font-bold
     }
 </style>
