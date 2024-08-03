@@ -355,7 +355,7 @@
                                  <!-- <Skeleton height="215px" width="360px" v-for="card in 2"/> -->
                                  
                                 <!-- CARD 1 -->
-                                <div @click="edit_card_details = !edit_card_details" class="card h-[215px] w-[360px] rounded-lg bg-blue-600 flex flex-col p-5 justify-between cursor-pointer uppercase text-white">
+                                <div v-if="user.settings.bank" @click="edit_card_details = !edit_card_details" class="card h-[215px] w-[360px] rounded-lg bg-blue-600 flex flex-col p-5 justify-between cursor-pointer uppercase text-white">
                                     <div class="text-sm opacity-60">{{ user.settings.bank.name }}</div>
                                     <div class="text-3xl">{{ user.settings.bank.account_number }}</div>
                                     <div class="flex flex-col">

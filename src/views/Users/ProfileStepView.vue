@@ -155,7 +155,7 @@ export default {
     data(){
         return{
             toast: useToast(),
-            step: 1,
+            step: 0,
             user: '',
             alerts: [],
             loading: false,
