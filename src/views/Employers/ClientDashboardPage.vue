@@ -8,12 +8,13 @@
     <Modal :name="`Select a Job to assign to ${current_user.name}`" :modal_active="assign_job_modal">
         <template #body>
             <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
-            <div class=" flex flex-col gap-3">
-                <div class="flex flex-col gap-3 rounded-md group hover:bg-gray-100 p-3 items-start justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
-                    <div clas="flex flex-col">
+            <div class=" flex flex-col gap-3 md:w-[700px]">
+                <div class="flex flex-row gap-3 rounded-md group hover:bg-gray-100 p-3 items-center justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
+                    <div clas="flex flex-col w-[70%] border border-red-500">
                         <div class=" text-lg font-bold text-tz_blue">{{ job.title }}</div>
-                        <div class=" text-lg">#{{ job.budget.toLocaleString() }}</div>
-                        <p class=" text-sm text-gray-300">posted {{ job.created }}</p>
+                        <div class="">{{ job.description.substring(0,100) }}...</div>
+                        <div class=" text-lg">NGN{{ job.budget.toLocaleString() }}</div>
+                        <p class=" text-sm text-gray-300">posted {{ formatDistanceToNow(job.createdAt) }} ago</p>
                     </div>
                    <button @click="assignJob(current_user.id, job._id)" class="btn hidden group-hover:block">Assign</button>
 
@@ -83,7 +84,9 @@
                     <h1 class="text-3xl font-bold capitalize" v-if="getUserData">{{ getUserData.user.firstname }} {{ getUserData.user.lastname }}</h1>
                 </div>
                 <div>
-                    <button @click="this.$router.push('/client/job')" class="btn border dark:border-gray-500" :disabled="profile_completion < 90">+ Create Job</button>
+                    <!-- {{ profile_completion }} -->
+                    <!-- <button @click="this.$router.push('/client/job')" class="btn border dark:border-gray-500" :disabled="profile_completion < 90">+ Create Job</button> -->
+                    <button @click="this.$router.push('/client/job')" class="btn border dark:border-gray-500">+ Create Job</button>
                     
                 </div>
             </div>
@@ -296,7 +299,7 @@ export default {
             const profile = this.user.profile;
             let percentage = 10;
 
-            if(this.user){
+            if(profile){
                 if(profile){
                     percentage += 0;
                 }
@@ -487,7 +490,8 @@ export default {
     },
     computed: {
         getUserData(){
-            return this.store.getters.getUserData
+            return this.store.getters.getUserData;
+            // this.calculateProfileCompletion();
         },
 
     },
@@ -496,6 +500,7 @@ export default {
         this.getUser();
         this.getJobsByEmployer();
         this.getSavedUsers();
+    
     }
 
 }

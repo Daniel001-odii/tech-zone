@@ -1,7 +1,7 @@
 <template>
 
 <!-- PASSWORD 2FA FOR FUNDS WITHDRAWAL -->
-<div v-if="requested_withdrawal" class="flex flex-col fixed left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+<div v-if="requested_withdrawal" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
     <form @submit.prevent="checkPassword" class="flex flex-col bg-white dark:bg-black rounded-lg p-12 gap-3">
         <h1 class="text-xl ">Please input your password to continue</h1>
         <input name="password" id="password" type="password" class="form_input" v-model="fwp_password">
@@ -14,39 +14,43 @@
 
 
 <!-- CARD UPDATE MODAL -->
- <transition name="formSlide">
+<transition name="formSlide">
     <div v-if="edit_card_details" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
-        <div class="flex flex-col">
-            <div class="card flex flex-col rounded-t-xl w-[300px] relative bg-blue-500 p-6 text-white">
+        <div class="flex flex-col w-[80vw] md:w-[350px]">
+            <div class="card flex flex-col rounded-t-xl w-auto relative bg-blue-500 p-6 text-white">
                 <button @click="edit_card_details = !edit_card_details" class="absolute right-4 top-4">
                     <i class="bi bi-x-lg"></i>
                 </button>
-                <div class="text-xl mt-6">123456789</div>
+                <div class="text-xl mt-6">{{ user.settings.bank.account_number }}</div>
                 <div class="mt-5">
                     <span class=" opacity-70 uppercase text-[12px]">account name</span>
-                    <div>Charles Uguwlor</div>
+                    <div>
+                        <span v-if="user.settings.bank.account_name">{{ user.settings.bank.account_name }}</span>
+                        <span v-else>{{ user.firstname }} {{ user.lastname }}</span>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col bg-white dark:bg-gray-800">
-                <form class="p-5 flex flex-col gap-5">
+                <form @submit.prevent="updateUserAccount" class="p-5 flex flex-col gap-5">
                     <div class="flex flex-col">
                         <span class=" text-gray-500 text-sm">ACCOUNT NUMBER</span>
                         <div class="border-b border-black">
-                            <input class="border-b border-none outline-none w-full bg-transparent" type="number" name="account-number">
+                            <input class="border-b border-none outline-none w-full bg-transparent" type="number" name="account-number" v-model="user.settings.bank.account_number">
                         </div>
                     </div>
                     <div class="flex flex-col">
                         <span class=" text-gray-500 text-sm">ACCOUNT NAME</span>
                         <div class="border-b border-black">
-                            <input class="border-b border-none !outline-none w-full bg-transparent" type="text" name="account-name">
+                            <input class="border-b border-none !outline-none w-full bg-transparent" type="text" name="account-name" v-model="user.settings.bank.account_name">
                         </div>
                     </div>
-                    <div class="flex flex-row gap-3 justify-between items-center">
+                    <div class="flex flex-row flex-wrap gap-3 justify-between items-center">
                         <div class="flex flex-col">
                             <span class="text-gray-500 text-sm">BANK NAME</span>
                             <div class="border-b border-black  bg-transparent">
-                                <select class="p-3 border-none">
-                                    <option>Select Bank</option>
+                                <select class="p-3 border-none"v-model="bank.name" @change="setBankCode">
+                                    <option value="" disabled>select bank</option>
+                                    <option v-for="bank in banks" :value="bank.name">{{ bank.name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -54,11 +58,11 @@
                             <span class="text-gray-500 text-sm">
                                 BANK CODE
                             </span>
-                            <div class="py-2 text-gray-500 border-b border-black">456</div>
+                            <div class="py-2 text-gray-500 border-b border-black">{{ bank.code }}</div>
                         </div>
                     </div>
                 </form>
-                <button class=" bg-tz_blue text-white p-5 uppercase font-bold text-sm">update card</button>
+                <button type="button" @click="updateUserAccount" class=" bg-tz_blue text-white p-5 uppercase font-bold text-sm">update card</button>
             </div>
         </div>
     </div>
@@ -92,27 +96,31 @@
                             <div class="flex flex-col">
                                 <span class=" text-gray-500 text-sm">ACCOUNT NUMBER</span>
                                 <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300 uppercase">
-                                    3141889040
+                                    {{ user.settings.bank.account_number }}
                                 </div>
                             </div>
                             <div class="flex flex-col">
                                 <span class=" text-gray-500 text-sm">ACCOUNT NAME</span>
                                 <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300 uppercase">
-                                    charles ugwulor
+                                    {{ user.firstname }}
+                                    {{ user.lastname }}
+                                    <!-- {{ user.settings.bank.account_number }} -->
                                 </div>
                             </div>
                             <div class="flex flex-row gap-3 justify-between items-center">
                                 <div class="flex flex-col">
                                     <span class="text-gray-500 text-sm">BANK NAME</span>
                                     <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">
-                                        GT-BANK
+                                        {{ user.settings.bank.name }}
                                     </div>
                                 </div>
                                 <div>
                                     <span class="text-gray-500 text-sm">
                                         BANK CODE
                                     </span>
-                                    <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">456</div>
+                                    <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">
+                                        {{  user.settings.bank.sort_code }}
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -122,13 +130,18 @@
                   <div class="flex flex-col w-full mt-6">
                     <h1  class="font-bold">Withdrawal Details</h1>
                     <div class="flex flex-col gap-8 p-3">
+                        <span v-if="withdrawal_amount_error" class="bg-red-100 text-red-500 p-3 rounded-lg">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            insufficient funds in account
+                        </span>
                         <label for="amount" class="flex flex-row gap-3 justify-between items-center">
                             <span class="text-sm">Widthdrawal Amount</span>
                             <div class="flex flex-row items-center justify-center gap-3">
                                 <span class="text-gray-500">NGN</span>
-                                <input type="number" name="amount" id="amount" class="form_input w-[100px] overflow-auto" placeholder="100,000">
+                                <input type="number" name="amount" id="amount" :max="account_balance" @keyup="checkBalance" class="form_input w-[100px] overflow-auto !border-red-500 !outline-none" placeholder="100,000" v-model="withdrawal_amount">
                             </div>
                         </label>
+                        
                         <div class="flex flex-col gap-3">
                             <label for="password">
                                 <span class="text-sm">Account Password</span>
@@ -144,12 +157,12 @@
                         <div class="flex flex-col gap-3 mt-3 p-3">
                             <div class="flex flex-row justify-between w-full">
                                 <span>Current Balance</span>
-                                <span>NGN 500,000</span>
+                                <span>NGN {{ account_balance.toLocaleString() }}.00</span>
                             </div>
 
                             <div class="flex flex-row justify-between w-full">
                                 <span>Withdrawal Amount</span>
-                                <span class="text-tz_blue text-xl font-bold">NGN 350,000</span>
+                                <span class="text-tz_blue text-xl font-bold">NGN {{ withdrawal_amount }}</span>
                             </div>
 
                             <div class="flex flex-row justify-between w-full">
@@ -161,7 +174,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn uppercase text-sm mt-6">withdraw funds</button>
+            <button class="btn uppercase text-sm mt-6" disabled>withdraw funds</button>
         </div>
     </div>
 </transition>
@@ -173,7 +186,7 @@
         <FullPageLoading v-if="loading"/>
        
         <div class=" bg-white tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
-            <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button>
+            <!-- <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button> -->
             <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
             <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
             <button @click="bankInfoUpdate" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
@@ -325,28 +338,32 @@
                 <div class="flex flex-col gap-12">
                     <div class="flex flex-col gap-3">
                         <p class="font-bold">Current Balance</p>
+                        <Skeleton v-if="loading_wallet" height="50px" width="220px"/>
                         <div class="text-2xl font-bold flex flex-row gap-1 items-center">
                             <div class="p-3 bg-gray-800 rounded-full flex justify-center items-center w-[50px] h-[50px] text-white">₦</div>
-                            <span class="inline-block text-4xl"> 500,000</span>
+                            <span class="inline-block text-4xl"> {{ account_balance.toLocaleString() }}.00</span>
                         </div>
                     </div>
 
                     <!-- card details -->
                     <div class="flex flex-row flex-wrap gap-12">
                         <div class="flex flex-col gap-4">
-                            <span class="font-bold">Card Details</span>
+                            <span class="font-bold">Account Details</span>
                             <div class="flex flex-row flex-wrap gap-12 overflow-x-auto">
 
+                                <!-- LOADER -->
+                                 <!-- <Skeleton height="215px" width="360px" v-for="card in 2"/> -->
+                                 
                                 <!-- CARD 1 -->
-                                <div class="card h-[215px] w-[360px] rounded-lg bg-blue-600 flex flex-col p-5 justify-between cursor-pointer uppercase text-white">
-                                    <div class="text-sm opacity-60">BANK NAME HERE</div>
-                                    <div class="text-3xl">314 1889 040</div>
+                                <div @click="edit_card_details = !edit_card_details" class="card h-[215px] w-[360px] rounded-lg bg-blue-600 flex flex-col p-5 justify-between cursor-pointer uppercase text-white">
+                                    <div class="text-sm opacity-60">{{ user.settings.bank.name }}</div>
+                                    <div class="text-3xl">{{ user.settings.bank.account_number }}</div>
                                     <div class="flex flex-col">
                                         <span class=" text-sm opacity-60">ACCOUNT NAME</span>
                                         <span class=" capitalize text-xl">{{ user.firstname }} {{ user.lastname }}</span>
                                     </div>
                                 </div>
-                                <div class="card h-[215px] w-[360px] rounded-lg bg-green-600"></div>
+                                <!-- <div class="card h-[215px] w-[360px] rounded-lg bg-green-600"></div> -->
                             </div>
                         </div>
                         <div>
@@ -365,7 +382,7 @@
                     <div class="flex flex-row flex-wrap gap-6">
                         <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
                             <span class="font-bold">Actions</span>
-                            <div class="flex flex-row flex-wrap gap-20 items-start justify-start px-12">
+                            <div class="flex flex-row flex-wrap gap-20 items-start md:justify-start justify-center px-12">
                                 <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="action-btn">
                                     <i class="bi bi-cash-stack p-3 action-icon"></i>
                                     <span>Request Withdrawal</span>
@@ -391,7 +408,11 @@
                         </div>
                         <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 w-full md:w-fit">
                             <span class="font-bold">Recent Transactions</span>
+                            
                             <div class="overflow-x-auto max-w-screen-lg">
+                                <!-- LOADER -->
+                                <Skeleton height="20px" width="500px"/>
+
                                 <div class="flex flex-row justify-between items-center  w-[500px]">
                                     <span>Thursday, 12 April 2024</span>
                                     <span>Pending</span>
@@ -464,7 +485,7 @@ import Dropdown from 'primevue/dropdown';
 import { useToast } from 'vue-toastification'
 
 // import ngBanks from 'ng-banks';
-
+import Skeleton from 'primevue/skeleton';
 
 
 export default {
@@ -478,7 +499,8 @@ export default {
         Password, 
         Alert, 
         AutoComplete,
-        Dropdown 
+        Dropdown,
+        Skeleton, 
     },
     data(){
         return{
@@ -523,8 +545,9 @@ export default {
             settings:{
                 bank: {
                     name: '',
-                    sort_code: '',
+                    code: '',
                     account_number: '',
+                    account_name: '',
                 },
                 card: {
                     number: '',
@@ -551,10 +574,13 @@ export default {
             requested_withdrawal: false,
             password_approved: false,
             withdrawal_errors: '',
-            withdrawal_amount: '',
+            withdrawal_amount: 0,
 
             edit_card_details: false,
             withdraw_funds_modal: false,
+
+            loading_wallet: false,
+            withdrawal_amount_error: false,
         }
     },
     methods:{
@@ -586,7 +612,6 @@ export default {
 
         bankInfoUpdate(){
             this.active_tab = 4;
-            this.getBanks();
         },
 
         setBankCode() {
@@ -594,6 +619,15 @@ export default {
             this.bank.code = bank ? bank.code : '';
             this.settings.bank.name = this.bank.name;
             this.settings.bank.sort_code = this.bank.code;
+        },
+
+        checkBalance(){
+            if(this.withdrawal_amount > this.account_balance){
+                // this.withdrawal_amount = 0
+                this.withdrawal_amount_error = true;
+            } else {
+                this.withdrawal_amount_error = false;
+            }
         },
 
         async getBanks(){
@@ -652,12 +686,33 @@ export default {
         // GET USER WALLET FOR BALANCE DISPLAY...
         async getUserWallet(){
             try{
+                this.loading_wallet = true;
                 const headers = this.headers;
                 const response  = await axios.get(`${this.api_url}/user/wallet/get`, { headers });
                 // console.log("user wallet: ", response.data.wallet);
                 this.account_balance = response.data.wallet.balance;
+                this.loading_wallet = false;
             }catch(error){
+                this.loading_wallet = false;
                 console.error("erro getting user wallet: ", error);
+            }
+        },
+
+
+        async updateUserAccount(){
+            this.loading = true;
+            const headers = this.headers;
+            try{
+                const form = this.settings.bank;
+                const response = await axios.patch(`${this.api_url}/user/bank/update`, form, { headers });
+                this.toast.success(response.data.message);
+                console.log("res from bank update: ", response);
+                this.loading = false;
+                this.edit_card_details = false;
+            }catch(error){
+                this.toast.error(error.response.data.message);
+                console.log("erro updating user bank: ", error);
+                this.loading = false;
             }
         },
 
@@ -733,7 +788,9 @@ export default {
 
     created(){
         this.theme();
-        this.getUserData()
+        this.getUserData();
+            
+        this.getBanks();
 
     }
 }

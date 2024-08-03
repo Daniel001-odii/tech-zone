@@ -42,15 +42,22 @@
     
                                 <div class="tz_form_control">
                                     <label for="password">password</label>
-                                    <input class="form_input_new" type="password" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
+                                    <div class=" relative ">
+                                        <button type="button" @click="reveal_password = !reveal_password" class=" absolute top-3 right-3">
+                                            <span v-if="reveal_password">hide</span>
+                                            <span v-else>show</span>
+                                        </button>
+                                        <input class="form_input_new w-full" :type="reveal_password ? 'text':'password'" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="flex flex-row gap-5 justify-between flex-wrap">
-                                <div class="flex flex-row-reverse gap-1 items-center justify-center">
+                                <!-- <div class="flex flex-row-reverse gap-1 items-center justify-center">
                                     <label for="rem-details">Remember me</label>
                                     <input name="rem-details" id="rem-details" type="checkbox"/>
-                                </div>
-                                <RouterLink to="/password/forgot" class=" text-tz_blue">Forgot password ?</RouterLink>
+                                </div> -->
+                                <RouterLink to="/password/forgot" class=" text-sm text-tz_blue">Forgot password?</RouterLink>
                             </div>
                             
                             <button class="p-3 text-white bg-tz_blue w-full rounded-full">Sign in</button> 
@@ -131,9 +138,16 @@
                 },
                 callback: this.googleAuth,
                 signup_modal: false,
+
+                reveal_password: false,
             };
         },
         methods: {
+            revealOrHidePassword(){
+
+            },
+
+
             async login() {
                 this.loading = true;
                 try {
