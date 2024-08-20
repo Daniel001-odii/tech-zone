@@ -12,7 +12,7 @@
         </form>
 
 
-        <div class="flex justify-start p-3">
+        <div class="flex justify-start p-3 flex-col">
             <!-- {{ results }} -->
             <div v-if="results.length > 0" v-for="user in results" class="flex flex-row gap-3 items-center p-5 w-full mb-1 hover:bg-tz_light_blue">
                 <RouterLink :to="`/users/${user._id}`" target="_blank">
