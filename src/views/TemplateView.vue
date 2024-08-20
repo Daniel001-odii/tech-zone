@@ -1,6 +1,6 @@
 <template>
    <div class="template h-screen bg-white dark:bg-[#27323F] dark:text-white flex flex-col fixed bottom-0 top-0 right-0 left-0">
-        <div class="navbar h-fit bg-green-400">
+        <div class="navbar h-fit">
             <Navbar/> 
         </div>
         <div class="page flex flex-row h-full">

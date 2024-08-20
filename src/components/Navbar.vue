@@ -1,7 +1,7 @@
 <template>
 <SessionExpiredModal v-if="session_expired_modal"/>
 
-<div class=" bg-white dark:bg-[#000000] border-b border-gray-200  dark:border-gray-600">
+<div class="bg-transparent border-b border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
         <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
         <div v-if="is_authenticated && !user">
