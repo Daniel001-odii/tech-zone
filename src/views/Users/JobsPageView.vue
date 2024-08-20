@@ -203,7 +203,7 @@
                                 :company="jobs[selectedJob].employer.profile.company_name" 
                                 :remote="jobs[selectedJob].location.remote"
                                 :location="`${jobs[selectedJob].location.address} ${jobs[selectedJob].location.state}`" 
-                                :posted="formattedDate(jobs[selectedJob].created)" 
+                                :posted="`${formatDistanceToNow(jobs[selectedJob].createdAt)} ago`" 
                                 :period="jobs[selectedJob].period" 
                                 :budget="`${jobs[selectedJob].budget.toLocaleString()} ${jobs[selectedJob].budget_type}`"
                                 :is_applied="checkIfJobIsApplied(jobs[selectedJob]._id)"

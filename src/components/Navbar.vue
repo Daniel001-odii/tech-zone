@@ -78,13 +78,19 @@
                     <SiteLogo/>
 
                     <!-- <div @submit.prevent="searchJob" class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden"> -->
-                    <!-- <div class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
-                        <input type="search" :placeholder="user.role == 'user' ? 'Search for jobs':'Search for Talents'" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
-                        <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-600 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
-                            <i class="bi bi-search"></i>
-                            <span>Search</span>
-                        </button>
-                    </div> -->
+                    
+                    <!-- ADD Link to search page to redirect on click -->
+                    <RouterLink to="/client/search">
+                        <div class="border rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
+                            <input type="search" :placeholder="user.role == 'user' ? 'Search for jobs':'Search for Talents'" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
+                            <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-600 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
+                                <i class="bi bi-search"></i>
+                                <span>Search</span>
+                            </button>
+                        </div>
+                    </RouterLink>
+
+
                     <div  v-if="user" class="flex flex-row items-center gap-3">
                         <button @click="updateTheme" class="p-2 md:hidden rounded-full w-10 h-10 dark:bg-gray-700 bg-gray-200 flex justify-center items-center">
                             <span>

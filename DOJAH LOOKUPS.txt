@@ -1,0 +1,6 @@
+verify selfie..
+https://api-docs.dojah.io/docs/nigeria/verify-nin-with-selfie-image
+
+
+NIN lookp-up
+https://api-docs.dojah.io/docs/nigeria/lookup-nin

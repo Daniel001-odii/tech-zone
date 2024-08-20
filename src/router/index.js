@@ -58,6 +58,12 @@ import WaitListPageView from '@/views/WaitListPageView.vue'
 import ContractFundingStatusView from '@/views/ContractFundingStatusView.vue'
 import BillingsAndOverviewPageView from '@/views/Employers/BillingsAndOverviewPageView.vue'
 
+import SearchPageView from '@/views/Employers/SearchPageView.vue';
+
+
+
+
+
 const routes = [
 
   // FOR WAITLIST.....
@@ -160,6 +166,12 @@ const routes = [
     component: ContractFundingStatusView,
   },
 
+  {
+    path: '/contracts/:contract_id/funding-status',
+    name:'contract funding-status',
+    component: ContractFundingStatusView,
+  },
+
 
   {
     path: '/in',
@@ -233,6 +245,7 @@ const routes = [
       {path: 'overview', component: ClientOverviewPageView, name: "my overview"},
       {path: 'contracts/:contract_id', component: ClientContractPageViewVue, name: "contract"},
       {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "task-watch"},
+      {path: 'search', component: SearchPageView, name: "Search"},
 
     ],
     meta: { requiresAuth: true, role: 'employer' },

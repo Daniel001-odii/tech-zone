@@ -361,7 +361,7 @@ export default {
             try{
                 this.loading = true;
                 const headers = this.headers;
-                const response = await axios.post(`${this.api_url}/contracts/${this.contract._id}/funds`, { headers });
+                const response = await axios.post(`${this.api_url}/contracts/${this.contract._id}/fund`, { headers });
                 window.location.href = response.data.checkout_url;
                 console.log("response from funding: ", response);
             }catch(error){
