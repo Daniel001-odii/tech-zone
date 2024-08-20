@@ -295,7 +295,8 @@
                         <div class="profile_section">
                             <h2 class="font-bold">Date Joined</h2>
                             <div>
-                                {{ formatDistanceToNow(user.createdAt) }} ago
+                                <span v-if="user.createdAt">{{ formatDistanceToNow(user.createdAt) }} ago</span>
+                                <span v-else>{{ formatDistanceToNow(user.created) }} ago</span>
                             </div>
                         </div>
 
