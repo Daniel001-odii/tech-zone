@@ -20,7 +20,7 @@
                 </RouterLink>
                 <div class="flex flex-col">
                     <RouterLink :to="`/users/${user._id}`" target="_blank">
-                        <span class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</span>
+                        <span class="text-xl font-bold hover:text-blue-500">{{ user.firstname }} {{ user.lastname }}</span>
                     </RouterLink>
                     <span>{{ user.profile.title }}</span>
                     <span class="text-sm">{{ user.profile.skills }}</span>
