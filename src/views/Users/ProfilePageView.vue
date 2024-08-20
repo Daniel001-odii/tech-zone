@@ -234,7 +234,8 @@
                             <span v-if="user.email_verified">user email is verified</span>
                             <span v-else>user email is not verified</span>
                         </div> -->
-                        <p>Joined: {{ formatDistanceToNow(user.createdAt) }} ago</p>
+                        <p v-if="user.createdAt">Joined: {{ formatDistanceToNow(user.createdAt) }} ago</p>
+                        <p v-else>Joined: {{ formatDistanceToNow(user.created) }} ago</p>
                         <!-- <p>Joined: {{ formatDistance(new Date(user.createdAt)) }} ago</p> -->
                         
 
