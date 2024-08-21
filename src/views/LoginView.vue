@@ -31,7 +31,10 @@
                         <!-- <span>{{ this.$route.query }}</span> -->
                         <p>Already have an account? <RouterLink to="/login">Login</RouterLink> </p>
     
-                        <div class="text-red-500 mt-6" v-if="error">{{ error }}</div>
+                        <div class="text-red-500 mt-6 bg-red-500 bg-opacity-10 p-3 rounded-md flex flex-row gap-3" v-if="error">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            {{ error }}
+                        </div>
     
                         <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="login()">
                             <div class="flex flex-col gap-3">
