@@ -11,12 +11,15 @@
             <div class=" flex flex-col gap-3 md:w-[700px]">
                 <div class="flex flex-row gap-3 rounded-md group hover:bg-gray-100 p-3 items-center justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
                     <div clas="flex flex-col w-[70%] border border-red-500">
-                        <div class=" text-lg font-bold text-tz_blue">{{ job.title }}</div>
+                        <div class=" text-xl font-bold text-blue-300 capitalize">{{ job.title }}</div>
                         <div class="">{{ job.description.substring(0,100) }}...</div>
-                        <div class=" text-lg">NGN{{ job.budget.toLocaleString() }}</div>
-                        <p class=" text-sm text-gray-300">posted {{ formatDistanceToNow(job.createdAt) }} ago</p>
+                        <div class="mt-3">Budget: NGN {{ job.budget.toLocaleString() }}</div>
+                        <p class=" text-sm text-gray-400 mt-5">posted {{ formatDistanceToNow(job.createdAt) }} ago</p>
                     </div>
-                   <button @click="assignJob(current_user.id, job._id)" class="btn hidden group-hover:block">Assign</button>
+                   <button @click="assignJob(current_user.id, job._id)" class="btn hidden group-hover:flex !flex-row">
+                        <span>Assign</span>
+                        <i class="bi bi-person-fill-check ml-3"></i>
+                   </button>
 
                 </div>
             </div>
@@ -103,8 +106,11 @@
                     </button>
                 </div>
                 <div>
-                    <div v-if="current_tab == 'jobs'" class="p-3 rounded-lg mt-3">
-                        <div v-if="loading_posted_jobs">Loading your jobs...</div>
+                    <div v-if="current_tab == 'jobs'" class="p-3 rounded-lg mt-3 ">
+                        <div v-if="loading_posted_jobs" class="min-h-[400px] flex justify-center items-center text-center gap-3">
+                            <span>Loading your jobs...</span>
+                            <SpinnerComponent/>
+                        </div>
                         <div v-if="jobs && jobs.length > 0">
                             <!-- {{ jobs }} -->
                             <div class=" bg-white p-2 rounded-2xl mb-4  hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]" v-for="(job, job_id) in jobs" :key="job_id">
@@ -193,19 +199,26 @@
                                         <img :src="user.profile.image_url">
                                     </a>
                                 </div>
-                                <div class="flex flex-col justify-between items-start flex-wrap">
-                                    <a :href="`/users/${user._id}`" target="_blank" class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</a>
-                                    <p class="text-gray-400">{{ user.profile.title }}</p>
-                                    <Rating class="p-rating-item" :modelValue="user.rating" readonly :cancel="false"></Rating>
-                                    <p class="text-gray-400">{{ user.rating }}</p>
-                                    <div class="flex flex-row gap-3">
-                                        <RouterLink to="/client/messages">
-                                            <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">Message</button>
-                                        </RouterLink>
-                                        <button class="btn" @click="jobAssignmentModal(user._id, user.firstname)">Assign Job</button>
-                                        <button @click="saveUser(user._id)" class="border p-3 rounded-md">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
+                                <div class="flex flex-col gap-3 justify-between items-start flex-wrap">
+                                    <div>
+                                        <a :href="`/users/${user._id}`" target="_blank" class="text-xl font-bold">{{ user.firstname }} {{ user.lastname }}</a>
+                                        <p class="text-gray-400">{{ user.profile.title }}</p>
+                                        <Rating class="p-rating-item" :modelValue="user.rating" readonly :cancel="false"></Rating>
+                                    </div>
+                              
+                                    <div class="flex flex-row-reverse justify-between gap-3 !w-full">
+                                        <button class="underline hover:text-blue-400" @click="jobAssignmentModal(user._id, user.firstname)">Assign Job</button>
+                                        
+                                        <div class="flex gap-3">
+                                            <button class="bg-white border-tz_blue p-3 border rounded-md hover:bg-slate-100 dark:bg-tz_light_blue dark:hover:bg-tz_dark_blue">
+                                                <i class="bi bi-chat-square-text"></i>
+                                            </button>
+                                        
+                                            <button @click="saveUser(user._id)" class="border p-3 rounded-md text-red-500 border-red-500">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -243,6 +256,7 @@ import Toast from 'primevue/toast';
 import { useToast } from 'vue-toastification'
 import Message from 'primevue/message';
 import { formatDistanceToNow } from 'date-fns'
+import SpinnerComponent from  '../../components/SpinnerComponent.vue'
 
 export default {
     name: "ClientDashboardPage",
@@ -255,6 +269,7 @@ export default {
         Rating,
         Toast, 
         Message,
+        SpinnerComponent,
     },
     data(){
         return{

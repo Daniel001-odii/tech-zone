@@ -25,7 +25,7 @@
             </div>
 
             <!-- {{ results }} -->
-            <div v-if="results.length > 0" v-for="user in results" class="flex flex-row gap-3 items-center p-5 w-full mb-1 hover:bg-tz_light_blue relative border-b border-t border-gray-600">
+            <div v-if="results.length > 0" v-for="user in results" class="flex flex-row flex-wrap gap-3 items-center p-5 w-full mb-1 hover:bg-tz_light_blue relative border-b border-t border-gray-600">
                 <RouterLink :to="`/users/${user._id}`" target="_blank">
                     <img :src="user.profile.image_url" class="!size-20 rounded-full">
                 </RouterLink>
