@@ -3,9 +3,7 @@
         <div  class="flex flex-col justify-between border p-3 rounded-md text-left gap-3 hover:border-tz_blue dark:border-gray-600  dark:bg-[#1F2A36] dark:hover:border-[#769BBF]">
 
             <div v-if="is_flagged" class="text-gray-400">
-                <slot name="job-title">
-                    Flagged job title
-                </slot>
+               {{ job_title }}
             </div>
 
             <div v-else @click="previewJob" class="flex flex-col gap-3">
