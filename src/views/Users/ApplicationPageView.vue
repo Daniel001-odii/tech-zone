@@ -344,9 +344,10 @@ export default {
         },
 
         async getApplicationDetails(){
-            this.loading = true;
+            
             const headers = this.headers;
             try{
+                this.loading = true;
                 const response = await axios.get(`${this.api_url}/jobs/${this.$route.params.job_id}/application`, { headers });
                 console.log("application details: ", response);
                 if(response.data.application){
@@ -356,11 +357,12 @@ export default {
                     }
                 }
                
-                this.loading = false;
+                
                 if(this.application_form.job === this.$route.params.job_id){
                     this.is_application = true;
                 }
-                
+
+                this.loading = false;
             } catch(error){
                 // handle error here...
                 console.log("error getting applications for job: ", error)
