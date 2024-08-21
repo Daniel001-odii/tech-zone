@@ -144,19 +144,22 @@
                 <div v-if="jobs.length > 0" class="flex flex-col justify-start p-3 h-full">
                     
                     <div v-if="showTab == 'tab-1'" class="h-full flex flex-row gap-3 relative">
-                        <div class="h-full absolute w-full md:w-3/6 overflow-y-auto flex flex-col">
+                        <div class="h-full absolute w-full md:w-3/6 overflow-y-auto flex flex-col p-2">
                             <div class=" h-full items-start flex flex-col gap-3">
                                 <div v-for="(job, job_index) in jobs" :key="job_index" class="w-full">
                                     <div v-if="!job.is_deleted" class="w-full">
                                         <!-- @saveJob="addJobToSaves(job._id)" -->
                                         <!-- is saved: {{checkIfJobIsSaved(job._id)}} -->
-                                        <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
+                                        <MainJobCard  @previewJob="showJobDetail(job_index)" class="w-full"
                                         :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
                                         :company="job.employer.profile.company_name" :rating="5" 
                                         @flagJob="console.log('job flagged')"
                                         :budget="job.budget" 
                                         :period="job.period" 
                                         :remote="job.location.remote"
+                                        :job_id="job._id"
+                                        :job_title="job.title"
+                                        :is_flagged="checkIfJobIsFlagged(job)"
                                         :is_applied="checkIfJobIsApplied(job._id)">
                                             <template #save-button>
                                                 <button class="icon_btn" @click="addJobToSaves(job._id)">
@@ -181,7 +184,7 @@
 
                                             </template>
                                             <template #job-title>
-                                            <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
+                                            <!-- <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink> -->
                                             </template>
                                             <template #job-location>
                                                 <span v-if="job.location.remote == 'true'">remote</span>
@@ -195,7 +198,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="h-full w-full md:w-3/6 hidden md:flex absolute right-0">
+                        <div class="h-full w-full md:w-3/6 hidden md:flex absolute right-0 p-2">
                             
                                 <JobDetailCard class="h-full w-full"
                                 :apply_button="true"
@@ -253,7 +256,10 @@
                                             </template>
                                             <template #job-description>{{  job.description.substring(0, 200) }}...
                                             </template>
-                                            <template #job-posting-time>{{  formattedDate(job.created) }}</template>
+                                            <template #job-posting-time>
+                                                <span v-if="job.createdAt">{{  formattedDate(job.createdAt) }}</span>
+                                                <span v-else>{{  formattedDate(job.created) }}</span>
+                                            </template>
                                         </MainJobCard>
                             </div>
                             <div v-if="applications.length <= 0">No applied jobs</div>
@@ -268,23 +274,34 @@
                                 <div v-if="contract.type == 'assigned'">
                                     <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                         
-                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue dark:border-gray-700">
-                                            <div class="flex flex-row justify-between items-center">
-                                                <RouterLink :to="'/in/contracts/' + contract._id">
-                                                    <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
-                                                </RouterLink>
-                                            </div>
-                                            <div>
-                                                {{ contract.job.title.substring(0, 200) }}...
-                                            </div>
-                                            <div>
-                                                <div>{{ contract.employer.company_name }}</div>
-                                                <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
-                                            </div>
-                                            <div class="flex flex-row gap-3">
-                                                <ContractStatus :type="contract.status"/>
-                                            </div>
-                                        </div>
+                                        <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
+                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
+                                        
+                                        @flagJob="console.log('job flagged')"
+                                        :budget="contract.job.budget" 
+                                        :period="contract.job.period" 
+                                        :remote="contract.job.location.remote"
+                                        :is_applied="checkIfJobIsApplied(contract.job._id)">
+                                            <template #save-button>
+                                                <button class="icon_btn" @click="addJobToSaves(contract.job._id)">
+                                                    <i v-if="checkIfJobIsSaved(contract.job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
+                                                    <i v-else class="bi bi-bookmark-check"></i>
+                                                </button>
+                                            </template>
+                                            <template #job-title>
+                                            <RouterLink :to="'/in/jobs/' + contract.job._id + '/application'"> {{ contract.job.title }}</RouterLink>
+                                            </template>
+                                            <template #job-location>
+                                                <span v-if="contract.job.location.remote == 'true'">remote</span>
+                                                <span v-else>{{  contract.job.location.address }}, {{  contract.job.location.state }}</span>
+                                            </template>
+                                            <template #job-description>{{  contract.job.description.substring(0, 200) }}...
+                                            </template>
+                                            <template #job-posting-time>
+                                                <span v-if="contract.job.createdAt">{{  formattedDate(contract.job.createdAt) }}</span>
+                                                <span v-else>{{  formattedDate(contract.job.created) }}</span>
+                                            </template>
+                                        </MainJobCard>
 
                                     </div>
 
@@ -302,27 +319,36 @@
                         <div class="flex flex-col">
                             <div v-for="contract in contracts" :key="contract._id">
                                 <div v-if="contract.status == 'completed'">
-                                    <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
+                                                                      
+                                    <MainJobCard v-if="contracts" @click="showJobDetail(job_index)" class="w-full"
+                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
                                         
-                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue  dark:border-gray-700">
-                                            <div class="flex flex-row justify-between items-center">
-                                                <RouterLink :to="'/in/contracts/' + contract._id">
-                                                    <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
-                                                </RouterLink>
-                                            </div>
-                                            <div>
-                                                {{ contract.job.title.substring(0, 200) }}...
-                                            </div>
-                                            <div>
-                                                <div>{{ contract.employer.company_name }}</div>
-                                                <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
-                                            </div>
-                                            <div class="flex flex-row gap-3">
-                                                <ContractStatus :type="contract.status"/>
-                                            </div>
-                                        </div>
+                                        @flagJob="console.log('job flagged')"
+                                        :budget="contract.job.budget" 
+                                        :period="contract.job.period" 
+                                        :remote="contract.job.location.remote"
+                                        :is_applied="checkIfJobIsApplied(contract.job._id)">
+                                            <template #save-button>
+                                                <button class="icon_btn" @click="addJobToSaves(contract.job._id)">
+                                                    <i v-if="checkIfJobIsSaved(contract.job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
+                                                    <i v-else class="bi bi-bookmark-check"></i>
+                                                </button>
+                                            </template>
+                                            <template #job-title>
+                                            <RouterLink :to="'/in/jobs/' + contract.job._id + '/application'"> {{ contract.job.title }}</RouterLink>
+                                            </template>
+                                            <template #job-location>
+                                                <span v-if="contract.job.location.remote == 'true'">remote</span>
+                                                <span v-else>{{  contract.job.location.address }}, {{  contract.job.location.state }}</span>
+                                            </template>
+                                            <template #job-description>{{  contract.job.description.substring(0, 200) }}...
+                                            </template>
+                                            <template #job-posting-time>
+                                                <span v-if="contract.job.createdAt">{{  formattedDate(contract.job.createdAt) }}</span>
+                                                <span v-else>{{  formattedDate(contract.job.created) }}</span>
+                                            </template>
+                                        </MainJobCard>
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -335,23 +361,35 @@
                                 <div v-if="contract.action == 'declined'">
                                     <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
                                         
-                                        <div class="flex flex-col text-left gap-3 border-b p-6 hover:bg-tz_light_blue  dark:border-gray-700">
-                                            <div class="flex flex-row justify-between items-center">
-                                                <RouterLink :to="'/in/contracts/' + contract._id">
-                                                    <div class="text-2xl font-bold text-tz_blue underline">{{ contract.job.title }}</div>
-                                                </RouterLink>
-                                            </div>
-                                            <div>
-                                                {{ contract.job.title.substring(0, 200) }}...
-                                            </div>
-                                            <div>
-                                                <div>{{ contract.employer.company_name }}</div>
-                                                <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
-                                            </div>
-                                            <div class="flex flex-row gap-3">
-                                                <ContractStatus :type="contract.status"/>
-                                            </div>
-                                        </div>
+                                        <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
+                                        :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
+                                        
+                                        @flagJob="console.log('job flagged')"
+                                        :budget="contract.job.budget" 
+                                        :period="contract.job.period" 
+                                        :remote="contract.job.location.remote"
+                                        :is_applied="checkIfJobIsApplied(contract.job._id)">
+                                            <template #save-button>
+                                                <button class="icon_btn" @click="addJobToSaves(contract.job._id)">
+                                                    <i v-if="checkIfJobIsSaved(contract.job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
+                                                    <i v-else class="bi bi-bookmark-check"></i>
+                                                </button>
+                                            </template>
+                                            <template #job-title>
+                                            <RouterLink :to="'/in/jobs/' + contract.job._id + '/application'"> {{ contract.job.title }}</RouterLink>
+                                            </template>
+                                            <template #job-location>
+                                                <span v-if="contract.job.location.remote == 'true'">remote</span>
+                                                <span v-else>{{  contract.job.location.address }}, {{  contract.job.location.state }}</span>
+                                            </template>
+                                            <template #job-description>{{  contract.job.description.substring(0, 200) }}...
+                                            </template>
+                                            <template #job-posting-time>
+                                                <span v-if="contract.job.createdAt">{{  formattedDate(contract.job.createdAt) }}</span>
+                                                <span v-else>{{  formattedDate(contract.job.created) }}</span>
+                                            </template>
+                                        </MainJobCard>
+
 
                                     </div>
                                 </div>
@@ -644,6 +682,11 @@ export default {
             if(this.user.role == 'user'){
                 return this.applied_jobs.includes(job_id);
             }
+        },
+
+        checkIfJobIsFlagged(job){
+            // const flags = job.flags.map(flag => flag.user);
+            return job.flags.map(flag => flag.user).includes(this.user._id)
         }
 
     },
