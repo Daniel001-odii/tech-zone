@@ -18,7 +18,7 @@
                 <span v-if="loading">
                     <SpinnerComponent/>
                 </span>  
-                <div v-else class="flex justify-center items-center flex-col text-xl text-gray-400">
+                <div v-else class="flex justify-center items-center text-center flex-col text-xl text-gray-400">
                     <i class="bi bi-search text-4xl mb-3"></i>
                     <p>Start by searching for users</p>
                 </div>
@@ -35,7 +35,7 @@
                     </RouterLink>
                     <span class="text-blue-300">{{ user.profile.title }}</span>
                     <span class="text-sm">{{ user.profile.skills }}</span>
-                    <span>{{  user.profile.bio }}</span>
+                    <p class="max-w-[75%]">{{  user.profile.bio }}</p>
                     <div class="flex text-sm text-gray-400 mt-3">
                        <span v-if="user.createdAt">joined {{ formatDistanceToNow(user.createdAt) }} ago</span>
                        <span v-else>joined {{ formatDistanceToNow(user.created) }} ago</span>

@@ -44,8 +44,12 @@
                                     <label for="password">password</label>
                                     <div class=" relative ">
                                         <button type="button" @click="reveal_password = !reveal_password" class=" absolute top-3 right-3">
-                                            <span v-if="reveal_password">hide</span>
-                                            <span v-else>show</span>
+                                            <span v-if="reveal_password">
+                                                <i class="bi bi-eye"></i>
+                                            </span>
+                                            <span v-else>
+                                                <i class="bi bi-eye-slash"></i>
+                                            </span>
                                         </button>
                                         <input class="form_input_new w-full" :type="reveal_password ? 'text':'password'" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                                     </div>
