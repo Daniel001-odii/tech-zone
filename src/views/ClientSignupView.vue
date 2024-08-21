@@ -159,8 +159,13 @@ export default {
                     
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
-                    // redirect to user profile...
-                    this.$router.push("/client/dashboard");
+
+                    this.toast.success(response.data.message);
+                    setTimeout(() => {
+                        // redirect to user profile...
+                        this.$router.push("/client/dashboard");
+                    }, 3000);
+                 
                     window.location.reload();
                 } else if(res.data.message == "User registered successfully"){
                     

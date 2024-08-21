@@ -136,9 +136,10 @@ export default {
                 
                 // display toast..
                 this.toast.success(response.data.message);
-
-                alert('registration successful, please login')
-                this.$router.push('/login')
+                setTimeout(() => {
+                    this.$router.push('/login');
+                }, 3000);
+                
             }
             catch(error){
                 this.error = error.response.data.message;

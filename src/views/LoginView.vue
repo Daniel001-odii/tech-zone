@@ -173,7 +173,7 @@
                         this.$router.push('/client/dashboard');
                     }}, 2000);
                     
-                    this.loading = false;
+                    this.loading = true;
     
                 }
                 catch (error) {

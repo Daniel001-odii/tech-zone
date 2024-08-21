@@ -7,11 +7,6 @@ import './assets/css/style.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 const app = createApp(App);
 
-// CONFIGURE AXIOS
-import axios from 'axios';
-// axios.defaults.withCredentials = true;
-// axios.defaults.baseURL =  process.env.VUE_APP_API_URL
-
 
 // GOOGLE LOGIN FOR GOOGLE AUTH...
 import vue3GoogleLogin from 'vue3-google-login';
@@ -28,6 +23,15 @@ import 'vue-advanced-cropper/dist/style.css';
 // import 'vue-advanced-cropper/dist/theme.classic.css';
 
 
+
+// CONFIGURE AXIOS
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = process.env.VUE_APP_API_URL
+
+
+
+
 // SOCKET IO FOR REAL TIME COMMS
 import VueSocketIO from 'vue-3-socket.io'
 // app.use(new VueSocketIO({
@@ -38,9 +42,7 @@ import VueSocketIO from 'vue-3-socket.io'
 // PRIME VUE THE ULTIMATE COMPONENT STUFF
 import 'primevue/resources/themes/aura-light-green/theme.css'
 
-// if(localStorage.theme == 'dark'){
-  // import 'primevue/resources/themes/lara-dark-blue/theme.css'
-// }
+
 
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice';

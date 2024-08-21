@@ -144,7 +144,7 @@
                 <div v-if="jobs.length > 0" class="flex flex-col justify-start p-3 h-full">
                     
                     <div v-if="showTab == 'tab-1'" class="h-full flex flex-row gap-3 relative">
-                        <div class="h-full absolute w-full md:w-3/6 overflow-y-scroll flex flex-col">
+                        <div class="h-full absolute w-full md:w-3/6 overflow-y-auto flex flex-col">
                             <div class=" h-full items-start flex flex-col gap-3">
                                 <div v-for="(job, job_index) in jobs" :key="job_index" class="w-full">
                                     <div v-if="!job.is_deleted" class="w-full">
