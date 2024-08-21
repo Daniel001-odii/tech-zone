@@ -175,8 +175,8 @@
                                                             <i class="bi bi-hand-thumbs-down"></i>
                                                         </button>
                                                     </template>
-                                                    <div class="flex flex-col gap-1 text-sm rounded-sm">
-                                                        <span  @click="flagJob(job._id, reason)" class="hover:bg-gray-500 cursor-pointer p-1" v-for="reason in flag_reasons">
+                                                    <div class="flex flex-col gap-1 text-sm rounded-md bg-slate-50 dark:bg-gray-700 p-1 mt-3 min-w-[200px]">
+                                                        <span  @click="flagJob(job._id, reason)" class="hover:bg-gray-500 cursor-pointer p-2" v-for="reason in flag_reasons">
                                                             {{ reason }}
                                                         </span>
                                                     </div>
