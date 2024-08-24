@@ -85,7 +85,9 @@
        </Modal>
                 
     
-                <div class="relative" :class="!loading && !user ? 'mt-20':''">
+                <div class="relative">
+                <!-- <div class="relative" :class="!loading && !user ? 'mt-20':''"> -->
+
                     <PageTitle>Work Explorer</PageTitle>
                     <Toast />
                     <div>

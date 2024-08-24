@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class=" hidden md:flex flex-col h-full p-3 rounded-md text-left gap-3 bg-white dark:bg-[#1F2A36] dark:border-[#769BBF]">
+        <div class=" hidden md:flex flex-col h-full p-3 rounded-md text-left gap-3 border bg-white dark:bg-[#1F2A36] dark:border-gray-500">
             <div class="flex flex-col gap-3">
                 
                 <div class="flex flex-row justify-between items-center flex-wrap gap-3">

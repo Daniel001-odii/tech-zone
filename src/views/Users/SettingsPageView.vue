@@ -54,12 +54,12 @@
                                 </select>
                             </div>
                         </div>
-                        <div>
+                        <!-- <div>
                             <span class="text-gray-500 text-sm">
                                 BANK CODE
                             </span>
                             <div class="py-2 text-gray-500 border-b border-black">{{ bank.code }}</div>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
                 <button type="button" @click="updateUserAccount" class=" bg-tz_blue text-white p-5 uppercase font-bold text-sm">update card</button>
@@ -71,7 +71,7 @@
 
  <!-- REQUEST WITHDRAW MODAL -->
 <transition name="formSlide">
-    <div v-if="withdraw_funds_modal" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+    <form v-if="withdraw_funds_modal" @submit.prevent="instantWithdrawFunds" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
         <div class="flex flex-col p-12 rounded-lg bg-white dark:bg-gray-800 w-fit md:w-[80vw] max-w-[1050px]  max-h-[90vh] relative overflow-auto">
             <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="absolute top-4 text-xl right-4">
                 <i class="bi bi-x-lg"></i>
@@ -107,21 +107,21 @@
                                     <!-- {{ user.settings.bank.account_number }} -->
                                 </div>
                             </div>
-                            <div class="flex flex-row gap-3 justify-between items-center">
-                                <div class="flex flex-col">
+                            <div class="flex flex-row gap-3 justify-between items-center w-full">
+                                <div class="flex flex-col w-full">
                                     <span class="text-gray-500 text-sm">BANK NAME</span>
                                     <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">
                                         {{ user.settings.bank.name }}
                                     </div>
                                 </div>
-                                <div>
+                                <!-- <div>
                                     <span class="text-gray-500 text-sm">
                                         BANK CODE
                                     </span>
                                     <div class="border-b border-gray-400 dark:border-gray-600 py-3 text-gray-300">
                                         {{  user.settings.bank.sort_code }}
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </form>
                     </div>
@@ -142,12 +142,12 @@
                             </div>
                         </label>
                         
-                        <div class="flex flex-col gap-3">
+                        <!-- <div class="flex flex-col gap-3">
                             <label for="password">
                                 <span class="text-sm">Account Password</span>
                                 <input type="password" placeholder="Acount password" name="password" id="password" class="form_input w-full">
                             </label>
-                        </div>
+                        </div> -->
                     </div>
                   </div>
                 </div>
@@ -174,9 +174,9 @@
                     </div>
                 </div>
             </div>
-            <button class="btn uppercase text-sm mt-6" disabled>withdraw funds</button>
+            <button type="submit" class="btn uppercase text-sm mt-6">withdraw funds</button>
         </div>
-    </div>
+    </form>
 </transition>
    
 
@@ -386,7 +386,8 @@
                         <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
                             <span class="font-bold">Actions</span>
                             <div class="flex flex-row flex-wrap gap-20 items-start md:justify-start justify-center px-12">
-                                <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="action-btn">
+                                <!-- <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="action-btn"> -->
+                                <button @click="requested_withdrawal = !requested_withdrawal" type="button" class="action-btn">
                                     <i class="bi bi-cash-stack p-3 action-icon"></i>
                                     <span>Request Withdrawal</span>
                                 </button>
@@ -409,12 +410,12 @@
 
                             </div>
                         </div>
-                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 w-full md:w-fit">
+                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 w-full md:w-full">
                             <span class="font-bold">Recent Transactions</span>
                             
                             <div class="overflow-x-auto max-w-screen-lg">
                                 <!-- LOADER -->
-                                <Skeleton height="20px" width="500px"/>
+                                <!-- <Skeleton height="20px" width="500px"/> -->
 
                                 <div class="flex flex-row justify-between items-center  w-[500px]">
                                     <span>Thursday, 12 April 2024</span>
@@ -520,7 +521,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
             current_mode: '',
-            active_tab: 4,
+            active_tab: 2,
 
             user: {
                 profile:{
@@ -637,9 +638,10 @@ export default {
             try{
                 this.loading = true;
                 // const response = await axios.get(`${this.api_url}/contracts/banks/list`);
-                const response = await axios.get(`${this.api_url}/banks/all`);
+                const response = await axios.get(`${this.api_url}/contracts/banks/list`);
                 console.log("bank lists: ", response);
-                this.banks = response.data.banks;
+                // this.banks = response.data.banks;
+                this.banks = response.data.result.detail.data;
                 this.loading = false;
             }catch(error){
                 this.loading = false;
@@ -719,7 +721,6 @@ export default {
             }
         },
 
-
         async updateUserData(){
             this.loading = true;
             const headers = this.headers;
@@ -763,7 +764,7 @@ export default {
                 const response = await axios.post(`${this.api_url}/password/check`, {password: this.fwp_password}, { headers });
                 console.log("from pass checker: ", response);
                 this.requested_withdrawal = false,
-                this.password_approved = response.data.authenticated;
+                this.withdraw_funds_modal = response.data.authenticated;
                 this.fwp_password = ''
                 // this.toast.info(response.data.message);
             }catch(error){
@@ -774,11 +775,12 @@ export default {
             }
         },
 
-        async withdrawFunds(){
+        async instantWithdrawFunds(){
             try{
                 const headers = this.headers;
                 const response = await axios.post(`${this.api_url}/funds/withdraw`, { amount: this.withdrawal_amount }, { headers });
                 this.toast.success(response.data.message);
+                this.withdraw_funds_modal = !this.withdraw_funds_modal;
             }catch(error){
                 this.toast.error(error.response.data.message);
             }
