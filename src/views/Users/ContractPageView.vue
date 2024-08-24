@@ -242,6 +242,8 @@ import { formatTimestampWithoutTime } from '@/utils/dateFormat';
 
 import Toast from 'primevue/toast';
 
+import { useToast } from 'vue-toastification';
+
 export default {
     name: "ContractsListPageView",
     components: { 
@@ -255,6 +257,7 @@ export default {
     },
     data(){
         return{
+            toast: useToast(),
             alerts: [],
             show_alert: false,
             alert_type: '',
@@ -288,12 +291,7 @@ export default {
         }
     },
     methods: {
-        showAlertBox(type, message){
-            this.alerts.push(message);
-            this.show_alert = !this.show_alert;
-            this.alert_type = type;
-            this.alert_message = message;
-        },
+    
 
         readableTimeFormat(time){
             return formatToRelativeTime(time);
@@ -342,11 +340,11 @@ export default {
                 const response = await axios.post(`${this.api_url}/contracts/accept/${this.$route.params.contract_id}`, {}, { headers } );
                 console.log("accept contract res: ", response);
                 // this.showAlertBox("success", response.data.message);
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(`${response.data.message}`);
                 window.location.reload();
             }catch(error){
                 console.log("accept contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(`${error.response.data.message}`);
             }
         },
 
@@ -357,10 +355,11 @@ export default {
                 const response = await axios.post(`${this.api_url}/contracts/decline/${this.$route.params.contract_id}`, {}, { headers } );
                 console.log("accept contract res: ", response);
                 // this.showAlertBox("danger",response.data.message);
-                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.default(`${response.data.message}`);
                 window.location.reload();
             }catch(error){
                 console.log("accept contract error: ", error)
+                this.toast.default(`${error.response.data.message}`);
             }
         },
 
@@ -369,11 +368,11 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/complete`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(`${response.data.message}`);
                 window.location.reload();
             }catch(error){
                 // console.log("complete contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(`${error.response.data.message}`);
             }
         },
 
@@ -384,11 +383,11 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/close`, {}, { headers } );
                 // console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'info', summary: 'Info Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(`${response.data.message}`);
                 window.location.reload();
             }catch(error){
                 console.log("close contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(`${error.response.data.message}`);
             }
         },
 
@@ -397,11 +396,11 @@ export default {
             try{
                 const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/resume`, {}, { headers } );
                 console.log("accept contract res: ", response);
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(`${response.data.message}`);
                 window.location.reload();
             }catch(error){
                 console.log("close contract error: ", error);
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                 this.toast.error(`${error.response.data.message}`);
             }
         },
 
@@ -421,7 +420,7 @@ export default {
                     const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/user-feedback`, this.feedback, { headers });
                     console.log("feedback sent: ", response);
                     this.loading = false;
-                    this.$toast.add({ severity: 'success', summary: 'Success Message', detail: 'Your feedback was sent!', life: 3000 });
+                    this.toast.success(`${response.data.message}`);
 
                     setTimeout(function(){
                         window.location.reload()
@@ -429,7 +428,7 @@ export default {
                     
                 }catch(error){
                     console.log(error);
-                    this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                     this.toast.error(`${error.response.data.message}`);
                 }
         }
     },

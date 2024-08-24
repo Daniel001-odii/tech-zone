@@ -9,7 +9,7 @@
                     <div class="flex flex-row-reverse justify-between w-full">
 
                         
-                        <button @click="clearAllNotifications" class="rounded-md px-6 py-2 text-white bg-tz_blue" :disabled="!notifications || notifications.length <= 0">clear all</button>
+                        <button @click="clearAllNotifications" class="btn rounded-md px-6 py-2 text-white bg-tz_blue"  :disabled="!notifications || notifications.length <= 0">clear all</button>
                         
                         <div class=" flex flex-row gap-3 items-center justify-between">
                             <div class="flex flex-col">
@@ -75,6 +75,8 @@ import { formatToRelativeTime } from '@/utils/dateFormat';
 import DismissableAlert from '@/components/DismissableAlert.vue';
 import Toast from 'primevue/toast';
 
+import { useToast } from 'vue-toastification';
+
 export default {
     name: "NotificationsPageView",
     components: { 
@@ -94,6 +96,7 @@ export default {
             formatTimestamp,
             formatToRelativeTime,
             alerts: [],
+            toast: useToast(),
         }
     },
     methods:{
@@ -121,11 +124,11 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/notifications/${notification_id}/read`, {}, { headers });
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(`${response.data.message}`);
                 this.getNotifications();
                 
             }catch(error){
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(`${response.data.message}`);
             }
         },
 
@@ -135,10 +138,11 @@ export default {
                 const response = await axios.post(`${this.api_url}/notifications/clear`, {}, { headers } );
                 console.log("user notifications: ", response);
                 this.getNotifications();
-                this.$toast.add({ severity: 'success', summary: 'Success Message', detail: `${response.data.message}`, life: 3000 });
+                this.toast.success(`${response.data.message}`);
+               
 
             }catch(error){
-                this.$toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.response.data.message}`, life: 3000 });
+                this.toast.error(`${response.data.message}`);
             }
         },
     },

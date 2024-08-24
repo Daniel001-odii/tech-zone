@@ -15,8 +15,8 @@
 
 <!-- CARD UPDATE MODAL -->
 <transition name="formSlide">
-    <div v-if="edit_card_details" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
-        <div class="flex flex-col w-[80vw] md:w-[350px]">
+    <div v-if="edit_card_details" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center p-3">
+        <div class="flex flex-col w-fit">
             <div class="card flex flex-col rounded-t-xl w-auto relative bg-blue-500 p-6 text-white">
                 <button @click="edit_card_details = !edit_card_details" class="absolute right-4 top-4">
                     <i class="bi bi-x-lg"></i>

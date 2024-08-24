@@ -1,6 +1,8 @@
 <template>
 <SessionExpiredModal v-if="session_expired_modal"/>
-
+<!-- <div>{{ REALTIME_NOTIFICATION }}</div>
+ 
+-->
 <div class="bg-transparent border-b border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
         <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
@@ -26,11 +28,13 @@
 
         <!-- NAVBAR FOR MAIN APPLICATION AND AUTHENTICATED USERS -->
         <!-- <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white " style="margin: 0 auto;"> -->
-            <!-- this navbar here displays only on mobile views. -->
+            <!-- this navbar here displays only on mobile view -->
         
             <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4 dark:bg-[#1F2A36] dark:text-white">
-                <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4 border">
-                    <span class="">&times;</span>
+                <button @click="mobile_nav = !mobile_nav" class=" text-3xl absolute right-5 top-4">
+                    <span class="">
+                        <i class="bi bi-x"></i>
+                    </span>
                 </button>
             
                 <div class="text-center">
@@ -90,6 +94,8 @@
                         </div>
                     </RouterLink>
 
+                    <!-- <p>Hello: {{  REALTIME_NOTIFICATION }}</p> -->
+
 
                     <div  v-if="user" class="flex flex-row items-center gap-3">
                         <button @click="updateTheme" class="p-2 md:hidden rounded-full w-10 h-10 dark:bg-gray-700 bg-gray-200 flex justify-center items-center">
@@ -108,19 +114,34 @@
                             <!-- NOTIFICATION MENU AND BELL ICON AS TRIGGER -->
                             <CustomDropdown>
                                 <template #trigger>
-                                    <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " ></i>
+                                    <div class="relative">
+                                        <div v-if="REALTIME_NOTIFICATION" class="!size-3 bg-blue-500 rounded-full absolute z-10 right-0 -top-1"></div>
+                                        <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " ></i>
+                                    </div>
                                 </template>
                                 <template #menu>
                                     <div class=" max-w-[300px] w-[250px] border bg-white rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600 ">
                                         <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
                                         <div class=" max-h-[250px] overflow-y-auto">
-                                            <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="flex flex-row p-3 hover:bg-slate-50 rounded-md gap-3 justify-between items-start group/notify dark:hover:bg-tz_light_blue">
-                                                <div class="flex flex-col gap-2 w-[88%]">
-                                                    <span class="text-sm font-bold">{{  notification.message }}</span>
-                                                    <span class="text-sm text-gray-400">{{ realTimeFormat(notification.created)  }}</span>
+                                            <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="flex flex-row p-3 hover:bg-slate-50 rounded-md gap-3 justify-start items-start group/notify dark:hover:bg-tz_light_blue relative">
+                                                <div class="text-xl">
+                                                    <i class="bi bi-gift-fill" v-if="notification.type == 'contract'"></i>
+                                                    <i class="bi bi-briefcase-fill" v-if="notification.type == 'job'"></i>
+                                                    <i class="bi bi-person-fill" v-if="notification.type == 'account'"></i>
+                                                    <i class="bi bi-cash-stack" v-if="notification.type == 'payment'"></i>
+                                                    <i class="bi bi-chat-left-text-fill" v-if="notification.type == 'message'"></i>
+                                                    <img src="../assets/images/dot_logo.svg" class=" !size-5" v-if="notification.type == 'platform'"/>
                                                 </div>
-                                                <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block">
-                                                    <span>&times;</span>
+                                                <RouterLink :to="`/in${notification.link_url}`" target="_blank">
+                                                    <div class="flex flex-col gap-2 w-[100%]">
+                                                        <span class="text-sm font-bold">{{  notification.message }}</span>
+                                                        <span class="text-sm text-gray-400">{{ realTimeFormat(notification.createdAt)  }}</span>
+                                                    </div>
+                                                </RouterLink>
+                                                <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block absolute top-2 right-2">
+                                                    <span>
+                                                        <i class="bi bi-x"></i>
+                                                    </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -155,8 +176,6 @@
                                     <UserDropDownMenu class=" hidden md:block" :username="user.firstname + ' ' + user.lastname" :email="user.email"/>
                                 </template>
                             </CustomDropdown>
-                     
-                            
                         </div>
                     </div>
                 </div>
@@ -167,6 +186,12 @@
             
 </div>
 </template>
+
+<!-- briefcase -->
+<!-- gift -->
+ <!-- person -->
+  <!-- cash-stack -->
+   <!-- chat-left-text -->
 <script>
 import { formatToRelativeTime } from '@/utils/dateFormat';
 import SiteLogo from './SiteLogo.vue';
@@ -215,11 +240,32 @@ export default {
             user_type: '',
             session_expired_modal: false,
 
+            REALTIME_NOTIFICATION: '',
+
+            socket: io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true}),
+
             
         };
     },
 
+    sockets: {
+        connect() {
+            console.log('Connected to server');
+        },
+        disconnect() {
+            console.log('Disconnected from server');
+        },
+    },
+
     methods: {
+        getNotified(){
+            this.socket.on(`notification_${this.user._id}`, (notification) => {
+                this.REALTIME_NOTIFICATION = notification.message;
+                // get user notification and display in notification drop-down
+                this.getNotifications();
+                console.log("new notification for you: ", notification)
+            });
+        },
         toggleNavbar(){
             this.left_nav_open = !this.left_nav_open;
             this.$emit('toggle-nav');
@@ -253,6 +299,10 @@ export default {
                 const response = await axios.get(`${this.api_url}/user`, { headers });
                 this.user = response.data.user;
                 this.user_type = response.data.user.role;
+                // if(this.user){
+                    this.socket.emit('join', `user_${this.user._id}`);
+                    this.getNotified();
+                // }
             }
             catch(error){
                 console.log("error from navbar :", error);
@@ -268,7 +318,7 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.get(`${this.api_url}/notifications/unread`, { headers } )
-                console.log("user notifications: ", response);
+                // console.log("user notifications: ", response);
                 this.notifications = response.data.notifications.reverse();
 
             }catch(error){
@@ -280,7 +330,10 @@ export default {
             console.log(notification_id);
 
             this.notifications.splice(index, 1);
-            console.log("removed notifications: ", notification_id, " index: ", index)
+            console.log("removed notifications: ", notification_id, " index: ", index);
+            if(this.notifications.length <= 0) {
+                this.REALTIME_NOTIFICATION = ''
+            };
 
             const headers = this.headers;
             try{
@@ -338,26 +391,27 @@ export default {
             return formatToRelativeTime(time)
         },
 
-        // Method to clear the interval
-        stopNotifications() {
-            clearInterval(this.notificationInterval);
-        }
-
     },
     created(){
         this.getUserData();
         this.getNotifications();
+
         if(localStorage.getItem('life-gaurd')){
             this.is_authenticated = true;
         };
 
-        // get notifications...
-        this.getNotifications();
+      
         
     },
 
+    mounted() {
+        // if(this.REALTIME_NOTIFICATION){
+        //     this.getNotifications();
+        // }
+    },
+
     unmounted() {
-        this.stopNotifications();
+        // this.stopNotifications();
     },
 }
 </script>

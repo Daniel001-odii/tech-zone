@@ -27,7 +27,7 @@
                             <div class="text-xl font-bold">Employer {{ contract.employer.firstname }} {{ contract.employer.lastname }}</div>
                             <div class="text-xl font-bold">Freelancer {{ contract.user.firstname }} {{ contract.user.lastname }} <br/> <span class=" font-thin text-sm">{{ contract.user.email }}</span></div>
                             <div>{{ contract.employer.company_name }}</div>
-                            <div>₦{{ contract.job.budget.toLocaleString() }} Budget</div>
+                            <div>₦{{ contract.budget.toLocaleString() }} Budget</div>
                         </div>
 
 

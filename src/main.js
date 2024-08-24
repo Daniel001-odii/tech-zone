@@ -33,11 +33,19 @@ axios.defaults.baseURL = process.env.VUE_APP_API_URL
 
 
 // SOCKET IO FOR REAL TIME COMMS
-import VueSocketIO from 'vue-3-socket.io'
-// app.use(new VueSocketIO({
-//     connection: 'http://localhost:8000'
-//   }));
+// import VueSocketIO from 'vue-3-socket.io'
+import io from 'socket.io-client'
+const socket = io(process.env.VUE_APP_ROOT_API_URL, {
+  withCredentials: true,
+  autoConnect: true,
+});
+// app.config.globalProperties.socket = socket;
 
+/*
+app.use(new VueSocketIO({
+    connection: process.env.VUE_APP_ROOT_API_URL
+  }));
+*/
 
 // PRIME VUE THE ULTIMATE COMPONENT STUFF
 import 'primevue/resources/themes/aura-light-green/theme.css'

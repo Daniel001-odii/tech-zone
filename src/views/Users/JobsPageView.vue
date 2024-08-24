@@ -240,15 +240,13 @@
                                         :budget="job.budget" 
                                         :period="job.period" 
                                         :remote="job.location.remote"
+                                        :job_title="job.title"
                                         :is_applied="checkIfJobIsApplied(job._id)">
                                             <template #save-button>
                                                 <button class="icon_btn" @click="addJobToSaves(job._id)">
                                                     <i v-if="checkIfJobIsSaved(job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
                                                     <i v-else class="bi bi-bookmark-check"></i>
                                                 </button>
-                                            </template>
-                                            <template #job-title>
-                                            <RouterLink :to="'/in/jobs/' + job._id + '/application'"> {{ job.title }}</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="job.location.remote == 'true'">remote</span>
@@ -281,15 +279,13 @@
                                         :budget="contract.job.budget" 
                                         :period="contract.job.period" 
                                         :remote="contract.job.location.remote"
+                                        :job_title="contract.job.title"
                                         :is_applied="checkIfJobIsApplied(contract.job._id)">
                                             <template #save-button>
                                                 <button class="icon_btn" @click="addJobToSaves(contract.job._id)">
                                                     <i v-if="checkIfJobIsSaved(contract.job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
                                                     <i v-else class="bi bi-bookmark-check"></i>
                                                 </button>
-                                            </template>
-                                            <template #job-title>
-                                            <RouterLink :to="'/in/jobs/' + contract.job._id + '/application'"> {{ contract.job.title }}</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="contract.job.location.remote == 'true'">remote</span>
@@ -327,15 +323,13 @@
                                         :budget="contract.job.budget" 
                                         :period="contract.job.period" 
                                         :remote="contract.job.location.remote"
+                                        :job_title="contract.job.title"
                                         :is_applied="checkIfJobIsApplied(contract.job._id)">
                                             <template #save-button>
                                                 <button class="icon_btn" @click="addJobToSaves(contract.job._id)">
                                                     <i v-if="checkIfJobIsSaved(contract.job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
                                                     <i v-else class="bi bi-bookmark-check"></i>
                                                 </button>
-                                            </template>
-                                            <template #job-title>
-                                            <RouterLink :to="'/in/jobs/' + contract.job._id + '/application'"> {{ contract.job.title }}</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="contract.job.location.remote == 'true'">remote</span>
@@ -368,15 +362,13 @@
                                         :budget="contract.job.budget" 
                                         :period="contract.job.period" 
                                         :remote="contract.job.location.remote"
+                                        :job_title="contract.job.title"
                                         :is_applied="checkIfJobIsApplied(contract.job._id)">
                                             <template #save-button>
                                                 <button class="icon_btn" @click="addJobToSaves(contract.job._id)">
                                                     <i v-if="checkIfJobIsSaved(contract.job._id)" class="bi bi-bookmark-check-fill text-tz_blue"></i>
                                                     <i v-else class="bi bi-bookmark-check"></i>
                                                 </button>
-                                            </template>
-                                            <template #job-title>
-                                            <RouterLink :to="'/in/jobs/' + contract.job._id + '/application'"> {{ contract.job.title }}</RouterLink>
                                             </template>
                                             <template #job-location>
                                                 <span v-if="contract.job.location.remote == 'true'">remote</span>
