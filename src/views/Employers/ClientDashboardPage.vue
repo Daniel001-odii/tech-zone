@@ -143,7 +143,7 @@
                                         <button @click="getJobApplicants(job._id, job_id)" class=" absolute right-5 font-thin text-sm rounded-full p-1 hover:bg-gray-500 w-5 h-5 flex justify-center items-center"><i class="bi bi-arrow-clockwise"></i></button>
                                     </div>
                                     <!-- ALL APPLICANTS SHOULD BE LISTED BELOW HERE -->
-                                    <div class="p-3 flex flex-row flex-wrap gap-3 hover:bg-slate-50 rounded-xl w-full border relative items-start dark:hover:bg-tz_light_blue dark:border-gray-500" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
+                                    <div class="p-3 flex flex-row flex-wrap gap-3 hover:border-blue-300 rounded-xl w-full border relative items-start dark:border-gray-500" v-for="(application, application_id) in applicants[job_id]" :key="application_id">
                                         <!-- <div  > -->
                                             <a v-if="application.user" :href="`/users/${application.user._id}`" target="_blank">
                                                 <img :src="application.user.profile.image_url" class=" h-16 w-16 bg-tz_blue rounded-full">
@@ -161,16 +161,18 @@
                                             </div>
                                             <div>
                                                 <p><b>Cover Letter:</b> {{ application.cover_letter }}</p>
-                                                <p><b>Attachments({{ application.attachments.length }}):</b> 
-                                                    <!-- <span>{{ application.attachments.forEach(file => file.split("/")) }}</span> -->
-                                                    <a v-for="file in application.attachments" :href="file" target="_blank" class="underline text-blue-500 p-2">{{ file.split("-")[file.split("-").length - 1] }} <br/></a>
-
-                                                    <!-- <div v-for="(attachment, attachment_id) in application.attachments" :key="attachment_id">
-                                                        <a class=" text-tz_blue" :href="attachment.url" target="_blank">({{attachment_id}}) {{ attachment }}</a>
-                                                    </div> -->
+                                                <p v-if="application.counter_offer">
+                                                    <b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}<br/>
+                                                    <b>Reason:</b> {{ application.reason_for_co }}
                                                 </p>
-                                                <p v-if="application.counter_offer"><b>Counter offer:</b> {{ application.counter_offer.toLocaleString() }}</p>
-                                                <p><b>Reason:</b> {{ application.reason_for_co }}</p>
+                                                <p><b>Attachments({{ application.attachments.length }}):</b> 
+                                                    <div v-for="(attachment, attachment_id) in application.attachments" :key="attachment_id">
+                                                        <a class=" text-tz_blue" :href="attachment.url" target="_blank">
+                                                            <i class="bi bi-paperclip mr-1"></i>  {{ attachment.name }}
+                                                        </a>
+                                                    </div>
+                                                </p>
+                                               
                                             </div>
                                             <div class="flex flex-row flex-wrap gap-3 mt-3">
                                                 <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id, job._id, job_id)">save freelancer</button>

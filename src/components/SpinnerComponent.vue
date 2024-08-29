@@ -12,9 +12,9 @@
 
 <style scoped>
 .loader {
-    width: 30px;
-    height: 30px;
-    border: 5px solid #FFF;
+    width: 20px;
+    height: 20px;
+    border: 4px solid #dfdfdf;
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;

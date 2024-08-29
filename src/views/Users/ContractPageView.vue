@@ -430,6 +430,19 @@ export default {
                     console.log(error);
                      this.toast.error(`${error.response.data.message}`);
                 }
+        },
+
+        async getContractFundingStatus(){
+            try{
+                this.loading = true;
+                const response = await axios.get(`${this.api_url}/contracts/${this.$route.params.contract_id}/funds/status`);
+                console.log("funding status: ", response);
+                this.loading = false;
+                // this.countDown();
+            }catch(error){
+                console.log("error getting funding status: ", error);
+                this.loading = false;
+            }
         }
     },
     computed: {
@@ -438,6 +451,7 @@ export default {
     created(){
         this.getUser();
         this.getContract();
+        // this.getContractFundingStatus();
         
     }
 }

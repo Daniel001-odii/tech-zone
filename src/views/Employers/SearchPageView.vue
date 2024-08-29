@@ -25,13 +25,14 @@
             </div>
 
             <!-- {{ results }} -->
-            <div v-if="results.length > 0" v-for="user in results" class="flex flex-row flex-wrap gap-3 items-center p-5 w-full mb-1 hover:bg-tz_light_blue relative border-b border-t border-gray-600">
+            <div v-if="results.length > 0" v-for="user in results" class="flex flex-row flex-wrap gap-3 items-center p-5 w-full mb-1 hover:bg-tz_light_blue relative border-b border-t dark:border-gray-600">
                 <RouterLink :to="`/users/${user._id}`" target="_blank">
                     <img :src="user.profile.image_url" class="!size-20 rounded-full">
                 </RouterLink>
                 <div class="flex flex-col">
                     <RouterLink :to="`/users/${user._id}`" target="_blank">
                         <span class="text-xl font-bold hover:text-blue-500">{{ user.firstname }} {{ user.lastname }}</span>
+                        <i v-if=" user.settings.KYC.is_verified" class="ml-1 text-[18px] text-blue-500 bi bi-patch-check-fill" ></i>
                     </RouterLink>
                     <span class="text-blue-300">{{ user.profile.title }}</span>
                     <span class="text-sm">{{ user.profile.skills }}</span>

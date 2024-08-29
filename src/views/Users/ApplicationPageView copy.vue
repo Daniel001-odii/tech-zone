@@ -131,8 +131,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <form v-if="job.status != 'closed'" @submit.prevent="sumbitApplication" class=" md:w-2/4 md:p-5 mt-6 md:m-0 flex flex-col gap-5">
                         
                             <div class="flex flex-col text-left gap-3">
@@ -154,33 +152,25 @@
                                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                                             <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                         </div>
-                                        <input id="dropzone-file" type="file" class="hidden" multiple @change="handleFilesSelected"/>
+                                        <input id="dropzone-file" type="file" class="hidden" multiple @change="handleFileChange"/>
                                     </label>
                                 </div> 
 
-
-                                <!-- {{ application_form.attachments }} -->
+                                <!-- <button class="btn" @click="uploadFiles">Upload files</button> -->
 
                                 <div v-if="!is_application" class="flex flex-col w-full">
-                                  <div v-if="uploadResults.length > 0" class="w-full min-h-4 mt-3" >
-                                      <!-- <p>Selected Files:</p> -->
-                                      <ul class="flex flex-row flex-wrap justify-start text-sm">
-                                          <!-- bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white -->
-                                          <li class=" text-blue-300 flex flex-row items-center justify-between " v-for="(result, index) in uploadResults" :key="index">
-                                              <span class="flex items-center justify-center gap-3"> 
-                                                <SpinnerComponent v-if="result.status === 'Uploading'"/>
-                                                <i v-else class="bi bi-paperclip"></i> 
-                                                <span v-if="result.status === 'Uploading'">{{ result.fileName }}</span> 
-                                                <span v-else>{{ result.fileName.split("/")[1] }}</span> -
-                                                <span>({{  result.sizeBeforeUpload }})</span>
-                                              </span>
-                                              <button type="button" @click="deleteFile(result.fileName, index)" class="p-2"><i class="bi bi-trash"></i></button>
-                                          </li>
-                                      </ul>
-                                  </div>
-                              </div>
-
-
+                                    <div class="w-full min-h-4 mt-3" >
+                                        <!-- <p>Selected Files:</p> -->
+                                        <ul class="flex flex-row flex-wrap justify-start text-sm">
+                                            <!-- bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white -->
+                                            <li class=" text-blue-300 flex flex-row items-center justify-between " v-for="(file, index) in selectedFiles" :key="index">
+                                                <span> <i class="bi bi-paperclip"></i> {{ file.name }} - ({{ filesize(file.size) }})</span>
+                                                <button type="button" @click="removeFile(index)" class="p-2"><i class="bi bi-trash"></i></button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- <button type="button" @click="uploadFiles" class=" bg-blue-500 p-3">upload files</button> -->
+                                </div>
                                 <!-- {{ application_form }} -->
                                 <div v-if="is_application && application_form.attachments">
                                     <span v-if="application_form.attachments.length > 0"><i class="bi bi-lock"></i> your attached files are secured..</span>
@@ -188,29 +178,27 @@
                                 <!-- <div v-else>No attachments</div> -->
                             </div>
                             </div>
-
                             <div class="flex flex-col text-left gap-3">
-                                <div class="flex flex-row gap-3">
-                                    <input type="checkbox" name="counterOffer" id="counterOffer" @change="hasCounterOffer = !hasCounterOffer" :checked="is_application && hasCounterOffer" :disabled="is_application">
-                                    <label for="counterOffer">Counter budget/offer</label>
-                                </div>
-                                <div v-if="hasCounterOffer">
-                                    <span class="font-bold text-2xl">Counter Offer</span>
-                                    <div class="flex flex-col justify-center gap-5 mt-3">
-                                        <div class="flex flex-col">
-                                                <span class="text-xl">Requesting Fee</span>
-                                                <input type="text" placeholder="100,000.00" class="form_input" v-model="application_form.counter_offer" :disabled="is_application">
-                                                <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="text-xl">Reason</span>
-                                            <textarea type="text" placeholder="a good reason for the counter offer" class="form_input" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
+                            <div class="flex flex-row gap-3">
+                                <input type="checkbox" name="counterOffer" id="counterOffer" @change="hasCounterOffer = !hasCounterOffer" :checked="is_application && hasCounterOffer" :disabled="is_application">
+                                <label for="counterOffer">Counter budget/offer</label>
+                            </div>
+                            <div v-if="hasCounterOffer">
+                                <span class="font-bold text-2xl">Counter Offer</span>
+                                <div class="flex flex-col justify-center gap-5 mt-3">
+                                    <div class="flex flex-col">
+                                            <span class="text-xl">Requesting Fee</span>
+                                            <input type="text" placeholder="100,000.00" class="form_input" v-model="application_form.counter_offer" :disabled="is_application">
                                             <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
-                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-xl">Reason</span>
+                                        <textarea type="text" placeholder="a good reason for the counter offer" class="form_input" v-model="application_form.reason_for_co" :disabled="is_application"></textarea>
+                                        <span class="font-sm text-gray-500">Input the amount you want to get paid for the job</span>
                                     </div>
                                 </div>
                             </div>
-
+                            </div>
                             <div class="flex ">
                           
                             <button type="submit" class="bg-tz_blue py-3 px-6 text-white rounded-md hover:bg-tz_dark_blue disabled:border border-gray-600 disabled:text-gray-400 disabled:bg-transparent" :disabled="is_application || submit_loading">
@@ -218,9 +206,24 @@
                                 <span v-else>Submit Application</span>
                             </button>
                             </div>
+<!-- 
+                            <VueFileAgent 
+                            
+                            :maxSize="'10MB'"
+                            :maxFiles="5"
+                            :helpText="'Select files'"
+                            :multiple="true"
+                            :accept="'image/*,video/*,.pdf,.doc,.docx,.zip'"
+                            :theme="'list'"
+                            :errorText="{
+                                type: 'Please select images, videos, pdf or zip files',
+                                size: 'You selected a larger file!',
+                            }"
+                            v-model:rawModelValue="rawFileRecords">
+                           </VueFileAgent> -->
 
-                           <div>
-  </div>
+
+                    
                     </form>
                 </div>
             </div>
@@ -244,9 +247,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { useToast } from 'vue-toastification';
 import { filesize } from "filesize";
 
-import SpinnerComponent from '../../components/SpinnerComponent.vue';
-
-
 export default {
     name: "ApplicationPageView",
     components: { 
@@ -256,13 +256,10 @@ export default {
         FullPageLoading, 
         PageTitle, 
         FileUpload,
-        Toast,
-        SpinnerComponent, 
+        Toast 
     },
     data(){
         return{
-            files: [],
-            uploadResults: [],
             filesize,
             formatDistanceToNow,
             loading: false,
@@ -277,7 +274,7 @@ export default {
                 cover_letter: '',
                 counter_offer: '',
                 reason_for_co: '',
-                attachments: [],
+                attachments: '',
             },
 
             is_application: false,
@@ -315,7 +312,19 @@ export default {
             
         },
 
-        async uploadFiles2() {
+        handleFileChange(event) {
+            this.application_attachments = event.target.files;
+             // Update the selectedFiles array with the names of the selected files
+            for (let i = 0; i < this.application_attachments.length; i++) {
+                this.selectedFiles.push(this.application_attachments[i]);
+            }
+        },
+
+        removeFile(index) {
+            this.selectedFiles.splice(index, 1);
+        },
+
+        async uploadFiles() {
             // Create a FormData object to append files
             const formData = new FormData();
             for (let file of this.application_attachments) {
@@ -392,16 +401,18 @@ export default {
 
             try{
                 // upload files here...
-                // if(this.selectedFiles.length > 0 ){
+                if(this.selectedFiles.length > 0 ){
                     try{
+                        const upload_files = this.uploadFiles();
                         const response = await axios.post(`${this.api_url}/jobs/${this.$route.params.job_id}/apply`, this.application_form, { headers });
                         console.log("application sent: ", response.data);
                         this.submit_loading = false;
                         this.application_sent = true;
+                        
                     }catch(error){
                         console.log("error uploading files");
                     }
-                // }
+                }
                 
             }catch(error){
                 console.log("error submitting application: ", error)
@@ -479,117 +490,6 @@ export default {
 
             this.job_map_is_visible = true;
         },
-
-        handleFilesSelected(event) {
-            const files = event.target.files;
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                this.uploadFile(file);
-            }
-        },
-
-        uploadFile(file) {
-            const formData = new FormData();
-            formData.append('files', file);
-
-            const fileSizeBeforeUpload = this.filesize(file.size); // Size in MB
-            const uploadResult = {
-                fileName: file.name,
-                status: 'Uploading',
-                progress: 0,
-                sizeBeforeUpload: `${fileSizeBeforeUpload}`,
-                sizeAfterUpload: null, // Will be updated after upload
-            };
-            this.uploadResults.push(uploadResult);
-
-            const index = this.uploadResults.length - 1; // Index of the current upload result
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', `${this.api_url}/upload/files`, true);
-
-            // Handle progress event
-            xhr.upload.onprogress = (event) => {
-                if (event.lengthComputable) {
-                const progress = Math.round((event.loaded * 100) / event.total);
-                console.log(`Progress: ${progress}%`); // Debug log
-                this.uploadResults[index].progress = progress;
-                this.$forceUpdate(); // Force Vue to re-render
-                } else {
-                console.log('Progress event not computable'); // Debug log
-                }
-
-                // disable submit button...
-                this.submit_loading = true;
-            };
-
-            // Handle response
-            xhr.onload = () => {
-                if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-
-                // save attachment urls to form field...
-                /* this.application_form.attachments.push(response.files.map(file => 
-                    file.Location
-                )); */
-
-                response.files.forEach(file => {
-                    let attachment = {
-                        name: file.Key.split("/")[1],  // Assuming 'key' should be 'Key'
-                        url: file.Location,
-                    };
-
-                    this.application_form.attachments.push(attachment);
-                });
-
-
-
-                console.log("from upload: ", response)
-                const fileSizeAfterUpload = response.size ? `${(response.size / (1024 * 1024)).toFixed(2)} MB` : this.uploadResults[index].sizeBeforeUpload;
-                this.uploadResults[index].status = 'Uploaded';
-                this.uploadResults[index].fileName = response.files[0].Key; // Assuming single file response
-                this.uploadResults[index].sizeAfterUpload = fileSizeAfterUpload;
-                this.$forceUpdate(); // Ensure reactivity
-
-                // re-enable submit button...
-                this.submit_loading = false;
-                } else {
-                    this.uploadResults[index].status = 'Failed';
-                    console.error('Error uploading file:', xhr.statusText);
-                    this.$forceUpdate(); // Ensure reactivity
-                }
-            };
-
-            xhr.onerror = () => {
-                this.uploadResults[index].status = 'Failed';
-                console.error('Error uploading file:', xhr.statusText);
-                this.$forceUpdate(); // Ensure reactivity
-            };
-
-            // Send the form data
-            xhr.send(formData);
-        },
-
-
-        async deleteFile(fileName, index) {
-            try {
-                const key = encodeURIComponent(fileName); // Encode the file name to be used in the URL
-                const response = await fetch(`${this.api_url}/upload/files/${key}/delete`, {
-                    method: 'DELETE',
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to delete file');
-                }
-
-                // Remove the file from the uploadResults array
-                this.uploadResults.splice(index, 1);
-                console.log('File deleted successfully');
-            } catch (error) {
-                console.error('Error deleting file:', error);
-            }
-        },
-
     
     },
 

@@ -187,10 +187,21 @@
        
         <div class=" bg-white tab flex ps-2 flex-row flex-wrap gap-2 dark:bg-[#1F2A36] border-b dark:border-gray-500 sticky top-0">
             <!-- <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button> -->
-            <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
-            <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
-            <button @click="bankInfoUpdate" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
-            <button @click="active_tab = 5" :class="active_tab == 5 ? 'active_tab':''" class="tab_button">ID & Verification</button>
+            <RouterLink :to="{path: '/in/settings', query: { tab: `profile` } }">
+                <button :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
+            </RouterLink>
+
+            <RouterLink :to="{path: '/in/settings', query: { tab: `notifications` } }">
+                <button :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
+            </RouterLink>
+
+            <RouterLink :to="{path: '/in/settings', query: { tab: `payout` } }">
+                <button :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Funds Withdrawal</button>
+            </RouterLink>
+
+            <RouterLink :to="{path: '/in/settings', query: { tab: `verification` } }">
+                <button :class="active_tab == 5 ? 'active_tab':''" class="tab_button">ID & Verification</button>
+            </RouterLink>
         </div>
 
 
@@ -431,7 +442,7 @@
             
 
             <!-- ID & VERIFICATION -->
-            <form @submit.prevent="updateUserData"  v-if="active_tab == 5" class="section mb-3">
+            <form @submit.prevent="verifyUserNow"  v-if="active_tab == 5" class="section mb-3">
                 
                 <div class="mt-3">
                     <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
@@ -439,32 +450,52 @@
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                         </svg>
                         <span class="sr-only">Info</span>
-                        <div>Your NIN number would be used for verifying your account once provided..</div>
+                        <div>Your valid NIN and selfie image would be used for verifying your account once provided, please make sure your account name matches the name on your NIN profile, make sure to upload a very visible passport photograph</div>
                     </div>
                     <!-- {{ settings.KYC }} -->
-                    <h1 class="font-bold mb-3 text-lg">NIMC Information</h1>
+                    <h1 class="font-bold mb-3 text-lg capitalize">Identity verification</h1>
                     <div class=" ">
                         <label for="nin-number">NIN Number</label>
                         <div class="flex flex-row items-center gap-3">
                             <div class="flex flex-col w-full">
-                                <input class="form_input" type="text" name="nin-number" id="nin-number" v-model="settings.KYC.NIN_number" :disabled="settings.KYC.is_verified">
+                                <input class="form_input" type="text" name="nin-number" id="nin-number" placeholder="your 11 digits NIN number" v-model="settings.KYC.NIN_number" :disabled="settings.KYC.is_verified">
                             </div>
-                            <svg v-if="settings.KYC.is_verified" class="w-6 h-6 text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
-                            </svg>
-                            <svg v-else class="w-6 h-6 text-red-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
-                            </svg>
+                            <span class="text-3xl">
+                                <i v-if="settings.KYC.is_verified" class="bi bi-person-check text-green-400"></i>
+                                <i v-else class="bi bi-person-fill-exclamation text-red-500"></i>
+                            </span>
+                            
                         </div>
-                        
-                        
+                    </div>
 
+                    <div class="mt-5">
+                        <span>Passport photograph</span>
+                        <camera :resolution="{ width: 375, height: 812 }" autoplay>
+        <button>I'm on top of the video</button>
+    </camera>
+                        <label class="image-upload-box overflow-hidden" @click="triggerFileInput">
+                        <input
+                            type="file"
+                            ref="fileInput"
+                            @change="onFileChange"
+                           accept="image/*;capture=camera"
+                            style="display: none"
+                        />
+                        <div v-if="imageUrl">
+                            <img :src="imageUrl" alt="Selected image preview" class="preview-image max-h-[200px]" />
+                        </div>
+                        <div v-else class="select-image-text">Select selfie image</div>
+                        </label>
+                        <p v-if="errorMessage" class="text-red-500 mt-3">{{ errorMessage }}</p>
+                        <!-- <p v-if="base64Image" class="base64-output">Base64 String: {{ base64Image }}</p> -->
                     </div>
                     
 
-                    <button type="submit" class="btn mt-3" :disabled="settings.KYC.is_verified">
-                        <span v-if="settings.KYC.is_verified">Verified Successfully</span>
+                    <button type="submit" class="btn mt-3" :disabled="settings.KYC.is_verified || verifying_loading">
+                        <span v-if="settings.KYC.is_verified && !verifying_loading">Verified Successfully</span>
                         <span v-else>Verify now</span>
+                        <span v-if="verifying_loading">loading...</span>
+
                     </button>
                 </div>
             </form>
@@ -491,6 +522,8 @@ import { useToast } from 'vue-toastification'
 // import ngBanks from 'ng-banks';
 import Skeleton from 'primevue/skeleton';
 
+import Camera from "simple-vue-camera";
+
 
 export default {
     name: "SettingsPageView",
@@ -504,7 +537,8 @@ export default {
         Alert, 
         AutoComplete,
         Dropdown,
-        Skeleton, 
+        Skeleton,
+        Camera 
     },
     data(){
         return{
@@ -585,10 +619,47 @@ export default {
 
             loading_wallet: false,
             withdrawal_amount_error: false,
+
+            imageUrl: null,
+            errorMessage: null,
+            base64Image: null,
+            maxFileSize: 2 * 1024 * 1024, // 2MB in bytes
+            verifying_loading: false,
         }
     },
     methods:{
         // get all user contracts...
+        triggerFileInput() {
+            this.$refs.fileInput.click();
+        },
+
+        onFileChange(event) {
+            const file = event.target.files[0];
+            this.errorMessage = null;
+            this.base64Image = null;
+
+            if (file) {
+                if (!file.type.startsWith("image/")) {
+                this.errorMessage = "Please select a valid image file.";
+                } else if (file.size > this.maxFileSize) {
+                this.errorMessage = "Image size should not exceed 2MB.";
+                } else {
+                this.imageUrl = URL.createObjectURL(file);
+                this.convertToBase64(file);
+                }
+            }
+        },
+
+        convertToBase64(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // Remove the prefix from the Base64 string
+                const base64String = e.target.result;
+                this.base64Image = base64String.replace(/^data:image\/[a-zA-Z]+;base64,/, '');
+            };
+            reader.readAsDataURL(file);
+        },
+
         theme(){
             const mode = localStorage.getItem('theme');
             this.current_mode = mode;
@@ -606,16 +677,11 @@ export default {
         light_mode(){
             localStorage.setItem('theme', 'light');
             document.documentElement.classList.remove("dark");
-            
         },
 
         dark_mode(){
             localStorage.setItem('theme', 'dark');
             document.documentElement.classList.add("dark");
-        },
-
-        bankInfoUpdate(){
-            this.active_tab = 4;
         },
 
         setBankCode() {
@@ -784,6 +850,24 @@ export default {
             }catch(error){
                 this.toast.error(error.response.data.message);
             }
+        },
+
+        async verifyUserNow(){
+            try{
+                this.verifying_loading = true;
+                const headers = this.headers;
+                const payload = {
+                    nin: this.settings.KYC.NIN_number,
+                    selfie_image: this.base64Image
+                }
+                const response = await axios.post('/user/KYC/verify', payload, { headers } );
+                this.toast.success(response.data.message);
+                window.location.reload();
+                this.verifying_loading = false;
+            }catch(error){
+                this.toast.error(error.response.data.message);
+                this.verifying_loading = false;
+            }
         }
        
     },
@@ -791,12 +875,24 @@ export default {
 
     },
 
+    updated(){
+        
+        if(this.$route.query.tab == 'profile'){
+            this.active_tab = 2;
+        } else if (this.$route.query.tab == 'notifications'){
+            this.active_tab = 3
+        } else if(this.$route.query.tab == 'payout'){
+            this.active_tab = 4;
+        } else if(this.$route.query.tab == 'verification'){
+            this.active_tab = 5;
+        }
+    },
+
     created(){
         this.theme();
         this.getUserData();
             
         this.getBanks();
-
     }
 }
 </script>
@@ -845,4 +941,26 @@ export default {
     .action-btn{
         @apply flex flex-col gap-3 justify-center items-center text-center font-bold
     }
+
+
+    .image-upload-box {
+  width: 200px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+.select-image-text {
+  font-size: 16px;
+  color: #777;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+}
 </style>

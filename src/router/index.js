@@ -177,6 +177,7 @@ const routes = [
     path: '/in',
     component: TemplateView,
     children: [
+      {path: '', component: UserJobsPageViewVue, name: "jobs all"},
       {path: 'jobs', component: UserJobsPageViewVue, name: "jobs"},
       {path: 'saved', component: SavedJobsViewVue, name: "saved jobs"},
       {path: 'messages', component: MessagePageViewVue, name: "user messages"},

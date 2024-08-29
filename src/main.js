@@ -73,6 +73,9 @@ const options = {
 // });
 
 
+import VueFileAgentNext from '@boindil/vue-file-agent-next'
+import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
+
 
 // GOOGLE LOGIN.....
 app.use(vue3GoogleLogin, {
@@ -80,6 +83,8 @@ app.use(vue3GoogleLogin, {
 })
 
 app.use(Vue3Lottie);
+
+app.use(VueFileAgentNext);
 
 
 // Declare a global variable

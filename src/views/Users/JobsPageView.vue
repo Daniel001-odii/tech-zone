@@ -344,8 +344,10 @@
                                                 <span v-else>{{  formattedDate(contract.job.created) }}</span>
                                             </template>
                                         </MainJobCard>
+                                     
 
                                 </div>
+                                <div v-else>No Completed jobs</div>
                             </div>
                         </div>
                     </div>
@@ -354,9 +356,8 @@
                     <div v-if="showTab == 'tab-5'">
                         <div class="flex flex-col gap-3">
                             <div v-for="contract in contracts" :key="contract._id">
-                                <div v-if="contract.action == 'declined'">
-                                    <div v-if="contracts" class="flex flex-col overscroll-y-scroll">
-                                        
+                                <div >
+                                    <div v-if="contract.action == 'declined' && contracts" class="flex flex-col overscroll-y-scroll">
                                         <MainJobCard  @click="showJobDetail(job_index)" class="w-full"
                                         :class="selectedJob == job_index ? 'bg-tz_light_blue':''" 
                                         
@@ -386,7 +387,9 @@
 
 
                                     </div>
+                                    <div v-else class="w-full flex justify-center items-center p-3">No Declined Contracts</div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

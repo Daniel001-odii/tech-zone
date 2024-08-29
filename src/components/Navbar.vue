@@ -1,9 +1,7 @@
 <template>
 <SessionExpiredModal v-if="session_expired_modal"/>
-<!-- <div>{{ REALTIME_NOTIFICATION }}</div>
- 
--->
-<div class="bg-transparent border-b border-gray-600">
+<!-- <div>{{ REALTIME_NOTIFICATION }}</div> -->
+<div class="bg-transparent border-b dark:border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
         <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
         <div v-if="is_authenticated && !user">
@@ -94,9 +92,6 @@
                         </div>
                     </RouterLink>
 
-                    <!-- <p>Hello: {{  REALTIME_NOTIFICATION }}</p> -->
-
-
                     <div  v-if="user" class="flex flex-row items-center gap-3">
                         <button @click="updateTheme" class="p-2 md:hidden rounded-full w-10 h-10 dark:bg-gray-700 bg-gray-200 flex justify-center items-center">
                             <span>
@@ -115,7 +110,9 @@
                             <CustomDropdown>
                                 <template #trigger>
                                     <div class="relative">
-                                        <div v-if="REALTIME_NOTIFICATION" class="!size-3 bg-blue-500 rounded-full absolute z-10 right-0 -top-1"></div>
+                                        <div v-if="REALTIME_NOTIFICATION.length > 0" class="p-2 !size-5 flex justify-center items-center bg-blue-500 rounded-full absolute z-10 -right-1 -top-1 text-sm text-white">
+                                            {{ REALTIME_NOTIFICATION.length }}
+                                        </div>
                                         <i class="bi bi-bell border-2 rounded-full h-10 w-10 flex dark:border-gray-400 justify-center items-center relative group/notifications " ></i>
                                     </div>
                                 </template>
@@ -133,7 +130,7 @@
                                                     <img src="../assets/images/dot_logo.svg" class=" !size-5" v-if="notification.type == 'platform'"/>
                                                 </div>
                                                 <RouterLink :to="`/in${notification.link_url}`" target="_blank">
-                                                    <div class="flex flex-col gap-2 w-[100%]">
+                                                    <div class="flex flex-col gap-2 w-[90%]">
                                                         <span class="text-sm font-bold">{{  notification.message }}</span>
                                                         <span class="text-sm text-gray-400">{{ realTimeFormat(notification.createdAt)  }}</span>
                                                     </div>
@@ -240,7 +237,7 @@ export default {
             user_type: '',
             session_expired_modal: false,
 
-            REALTIME_NOTIFICATION: '',
+            REALTIME_NOTIFICATION: [],
 
             socket: io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true}),
 
@@ -260,7 +257,7 @@ export default {
     methods: {
         getNotified(){
             this.socket.on(`notification_${this.user._id}`, (notification) => {
-                this.REALTIME_NOTIFICATION = notification.message;
+                this.REALTIME_NOTIFICATION.push(notification.message);
                 // get user notification and display in notification drop-down
                 this.getNotifications();
                 console.log("new notification for you: ", notification)
@@ -332,7 +329,7 @@ export default {
             this.notifications.splice(index, 1);
             console.log("removed notifications: ", notification_id, " index: ", index);
             if(this.notifications.length <= 0) {
-                this.REALTIME_NOTIFICATION = ''
+                this.REALTIME_NOTIFICATION = []
             };
 
             const headers = this.headers;

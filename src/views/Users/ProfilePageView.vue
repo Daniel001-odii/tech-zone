@@ -202,9 +202,7 @@
                         
                         <div class="flex flex-col items-start text-start">
                             <h1 class="font-bold text-4xl flex flex-row items-center gap-1">{{ user.firstname }} {{ user.lastname }}
-                                <svg v-if=" user.settings.KYC.is_verified" class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z" clip-rule="evenodd"/>
-                                </svg>
+                                <i v-if=" user.settings.KYC.is_verified" class="text-[25px] text-blue-500 bi bi-patch-check-fill" ></i>
                             </h1>
                             <h2 class="text-sm text-gray-500">{{ user.profile.title }}</h2>
                             <p>{{ user.email }}</p>
@@ -309,32 +307,35 @@
                     </div>
 
                     <div class="mt-8">
-                        <h2 class="font-bold">Completed Jobs</h2>
+                        <h2 class="font-bold">Work orders & Contracts</h2>
                         <div class="mt-6">
                             <SkeletonLoader v-if="!contracts"/>
                            
-                            <div v-if="contracts" class="flex flex-col gap-3 overscroll-y-scroll" >
+                            <div v-if="contracts.length > 0" class="flex flex-col gap-3 overscroll-y-scroll" >
                                 <!-- {{ contract.user_feedback }} -->
-                                  <div class="flex flex-col rounded-2xl p-6 gap-3 hover:bg-tz_light_blue border dark:border-gray-500" v-for="(contract, contract_id) in contracts" :key="contract_id">
-                                    <div class="flex flex-col gap-1">
-                                        <p class="text-lg text-blue-600 underline">{{contract.job.title}}</p>
-                                        <span class="text-md text-gray-500" v-if="contract.user_feedback.review">"{{ contract.user_feedback.review }}"</span>
-                                        <div class="text-sm text-gray-500">
-                                            <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(contract.user_feedback.rating)"></p>
-                                            <p v-else class="py-3">No feedback yet</p>
+                                <div v-for="(contract, contract_id) in contracts"  :key="contract_id">
+                                    <div v-if="contract.status != 'completed'" class="flex flex-col rounded-2xl p-6 gap-3 hover:bg-tz_light_blue border dark:border-gray-500" >
+                                        <div class="flex flex-col gap-1">
+                                            <p class="text-lg text-blue-600 underline">{{contract.job.title}}</p>
+                                            <span class="text-md text-gray-500" v-if="contract.user_feedback.review">"{{ contract.user_feedback.review }}"</span>
+                                            <div class="text-sm text-gray-500">
+                                                <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(contract.user_feedback.rating)"></p>
+                                                <p v-else class="py-3">No feedback yet</p>
+                                            </div>
+                                            <small>{{ formatTimestampWithoutTime(contract.createdAt) }}</small>
+                                            <div>#{{contract.job.budget}} paid</div>
                                         </div>
-                                        <small>{{ formatTimestampWithoutTime(contract.created) }}</small>
-                                        <div>#{{contract.job.budget}} paid</div>
+                                        <div class="mt-3">
+                                            <!-- contract status goes here -->
+                                            <ContractStatus :type="contract.status"/>
+                                        </div>
                                     </div>
-                                    <div class="mt-3">
-                                        <!-- contract status goes here -->
-                                        <ContractStatus :type="contract.status"/>
-                                    </div>
-                                  </div>
+                                </div>
                             </div>
                             
                             <div v-else class="p-3 text-center">No Completed Jobs Yet</div>
                         </div>
+                       
                     </div>
                 </div>
                 
@@ -429,7 +430,7 @@ export default {
                     },
                 },
 
-                contracts: '',
+                contracts: [],
                 isAllowed: false,
 
             headers: {Authorization: `JWT ${localStorage.getItem('life-gaurd')}`},
@@ -476,16 +477,27 @@ export default {
                 this.user_form = response.data.user;
                 this.checkCurrentViewer();
                 this.loading = false;
+
+                const blob = URL.createObjectURL(this.user.profile.image_url);
+				
+				// 3. The steps below are designated to determine a file mime type to use it during the 
+				// getting of a cropped image from the canvas. You can replace it them by the following string, 
+				// but the type will be derived from the extension and it can lead to an incorrect result:
+				//
+				// this.image = {
+				//    src: blob,
+				//    type: files[0].type
+				// }
                 this.image.src = this.user.profile.image_url;
 
                 console.log("image.src: ", this.image.src)
             }catch(error){
                 console.log("error fetching public user data", error);
                 this.loading = true;
-                if(error.response.status == 404) {
+                /* if(error.response.status == 404) {
                     this.loading = false;
                     this.$router.push("/404")
-                }
+                } */
             }
         },
 
@@ -538,6 +550,7 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/contracts/good/${this.$route.params.user_id}`, { headers });
                 this.contracts = response.data.contracts;
+                console.log("user contracts: ", response)
             }catch(error){
                 console.log(error)
             }
