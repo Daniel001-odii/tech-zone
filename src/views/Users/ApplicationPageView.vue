@@ -167,11 +167,12 @@
                                       <ul class="flex flex-row flex-wrap justify-start text-sm">
                                           <!-- bg-tz_light_blue p-1 px-3 rounded-lg hover:bg-tz_blue hover:text-white -->
                                           <li class=" text-blue-300 flex flex-row items-center justify-between " v-for="(result, index) in uploadResults" :key="index">
-                                              <span class="flex items-center justify-center gap-3"> 
+                                              <span class="flex items-center justify-center gap-3" :class="result.status == 'Failed' ? 'text-red-500':''"> 
+                                                <!-- {{result}} -->
                                                 <SpinnerComponent v-if="result.status === 'Uploading'"/>
                                                 <i v-else class="bi bi-paperclip"></i> 
-                                                <span v-if="result.status === 'Uploading'">{{ result.fileName }}</span> 
-                                                <span v-else>{{ result.fileName.split("/")[1] }}</span> -
+                                                <span v-if="result.status === 'Uploading' || result.status == 'Failed'" class=" max-w-[200px] overflow-x-hidden">{{ result.fileName }}</span> 
+                                                <span v-else class="max-w-[200px] overflow-x-hidden">{{ result.fileName.split("/")[1] }}</span> -
                                                 <span>({{  result.sizeBeforeUpload }})</span>
                                               </span>
                                               <button type="button" @click="deleteFile(result.fileName, index)" class="p-2"><i class="bi bi-trash"></i></button>
@@ -493,6 +494,8 @@ export default {
             const formData = new FormData();
             formData.append('files', file);
 
+            const real_file_name = file.name;
+
             const fileSizeBeforeUpload = this.filesize(file.size); // Size in MB
             const uploadResult = {
                 fileName: file.name,
@@ -554,15 +557,17 @@ export default {
                 // re-enable submit button...
                 this.submit_loading = false;
                 } else {
+                    this.uploadResults[index].fileName = `${file.name} - failed`;
                     this.uploadResults[index].status = 'Failed';
-                    console.error('Error uploading file:', xhr.statusText);
+                    console.error('Error uploading file 1:', xhr.statusText);
                     this.$forceUpdate(); // Ensure reactivity
                 }
             };
 
             xhr.onerror = () => {
+                this.uploadResults[index].fileName = `${file.name} - failed`;
                 this.uploadResults[index].status = 'Failed';
-                console.error('Error uploading file:', xhr.statusText);
+                console.error('Error uploading file 2:', xhr.statusText);
                 this.$forceUpdate(); // Ensure reactivity
             };
 

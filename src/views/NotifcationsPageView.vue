@@ -29,8 +29,11 @@
                                 <i v-if="notification.type && notification.type == 'contract'" class="bi bi-gift"></i>
                             </div>
                             <div class="flex flex-col w-[80%]" >
-                                {{ notification.message }} <br/>
-                                <span class="text-gray-400">{{ formatTimestamp(notification.created) }}</span>
+                                <RouterLink :to="`/in${notification.link_url}`" target="_blank">
+                                {{ notification.message }}
+                                </RouterLink>
+                                <br/>
+                                <span class="text-gray-400">{{ formatTimestamp(notification.createdAt) }}</span>
                                 <!-- <RouterLink class="text-tz_blue" v-if="notification.link_url" :to="notification.link_url">see more</RouterLink> -->
                             </div>
                             <button v-if="!notification.isRead"  @click="markNotificationAsRead(notification._id, notify_id)" class="absolute right-2 top-2 p-3 rounded-xl hover:bg-gray-500">

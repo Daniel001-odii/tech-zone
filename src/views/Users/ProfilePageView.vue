@@ -306,7 +306,7 @@
                         <h1 class="font-bold"><i class="bi bi-briefcase"></i> Work History</h1>
                     </div>
 
-                    <div class="mt-8">
+                    <div class="my-8">
                         <h2 class="font-bold">Work orders & Contracts</h2>
                         <div class="mt-6">
                             <SkeletonLoader v-if="!contracts"/>
@@ -314,16 +314,16 @@
                             <div v-if="contracts.length > 0" class="flex flex-col gap-3 overscroll-y-scroll" >
                                 <!-- {{ contract.user_feedback }} -->
                                 <div v-for="(contract, contract_id) in contracts"  :key="contract_id">
-                                    <div v-if="contract.status != 'completed'" class="flex flex-col rounded-2xl p-6 gap-3 hover:bg-tz_light_blue border dark:border-gray-500" >
+                                    <div v-if="contract.status != 'completed'" class="flex flex-col p-6 gap-2 border-b dark:border-b-gray-600" >
                                         <div class="flex flex-col gap-1">
-                                            <p class="text-lg text-blue-600 underline">{{contract.job.title}}</p>
+                                            <p class="text-lg text-blue-400 underline">{{contract.job.title}}</p>
                                             <span class="text-md text-gray-500" v-if="contract.user_feedback.review">"{{ contract.user_feedback.review }}"</span>
                                             <div class="text-sm text-gray-500">
                                                 <p v-if="contract.user_feedback.rating" class="inline-block mr-2 text-tz_blue" v-html="generateStarRatingFromInteger(contract.user_feedback.rating)"></p>
                                                 <p v-else class="py-3">No feedback yet</p>
                                             </div>
-                                            <small>{{ formatTimestampWithoutTime(contract.createdAt) }}</small>
-                                            <div>#{{contract.job.budget}} paid</div>
+                                            <small>{{ formatTimestampWithoutTime(contract.createdAt) }} <span v-if="contract.status != 'completed' && contract.status != 'closed'">-in progress</span></small>
+                                            <div>NGN{{contract.job.budget}} <span v-if="contract.status == 'completed'">paid</span></div>
                                         </div>
                                         <div class="mt-3">
                                             <!-- contract status goes here -->
