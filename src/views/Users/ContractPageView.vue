@@ -363,47 +363,7 @@ export default {
             }
         },
 
-        async markAsComplete(){
-            const headers = this.headers;
-            try{
-                const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/complete`, {}, { headers } );
-                console.log("accept contract res: ", response);
-                this.toast.success(`${response.data.message}`);
-                window.location.reload();
-            }catch(error){
-                // console.log("complete contract error: ", error);
-                this.toast.error(`${error.response.data.message}`);
-            }
-        },
-
         
-
-        async closeContract(){
-            const headers = this.headers;
-            try{
-                const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/close`, {}, { headers } );
-                // console.log("accept contract res: ", response);
-                this.toast.success(`${response.data.message}`);
-                window.location.reload();
-            }catch(error){
-                console.log("close contract error: ", error);
-                this.toast.error(`${error.response.data.message}`);
-            }
-        },
-
-        async resumeContract(){
-            const headers = this.headers;
-            try{
-                const response = await axios.post(`${this.api_url}/contracts/${this.$route.params.contract_id}/resume`, {}, { headers } );
-                console.log("accept contract res: ", response);
-                this.toast.success(`${response.data.message}`);
-                window.location.reload();
-            }catch(error){
-                console.log("close contract error: ", error);
-                 this.toast.error(`${error.response.data.message}`);
-            }
-        },
-
         async submitFeedback(){
             this.loading = true;
             const headers = this.headers;

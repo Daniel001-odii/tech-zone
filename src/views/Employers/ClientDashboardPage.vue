@@ -9,14 +9,14 @@
         <template #body>
             <span v-if="message" class="text-orange-400 my-3">{{ message }}</span>
             <div class=" flex flex-col gap-3 md:w-[700px]">
-                <div class="flex flex-row gap-3 rounded-md group hover:bg-gray-100 p-3 items-center justify-between dark:hover:bg-tz_light_blue" v-for="(job, job_id) in jobs" :key="job_id">
+                <div class="flex flex-row gap-3 rounded-md group hover:bg-gray-100 p-3 items-center justify-between dark:hover:bg-tz_light_blue relative" v-for="(job, job_id) in jobs" :key="job_id">
                     <div clas="flex flex-col w-[70%] border border-red-500">
                         <div class=" text-xl font-bold text-blue-300 capitalize">{{ job.title }}</div>
                         <div class="">{{ job.description.substring(0,100) }}...</div>
                         <div class="mt-3">Budget: NGN {{ job.budget.toLocaleString() }}</div>
                         <p class=" text-sm text-gray-400 mt-5">posted {{ formatDistanceToNow(job.createdAt) }} ago</p>
                     </div>
-                   <button @click="assignJob(current_user.id, job._id)" class="btn hidden group-hover:flex !flex-row">
+                   <button @click="assignJob(current_user.id, job._id)" class="btn hidden group-hover:flex !flex-row absolute right-5 top-10">
                         <span>Assign</span>
                         <i class="bi bi-person-fill-check ml-3"></i>
                    </button>
