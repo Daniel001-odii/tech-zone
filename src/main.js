@@ -77,6 +77,7 @@ import VueFileAgentNext from '@boindil/vue-file-agent-next'
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 
 
+
 // GOOGLE LOGIN.....
 app.use(vue3GoogleLogin, {
     clientId: '1037365822432-afrdrmnt083r2p096veokhoj2omcd4ql.apps.googleusercontent.com'

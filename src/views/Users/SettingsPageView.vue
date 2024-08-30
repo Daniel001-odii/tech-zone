@@ -194,7 +194,14 @@
         </div>
     </form>
 </transition>
-   
+
+
+<transition name="formSlide">
+    <div v-if="verify_modal" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center p-3">
+        <WebCamUI :fullscreenState="false"  @photoTaken="photoTaken" />
+    </div>
+</transition>
+
 
 
     <PageTitle>Settings</PageTitle>
@@ -484,28 +491,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-5">
-                        <span>Passport photograph</span>
-                        <camera :resolution="{ width: 375, height: 812 }" autoplay>
-        <button>I'm on top of the video</button>
-    </camera>
-                        <label class="image-upload-box overflow-hidden" @click="triggerFileInput">
-                        <input
-                            type="file"
-                            ref="fileInput"
-                            @change="onFileChange"
-                           accept="image/*;capture=camera"
-                            style="display: none"
-                        />
-                        <div v-if="imageUrl">
-                            <img :src="imageUrl" alt="Selected image preview" class="preview-image max-h-[200px]" />
-                        </div>
-                        <div v-else class="select-image-text">Select selfie image</div>
-                        </label>
-                        <p v-if="errorMessage" class="text-red-500 mt-3">{{ errorMessage }}</p>
-                        <!-- <p v-if="base64Image" class="base64-output">Base64 String: {{ base64Image }}</p> -->
-                    </div>
-                    
+                   
 
                     <button type="submit" class="btn mt-3" :disabled="settings.KYC.is_verified || verifying_loading">
                         <span v-if="settings.KYC.is_verified && !verifying_loading">Verified Successfully</span>
@@ -538,7 +524,7 @@ import { useToast } from 'vue-toastification'
 // import ngBanks from 'ng-banks';
 import Skeleton from 'primevue/skeleton';
 
-import Camera from "simple-vue-camera";
+import { WebCamUI } from 'vue-camera-lib';
 
 
 export default {
@@ -554,7 +540,7 @@ export default {
         AutoComplete,
         Dropdown,
         Skeleton,
-        Camera 
+        WebCamUI
     },
     data(){
         return{
@@ -642,6 +628,7 @@ export default {
             maxFileSize: 2 * 1024 * 1024, // 2MB in bytes
             verifying_loading: false,
             requested_account_delete: false,
+            verify_modal: true,
         }
     },
     methods:{
@@ -885,7 +872,12 @@ export default {
                 this.toast.error(error.response.data.message);
                 this.verifying_loading = false;
             }
-        }
+        },
+
+        photoTaken(data) {
+            console.log('image blob: ', data.blob)
+            console.log('image data url', data.image_data_url)
+        },
        
     },
     computed(){
