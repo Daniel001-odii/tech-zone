@@ -25,8 +25,13 @@
 
                     <div v-for="(notification, notification_id) in notifications" :key="notification_id" class="w-full">
                         <div v-if="!showAllNotifications" class="p-5 bg-slate-50 border border-slate-100 dark:bg-gray-600 flex flex-row justify-start items-start mb-3 hover:bg-gray-50 rounded-lg dark:hover:bg-tz_light_blue dark:border-gray-600 w-full gap-3 relative" :class="notification.isRead ? 'opacity-30':''">
-                            <div>
-                                <i v-if="notification.type && notification.type == 'contract'" class="bi bi-gift"></i>
+                            <div class="text-xl">
+                                <i class="bi bi-gift-fill" v-if="notification.type == 'contract'"></i>
+                                <i class="bi bi-briefcase-fill" v-if="notification.type == 'job'"></i>
+                                <i class="bi bi-person-fill" v-if="notification.type == 'account'"></i>
+                                <i class="bi bi-cash-stack" v-if="notification.type == 'payment'"></i>
+                                <i class="bi bi-chat-left-text-fill" v-if="notification.type == 'message'"></i>
+                                <img src="../assets/images/dot_logo.svg" class=" !size-5" v-if="notification.type == 'platform'"/>
                             </div>
                             <div class="flex flex-col w-[80%]" >
                                 <RouterLink :to="`/in${notification.link_url}`" target="_blank">

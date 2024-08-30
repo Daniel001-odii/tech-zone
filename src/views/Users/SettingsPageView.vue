@@ -1,5 +1,17 @@
 <template>
 
+<!-- PASSWORD 2FA FOR ACCOUNT DELETE -->
+<div v-if="requested_account_delete" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+    <form @submit.prevent="checkPassword" class="flex flex-col bg-white dark:bg-black rounded-lg p-12 gap-3">
+        <h1 class="text-xl ">Please input your password to continue</h1>
+        <input name="password" id="password" type="password" class="form_input" v-model="fwp_password">
+        <div class="flex flex-row gap-3">
+            <button type="button" @click="requested_account_delete = !requested_account_delete" class="bg-gray-100 dark:bg-gray-600 p-3 rounded-md font-bold">cancel</button>
+            <button type="submit" class="btn w-full" :disabled="fwp_password == ''">continue</button>
+        </div>
+    </form>
+</div>
+
 <!-- PASSWORD 2FA FOR FUNDS WITHDRAWAL -->
 <div v-if="requested_withdrawal" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
     <form @submit.prevent="checkPassword" class="flex flex-col bg-white dark:bg-black rounded-lg p-12 gap-3">
@@ -157,24 +169,28 @@
                         <div class="flex flex-col gap-3 mt-3 p-3">
                             <div class="flex flex-row justify-between w-full">
                                 <span>Current Balance</span>
-                                <span>NGN {{ account_balance.toLocaleString() }}.00</span>
+                                <span>NGN {{ account_balance.toLocaleString() }}</span>
                             </div>
 
                             <div class="flex flex-row justify-between w-full">
                                 <span>Withdrawal Amount</span>
-                                <span class="text-tz_blue text-xl font-bold">NGN {{ withdrawal_amount }}</span>
+                                <span class="text-tz_blue text-xl font-bold">NGN 
+                                    <span v-if="!withdrawal_amount_error">{{ withdrawal_amount }}</span>
+                                    <span v-else>0.00</span>
+                                </span>
                             </div>
 
                             <div class="flex flex-row justify-between w-full">
                                 <span>Balance After Withdrawal</span>
-                                <span class="">NGN 800,000</span>
+                                <span v-if="!withdrawal_amount_error">NGN {{ (account_balance - withdrawal_amount).toLocaleString() }}</span>
+                                <span v-else>0.00</span>
                             </div>
                         </div>
                         <img class="hidden md:flex" src="../../assets/images/withdrawal-image.png">
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn uppercase text-sm mt-6">withdraw funds</button>
+            <button type="submit" class="btn uppercase text-sm mt-6" :disabled="withdrawal_amount_error">withdraw funds</button>
         </div>
     </form>
 </transition>
@@ -296,11 +312,11 @@
 
                 <div class=" mt-3 pb-3">
                     <h1 class="font-bold mb-3 text-lg mt-3">Account & Profile</h1>
-                    <p class=" text-red-700 bg-red-100 rounded-lg p-3">
+                    <p class=" text-red-700 bg-red-500 bg-opacity-10 rounded-lg p-3">
                     <strong>Warning</strong><br/>
                     <span>Deleting your account cannot be undone. Any personally identifiable information will be deleted and any in-progress data will be lost.</span>
                     </p>
-                    <button type="submit" class=" bg-red-500 text-white hover:bg-red-700 rounded-md p-3 mt-3">Delete Account</button>
+                    <button disabled type="button" @click="requested_account_delete = !requested_account_delete" class=" bg-red-500 text-white hover:bg-red-700 rounded-md p-3 mt-3">Delete Account</button>
                 </div>
             </div>
 
@@ -625,6 +641,7 @@ export default {
             base64Image: null,
             maxFileSize: 2 * 1024 * 1024, // 2MB in bytes
             verifying_loading: false,
+            requested_account_delete: false,
         }
     },
     methods:{
@@ -892,7 +909,7 @@ export default {
         this.theme();
         this.getUserData();
             
-        this.getBanks();
+        // this.getBanks();
     }
 }
 </script>

@@ -62,7 +62,7 @@
                 <div v-if="step === 1">
                     <h1 class="font-bold text-xl p-5 text-center">Lets Know your location</h1>
                     <p>This helps us to tailor the right jobs for you and help employers get to you faster. </p>
-                    <div class="flex flex-row gap-3 mb-3">
+                    <div class="flex flex-row flex-wrap gap-3 mb-3">
 
                        
                         <div class="w-3/6 flex flex-col">
@@ -223,6 +223,8 @@ export default {
 
                 this.user_form.firstname = user.firstname;
                 this.user_form.lastname = user.lastname;
+
+                // prefill form...
 
                 console.log("user data: ", response)
             }catch(error){

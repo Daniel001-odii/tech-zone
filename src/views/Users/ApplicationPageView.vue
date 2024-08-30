@@ -142,9 +142,7 @@
                             <div class="flex flex-col text-left gap-3">
                             <span class="font-bold text-2xl">Attachments</span>
                             <div class=" h-fit rounded-md flex flex-col justify-center items-center py-4">
-                                <!-- <div v-if="upload_progress !== ''">
-                                    <p>Upload Progress: {{ upload_progress }}%</p>
-                                </div> -->
+                            
                                 <div v-if="!is_application" class="flex items-center justify-center w-full">
                                     <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -152,11 +150,16 @@
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                                             </svg>
                                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">DOC, PDF, IMAGES & VIDEOS only (MAX. 10mb)</p>
                                         </div>
                                         <input id="dropzone-file" type="file" class="hidden" multiple @change="handleFilesSelected"/>
                                     </label>
                                 </div> 
+
+                                <span class="text-red-500 mt-3" v-if="file_upload_error">
+                                    <i class="bi bi-exclamation-triangle text-small  mr-2"></i>
+                                    {{ file_upload_error }}
+                                </span>
 
 
                                 <!-- {{ application_form.attachments }} -->
@@ -213,9 +216,9 @@
                             </div>
 
                             <div class="flex ">
-                          
-                            <button type="submit" class="bg-tz_blue py-3 px-6 text-white rounded-md hover:bg-tz_dark_blue disabled:border border-gray-600 disabled:text-gray-400 disabled:bg-transparent" :disabled="is_application || submit_loading">
-                                <span v-if="submit_loading">Loading...</span>
+                               
+                            <button type="submit" class="bg-tz_blue py-3 px-6 text-white rounded-md hover:bg-tz_dark_blue disabled:border border-gray-600 disabled:text-gray-400 disabled:bg-transparent flex justify-center items-center gap-2" :disabled="is_application || submit_loading">
+                                <span v-if="submit_loading">Working...  </span>
                                 <span v-else>Submit Application</span>
                             </button>
                             </div>
@@ -246,7 +249,7 @@ import { useToast } from 'vue-toastification';
 import { filesize } from "filesize";
 
 import SpinnerComponent from '../../components/SpinnerComponent.vue';
-
+import ProgressSpinner from 'primevue/progressspinner';
 
 export default {
     name: "ApplicationPageView",
@@ -259,9 +262,11 @@ export default {
         FileUpload,
         Toast,
         SpinnerComponent, 
+        ProgressSpinner,
     },
     data(){
         return{
+            toast: useToast(),
             files: [],
             uploadResults: [],
             filesize,
@@ -297,6 +302,7 @@ export default {
             job_map_is_visible: false,
 
             uploadUrl: `${this.api_url}/upload/files`,
+            file_upload_error: '',
         }
     },
     methods: {
@@ -312,7 +318,7 @@ export default {
             navigator.clipboard.writeText(copyText.value);
 
             // alert user on success
-            this.$toast.add({ severity: 'success', summary: 'Success Message', detail: "Job link copied successfuly!", life: 3000 });
+            this.toast.default(`Job link copied`);
             
         },
 
@@ -486,8 +492,27 @@ export default {
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                this.uploadFile(file);
-            }
+               
+
+                if (file) {
+                    // Allowed file types
+                    const allowedTypes = ["image/", "video/", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+
+                    // Check if the file type is allowed
+                    const isValidFileType = allowedTypes.some(type => file.type.startsWith(type));
+
+                    if (!isValidFileType) {
+                        this.file_upload_error = "Please select a valid file (image, video, PDF, or DOC).";
+                    } else if (file.size > this.maxFileSize) {
+                        this.file_upload_error = "File size should not exceed 2MB.";
+                    } else {
+                        this.file_upload_error = "";
+                        this.uploadFile(file);
+                    }
+                }
+            };
+
+            
         },
 
         uploadFile(file) {
@@ -540,6 +565,7 @@ export default {
                     let attachment = {
                         name: file.Key.split("/")[1],  // Assuming 'key' should be 'Key'
                         url: file.Location,
+                        size:  this.uploadResults[index].sizeBeforeUpload,
                     };
 
                     this.application_form.attachments.push(attachment);
@@ -565,6 +591,9 @@ export default {
             };
 
             xhr.onerror = () => {
+                // re-enable submit button...
+                this.submit_loading = false;
+
                 this.uploadResults[index].fileName = `${file.name} - failed`;
                 this.uploadResults[index].status = 'Failed';
                 console.error('Error uploading file 2:', xhr.statusText);
@@ -578,6 +607,9 @@ export default {
 
         async deleteFile(fileName, index) {
             try {
+                // re-enable submit button...
+                this.submit_loading = false;
+
                 const key = encodeURIComponent(fileName); // Encode the file name to be used in the URL
                 const response = await fetch(`${this.api_url}/upload/files/${key}/delete`, {
                     method: 'DELETE',

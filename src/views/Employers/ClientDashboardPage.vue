@@ -168,7 +168,7 @@
                                                 <p><b>Attachments({{ application.attachments.length }}):</b> 
                                                     <div v-for="(attachment, attachment_id) in application.attachments" :key="attachment_id">
                                                         <a class=" text-tz_blue" :href="attachment.url" target="_blank">
-                                                            <i class="bi bi-paperclip mr-1"></i>  {{ attachment.name }}
+                                                            <i class="bi bi-paperclip mr-1"></i>  {{ attachment.name }} ({{ attachment.size }})
                                                         </a>
                                                     </div>
                                                 </p>
@@ -176,8 +176,10 @@
                                             </div>
                                             <div class="flex flex-row flex-wrap gap-3 mt-3">
                                                 <button v-if="!userIsSaved(application.user._id)" class="btn" @click="saveUser(application.user._id, job._id, job_id)">save freelancer</button>
-                                                <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md" @click="sendUserMessage(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job.title)">Interview</button>
-                                                <button @click="confirmContractOfferModal(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job)" class="btn">Send Contract Offer</button>
+                                                <button class="bg-tz_light_blue border border-tz_blue p-3 rounded-md" @click="sendUserMessage(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job.title)">
+                                                    <i class="bi bi-chat-square-text"></i>
+                                                </button>
+                                                <button @click="confirmContractOfferModal(application.user._id, `${application.user.firstname} ${application.user.lastname}`, job)" class="btn">Hire</button>
                                             </div>
                                         </div>
                                     </div>

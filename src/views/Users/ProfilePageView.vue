@@ -1,10 +1,4 @@
     <template>
-        <!-- ALERTS AND NOTIFICS -->
-        <div class="fixed bottom-10 right-0 left-0 flex justify-center z-50">
-            <div v-for="alert in alerts" class="flex flex-col gap-3 relative">
-                <DismissableAlert  :type="alert_type">{{ alert_message }}</DismissableAlert>
-            </div>
-        </div>
 
         <!-- PROFILE EDIT MODAL HERE -->
         <Modal :name="'Edit your profile'" :modal_active="profile_edit_menu">
@@ -387,7 +381,6 @@ export default {
         return{
             toast: useToast(),
             formatDistanceToNow,
-            alerts: [],
             show_alert: false,
             alert_type: '',
             alert_message: '',

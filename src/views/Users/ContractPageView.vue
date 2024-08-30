@@ -353,12 +353,12 @@ export default {
             const headers = this.headers;
             try{
                 const response = await axios.post(`${this.api_url}/contracts/decline/${this.$route.params.contract_id}`, {}, { headers } );
-                console.log("accept contract res: ", response);
+                console.log("decline contract res: ", response);
                 // this.showAlertBox("danger",response.data.message);
-                this.toast.default(`${response.data.message}`);
+                this.toast.success(`${response.data.message}`);
                 window.location.reload();
             }catch(error){
-                console.log("accept contract error: ", error)
+                console.log("decline contract error: ", error)
                 this.toast.default(`${error.response.data.message}`);
             }
         },

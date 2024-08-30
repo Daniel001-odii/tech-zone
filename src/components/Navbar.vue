@@ -129,12 +129,23 @@
                                                     <i class="bi bi-chat-left-text-fill" v-if="notification.type == 'message'"></i>
                                                     <img src="../assets/images/dot_logo.svg" class=" !size-5" v-if="notification.type == 'platform'"/>
                                                 </div>
-                                                <RouterLink :to="`/in${notification.link_url}`" target="_blank">
+
+                                                <!-- LINK FOR USERS -->
+                                                <RouterLink v-if="user.role == 'user'" :to="`/in${notification.link_url}`" target="_blank">
                                                     <div class="flex flex-col gap-2 w-[90%]">
                                                         <span class="text-sm font-bold">{{  notification.message }}</span>
                                                         <span class="text-sm text-gray-400">{{ realTimeFormat(notification.createdAt)  }}</span>
                                                     </div>
                                                 </RouterLink>
+
+                                                <!-- LINK FOR EMPLOYERS -->
+                                                <RouterLink v-else :to="`/client${notification.link_url}`" target="_blank">
+                                                    <div class="flex flex-col gap-2 w-[90%]">
+                                                        <span class="text-sm font-bold">{{  notification.message }}</span>
+                                                        <span class="text-sm text-gray-400">{{ realTimeFormat(notification.createdAt)  }}</span>
+                                                    </div>
+                                                </RouterLink>
+
                                                 <button @click="markNotificationAsRead(notification._id, notify_id)" class="text-lg font-bold hidden group-hover/notify:block absolute top-2 right-2">
                                                     <span>
                                                         <i class="bi bi-x"></i>
