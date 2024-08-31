@@ -80,7 +80,7 @@ import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 
 // GOOGLE LOGIN.....
 app.use(vue3GoogleLogin, {
-    clientId: '1037365822432-afrdrmnt083r2p096veokhoj2omcd4ql.apps.googleusercontent.com'
+    clientId: '579081467841-muteeflfgtq2m4df928n2oso61fot0hr.apps.googleusercontent.com'
 })
 
 app.use(Vue3Lottie);

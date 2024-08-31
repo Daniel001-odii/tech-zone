@@ -148,33 +148,46 @@ export default {
             }
         },
 
+
         async googleLogin(){
             try{
                 const response = await googleAuthCodeLogin();
                 console.log("response from google: ", response);
                 const auth = { code: response.code, role: "employer" }
                 const res = await axios.post(`${this.api_url}/google-auth`, auth );
-                if(res.data.message == "Sign-in successful"){
+                if(res.status == 200){
                     // alert user of successful sign login..
-                    
+                    // display toast..
+                    this.toast.success(res.data.message);
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
-
-                    this.toast.success(response.data.message);
-                    setTimeout(() => {
-                        // redirect to user profile...
-                        this.$router.push("/client/dashboard");
-                    }, 3000);
-                 
-                    window.location.reload();
-                } else if(res.data.message == "User registered successfully"){
+                    // redirect to user profile...
+                    if(res.data.role == 'user'){
+                       
+                        this.$router.push("/login");
+                        // window.location.reload();
+                    } else if(res.data.role == 'employer'){
+                        this.$router.push("/login");
+                        // window.location.reload();
+                    };
                     
-                    this.$router.push("/client/dashboard");
+                    console.log('google login: ',)
+                    window.location.reload();
+                } else if(res.status == 201){
+                    // display toast..
+                    this.toast.success(res.data.message);
+                    // save user token...
+                    localStorage.setItem("life-gaurd", res.data.token);
+                    // redirect to user profile...
+                    this.$router.push("/login");
+                    // window.location.reload();
                 }
                 console.log("response from backend: ", res)
 
             }catch(error){
-                // alert(error);
+                // display toast..
+                console.log('error with google sign-in: ', error)
+                this.toast.error(error.response.data.message);
             }
         },
     },

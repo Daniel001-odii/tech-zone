@@ -209,7 +209,7 @@
     
                     // if user hasnt updated profle yet redirect to profile completion page..
                     if(!newResponse.data.user.profile.title){
-                            alert("please update your profile");
+                            // alert("please update your profile");
                             this.$router.push("/profile/complete");
                             window.location.reload();
                     }  

@@ -1,5 +1,5 @@
 <template>
-    <Toast/>
+
     <div>
         <!-- PROFILE EDIT MODAL HERE -->
         <Modal :name="'Edit your profile'" :modal_active="profile_edit_menu">
@@ -239,7 +239,7 @@ import { formatTimestamp } from '@/utils/dateFormat';
 
 import { useToast } from 'vue-toastification';
 import { formatDistanceToNow } from 'date-fns'
-
+import ContractStatus from '../../components/ContractStatus'
 
 export default {
     name: "ProfilePage",
@@ -250,6 +250,7 @@ export default {
         Modal, 
         LoaderButton, 
         SkeletonLoader,
+        ContractStatus
     },
     data(){
         return{
