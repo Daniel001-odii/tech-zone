@@ -1,5 +1,6 @@
 <template>
 <SessionExpiredModal v-if="session_expired_modal"/>
+
 <!-- <div>{{ REALTIME_NOTIFICATION }}</div> -->
 <div class="bg-transparent border-b dark:border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
@@ -15,6 +16,7 @@
                             <span>Search</span>
                         </button>
                     </div> -->
+                    
                     <div class="skeleton flex flex-row items-center gap-1 md:mr-2">
                         <div class=" h-10 w-10 bg-gray-300 rounded-full"></div>
                         <i class="bi bi-three-dots-vertical"></i>
@@ -212,6 +214,8 @@ import HomeNavbar from './HomeNavbar.vue';
 
 import CustomDropdown from '../components//CustomDropdown'
 
+import Skeleton from 'primevue/skeleton';
+
 export default {
     name: "Navbar",
     components: { 
@@ -219,7 +223,8 @@ export default {
         UserDropDownMenu, 
         SessionExpiredModal,
         HomeNavbar, 
-        CustomDropdown
+        CustomDropdown,
+        Skeleton,
     },
     props: {
         type: String,

@@ -477,28 +477,70 @@
                     </div>
                     <!-- {{ settings.KYC }} -->
                     <h1 class="font-bold mb-3 text-lg capitalize">Identity verification</h1>
-                    <div class=" ">
-                        <label for="nin-number">NIN Number</label>
-                        <div class="flex flex-row items-center gap-3">
-                            <div class="flex flex-col w-full">
-                                <input class="form_input" type="text" name="nin-number" id="nin-number" placeholder="your 11 digits NIN number" v-model="settings.KYC.NIN_number" :disabled="settings.KYC.is_verified">
+                    <div class="flex flex-col-reverse gap-5">
+
+                    
+                        <div class=" ">
+                            <label for="nin-number">NIN Number</label>
+                            <div class="flex flex-row items-center gap-3">
+                                <div class="flex flex-col w-full relative">
+                                    <input class="form_input" type="text" name="nin-number" id="nin-number" placeholder="your 11 digits NIN number" v-model="settings.KYC.NIN_number" :disabled="settings.KYC.is_verified">
+                                    <span class="text-3xl absolute  right-3 top-2">
+                                        <i v-if="settings.KYC.is_verified" class="bi bi-person-check text-green-400"></i>
+                                        <i v-else class="bi bi-person-fill-exclamation text-red-500"></i>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="text-3xl">
-                                <i v-if="settings.KYC.is_verified" class="bi bi-person-check text-green-400"></i>
-                                <i v-else class="bi bi-person-fill-exclamation text-red-500"></i>
-                            </span>
-                            
                         </div>
+
+                        <div v-if="!settings.KYC.is_verified">
+                            <span>Passport Image</span>
+                            
+                            <div class="flex flex-row gap-6"> 
+                                <div>
+                                    <label class="image-upload-box relative" >
+                                        
+                                        <input
+                                            type="file"
+                                            ref="fileInput"
+                                            @change="onFileChange"
+                                            accept="image/*;capture=camera"
+                                            style="display: none"
+                                        />
+                                        <div v-if="imageUrl" class="overflow-hidden">
+                                            <img :src="imageUrl" alt="Captured image preview" class="preview-image" />
+                                        </div>
+                                        <div v-else class="select-image-text">upload passport</div>
+                                        <div v-if="verifying_loading" class=" size-[200px] bg-[rgba(0,0,0,0.5)] left-0 absolute flex justify-center items-center">
+                                            <SpinnerComponent/>
+                                        </div>
+                                    </label>
+                                    <p v-if="errorMessage" class="error-message text-red-500 p-3">{{ errorMessage }}</p>
+                                </div>   
+                                <img class="size-[200px]" src="../../assets/images/img_placeholder_avatar.jpg"/>
+                            </div>
+
+
+                            <div class="text-yellow-500 bg-opacity-10 bg-yellow-500 p-3 flex flex-row items-center justify-start gap-3 rounded-md mt-3 border border-yellow-500 ">
+                                <i class="bi bi-exclamation-triangle-fill "></i>
+                                <span>
+                                    make sure your face shows clearly and your passport was taken in a well lit background
+                                </span>
+                            </div>
+                            <!-- <p v-if="base64Image" class="base64-output">Base64 String: {{ base64Image }}</p> -->
+                        </div>
+
                     </div>
 
-                   
+                    <div class="mt-3">
+                        <span v-if="settings.KYC.is_verified && !verifying_loading">Verified Successfully on {{ format(settings.KYC.verified_on, 'PPpp') }}</span>
+                    </div>
 
                     <button type="submit" class="btn mt-3" :disabled="settings.KYC.is_verified || verifying_loading">
-                        <span v-if="settings.KYC.is_verified && !verifying_loading">Verified Successfully</span>
-                        <span v-else>Verify now</span>
-                        <span v-if="verifying_loading">loading...</span>
-
+                        <span v-if="verifying_loading">verifying...</span>
+                        <span v-if="!verifying_loading && !settings.KYC.is_verified">Verify now</span>
                     </button>
+                   
                 </div>
             </form>
         </div>
@@ -524,7 +566,11 @@ import { useToast } from 'vue-toastification'
 // import ngBanks from 'ng-banks';
 import Skeleton from 'primevue/skeleton';
 
+import SpinnerComponent from '../../components/SpinnerComponent';
 import { WebCamUI } from 'vue-camera-lib';
+
+import { format } from 'date-fns';
+
 
 
 export default {
@@ -540,11 +586,13 @@ export default {
         AutoComplete,
         Dropdown,
         Skeleton,
-        WebCamUI
+        WebCamUI,
+        SpinnerComponent
     },
     data(){
         return{
             // ngBanks,
+            format,
             toast: useToast(),
             alerts: [],
             show_alert: false,
@@ -628,14 +676,14 @@ export default {
             maxFileSize: 2 * 1024 * 1024, // 2MB in bytes
             verifying_loading: false,
             requested_account_delete: false,
-            verify_modal: true,
+            verify_modal: false,
         }
     },
     methods:{
         // get all user contracts...
-        triggerFileInput() {
-            this.$refs.fileInput.click();
-        },
+        // triggerFileInput() {
+        //     this.$refs.fileInput.click();
+        // },
 
         onFileChange(event) {
             const file = event.target.files[0];
@@ -868,9 +916,11 @@ export default {
                 this.toast.success(response.data.message);
                 window.location.reload();
                 this.verifying_loading = false;
+                console.log("verification results: ", response);
             }catch(error){
-                this.toast.error(error.response.data.message);
+                this.toast.error(`${error.response.data.message}`);
                 this.verifying_loading = false;
+                console.log("error in verif: ", error)
             }
         },
 
