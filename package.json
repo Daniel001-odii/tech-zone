@@ -23,6 +23,7 @@
     "socket.io-client": "^4.7.5",
     "vue": "^3.2.13",
     "vue-3-socket.io": "^1.0.5",
+    "vue-advanced-chat": "^2.1.0",
     "vue-advanced-cropper": "^2.8.8",
     "vue-animate-onscroll": "^1.0.8",
     "vue-camera-lib": "^1.0.6",

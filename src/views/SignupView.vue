@@ -161,24 +161,28 @@ export default {
                     this.toast.success(res.data.message);
                     // save user token...
                     localStorage.setItem("life-gaurd", res.data.token);
-                    // redirect to user profile...
+
+                    window.location.reload();
+                  /*   // redirect to user profile...
                     if(res.data.role == 'user'){
-                        window.location.reload();
+                        // window.location.reload();
                         this.$router.push("/in/jobs");
                     } else if(res.data.role == 'employer'){
-                        window.location.reload();
+                        // window.location.reload();
                         this.$router.push("/client/dashboard");
-                    };
+                    }; */
 
-                    console.log('google login: ',)
-                    window.location.reload();
+                    console.log('google login: ', res)
+                    // window.location.reload();
                 } else if(res.status == 201){
+                   /*  this.$router.push("/in/jobs");
                     // display toast..
                     this.toast.success(res.data.message);
                     // save user token...
+                    localStorage.setItem("life-gaurd", res.data.token); */
                     localStorage.setItem("life-gaurd", res.data.token);
                     // redirect to user profile...
-                    this.$router.push("/in/jobs");
+                    
                     window.location.reload();
                 }
                 console.log("response from backend: ", res)

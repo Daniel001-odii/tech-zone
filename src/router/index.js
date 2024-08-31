@@ -304,11 +304,23 @@ router.beforeEach((to, from, next) => {
   const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
 
   // If the user is logged in and is trying to visit the root URL or login page
-  if (token && userRole && userRole == 'user' && to.path === '/' || userRole && userRole == 'user'&& to.path === '/login' || userRole && userRole == 'user'&& to.path === '/register') {
+  if (
+    token && userRole && userRole == 'user' && to.path === '/' 
+    || token && userRole && userRole == 'user'&& to.path === '/login' 
+    || token && userRole && userRole == 'user'&& to.path === '/register'
+    || token && userRole && userRole == 'user' && to.path == '/register/client'
+    || token && userRole && userRole == 'employer' && to.path == '/register'
+  ) {
     // Redirect users to /jobs
     next('/in/jobs')
 
-  } else if(token && userRole && userRole == 'employer' && to.path === '/' || userRole && userRole == 'employer' && to.path === '/login' || userRole && userRole == 'employer' && to.path === '/register/client') {
+  } else if(
+    token && userRole && userRole == 'employer' && to.path === '/' 
+    || token && userRole && userRole == 'employer' && to.path === '/login' 
+    || token && userRole && userRole == 'employer' && to.path === '/register/client'
+    || token && userRole && userRole == 'employer' && to.path === '/register'
+    || token && userRole && userRole == 'user' && to.path == '/register'
+  ) {
     // redirect clients to their dashboard
     next('/client/dashboard');
   }
@@ -334,7 +346,7 @@ router.beforeEach((to, from, next) => {
 });
 
 
-// navigation gaurd to allow only loggedin administrators and users to view certain pages..
+/* // navigation gaurd to allow only loggedin administrators and users to view certain pages..
 router.beforeEach((to, from, next) => {
   const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null;
 
@@ -346,7 +358,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next(); // Proceed to the route
   }
-});
+}); */
 
 
 export default router

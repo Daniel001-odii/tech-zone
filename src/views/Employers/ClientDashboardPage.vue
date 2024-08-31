@@ -241,7 +241,7 @@
     </div>
 </template>
 <script>
-import TemplateView from '../TemplateView.vue';
+import TemplateView from '../TemplateView.vue'
 import axios from 'axios';
 import { useStore } from 'vuex';
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
@@ -478,17 +478,17 @@ export default {
             this.loading = true;
             console.log("user: ", userId, "employer: ", employerId);
             try{
-                this.toast.success(response.data.message);
+                // this.toast.success(response.data.message);
                 const response = await axios.post(`${this.api_url}/message/create-room`, { name, userId, employerId }, {});
                 console.log("new room response: ", response);
                 this.loading = false;
                 this.$router.push("/client/messages");
             }catch(error){
-                this.toast.error(error.response.data.message);
+                // this.toast.error(error.response.data.message);
                 console.log("error creating room: ", error);
-                if(error.response.status == 400){
+              /*   if(error.response.status == 400){
                     this.$router.push("/client/messages");
-                }
+                } */
                 this.loading = false;
             }
         },
