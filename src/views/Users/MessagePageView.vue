@@ -83,20 +83,19 @@
                                             <button>edit message</button>
                                         </ActionDropdown> -->
                                        
-                                        <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col ">
-                                            <div v-for="file in message.files" class="file-containe rounded-md">
+                                        <div :key="message._id" class="flex flex-col" :class="message.user == this.user._id ? 'items-start text-left':'items-end text-left'">
+                                            <div v-for="file in message.files" class="file-container rounded-md">
                                                 <!-- {{file}} -->
-                                                <img v-if="file.type.startsWith('image/')" class="!size-[250px]" :src="file.url">
-                                                <div v-else class="file-container  whitespace-nowrap h-[50px] w-[200px] bg-white rounded-md p-3 text-black flex flex-row items-center justify-end gap-3">
+                                                <img v-if="file.type.startsWith('image/')" class="!size-[100px] rounded-xl" :src="file.url">
+                                                <div v-else class="file-container  whitespace-nowrap h-[50px] w-[200px] bg-gray-100 rounded-md p-3 text-black flex flex-row items-center justify-end gap-3">
                                                     <span class="overflow-hidden ">{{file.name.substring(0,15)}}</span>
                                                     <a :href="file.url" target="_blank">
                                                         <span class="bg-blue-500 text-white px-3 py-1 rounded-lg "><i class="mr-3 bi bi-cloud-arrow-down-fill"></i>{{file.type.split("/")[1]}}</span>
                                                     </a>
-                                                    <!--  -->
                                                 </div>
                                             </div>
                                            
-                                            <span v-html="message.text" class="whitespace-pre-line mt-3"></span>
+                                            <span  :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" v-html="message.text" class="whitespace-pre-line mt-3 rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col shadow-md"></span>
                                         </div>
                                         <span class="text-[12px] text-gray-" v-if="message.createdAt">{{ convertTimeToAMPM(message.createdAt) }}</span>
                                     </div>
@@ -139,7 +138,7 @@
                                
 
                                 <div class="w-full flex flex-row items-center justify-center gap-1">
-                                    <label class="h-10 w-10 flex justify-center items-center rounded-xl cursor-pointer p-3 text-white text-xl bg-black bg-opacity-30">
+                                    <label class="h-10 w-10 flex justify-center items-center rounded-xl cursor-pointer p-3 text-gray-500 dark:text-gray-200 text-xl hover:bg-black hover:bg-opacity-10">
                                         <input
                                         multiple
                                             type="file"
@@ -155,7 +154,7 @@
                                     <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none overflow-hidden" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
 
                                     <!-- <button id="send_message_btn" :disabled="!is_valid_message && fileUrls.length <= 0 && imageUrls.length <= 0" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30"> -->
-                                        <button id="send_message_btn" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
+                                        <button id="send_message_btn" type="button" @click="sendMessage" class="bg-tz_blue h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-md dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
                                             <i class="bi bi-send-fill"></i>
                                         </button>
 
