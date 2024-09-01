@@ -1,7 +1,4 @@
 <template>
-<!-- TOAST -->
-    <Toast/>
-<!-- ***** -->
     <FullPageLoading v-if="loading"/>
 
     <!-- Job assignment modal... -->
@@ -78,7 +75,7 @@
         <div class="bg-tz_light_blue p-3 flex flex-col gap-3 overflow-y-auto">
            
         <!-- DISPLAY ALERT HERE -->
-        <Message v-if="profile_completion < 90" severity="error" :closable="false">Please complete your profile to start posting jobs. <RouterLink to="/client/profile" class="underline">complete now</RouterLink></Message>
+        <!-- <Message v-if="profile_completion < 90" severity="error" :closable="false">Please complete your profile to start posting jobs. <RouterLink to="/client/profile" class="underline">complete now</RouterLink></Message> -->
 
             <div class="p-8 py-12 rounded-lg bg-tz_light_blue flex flex-row justify-between items-center flex-wrap  dark:bg-[#1F2A36]">
                 <div class="text-left">

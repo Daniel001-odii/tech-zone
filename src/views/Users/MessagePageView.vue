@@ -69,15 +69,22 @@
                                 <!-- ALL CHATS ARE DISPLAYED HERE -->
                                 <!-- chat box -->
 
-                                <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
-                                    <!-- <ActionDropdown>
-                                        <button>edit message</button>
-                                    </ActionDropdown> -->
-                                    <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
-                                        <span v-html="message.text" class="whitespace-pre-line"></span>
+                                <!-- <transition name="fade-up"> -->
+                                    <div v-if="opponent_is_typing" class="bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl rounded-t-xl  w-fit p-3 opacity-40">
+                                        <div class="loader"></div>
                                     </div>
-                                    <span class="text-[12px] text-gray-">{{ convertTimeToAMPM(message.createdAt) }}</span>
-                                </div> 
+                                <!-- </transition> -->
+
+                               
+                                    <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
+                                        <!-- <ActionDropdown>
+                                            <button>edit message</button>
+                                        </ActionDropdown> -->
+                                        <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
+                                            <span v-html="message.text" class="whitespace-pre-line"></span>
+                                        </div>
+                                        <span class="text-[12px] text-gray-" v-if="message.createdAt">{{ convertTimeToAMPM(message.createdAt) }}</span>
+                                    </div>
 
                                 <div v-if="loading_chats" class=" bg-white dark:bg-[#27323F] dark:text-white h-full absolute w-full top-0 bottom-0 left-0 flex flex-col justify-center items-center">
                                     <Vue3Lottie
@@ -91,8 +98,11 @@
                                 <!-- chat box ends here -->
                             </div>
 
-                            <form @sumbit.prevent="sendMessage" class="h-[10%] flex justify-center items-center">
-                                
+                            <form @sumbit.prevent="sendMessage" class="h-[10%] flex flex-col justify-center items-center relative">
+
+                                <!-- TYPING STATUS INDICATOR -->
+                                <!-- <div v-if="true" class="p-3 w-fit text-sm absolute -top-10 left-4 z-10 bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl">typing...</div> -->
+
                                 <div class="w-full flex flex-row items-center justify-center gap-1">
                                     <button type="button" class="h-10 w-10 flex justify-center items-center bg-transparent p-3 text-gray-500 text-xl">
                                         <i class="bi bi-paperclip"></i>
@@ -160,8 +170,8 @@ export default {
             messaged_users: {},
 
             headers: {
-                    Authorization: `JWT ${localStorage.getItem('life-gaurd')}`, // Assuming it's a JWT token
-                },
+                Authorization: `JWT ${localStorage.getItem('life-gaurd')}`,
+            },
             
             formatTimestamp,
             formatToRelativeTime,
@@ -181,6 +191,7 @@ export default {
            is_valid_message: false,
 
            socket: io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true}),
+           opponent_is_typing: false,
 
         }
     },
@@ -189,6 +200,7 @@ export default {
         validateMessage(){
             const trimmed_msg = this.message_text.trim();
             this.is_valid_message = trimmed_msg.length > 0;
+            this.onTyping();
         },
 
         employer_rooms_list() {
@@ -273,6 +285,9 @@ export default {
                         }
                         //scrolls the recipients message box...
                     }); 
+
+                    // auto open room...
+                    this.selectRoom(this.rooms[0]);
                     
 
                 }catch(error){
@@ -295,6 +310,9 @@ export default {
                         }
                         //scrolls the recipients message box...
                     });
+
+                    // auto open room...
+                    this.selectRoom(this.rooms[0]);
 
                 }catch(error){
                     console.log("error fetching rooms: ", error)
@@ -364,6 +382,34 @@ export default {
             
         },
 
+         // FOR SENDING TYPING STATUS >>>
+        async statusisTyping(status){
+            try{
+                const headers = this.headers;
+                console.log(" you are typing...");
+                const user = this.user._id;
+                const response = await axios.post(`${this.api_url}/message/room/${this.selected_room._id}/status/${status}`, { user });
+            }catch(error){
+                console.log("error in typing status: ", error)
+            }
+        },
+
+        onTyping() {
+            // If there's already a timeout in progress, clear it
+            if (this.typingTimeout) {
+                clearTimeout(this.typingTimeout);
+            }
+            
+            // Set the typing state to true when the user types
+            this.statusisTyping('typing');
+
+            // Start a new timeout to check when the user stops typing
+            this.typingTimeout = setTimeout(() => {
+                // this.isTyping = false;
+                this.statusisTyping('idle');
+            }, 1000);  // 500ms after the last keystroke, we consider the user to have stopped typing
+        },
+    
         // MARK ROOM MESSAGES AS READ WHEN OPENED
         async markBulkMessagesAsRead(room_id){
             const headers = this.headers;
@@ -405,6 +451,18 @@ export default {
                 }
             }
         });
+
+
+        // GET TYPING STATUS...
+        this.socket.on('typing', (payload) => {
+            console.log("room payload: ", payload)
+           if(payload.status == 'typing' && payload.user != this.user._id){
+             this.opponent_is_typing = true;
+           } else {
+            this.opponent_is_typing = false;
+           }
+        }); 
+
     },
 
 
@@ -415,4 +473,34 @@ export default {
         background-size: cover;
         background-position: center;
     }
+
+.fade-up-enter-active, .fade-up-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.fade-up-enter, .fade-up-leave-to /* .fade-up-leave-active in <2.1.8 */ {
+  opacity: 0;
+  transform: translateY(-20px); /* Starts slightly above */
+}
+
+.fade-up-enter-to, .fade-up-leave {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+  margin: 0 15px;
+}
+@keyframes l5 {
+    0%  {box-shadow: 12px 0 #000, -12px 0 gray;background: #000 }
+    33% {box-shadow: 12px 0 #000, -12px 0 gray;background: gray}
+    66% {box-shadow: 12px 0 gray,-12px 0 #000; background: gray}
+    100%{box-shadow: 12px 0 gray,-12px 0 #000; background: #000 }
+}
+
 </style>
