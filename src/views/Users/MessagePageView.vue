@@ -75,13 +75,28 @@
                                     </div>
                                 <!-- </transition> -->
 
+                                
+
                                
                                     <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
                                         <!-- <ActionDropdown>
                                             <button>edit message</button>
                                         </ActionDropdown> -->
-                                        <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col items-end">
-                                            <span v-html="message.text" class="whitespace-pre-line"></span>
+                                       
+                                        <div :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" :key="message._id" class=" rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col ">
+                                            <div v-for="file in message.files" class="file-containe rounded-md">
+                                                <!-- {{file}} -->
+                                                <img v-if="file.type.startsWith('image/')" class="!size-[250px]" :src="file.url">
+                                                <div v-else class="file-container  whitespace-nowrap h-[50px] w-[200px] bg-white rounded-md p-3 text-black flex flex-row items-center justify-end gap-3">
+                                                    <span class="overflow-hidden ">{{file.name.substring(0,15)}}</span>
+                                                    <a :href="file.url" target="_blank">
+                                                        <span class="bg-blue-500 text-white px-3 py-1 rounded-lg "><i class="mr-3 bi bi-cloud-arrow-down-fill"></i>{{file.type.split("/")[1]}}</span>
+                                                    </a>
+                                                    <!--  -->
+                                                </div>
+                                            </div>
+                                           
+                                            <span v-html="message.text" class="whitespace-pre-line mt-3"></span>
                                         </div>
                                         <span class="text-[12px] text-gray-" v-if="message.createdAt">{{ convertTimeToAMPM(message.createdAt) }}</span>
                                     </div>
@@ -98,22 +113,51 @@
                                 <!-- chat box ends here -->
                             </div>
 
-                            <form @sumbit.prevent="sendMessage" class="h-[10%] flex flex-col justify-center items-center relative">
+                            <form @sumbit.prevent="sendMessage" class="h-auto flex flex-col justify-center items-center relative mb-6 border-t dark:border-gray-600 p-3">
 
-                                <!-- TYPING STATUS INDICATOR -->
-                                <!-- <div v-if="true" class="p-3 w-fit text-sm absolute -top-10 left-4 z-10 bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl">typing...</div> -->
+                                <!-- PREVIEW FOR FILE ATTACHMENTS -->
+                                 <div v-for="(file, index) in uploadResults" :key="index" class="p-3 w-full flex flex-row gap-3 overflow-x-auto">
+                                    <!-- type -->
+                                     <!-- status -->
+                                      <!-- progress -->
+                                       <!-- sizeBeforeUpload -->
+                                       <div v-if="file.type.startsWith('image/')" class=" size-[80px] relative flex justify-center items-center">
+                                            <button type="button" class=" absolute top-0 right-2 text-red-500 text-2xl"  @click="deleteFile(file.name, index)">&times;</button>
+                                            <img :src="file.image_preview" class=" !size-[80px]"/>
+                                            <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+                                        </div>
+                                       <div v-else class=" size-[80px] bg-blue-500 justify-center items-center flex flex-col relative" :key="index">
+                                            <button type="button" class=" absolute top-0 right-2 text-white text-2xl" @click="deleteFile(file.name, index)">&times;</button>
+                                            <i class="bi bi-file-earmark-text-fill text-2xl"></i>
+                                            <div class="flex flex-col text-[10px] text-center">
+                                                <span class=" w-[50px] overflow-hidden whitespace-nowrap">{{ file.name }}</span>
+                                                <span>({{file.sizeBeforeUpload}})</span>
+                                            </div>
+                                            <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+                                        </div>
+                                 </div>
+                               
 
                                 <div class="w-full flex flex-row items-center justify-center gap-1">
-                                    <button type="button" class="h-10 w-10 flex justify-center items-center bg-transparent p-3 text-gray-500 text-xl">
+                                    <label class="h-10 w-10 flex justify-center items-center rounded-xl cursor-pointer p-3 text-white text-xl bg-black bg-opacity-30">
+                                        <input
+                                        multiple
+                                            type="file"
+                                            ref="fileInput"
+                                            @change="onFileChange"
+                                            accept="image/*;capture=camera"
+                                            style="display: none"
+                                        />
                                         <i class="bi bi-paperclip"></i>
-                                    </button>
+                                    </label>                                       
                                     <!-- <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"> -->
                                    
                                     <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none overflow-hidden" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
 
-                                    <button id="send_message_btn" :disabled="!is_valid_message" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
-                                        <i class="bi bi-send-fill"></i>
-                                    </button>
+                                    <!-- <button id="send_message_btn" :disabled="!is_valid_message && fileUrls.length <= 0 && imageUrls.length <= 0" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30"> -->
+                                        <button id="send_message_btn" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
+                                            <i class="bi bi-send-fill"></i>
+                                        </button>
 
                                 </div>
                             </form>
@@ -146,16 +190,19 @@ import { convertTimeToAMPM } from '../../utils/dateFormat';
 import ActionDropdown from '@/components/ActionDropdown.vue';
 // socket io for real time messaging...
 import io from "socket.io-client";
-
+import { filesize } from "filesize";
 
 
 import { mapActions } from 'vuex';
 
+import SpinnerComponent from '../../components/SpinnerComponent'
+
 export default {
     name: "MessagePageView",
-    components: { PageTitle, ActionDropdown },
+    components: { PageTitle, ActionDropdown, SpinnerComponent },
     data(){
         return{
+            filesize,
             user: '',
             show_chat_room: false,
             selected_room: '',
@@ -187,16 +234,69 @@ export default {
            },
 
            room_search_term: '',
-
            is_valid_message: false,
-
            socket: io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true}),
            opponent_is_typing: false,
+
+           errorMessage: '',
+           imageUrls: [],
+           fileUrls: [],
+           base64Image: '',
+
+           message_files: [/* {
+             name: '',
+             url: '',
+             type: '',
+             size: '',
+           } */],
+
+           uploadResults: [],
 
         }
     },
 
     methods: {
+        removeFile(index){
+            this.fileUrls.splice(index, 1)
+        },
+        removeImage(index){
+            this.imageUrls.splice(index, 1)
+        },
+        onFileChange(event) {
+            const files = event.target.files;
+            this.errorMessage = null;
+            this.base64Images = []; // Store the base64 images in an array
+            this.imageUrls = []; // Store the object URLs for preview
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                if (!file.type.startsWith("image/")) {
+                this.errorMessage = `File ${file.name} is not a valid image.`;
+                this.fileUrls.push(file);
+                this.uploadFile(file);
+                console.log("file :", file)
+                } else if (file.size > this.maxFileSize) {
+                this.errorMessage = `File ${file.name} exceeds the size limit of 2MB.`;
+                } else {
+                const imageUrl = URL.createObjectURL(file);
+                // this.imageUrls.push(imageUrl);
+                // this.convertToBase64(file);
+                this.uploadFile(file)
+                }
+            }
+        },
+        convertToBase64(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // Remove the prefix from the Base64 string
+                const base64String = e.target.result;
+                this.base64Image = base64String.replace(/^data:image\/[a-zA-Z]+;base64,/, '');
+            };
+            reader.readAsDataURL(file);
+        },
+
+
         validateMessage(){
             const trimmed_msg = this.message_text.trim();
             this.is_valid_message = trimmed_msg.length > 0;
@@ -366,12 +466,17 @@ export default {
             const payload = {
                 text: this.message_text,
                 userId: this.user._id,
+                files: this.message_files,
             }
             // console.log("preparing the send :", payload);
             
             try{
                 const response = await axios.post(`${this.api_url}/message/room/${this.selected_room._id}`, payload);
-                // console.log("response from msg snt: ", response);
+                console.log("response from msg snt: ", response);
+
+                // remove all attached files...
+                this.uploadResults = [];
+
                 // pushing message by send function not necessary since its done by socket.io
                 // this.messages.unshift(response.data.message);
             }catch(error){
@@ -420,6 +525,120 @@ export default {
                 console.log("error marking messages as read: ", error);
             }
         },
+
+        uploadFile(file) {
+            const formData = new FormData();
+            formData.append('files', file);
+
+            const real_file_name = file.name;
+
+            const fileSizeBeforeUpload = this.filesize(file.size); // Size in MB
+            const uploadResult = {
+                name: file.name,
+                type: file.type,
+                status: 'uploading',
+                progress: 0,
+                sizeBeforeUpload: `${fileSizeBeforeUpload}`,
+                sizeAfterUpload: null, // Will be updated after upload
+            };
+            if(file.type.startsWith("image/")){
+                const imageUrl = URL.createObjectURL(file);
+                uploadResult.image_preview = imageUrl;
+            }
+            this.uploadResults.push(uploadResult);
+
+            const index = this.uploadResults.length - 1; // Index of the current upload result
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `${this.api_url}/message/room/${this.selected_room._id}/rooms/file`, true);
+
+            // Handle progress event
+            xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                const progress = Math.round((event.loaded * 100) / event.total);
+                console.log(`Progress: ${progress}%`); // Debug log
+                this.uploadResults[index].progress = progress;
+                this.$forceUpdate(); // Force Vue to re-render
+                } else {
+                console.log('Progress event not computable'); // Debug log
+                }
+
+                // disable submit button...
+                this.submit_loading = true;
+            };
+
+            // Handle response
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+
+                response.files.forEach(file => {
+                    let attachment = {
+                        name: file.Key.split("/")[1],  // Assuming 'key' should be 'Key'
+                        url: file.Location,
+                        type: this.uploadResults[index].type,
+                        size:  this.uploadResults[index].sizeBeforeUpload,
+                    };
+
+                    this.message_files.push(attachment);
+                });
+
+
+
+                console.log("from upload: ", response);
+
+                const fileSizeAfterUpload = response.size ? `${(response.size / (1024 * 1024)).toFixed(2)} MB` : this.uploadResults[index].sizeBeforeUpload;
+                this.uploadResults[index].status = 'Uploaded';
+                this.uploadResults[index].name = response.files[0].Key.split("/")[1]; // Assuming single file response
+                this.uploadResults[index].sizeAfterUpload = fileSizeAfterUpload;
+                this.$forceUpdate(); // Ensure reactivity
+
+                // re-enable submit button...
+                this.submit_loading = false;
+                } else {
+                    this.uploadResults[index].name = `${file.name} - failed`;
+                    this.uploadResults[index].status = 'failed';
+                    console.error('Error uploading file 1:', xhr.statusText);
+                    this.$forceUpdate(); // Ensure reactivity
+                }
+            };
+
+            xhr.onerror = () => {
+                // re-enable submit button...
+                this.submit_loading = false;
+
+                this.uploadResults[index].name = `${file.name} - failed`;
+                this.uploadResults[index].status = 'failed';
+                console.error('Error uploading file 2:', xhr.statusText);
+                this.$forceUpdate(); // Ensure reactivity
+            };
+
+            // Send the form data
+            xhr.send(formData);
+        },
+
+        async deleteFile(name, index) {
+            try {
+                // first remove from files array...
+
+                this.uploadResults.splice(index, 1);
+                // re-enable submit button...
+                this.submit_loading = false;
+
+                const key = encodeURIComponent(name); // Encode the file name to be used in the URL
+                const response = await fetch(`${this.api_url}/upload/files/${key}/delete`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('failed to delete file');
+                }
+                console.log('File deleted successfully');
+            } catch (error) {
+                console.error('Error deleting file:', error);
+            }
+        },
+
 
         // SENDING MSG ALERT TO SIDEBAR
         ...mapActions(['setUnreadMessagesCount', 'incrementUnreadMessagesCount', 'decrementUnreadMessagesCount']),

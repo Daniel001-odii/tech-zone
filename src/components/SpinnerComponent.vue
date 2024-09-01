@@ -1,7 +1,9 @@
 <template>
-    <!-- <div class="border"> -->
-        <span class="loader"></span>
-    <!-- </div> -->
+    <div>
+        <div class="relative flex justify-center items-center">
+            <span class="loader"></span>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -17,9 +19,10 @@
     border: 4px solid #dfdfdf;
     border-bottom-color: transparent;
     border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
+    /* display: inline-block; */
+    /* box-sizing: border-box; */
     animation: rotation 1s linear infinite;
+    position: absolute;
     }
 
     @keyframes rotation {
