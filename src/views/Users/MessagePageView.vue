@@ -78,15 +78,18 @@
                                 
 
                                
-                                    <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col" :class="message.user == this.user._id ? 'self-end items-end':'self-start items-start'">
+                                    <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col border-red-50" :class="message.user == this.user._id ? 'justify-end items-end':'self-start items-start'">
                                         <!-- <ActionDropdown>
                                             <button>edit message</button>
                                         </ActionDropdown> -->
                                        
-                                        <div :key="message._id" class="flex flex-col" :class="message.user == this.user._id ? 'items-start text-left':'items-end text-left'">
+                                        <div :key="message._id" class="flex flex-col gap-1 border-green-500 w-full" :class="message.user == this.user._id ? 'justify-end items-end':'self-start items-start'">
                                             <div v-for="file in message.files" class="file-container rounded-md">
                                                 <!-- {{file}} -->
-                                                <img v-if="file.type.startsWith('image/')" class="!size-[100px] rounded-xl" :src="file.url">
+                                                 <div v-if="file.type.startsWith('image/')" class="flex flex-row flex-wrap border-yellow-400">
+                                                    <img class="!size-[100px] rounded-xl" :src="file.url">
+                                                 </div>
+                                                
                                                 <div v-else class="file-container  whitespace-nowrap h-[50px] w-[200px] bg-gray-100 rounded-md p-3 text-black flex flex-row items-center justify-end gap-3">
                                                     <span class="overflow-hidden ">{{file.name.substring(0,15)}}</span>
                                                     <a :href="file.url" target="_blank">
@@ -95,9 +98,9 @@
                                                 </div>
                                             </div>
                                            
-                                            <span  :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" v-html="message.text" class="whitespace-pre-line mt-3 rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col shadow-md"></span>
+                                            <span v-if="message.text"  :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" v-html="message.text" class="whitespace-pre-line rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col shadow-md"></span>
                                         </div>
-                                        <span class="text-[12px] text-gray-" v-if="message.createdAt">{{ convertTimeToAMPM(message.createdAt) }}</span>
+                                        <span class="text-[12px] text-gray-" v-if="message.text || message.files.length > 0">{{ convertTimeToAMPM(message.createdAt) }}</span>
                                     </div>
 
                                 <div v-if="loading_chats" class=" bg-white dark:bg-[#27323F] dark:text-white h-full absolute w-full top-0 bottom-0 left-0 flex flex-col justify-center items-center">
@@ -115,17 +118,18 @@
                             <form @sumbit.prevent="sendMessage" class="h-auto flex flex-col justify-center items-center relative mb-6 border-t dark:border-gray-600 p-3">
 
                                 <!-- PREVIEW FOR FILE ATTACHMENTS -->
-                                 <div v-for="(file, index) in uploadResults" :key="index" class="p-3 w-full flex flex-row gap-3 overflow-x-auto">
+                                <div v-if="uploadResults.length >0" class="flex flex-row gap-3 w-full p-3 overflow-x-auto border border-red-500">
+                                    <div v-for="(file, index) in uploadResults" :key="index">
                                     <!-- type -->
-                                     <!-- status -->
-                                      <!-- progress -->
-                                       <!-- sizeBeforeUpload -->
-                                       <div v-if="file.type.startsWith('image/')" class=" size-[80px] relative flex justify-center items-center">
+                                        <!-- status -->
+                                        <!-- progress -->
+                                        <!-- sizeBeforeUpload -->
+                                        <div v-if="file.type.startsWith('image/')" class=" size-[80px] relative flex justify-center items-center">
                                             <button type="button" class=" absolute top-0 right-2 text-red-500 text-2xl"  @click="deleteFile(file.name, index)">&times;</button>
                                             <img :src="file.image_preview" class=" !size-[80px]"/>
                                             <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
                                         </div>
-                                       <div v-else class=" size-[80px] bg-blue-500 justify-center items-center flex flex-col relative" :key="index">
+                                        <div v-else class=" size-[80px] bg-blue-500 justify-center items-center flex flex-col relative" :key="index">
                                             <button type="button" class=" absolute top-0 right-2 text-white text-2xl" @click="deleteFile(file.name, index)">&times;</button>
                                             <i class="bi bi-file-earmark-text-fill text-2xl"></i>
                                             <div class="flex flex-col text-[10px] text-center">
@@ -134,8 +138,8 @@
                                             </div>
                                             <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
                                         </div>
-                                 </div>
-                               
+                                    </div>
+                                </div>
 
                                 <div class="w-full flex flex-row items-center justify-center gap-1">
                                     <label class="h-10 w-10 flex justify-center items-center rounded-xl cursor-pointer p-3 text-gray-500 dark:text-gray-200 text-xl hover:bg-black hover:bg-opacity-10">
@@ -153,10 +157,10 @@
                                    
                                     <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none overflow-hidden" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
 
-                                    <!-- <button id="send_message_btn" :disabled="!is_valid_message && fileUrls.length <= 0 && imageUrls.length <= 0" type="button" @click="sendMessage" class="bg-blue-500 h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-xl dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30"> -->
-                                        <button id="send_message_btn" type="button" @click="sendMessage" class="bg-tz_blue h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-md dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
-                                            <i class="bi bi-send-fill"></i>
-                                        </button>
+                                    
+                                    <button id="send_message_btn" type="button" @click="sendMessage" class="bg-tz_blue h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-md dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
+                                        <i class="bi bi-send-fill"></i>
+                                    </button>
 
                                 </div>
                             </form>
@@ -458,9 +462,9 @@ export default {
         // FOR SENDING MESSAGE >>>
         async sendMessage() {
             this.input_value = this.message_text.trim();
-            if(!this.input_value){
+           /*  if(!this.input_value){
                 document.getElementById("send_message_btn").disabled = true;
-            };
+            }; */
 
             const payload = {
                 text: this.message_text,
