@@ -77,7 +77,7 @@
                     </div>
 
                     <!-- CHATS CONTAINER -->
-                        <div class="h-[80%] p-4 flex flex-col-reverse gap-4 overflow-y-auto relative justify-start">
+                        <div class="h-[80%] p-4 flex flex-col-reverse gap-4 overflow-y-auto relative justify-start" id="chat_container">
                             <!-- ALL CHATS ARE DISPLAYED HERE -->
                             <!-- chat box -->
 
@@ -366,12 +366,7 @@ export default {
             this.markBulkMessagesAsRead(room._id);
 
             // get messages for room
-            this.fetchMessages(room._id); 
-
-            
-
-            // re-fetch message room to update...
-            // this.getMessageRooms();
+            this.fetchMessages(room._id);
         },
 
         // GET USER DATA >>>
@@ -415,6 +410,9 @@ export default {
                             console.log('message: ', message)
                         }
                         //scrolls the recipients message box...
+                        const chat_box = document.getElementById("chat_container");
+                        chat_box.scrollTo(0, 0);
+                        // alert("i just scrolled");
                     }); 
 
                     // auto open room...
