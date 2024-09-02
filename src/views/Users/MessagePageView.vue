@@ -1,185 +1,206 @@
 <template>
-    <div class="h-full flex flex-col">
-                <!-- <PageTitle>Messages</PageTitle> -->
-                <div class=" flex flex-row h-full w-full">
-                    <!-- LEFT SIDE -->
-                    <div class="w-full md:w-[500px] border-r dark:border-r-gray-700 dark:bg-[#1f2a36]">
-                        <div class="h-[70px] flex flex-col items-start justify-center border-b dark:border-b-gray-700 p-3">
-                            <input type='search' class="w-full h-[40px] form_input" placeholder="search for rooms here" v-model="room_search_term">
+
+
+<!-- MODAL FOR IN-MESSAGE IMAGE PREVIEW -->
+<div v-if="image_preview_modal" class="flex flex-col fixed top-0 left-0 h-screen bg-[rgba(0,0,0,0.8)] dark:bg-[rgba(0,0,0,0.8)] w-full z-40 justify-center items-center">
+    <button type="button" class=" !size-[20px] rounded-full flex justify-center items-center absolute top-5 right-5 text-2xl" @click="image_preview_modal = !image_preview_modal">
+        <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="bg-white flex justify-center items-center">
+        <img :src="image_to_preview">
+    </div>
+</div>
+
+<div class="h-full flex flex-col">
+            <!-- <PageTitle>Messages</PageTitle> -->
+            <div class=" flex flex-row h-full w-full">
+                <!-- LEFT SIDE -->
+                <div class="w-full md:w-[500px] border-r dark:border-r-gray-700 dark:bg-[#1f2a36]">
+                    <div class="h-[70px] flex flex-col items-start justify-center border-b dark:border-b-gray-700 p-3">
+                        <input type='search' class="w-full h-[40px] form_input" placeholder="search for rooms here" v-model="room_search_term">
+                    </div>
+
+                    <!-- {{ this.$route.path }} -->
+
+                    <!-- {{ rooms }} -->
+                    <div class=" h-[90%] overflow-y-auto">
+                        <!-- MESSAGE ROOMS FOR EMPLOYERS -->
+                        <div v-if="user && user.role == 'employer'" @click="selectRoom(room)"  v-for="(room, index) in employer_rooms_list()" :key="index" >
+                            <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3 relative" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
+                                <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.user.profile.image_url})`"></div>
+                                <div  class="flex flex-col w-[60%]">
+                                    <div class="font-bold">{{ room.user.firstname}} {{ room.user.lastname}} </div>
+                                    <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
+                                </div>
+                                <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5 border border-white" v-if="room.unread_messages > 0">
+                                    {{ room.unread_messages }}
+                                </span>
+                            </div>
                         </div>
 
-                        <!-- {{ this.$route.path }} -->
-
-                        <!-- {{ rooms }} -->
-                        <div class=" h-[90%] overflow-y-auto">
-                            <!-- MESSAGE ROOMS FOR EMPLOYERS -->
-                            <div v-if="user && user.role == 'employer'" @click="selectRoom(room)"  v-for="(room, index) in employer_rooms_list()" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3 relative" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
-                                    <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.user.profile.image_url})`"></div>
-                                    <div  class="flex flex-col w-[60%]">
-                                        <div class="font-bold">{{ room.user.firstname}} {{ room.user.lastname}} </div>
-                                        <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
-                                    </div>
-                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5 border border-white" v-if="room.unread_messages > 0">
-                                        {{ room.unread_messages }}
-                                    </span>
+                        <!-- MESSAGE ROOMS FOR USERS -->
+                        <div v-if="user && user.role == 'user'" @click="selectRoom(room)"  v-for="(room, index) in user_rooms_list()" :key="index" >
+                            <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3 relative" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
+                                <!-- <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div> -->
+                                <div class="rounded-full h-12 w-12 flex justify-center items-center bg-gray-100 text-gray-500 font-bold profile_image">
+                                    {{ room.employer.firstname[0] }}{{ room.employer.lastname[0] }} 
                                 </div>
-                            </div>
-
-                            <!-- MESSAGE ROOMS FOR USERS -->
-                            <div v-if="user && user.role == 'user'" @click="selectRoom(room)"  v-for="(room, index) in user_rooms_list()" :key="index" >
-                                <div class="h-[100px] gap-3 border-b  dark:border-b-gray-700 hover:bg-tz_light_blue cursor-pointer flex flex-row items-center justify-start pl-3 relative" :class="selected_room == room ? ' bg-tz_blue text-white hover:text-black dark:hover:text-white':''">
-                                    <!-- <div class="rounded-full h-12 w-12 profile_image" :style="`background-image: url(${room.employer.profile.image_url})`"></div> -->
-                                    <div class="rounded-full h-12 w-12 flex justify-center items-center bg-gray-100 text-gray-500 font-bold profile_image">
-                                        {{ room.employer.firstname[0] }}{{ room.employer.lastname[0] }} 
-                                    </div>
-                                    <div  class="flex flex-col w-[60%]">
-                                        <div class="font-bold">{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
-                                        <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
-                                    </div>
-                                    <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5 border border-white" v-if="room.unread_messages > 0">
-                                        {{ room.unread_messages }}
-                                    </span>
+                                <div  class="flex flex-col w-[60%]">
+                                    <div class="font-bold">{{ room.employer.firstname}} {{ room.employer.lastname}} </div>
+                                    <span class="text-sm capitalize">{{ room.name.substring(0,50) }}...</span>
                                 </div>
+                                <span class="flex justify-center items-center rounded-full text-sm bg-red-500 h-6 w-6 text-white absolute right-5 border border-white" v-if="room.unread_messages > 0">
+                                    {{ room.unread_messages }}
+                                </span>
                             </div>
-                            <div v-if="!rooms || rooms.length <= 0" class="text-gray-500 text-center p-8">No Message rooms</div>
+                        </div>
+                        <div v-if="!rooms || rooms.length <= 0" class="text-gray-500 text-center p-8">No Message rooms</div>
+                    </div>
+                </div>
+                <!-- /LEFT SIDE ENDS HERE -->
+
+                <!-- RIGHT SIDE IF A ROOM IS SELECTED -->
+                <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="fixed top-0 left-0 md:relative  w-[100%] flex-col  h-full bg-white dark:bg-gray-700 z-30">
+                    <!-- ROOM HEADER AND TITLE BLOCK -->
+                    <div class="min-h-[70px] border-b dark:border-b-gray-800 flex flex-row justify-start p-3 gap-3">
+                        <button class="md:hidden" @click="show_chat_room = !show_chat_room">
+                            <i class="bi bi-arrow-left"></i>
+                        </button>
+                        <div class="flex flex-col">
+                            <span class="font-bold">{{ selected_room.name }}</span>
+                            <span class="text-gray-400">initiated {{ formatTimestamp(selected_room.createdAt) }}</span>
                         </div>
                     </div>
-                    <!-- /LEFT SIDE ENDS HERE -->
+                    <div class="pl-10 py-2 border-b dark:border-b-gray-800 flex flex-row gap-3 text-sm">
+                        <span class="text-blue-400">Go to Contract</span>
+                        <span class="text-blue-400">See Job Application</span>
+                    </div>
 
-                    <!-- RIGHT SIDE IF A ROOM IS SELECTED -->
-                    <div v-if="selected_room" :class="show_chat_room == true ? 'flex' : 'hidden'" class="fixed top-0 left-0 md:relative  w-[100%] flex-col  h-full bg-white dark:bg-gray-700 z-30">
-                        <!-- ROOM HEADER AND TITLE BLOCK -->
-                        <div class="min-h-[70px] border-b dark:border-b-gray-800 flex flex-row justify-start p-3 gap-3">
-                            <button class="md:hidden" @click="show_chat_room = !show_chat_room">
-                                <i class="bi bi-arrow-left"></i>
-                            </button>
-                            <div class="flex flex-col">
-                                <span class="font-bold">{{ selected_room.name }}</span>
-                                <span class="text-gray-400">initiated {{ formatTimestamp(selected_room.createdAt) }}</span>
-                            </div>
-                        </div>
-                        <div class="pl-10 py-2 border-b dark:border-b-gray-800 flex flex-row gap-3 text-sm">
-                            <span class="text-blue-400">Go to Contract</span>
-                            <span class="text-blue-400">See Job Application</span>
-                        </div>
+                    <!-- CHATS CONTAINER -->
+                        <div class="h-[80%] p-4 flex flex-col-reverse gap-4 overflow-y-auto relative justify-start">
+                            <!-- ALL CHATS ARE DISPLAYED HERE -->
+                            <!-- chat box -->
 
-                        <!-- CHATS CONTAINER -->
-                            <div class="h-[80%] p-4 flex flex-col-reverse gap-4 overflow-y-auto relative justify-start">
-                                <!-- ALL CHATS ARE DISPLAYED HERE -->
-                                <!-- chat box -->
+                            <!-- <transition name="fade-up"> -->
+                                <div v-if="opponent_is_typing" class="bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl rounded-t-xl  w-fit p-3 opacity-40">
+                                    <div class="loader"></div>
+                                </div>
+                            <!-- </transition> -->
 
-                                <!-- <transition name="fade-up"> -->
-                                    <div v-if="opponent_is_typing" class="bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl rounded-t-xl  w-fit p-3 opacity-40">
-                                        <div class="loader"></div>
-                                    </div>
-                                <!-- </transition> -->
+                            
 
-                                
-
-                               
-                                    <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col border-red-50" :class="message.user == this.user._id ? 'justify-end items-end':'self-start items-start'">
-                                        <!-- <ActionDropdown>
-                                            <button>edit message</button>
-                                        </ActionDropdown> -->
-                                       
-                                        <div :key="message._id" class="flex flex-col gap-1 border-green-500 w-full" :class="message.user == this.user._id ? 'justify-end items-end':'self-start items-start'">
-                                            <div v-for="file in message.files" class="file-container rounded-md">
-                                                <!-- {{file}} -->
-                                                 <div v-if="file.type.startsWith('image/')" class="flex flex-row flex-wrap border-yellow-400">
-                                                    <img class="!size-[100px] rounded-xl" :src="file.url">
-                                                 </div>
-                                                
-                                                <div v-else class="file-container  whitespace-nowrap h-[50px] w-[200px] bg-gray-100 rounded-md p-3 text-black flex flex-row items-center justify-end gap-3">
-                                                    <span class="overflow-hidden ">{{file.name.substring(0,15)}}</span>
-                                                    <a :href="file.url" target="_blank">
-                                                        <span class="bg-blue-500 text-white px-3 py-1 rounded-lg "><i class="mr-3 bi bi-cloud-arrow-down-fill"></i>{{file.type.split("/")[1]}}</span>
-                                                    </a>
+                            
+                                <div v-for="(message, message_id) in messages" :key="message_id" class="flex flex-col border-red-50" :class="message.user == this.user._id ? 'justify-end items-end':'justify-start items-start'">
+                                    <!-- <ActionDropdown>
+                                        <button>edit message</button>
+                                    </ActionDropdown> -->
+                                    
+                                    <div :key="message._id" class="flex flex-col gap-1 border-green-500 w-full" :class="message.user == this.user._id ? 'justify-end items-end':'justify-start items-start'">
+                                        <div class="flex flex-col lg:flex-row flex-wrap gap-3 lg:max-w-[50%]" :class="message.user == this.user._id ? 'justify-end items-end':'justify-start items-start'">
+                                            <div v-for="file in message.files">
+                                                <div v-if="file.type.startsWith('image/')" class="flex flex-row flex-wrap border-yellow-400">
+                                                    <img class="!size-[100px] rounded-xl" :src="file.url" @click="previewImage(file.url)">
                                                 </div>
                                             </div>
-                                           
-                                            <span v-if="message.text"  :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" v-html="message.text" class="whitespace-pre-line rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col shadow-md"></span>
                                         </div>
-                                        <span class="text-[12px] text-gray-" v-if="message.text || message.files.length > 0">{{ convertTimeToAMPM(message.createdAt) }}</span>
+                                            
+                                        <div v-for="file in message.files" class="file-container rounded-md">
+                                            <div  v-if="!file.type.startsWith('image/')" class="file-container  whitespace-nowrap h-[50px] w-[200px] bg-gray-100 rounded-md p-3 text-black flex flex-row items-center justify-end gap-3">
+                                                <span class="overflow-hidden ">{{file.name.substring(0,15)}}</span>
+                                                <a :href="file.url" target="_blank">
+                                                    <span class="bg-blue-500 text-white px-3 py-1 rounded-lg "><i class="mr-3 bi bi-cloud-arrow-down-fill"></i>{{file.type.split("/")[1]}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <span v-if="message.text"  :class="message.user == this.user._id ? 'bg-tz_blue text-white rounded-bl-xl items-end text-right':'bg-slate-100 dark:bg-gray-600 dark:text-white rounded-br-xl items-start text-left'" v-html="message.text" class="whitespace-pre-line rounded-t-xl max-w-[300px] w-fit p-3 flex flex-col shadow-md"></span>
                                     </div>
-
-                                <div v-if="loading_chats" class=" bg-white dark:bg-[#27323F] dark:text-white h-full absolute w-full top-0 bottom-0 left-0 flex flex-col justify-center items-center">
-                                    <Vue3Lottie
-                                        :animationData="loadingChats"
-                                        :height="200"
-                                        :width="200"
-                                    />
-                                    <span>Loading your chats..</span>
+                                    <span class="text-[12px] text-gray-" v-if="message.text || message.files.length > 0">{{ convertTimeToAMPM(message.createdAt) }}</span>
                                 </div>
 
-                                <!-- chat box ends here -->
+                            <div v-if="loading_chats" class=" bg-white dark:bg-[#27323F] dark:text-white h-full absolute w-full top-0 bottom-0 left-0 flex flex-col justify-center items-center">
+                                <Vue3Lottie
+                                    :animationData="loadingChats"
+                                    :height="200"
+                                    :width="200"
+                                />
+                                <span>Loading your chats..</span>
                             </div>
 
-                            <form @sumbit.prevent="sendMessage" class="h-auto flex flex-col justify-center items-center relative mb-6 border-t dark:border-gray-600 p-3">
+                            <!-- chat box ends here -->
+                        </div>
 
-                                <!-- PREVIEW FOR FILE ATTACHMENTS -->
-                                <div v-if="uploadResults.length >0" class="flex flex-row gap-3 w-full p-3 overflow-x-auto border border-red-500">
-                                    <div v-for="(file, index) in uploadResults" :key="index">
-                                    <!-- type -->
-                                        <!-- status -->
-                                        <!-- progress -->
-                                        <!-- sizeBeforeUpload -->
-                                        <div v-if="file.type.startsWith('image/')" class=" size-[80px] relative flex justify-center items-center">
-                                            <button type="button" class=" absolute top-0 right-2 text-red-500 text-2xl"  @click="deleteFile(file.name, index)">&times;</button>
-                                            <img :src="file.image_preview" class=" !size-[80px]"/>
-                                            <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+                        <form @sumbit.prevent="sendMessage" class="h-auto flex flex-col justify-center items-center relative mb-6 border-t dark:border-gray-600 p-3">
+
+                            <!-- PREVIEW FOR FILE ATTACHMENTS -->
+                            <div v-if="uploadResults.length >0" class="flex flex-row gap-3 w-full p-3 overflow-x-auto">
+                                <div v-for="(file, index) in uploadResults" :key="index">
+                                <!-- type -->
+                                    <!-- status -->
+                                    <!-- progress -->
+                                    <!-- sizeBeforeUpload -->
+                                    <div v-if="file.type.startsWith('image/')" class=" size-[80px] relative flex justify-center items-center">
+                                        <button type="button" class=" !size-[20px] rounded-full flex justify-center items-center absolute top-1 left-1" @click="deleteFile(file.name, index)">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                        </button>
+                                        <img :src="file.image_preview" class=" !size-[80px]"/>
+                                        <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+                                    </div>
+                                    <div v-else class=" size-[80px] bg-blue-500 justify-center items-center flex flex-col relative" :key="index">
+                                        <button type="button" class=" !size-[20px] rounded-full flex justify-center items-center absolute top-1 left-1" @click="deleteFile(file.name, index)">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                        </button>
+                                        <i class="bi bi-file-earmark-text-fill text-2xl"></i>
+                                        <div class="flex flex-col text-[10px] text-center">
+                                            <span v-if="file.status == 'failed'" class=" w-[50px] text-red-500">failed</span>
+                                            <span v-else class=" w-[50px] overflow-hidden whitespace-nowrap">{{ file.name }}</span>
+                                            <span>({{file.sizeBeforeUpload}})</span>
                                         </div>
-                                        <div v-else class=" size-[80px] bg-blue-500 justify-center items-center flex flex-col relative" :key="index">
-                                            <button type="button" class=" absolute top-0 right-2 text-white text-2xl" @click="deleteFile(file.name, index)">&times;</button>
-                                            <i class="bi bi-file-earmark-text-fill text-2xl"></i>
-                                            <div class="flex flex-col text-[10px] text-center">
-                                                <span class=" w-[50px] overflow-hidden whitespace-nowrap">{{ file.name }}</span>
-                                                <span>({{file.sizeBeforeUpload}})</span>
-                                            </div>
-                                            <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
-                                        </div>
+                                        <SpinnerComponent v-if="file.status === 'uploading'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="w-full flex flex-row items-center justify-center gap-1">
-                                    <label class="h-10 w-10 flex justify-center items-center rounded-xl cursor-pointer p-3 text-gray-500 dark:text-gray-200 text-xl hover:bg-black hover:bg-opacity-10">
-                                        <input
-                                        multiple
-                                            type="file"
-                                            ref="fileInput"
-                                            @change="onFileChange"
-                                            accept="image/*;capture=camera"
-                                            style="display: none"
-                                        />
-                                        <i class="bi bi-paperclip"></i>
-                                    </label>                                       
-                                    <!-- <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"> -->
-                                   
-                                    <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none overflow-hidden" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
+                            <div class="w-full flex flex-row items-center justify-center gap-1">
+                                <label class="h-10 w-10 flex justify-center items-center rounded-xl cursor-pointer p-3 text-gray-500 dark:text-gray-200 text-xl hover:bg-black hover:bg-opacity-10">
+                                    <input
+                                    multiple
+                                        type="file"
+                                        ref="fileInput"
+                                        @change="onFileChange"
+                                        accept="image/*;capture=camera"
+                                        style="display: none"
+                                    />
+                                    <i class="bi bi-paperclip"></i>
+                                </label>                                       
+                                <!-- <input type="textarea" @input="validateMessage" class="form_input w-[80%] h-10" placeholder="Type your message here..." v-model="message_text"> -->
+                                
+                                <textarea type="text" @input="validateMessage" class="form_input w-[80%] max-h-12 min-w-12 resize-none overflow-hidden" style="box-sizing: border-box;" placeholder="Type your message here..." v-model="message_text"></textarea>
 
-                                    
-                                    <button id="send_message_btn" type="button" @click="sendMessage" class="bg-tz_blue h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-md dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
-                                        <i class="bi bi-send-fill"></i>
-                                    </button>
+                                
+                                <button id="send_message_btn" type="button" @click="sendMessage" class="bg-tz_blue h-10 w-10 flex justify-center items-center rounded-xl text-white p-3 text-md dark:disabled:bg-gray-500 dark:disabled:text-gray-600 disabled:opacity-30">
+                                    <i class="bi bi-send-fill"></i>
+                                </button>
 
-                                </div>
-                            </form>
-                        <!-- </div> -->
-                    </div>
-
-                    <div v-else class="hidden md:flex w-[100%] h-full bg-gray-100 dark:bg-[#27323F] flex-col justify-center items-center p-8 text-center">
-                        <!-- <i class="bi bi-file-earmark-lock text-4xl"></i> -->
-                        <!-- <p>Your chats are secured</p> -->
-                        <Vue3Lottie
-                            :animationData="blankMessagePage"
-                            :height="200"
-                            :width="200"
-                        />
-                        <p :class="`text-gray-500`">Start Sending a message by clicking on any of the rooms</p>
-                    </div>
-                    <!-- RIGHT SIDE ENDS HERE -->
+                            </div>
+                        </form>
+                    <!-- </div> -->
                 </div>
-    </div>
+
+                <div v-else class="hidden md:flex w-[100%] h-full bg-gray-100 dark:bg-[#27323F] flex-col justify-center items-center p-8 text-center">
+                    <!-- <i class="bi bi-file-earmark-lock text-4xl"></i> -->
+                    <!-- <p>Your chats are secured</p> -->
+                    <Vue3Lottie
+                        :animationData="blankMessagePage"
+                        :height="200"
+                        :width="200"
+                    />
+                    <p :class="`text-gray-500`">Start Sending a message by clicking on any of the rooms</p>
+                </div>
+                <!-- RIGHT SIDE ENDS HERE -->
+            </div>
+</div>
+
 </template>
 <script>
 import PageTitle from '@/components/PageTitle.vue';
@@ -195,6 +216,7 @@ import ActionDropdown from '@/components/ActionDropdown.vue';
 import io from "socket.io-client";
 import { filesize } from "filesize";
 
+import { useToast } from 'vue-toastification'
 
 import { mapActions } from 'vuex';
 
@@ -216,9 +238,7 @@ export default {
 
             rooms: [],
             messages: [],
-
             messaged_users: {},
-
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`,
             },
@@ -254,11 +274,18 @@ export default {
            } */],
 
            uploadResults: [],
+           toast: useToast(),
+           image_preview_modal: false,
+           image_to_preview: '',
 
         }
     },
 
     methods: {
+        previewImage(image_url){
+            this.image_to_preview = image_url;
+            this.image_preview_modal = true;
+        },
         removeFile(index){
             this.fileUrls.splice(index, 1)
         },
@@ -283,6 +310,7 @@ export default {
                 this.errorMessage = `File ${file.name} exceeds the size limit of 2MB.`;
                 } else {
                 const imageUrl = URL.createObjectURL(file);
+                this.fileUrls.push(file);
                 // this.imageUrls.push(imageUrl);
                 // this.convertToBase64(file);
                 this.uploadFile(file)
@@ -479,6 +507,7 @@ export default {
 
                 // remove all attached files...
                 this.uploadResults = [];
+                this.message_files = [];
 
                 // pushing message by send function not necessary since its done by socket.io
                 // this.messages.unshift(response.data.message);
@@ -530,6 +559,9 @@ export default {
         },
 
         uploadFile(file) {
+            if(this.uploadResults.length >= 5){
+                this.toast.error("Maximum upload per-time reached")
+            } else {
             const formData = new FormData();
             formData.append('files', file);
 
@@ -558,7 +590,7 @@ export default {
             // Handle progress event
             xhr.upload.onprogress = (event) => {
                 if (event.lengthComputable) {
-                const progress = Math.round((event.loaded * 100) / event.total);
+                const progress = Math.ceil((event.loaded  / event.total ) * 100);
                 console.log(`Progress: ${progress}%`); // Debug log
                 this.uploadResults[index].progress = progress;
                 this.$forceUpdate(); // Force Vue to re-render
@@ -618,6 +650,7 @@ export default {
 
             // Send the form data
             xhr.send(formData);
+        }
         },
 
         async deleteFile(name, index) {
@@ -640,6 +673,7 @@ export default {
             } catch (error) {
                 console.error('Error deleting file:', error);
             }
+      
         },
 
 
