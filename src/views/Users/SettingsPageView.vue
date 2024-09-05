@@ -517,7 +517,7 @@
                                     </label>
                                     <p v-if="errorMessage" class="error-message text-red-500 p-3">{{ errorMessage }}</p>
                                 </div>   
-                                <img class="size-[200px]" src="../../assets/images/img_placeholder_avatar.jpg"/>
+                                <!-- <img class="size-[200px]" src="../../assets/images/img_placeholder_avatar.jpg"/> -->
                             </div>
 
 

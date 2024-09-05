@@ -59,8 +59,8 @@
                 <div v-if="!loading && contracts.length > 0">
                     <h2 class="font-bold">Contracts Details</h2>
                 
-                    <div class="flex overflow-x-auto overflow-y-visible">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <div class="flex overflow-x-auto overflow-y-visible min-h-screen">
+                        <table class="w-full h-fit text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <!-- <th scope="col" class="p-4">

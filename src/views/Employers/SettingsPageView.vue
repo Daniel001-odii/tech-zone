@@ -14,8 +14,8 @@
             <!-- <button @click="active_tab = 1" :class="active_tab == 1 ? 'active_tab':''" class="tab_button">Appearance & theme</button> -->
             <button @click="active_tab = 2" :class="active_tab == 2 ? 'active_tab':''" class="tab_button">Profile & Account</button>
             <button @click="active_tab = 3" :class="active_tab == 3 ? 'active_tab':''" class="tab_button">Notifications</button>
-            <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Payment method</button>
-            <button @click="active_tab = 5" :class="active_tab == 5 ? 'active_tab':''" class="tab_button">ID & Verification</button>
+            <!-- <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">Payment method</button> -->
+            <!-- <button @click="active_tab = 4" :class="active_tab == 4 ? 'active_tab':''" class="tab_button">ID & Verification</button> -->
         </div>
 
 
@@ -139,7 +139,7 @@
                 </div>
             </form>
 
-            <form @submit.prevent="updateUserData" v-if="active_tab == 4" class="section mb-3">
+            <form @submit.prevent="updateUserData" v-if="false" class="section mb-3">
                 
                 <div class="  mt-3">
                     <h1 class="font-bold mb-3 text-lg">Preffered payment method</h1>
@@ -165,7 +165,7 @@
                 <button class="btn mt-3 w-fit">Save bank info</button>
             </form>
 
-            <form @submit.prevent="updateUserData"  v-if="active_tab == 5" class="section mb-3">
+            <form @submit.prevent="updateUserData"  v-if="active_tab == 4" class="section mb-3">
                 
                 <div class="mt-3">
                     <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">

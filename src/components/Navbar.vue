@@ -217,6 +217,18 @@
             </div>
             
 </div>
+
+ <!-- ACCOUNT WARNINGS -->
+ <div v-if="user && user.role == 'user'" class="p-3 bg-red-500 text-white flex flex-row flex-wrap justify-between items-center">
+    <div class="container">
+        <i class="bi bi-exclamation-triangle-fill mr-3"></i>
+        <span>Please verify your account to avoid account restriction</span>
+    </div>
+    <RouterLink to="/in/settings?tab=verification">
+        <button class="p-2 border rounded-md">Verify now</button>
+    </RouterLink>
+</div>
+
 </template>
 
 <!-- briefcase -->
