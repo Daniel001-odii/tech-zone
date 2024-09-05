@@ -1,6 +1,28 @@
 <template>
 <SessionExpiredModal v-if="session_expired_modal"/>
+<!-- <p v-if="user">{{ user.email_verified }}</p> -->
 
+<div v-if="email_verified == false" class=" bg-[rgb(0,0,0,75%)] dark:bg-[rgba(0,0,0,75%)] h-screen w-screen fixed left-0 z-20 flex flex-col justify-center items-center top-0 p-5">
+    <div v-if="sent_verification_mail" class="p-12 rounded-lg bg-white dark:bg-gray-800 max-w-[600px] text-center flex flex-col gap-4 justify-center items-center">
+        <i class="bi bi-send-check-fill text-6xl text-green-300"></i>
+        <h1 class="text-3xl font-extrabold">Verification Email Sent</h1>
+        <p>A verification email has been sent to <b>sample@mail.com</b>. Please check your mailbox to verify your account before you can continue</p>
+        <small class="text-blue-300">Please kindly refresh the browser after verifying your email.</small>
+        <!-- <button class="btn w-fit mt-4">Send verification email</button> -->
+    </div>
+    <div v-else class="p-12 rounded-lg bg-white dark:bg-gray-800 max-w-[600px] text-center flex flex-col gap-4 justify-center items-center">
+        <i class="bi bi-exclamation-triangle-fill text-6xl text-yellow-300"></i>
+        <h1 class="text-3xl font-extrabold">Please verify your email to continue using our platform</h1>
+        <p>To keep thing secure and make sure your account is protected please verify your email using the button below</p>
+        <button @click="sendVerificationMail()" :disabled="sending_email" class="btn mt-4 w-full">
+            <span v-if="sending_email" class="p-2"><SpinnerComponent/></span>
+            <span v-else>Send verification email</span>
+        </button>
+    </div>
+    
+</div>
+
+<!-- {{ email_verified }} -->
 <!-- <div>{{ REALTIME_NOTIFICATION }}</div> -->
 <div class="bg-transparent border-b dark:border-gray-600">
     <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
@@ -215,6 +237,8 @@ import HomeNavbar from './HomeNavbar.vue';
 import CustomDropdown from '../components//CustomDropdown'
 
 import Skeleton from 'primevue/skeleton';
+import SpinnerComponent from '@/components/SpinnerComponent.vue';
+
 
 export default {
     name: "Navbar",
@@ -225,6 +249,7 @@ export default {
         HomeNavbar, 
         CustomDropdown,
         Skeleton,
+        SpinnerComponent
     },
     props: {
         type: String,
@@ -256,6 +281,10 @@ export default {
             REALTIME_NOTIFICATION: [],
 
             socket: io(this.api_url.split('/').slice(0, 3).join('/'), { autoConnect: true}),
+
+            email_verified: null,
+            sent_verification_mail: false,
+            sending_email: false,
 
             
         };
@@ -316,6 +345,8 @@ export default {
                     this.socket.emit('join', `user_${this.user._id}`);
                     this.getNotified();
                 // }
+
+                this.email_verified = response.data.user.email_verified;
             }
             catch(error){
                 console.log("error from navbar :", error);
@@ -371,6 +402,20 @@ export default {
 
             }catch(error){
                 console.log(error)
+            }
+        },
+
+        async sendVerificationMail(){
+            try{
+                const email = this.user.email;
+                this.sending_email = true;
+                const response = await axios.post(`/email/${email}/send`, {}, { headers:this.headers });
+                this.sent_verification_mail = true;
+                this.sending_email = false;
+
+            }catch(error){
+                this.sending_email = false;
+                console.log("error sending: ", error);
             }
         },
 

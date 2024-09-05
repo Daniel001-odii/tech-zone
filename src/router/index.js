@@ -60,6 +60,7 @@ import BillingsAndOverviewPageView from '@/views/Employers/BillingsAndOverviewPa
 
 import SearchPageView from '@/views/Employers/SearchPageView.vue';
 
+import EmailVerificationView from '@/views/EmailVerificationView.vue'
 
 
 
@@ -159,6 +160,13 @@ const routes = [
     name: 'privacy-policy',
     component: PrivacyPolicyPage
   },
+
+  {
+    path: '/user/email/:email/:token/verify/native',
+    name: 'email verification',
+    component: EmailVerificationView
+  },
+
 
   {
     path: '/contracts/:contract_id/funding/:status',

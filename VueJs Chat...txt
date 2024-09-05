@@ -1,3 +1,6 @@
+wait list sample
+https://product-announcement.framer.website/
+
 VueJs Chat..
 
 https://npm.io/package/vue-quick-chat

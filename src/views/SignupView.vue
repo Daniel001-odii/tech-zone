@@ -17,7 +17,10 @@
                         <h1 class="text-3xl font-bold">Create an account</h1>
                         <p>Already have an account? <RouterLink to="/login">Login</RouterLink> </p>
 
-                        <div class="text-red-500 mt-6" v-if="error">{{ error }}</div>
+                        <div class="text-red-500 mt-6 bg-red-500 bg-opacity-10 rounded-md border-red-500 p-3 flex flex-row" v-if="error">
+                            <i class="bi bi-exclamation-triangle-fill mr-3"></i>
+                            <span>{{ error }}</span>
+                        </div>
 
                         <form class="flex flex-col gap-4 mt-6"  @submit.prevent="register">
                             <div class="flex flex-col gap-3">
@@ -61,7 +64,10 @@
                             </div>
 
 
-                            <button class="p-3 text-white bg-tz_blue w-full rounded-full" :disabled="!passwordValidation.valid || !acceptedTOS">Register</button> 
+                            <button class="p-3 text-white bg-tz_blue w-full rounded-full flex justify-center items-center" :disabled="!passwordValidation.valid || !acceptedTOS || loading">
+                                <span v-if="loading" class="p-3"><SpinnerComponent/></span>
+                                <span v-else>Register</span>
+                            </button> 
                             
                             
                             <!-- or -->
@@ -102,10 +108,12 @@ import SiteLogo from '@/components/SiteLogo.vue';
 import MiniFooter from '@/components/MiniFooter.vue'
 import { useToast } from 'vue-toastification'
 
+import SpinnerComponent from '@/components/SpinnerComponent.vue'
+
 
 export default {
     name: "SignUpView",
-    components: { Alert, SiteLogo, MiniFooter },
+    components: { Alert, SiteLogo, MiniFooter, SpinnerComponent },
     data(){
         return{
             toast: useToast(),
@@ -125,11 +133,13 @@ export default {
 				{ message:"8 characters minimum.", regex:/.{8,}/ },
 				{ message:"One number required.", regex:/[0-9]+/ }
 			],
+            loading: false,
         }
     },
     methods: {
         async register(){
             try{
+                this.loading = true;
                 const response = await axios.post(`${this.api_url}/register/user`, this.form_data);
                 console.log(response);
                 localStorage.setItem('life-gaurd', response.data.accessToken);
@@ -146,6 +156,7 @@ export default {
                 // display toast..
                 this.toast.error(response.data.message);
                 console.log("error registering: ", error);
+                this.loading = false;
             }
         },
 
