@@ -25,31 +25,12 @@
 <!-- {{ email_verified }} -->
 <!-- <div>{{ REALTIME_NOTIFICATION }}</div> -->
 <div class="bg-transparent border-b dark:border-gray-600">
-    <!-- <div class="  max-w-screen-2xl mx-auto my-0 w-full "> -->
         <!-- THE DUMMY NAVBAR BELOW SHOWS AS A LOADER ONLY WHEN USER INFO IS NOT AVAILABLE -->
-        <div v-if="is_authenticated && !user">
-            <nav>
-                <div class="flex flex-row w-full justify-between p-3 items-center border-b border-gray-200  dark:border-gray-600">
-                    <SiteLogo/>
-                    <!-- <div class="skeleton text-transparent border-4 rounded-md hidden md:flex flex-row items-center h-12 overflow-hidden dark:border-gray-600">
-                        <input type="search" v-model="job_search" class="p-3 bg-slate-100 border-none form_input">
-                        <button @click="handleSearch" class="flex flex-row gap-2 border-l dark:border-gray-500 h-full px-3 items-center hover:bg-slate-50 dark:hover:bg-tz_light_blue">
-                            <i class="bi bi-search"></i>
-                            <span>Search</span>
-                        </button>
-                    </div> -->
-                    
-                    <div class="skeleton flex flex-row items-center gap-1 md:mr-2">
-                        <div class=" h-10 w-10 bg-gray-300 rounded-full"></div>
-                        <i class="bi bi-three-dots-vertical"></i>
-                        <div class=" h-10 w-10 bg-gray-300 rounded-full"></div>
-                    </div>
-                </div>
-            </nav>
-        </div>
+      
+
+        <FullPageLoading  v-if="is_authenticated && !user"/>
 
         <!-- NAVBAR FOR MAIN APPLICATION AND AUTHENTICATED USERS -->
-        <!-- <div class="flex justify-center items-center w-full bg-white dark:bg-[#1F2A36] dark:text-white " style="margin: 0 auto;"> -->
             <!-- this navbar here displays only on mobile view -->
         
             <div v-if="mobile_nav && user" class="flex flex-col fixed h-screen bg-white top-0 left-0 w-screen z-30 md:hidden py-8 px-4 dark:bg-[#1F2A36] dark:text-white">
@@ -250,6 +231,7 @@ import CustomDropdown from '../components//CustomDropdown'
 
 import Skeleton from 'primevue/skeleton';
 import SpinnerComponent from '@/components/SpinnerComponent.vue';
+import FullPageLoading from '@/components/FullPageLoading.vue'
 
 
 export default {
@@ -261,7 +243,8 @@ export default {
         HomeNavbar, 
         CustomDropdown,
         Skeleton,
-        SpinnerComponent
+        SpinnerComponent,
+        FullPageLoading
     },
     props: {
         type: String,
