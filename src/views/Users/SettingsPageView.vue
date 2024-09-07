@@ -447,16 +447,16 @@
                         <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 w-full md:w-full">
                             <span class="font-bold">Recent Transactions</span>
                             
-                            <div class="overflow-x-auto max-w-screen-lg">
+                            <div class="overflow-x-auto max-w-screen-lg" v-if="transactions.length > 0">
                                 <!-- LOADER -->
                                 <!-- <Skeleton height="20px" width="500px"/> -->
-
-                                <div class="flex flex-row justify-between items-center  w-[500px]">
-                                    <span>Thursday, 12 April 2024</span>
-                                    <span>Pending</span>
-                                    <span>NGN 150,000</span>
+                                <div v-for="(transaction, index) in transactions" class="flex flex-row justify-between items-center  w-[500px]" :key="index">
+                                    <span>{{ transaction.date }} </span>
+                                    <span>{{ transaction.status }}</span>
+                                    <span>NGN {{ transaction.amount.toLocaleString() }}</span>
                                 </div>
                             </div>
+                            <div v-else class=" h-28 w-full flex justify-center items-center text-center"> No recent transactions </div>
                         </div>
                     </div>
                 </div>
@@ -677,6 +677,8 @@ export default {
             verifying_loading: false,
             requested_account_delete: false,
             verify_modal: false,
+
+            transactions: [],
         }
     },
     methods:{
@@ -811,9 +813,11 @@ export default {
             try{
                 this.loading_wallet = true;
                 const headers = this.headers;
-                const response  = await axios.get(`${this.api_url}/user/wallet/get`, { headers });
-                // console.log("user wallet: ", response.data.wallet);
+                const response  = await axios.get(`/wallets/info`, { headers });
+                console.log("user wallet: ", response.data.wallet);
                 this.account_balance = response.data.wallet.balance;
+                // get only first five wallet transactions...
+                this.transactions = response.data.wallet.transactions.splice(0, 5);
                 this.loading_wallet = false;
             }catch(error){
                 this.loading_wallet = false;
