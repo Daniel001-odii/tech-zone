@@ -67,236 +67,226 @@ import EmailVerificationView from '@/views/EmailVerificationView.vue'
 
 const routes = [
 
-  // FOR WAITLIST.....
-  // {
-  //   path: '/',
-  //   name: 'Coming soon',
-  //   component: WaitListPageView
-  // },
-
-
   // MAIN LANDING PAGE AFTER LAUNCH
-  
   {
     path: '/',
     name: 'home',
-    component: LandingPageViewVue
+    component: LandingPageViewVue,
+    meta: { title: 'home' }
   },
-  
 
-
- 
   {
     path: '/about',
     name: 'about',
-    component: AboutPageViewVue
+    component: AboutPageViewVue,
+    meta: { title: 'about' }
   },
 
   {
     path: '/vision',
     name: 'mission & vision',
-    component: MissionPageViewVue
+    component: MissionPageViewVue,
+    meta: { title: 'mission & vision' }
   },
 
   {
     path: '/login',
     name: 'login',
-    component: LoginViewVue
+    component: LoginViewVue,
+    meta: { title: 'login' }
   },
 
   {
     path: '/register',
     name: 'register',
-    component: SignupViewVue
+    component: SignupViewVue,
+    meta: { title: 'register' }
   },
 
   {
     path: '/password/forgot',
     name: 'password-forgot',
-    component: SendPassResetEmailView
+    component: SendPassResetEmailView,
+    meta: { title: 'password-forgot' }
   },
 
   {
     path: '/user/:reset_token/password',
     name: 'password-change',
-    component: ResetPasswordPageView
+    component: ResetPasswordPageView,
+    meta: { title: 'password-change' }
   },
 
   {
     path: '/profile/complete',
     name: 'complete profile',
     component: ProfileStepViewVue,
-    meta: { requiresAuth: true, role: 'user' },
+    meta: { requiresAuth: true, role: 'user', title: 'complete profile' }
   },
-
 
   {
     path: '/register/decide',
     name: 'decide',
     component: RegistrationDecisionVue,
+    meta: { title: 'decide' }
   },
-
 
   {
     path: '/register/client',
     name: 'register-client',
-    component: ClientSignupViewVue
+    component: ClientSignupViewVue,
+    meta: { title: 'register-client' }
   },
 
   {
     path: '/FAQ',
     name: 'FAQ',
-    component: SupportPageView
+    component: SupportPageView,
+    meta: { title: 'FAQ' }
   },
 
   {
     path: '/support',
     name: 'support',
-    component: HelpAndSupportPageView
+    component: HelpAndSupportPageView,
+    meta: { title: 'support' }
   },
 
   {
     path: '/privacy',
     name: 'privacy-policy',
-    component: PrivacyPolicyPage
+    component: PrivacyPolicyPage,
+    meta: { title: 'privacy-policy' }
   },
 
   {
     path: '/user/email/:email/:token/verify/native',
     name: 'email verification',
-    component: EmailVerificationView
+    component: EmailVerificationView,
+    meta: { title: 'email verification' }
   },
-
 
   {
     path: '/contracts/:contract_id/funding/:status',
-    name:'contract funding-status',
+    name: 'contract funding-status',
     component: ContractFundingStatusView,
+    meta: { title: 'contract funding-status' }
   },
 
   {
     path: '/contracts/:contract_id/funding-status',
-    name:'contract funding-status',
+    name: 'contract funding-status',
     component: ContractFundingStatusView,
+    meta: { title: 'contract funding-status' }
   },
-
 
   {
     path: '/in',
     component: TemplateView,
     children: [
-      {path: '', component: UserJobsPageViewVue, name: "jobs all"},
-      {path: 'jobs', component: UserJobsPageViewVue, name: "jobs"},
-      {path: 'saved', component: SavedJobsViewVue, name: "saved jobs"},
-      {path: 'messages', component: MessagePageViewVue, name: "user messages"},
-      {path: 'contracts', component: ContractsListPageViewVue, name: "user contracts"},
-      {path: 'contracts/:contract_id/', component: ContractPageViewVue, name: "contract details"},
-      {path: 'users/:user_id', component: ProfilePageViewVue, name: "profile"},
-      {path: 'applications', component: MyApplicationsPageViewVue, name: "my applications"},
-      {path: 'jobs/:job_id/application', component: ApplicationPageViewVue, name: "job application"},
-      {path: 'overview', component: OverviewPageView, name: "user overview"},
-      {path: 'notifications', component: NotifcationsPageView, name: "user notifications"},
-      {path: 'settings', component: SettingsPageView, name: "user settings"},
-      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "contract task-watch"},
-      {
-        path: '/support',
-        name: 'in-support',
-        component: HelpAndSupportPageView
-      },
+      { path: '', component: UserJobsPageViewVue, name: "jobs all", meta: { title: 'jobs all' } },
+      { path: 'jobs', component: UserJobsPageViewVue, name: "jobs", meta: { title: 'jobs' } },
+      { path: 'saved', component: SavedJobsViewVue, name: "saved jobs", meta: { title: 'saved jobs' } },
+      { path: 'messages', component: MessagePageViewVue, name: "user messages", meta: { title: 'user messages' } },
+      { path: 'contracts', component: ContractsListPageViewVue, name: "user contracts", meta: { title: 'user contracts' } },
+      { path: 'contracts/:contract_id/', component: ContractPageViewVue, name: "contract details", meta: { title: 'contract details' } },
+      { path: 'users/:user_id', component: ProfilePageViewVue, name: "profile", meta: { title: 'profile' } },
+      { path: 'applications', component: MyApplicationsPageViewVue, name: "my applications", meta: { title: 'my applications' } },
+      { path: 'jobs/:job_id/application', component: ApplicationPageViewVue, name: "job application", meta: { title: 'job application' } },
+      { path: 'overview', component: OverviewPageView, name: "user overview", meta: { title: 'user overview' } },
+      { path: 'notifications', component: NotifcationsPageView, name: "user notifications", meta: { title: 'user notifications' } },
+      { path: 'settings', component: SettingsPageView, name: "user settings", meta: { title: 'user settings' } },
+      { path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "contract task-watch", meta: { title: 'contract task-watch' } },
+      { path: '/support', name: 'in-support', component: HelpAndSupportPageView, meta: { title: 'in-support' } },
     ],
-    meta: { requiresAuth: true, role: 'user' },
+    meta: { requiresAuth: true, role: 'user' }
   },
-
-
 
   {
     path: '/',
     component: TemplateView,
     children: [
-      {path: 'jobs', component: UserJobsPageViewVue, name: "public jobs"},
-      {
-        path: '/users/:user_id',
-        name: 'public profile',
-        component: ProfilePageViewVue
-      }
-    ],
+      { path: 'jobs', component: UserJobsPageViewVue, name: "public jobs", meta: { title: 'public jobs' } },
+      { path: '/users/:user_id', name: 'public profile', component: ProfilePageViewVue, meta: { title: 'public profile' } }
+    ]
   },
-
- ,
 
   // 404 PAGES CONFIG...
   {
-    path: "/404", 
-    name: "404", 
-    component: PageNotFoundViewVue
+    path: "/404",
+    name: "404",
+    component: PageNotFoundViewVue,
+    meta: { title: '404' }
   },
 
   {
-    path: "/:catchAll(.*)", 
+    path: "/:catchAll(.*)",
     redirect: "/404"
   },
-  //  404 PAGES ENDS HERE....
 
   {
     path: '/client',
     component: TemplateView,
     children: [
-      {path: 'dashboard', component: ClientDashBoardPage, name: "dashboard"},
-      {path: 'job', component: ClientPostJobView, name: "create job"},
-      {path: 'jobs/:job_id/edit', component: ClientPostJobView, name: "edit job"},
-      {path: 'jobs', component: JobsListPageView, name: "my jobs"},
-      {path: 'messages', component: MessagePageViewVue, name: "client messages"},
-      {path: 'settings', component: ClientSettingsPage, name: "settings"},
-      {path: 'profile', component: ClientProfilePageViewVue, name: "user profile"},
-      {path: 'notifications', component: NotifcationsPageView, name: "notifications"},
-      {path: 'contracts', component: ClientContractsListPageViewVue, name: "my contracts"},
-      {path: 'billings', component: BillingsAndOverviewPageView, name: "billings & overview"},
-      {path: 'overview', component: ClientOverviewPageView, name: "my overview"},
-      {path: 'contracts/:contract_id', component: ClientContractPageViewVue, name: "contract"},
-      {path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "task-watch"},
-      {path: 'search', component: SearchPageView, name: "Search"},
-
+      { path: 'dashboard', component: ClientDashBoardPage, name: "dashboard", meta: { title: 'dashboard' } },
+      { path: 'job', component: ClientPostJobView, name: "create job", meta: { title: 'create job' } },
+      { path: 'jobs/:job_id/edit', component: ClientPostJobView, name: "edit job", meta: { title: 'edit job' } },
+      { path: 'jobs', component: JobsListPageView, name: "my jobs", meta: { title: 'my jobs' } },
+      { path: 'messages', component: MessagePageViewVue, name: "client messages", meta: { title: 'client messages' } },
+      { path: 'settings', component: ClientSettingsPage, name: "settings", meta: { title: 'settings' } },
+      { path: 'profile', component: ClientProfilePageViewVue, name: "user profile", meta: { title: 'user profile' } },
+      { path: 'notifications', component: NotifcationsPageView, name: "notifications", meta: { title: 'notifications' } },
+      { path: 'contracts', component: ClientContractsListPageViewVue, name: "my contracts", meta: { title: 'my contracts' } },
+      { path: 'billings', component: BillingsAndOverviewPageView, name: "billings & overview", meta: { title: 'billings & overview' } },
+      { path: 'overview', component: ClientOverviewPageView, name: "my overview", meta: { title: 'my overview' } },
+      { path: 'contracts/:contract_id', component: ClientContractPageViewVue, name: "contract", meta: { title: 'contract' } },
+      { path: 'contracts/:contract_id/watch', component: TaskWatchPageView, name: "task-watch", meta: { title: 'task-watch' } },
+      { path: 'search', component: SearchPageView, name: "Search", meta: { title: 'Search' } },
     ],
-    meta: { requiresAuth: true, role: 'employer' },
+    meta: { requiresAuth: true, role: 'employer' }
   },
 
-  
-
-
-  /*
-  **
-  ** ADMNISTRATIVE BASED ROUTES
-  **
-  */
+  // ADMINISTRATIVE BASED ROUTES
   {
     path: "/site/register",
     name: "admin register",
     component: AdminRegisterPageView,
+    meta: { title: 'admin register' }
   },
   {
     path: "/site/login",
     name: "admin login",
     component: AdminLoginView,
+    meta: { title: 'admin login' }
   },
 
   {
     path: "/admin",
     component: AdminTemplateView,
     children: [
-      {path: "dashboard", component: AdminDashboardView},
-      {path: "settings", component: AdminSettingsView},
+      { path: "dashboard", component: AdminDashboardView, meta: { title: 'admin dashboard' } },
+      { path: "settings", component: AdminSettingsView, meta: { title: 'admin settings' } },
     ],
-    meta: { requiresAdminAuth: true, role: 'admin'}
+    meta: { requiresAdminAuth: true, role: 'admin' }
   },
 
 ]
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
-
+// auto change page title...
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  } else {
+    document.title = 'ApexTeks'; // Default title
+  }
+  next();
+});
 
 const token = localStorage.getItem('life-gaurd');
 

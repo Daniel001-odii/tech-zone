@@ -92,7 +92,7 @@ app.use(VueFileAgentNext);
 app.config.globalProperties.api_url = process.env.VUE_APP_API_URL;
 app.config.globalProperties.msg_api_url = process.env.VUE_APP_MSG_API_URL;
 
-app.mixin({
+/* app.mixin({
     data() {
       return {
         title: 'Apexteks',
@@ -103,7 +103,7 @@ app.mixin({
       document.title = title
     },
 });
-
+ */
 app.use(store).use(router).mount('#app');
 
 

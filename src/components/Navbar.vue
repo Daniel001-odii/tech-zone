@@ -122,7 +122,7 @@
                                     </div>
                                 </template>
                                 <template #menu>
-                                    <div class=" max-w-[300px] w-[250px] border bg-white rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600 ">
+                                    <div class=" max-w-[350px] w-[250px] border bg-white rounded-lg p-1 flex  flex-col gap-2 z-50 dark:bg-[#1F2A36] dark:border-gray-600 ">
                                         <span class="text-center p-2 border-b w-full dark:border-gray-600">Notifications</span>
                                         <div class=" max-h-[250px] overflow-y-auto">
                                             <div v-for="(notification, notify_id) in notifications.slice(0,3)" :key="notify_id" class="flex flex-row p-3 hover:bg-slate-50 rounded-md gap-3 justify-start items-start group/notify dark:hover:bg-tz_light_blue relative">
@@ -200,7 +200,7 @@
 </div>
 
  <!-- ACCOUNT WARNINGS -->
- <div v-if="user && user.role == 'user'" class="p-3 bg-red-500 text-white flex flex-row flex-wrap justify-between items-center">
+ <div v-if="user && user.role == 'user' && !user.settings.KYC.is_verified" class="p-3 bg-red-500 text-white flex flex-row flex-wrap justify-between items-center">
     <div class="container">
         <i class="bi bi-exclamation-triangle-fill mr-3"></i>
         <span>Please verify your account to avoid account restriction</span>

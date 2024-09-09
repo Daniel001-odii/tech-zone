@@ -416,10 +416,10 @@
                     </div>
 
                     <!-- Actions... -->
-                    <div class="flex flex-row flex-wrap gap-6">
-                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                    <div class="flex flex-row gap-6 flex-wrap">
+                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 max-w-[800px]">
                             <span class="font-bold">Actions</span>
-                            <div class="flex flex-row flex-wrap gap-20 items-start md:justify-start justify-center px-12">
+                            <div class="flex flex-row flex-wrap gap-10 items-start md:justify-start justify-center px-12">
                                 <!-- <button @click="withdraw_funds_modal = !withdraw_funds_modal" type="button" class="action-btn"> -->
                                 <button @click="requested_withdrawal = !requested_withdrawal" type="button" class="action-btn">
                                     <i class="bi bi-cash-stack p-3 action-icon"></i>
@@ -444,15 +444,15 @@
 
                             </div>
                         </div>
-                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 w-full md:w-full">
+                        <div class="flex flex-col gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 max-w-[800px] md:w-full">
                             <span class="font-bold">Recent Transactions</span>
                             
-                            <div class="overflow-x-auto max-w-screen-lg" v-if="transactions.length > 0">
+                            <div class="overflow-x-auto max-w-screen-lg flex flex-col" v-if="transactions.length > 0">
                                 <!-- LOADER -->
                                 <!-- <Skeleton height="20px" width="500px"/> -->
-                                <div v-for="(transaction, index) in transactions" class="flex flex-row justify-between items-center  w-[500px]" :key="index">
-                                    <span>{{ transaction.date }} </span>
-                                    <span>{{ transaction.status }}</span>
+                                <div v-for="(transaction, index) in transactions" class="flex flex-row justify-between items-center hover:bg-black hover:bg-opacity-10 p-3" :key="index">
+                                    <span>{{ readableDateFormat(transaction.date) }} </span>
+                                    <span :class="transaction.status == 'successful' ? 'text-green-500':'text-red-500'">{{ transaction.status }}</span>
                                     <span>NGN {{ transaction.amount.toLocaleString() }}</span>
                                 </div>
                             </div>
@@ -686,6 +686,9 @@ export default {
         // triggerFileInput() {
         //     this.$refs.fileInput.click();
         // },
+        readableDateFormat(date){
+            return this.format( new Date(date), "EEEE do MMMM yyyy")
+        },
 
         onFileChange(event) {
             const file = event.target.files[0];
