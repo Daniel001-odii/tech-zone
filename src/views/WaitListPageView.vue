@@ -5,7 +5,7 @@
 
 
 
-            <div v-if="!form_filled" class="flex flex-col-reverse mt-40 md:mt-0 md:flex-row w-full p-8 text-white justify-center items-center">
+            <div v-if="false" class="flex flex-col-reverse mt-40 md:mt-0 md:flex-row w-full p-8 text-white justify-center items-center">
 
                 <!-- TEXT WRITE UP -->
                 <div class="flex flex-col w-full md:w-[50%] md:text-left text-center">
@@ -37,16 +37,31 @@
             
 
 
-            <div v-else class="flex flex-col justify-center items-center h-full p-8">
-                <Vue3Lottie
+            <div v-if="true" class="flex flex-col text-center justify-center items-center h-full p-8">
+              <!--   <Vue3Lottie
                     :animationData="contractOffer"
                     :height="200"
                     :width="200"
-                />
-                <h1 class="font-bold text-2xl text-blue-300">You joined our waitlist!</h1>
-                <p class="text-slate-300 text-center text-xl">
-                    You are the most amazing person! <br/>Thank you for joining our waitlist, We'll let you know by email as soon as we go live fully, and thanks for your interest in ApexTeks!
+                /> -->
+                <h1 class="font-bold text-4xl text-blue-300">🎉 <br/>Thank you for joining our waitlist! </h1><br/>
+                <p class="text-slate-300 text-center text-xl max-w-96">
+                    We’re excited to have you on board and can’t wait to share our platform with you soon.
+                    we'll let you know by email as soon as we go live fully.<br/>
+                    <br/>In the meantime, follow us on social media for updates and sneak peeks!
                 </p>
+                <div class="flex flex-row gap-4 justify-center items-center text-white text-xl mt-4">
+                    <a href="https://www.instagram.com/apexteks?igsh=MW5rYnhnbXQwa2Ridg==" target="_blank">
+                        <i class="bi bi-instagram hover:text-blue-300"></i>
+                    </a>
+                    <a href="https://x.com/apexteks?s=21" target="_blank">
+                        <i class="bi bi-twitter hover:text-blue-300"></i>
+                    </a>
+            
+                    <a href="https://www.linkedin.com/company/apexteks/" target="_blank">
+                        <i class="bi bi-linkedin hover:text-blue-300"></i>
+                    </a>
+
+                </div>
             </div>
 
 

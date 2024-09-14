@@ -1,7 +1,1 @@
-fix user search for employers page... [done]
-
-fix job minimize when flagged... [done]
-
-fix realtime user notifications...[done]
-
 fix job search filters
