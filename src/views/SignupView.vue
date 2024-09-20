@@ -27,14 +27,17 @@
                                 <div class=" flex flex-row gap-3">
                                     <div class="">
                                         <label for="firstname">First Name</label>
-                                        <input class="rounded-xl p-3 dark:bg-transparent w-full" type="text" name="firstname" id="firstname" placeholder="John" v-model="form_data.firstname" required>
+                                        <input class="rounded-xl p-3 dark:bg-transparent w-full"  :class="firstnameError ? 'border-red-500 text-red-500':''" type="text" name="firstname" id="firstname" placeholder="John" @change="validateFirstname" v-model="form_data.firstname" required>
                                     </div>
 
                                     <div class="">
                                         <label for="lastname">Last Name</label>
-                                        <input class="rounded-xl p-3 dark:bg-transparent w-full" type="text" name="lastname" id="lastname" placeholder="Doe" v-model="form_data.lastname" required>
+                                        <input class="rounded-xl p-3 dark:bg-transparent w-full"  :class="lastnameError ? 'border-red-500 text-red-500':''" type="text" name="lastname" id="lastname" placeholder="Doe" @change="validateLastname" v-model="form_data.lastname" required>
                                     </div>
                                 </div>
+
+                                <span v-if="firstnameError" class="text-red-500 text-small">{{ firstnameError }}</span>
+                                <span v-if="lastnameError" class="text-red-500 text-small">{{ lastnameError }}</span>
                                 
 
                                 <div class="tz_form_control">
@@ -64,7 +67,7 @@
                             </div>
 
 
-                            <button class="p-3 text-white bg-tz_blue w-full rounded-full flex justify-center items-center" :disabled="!passwordValidation.valid || !acceptedTOS || loading">
+                            <button class="p-3 text-white bg-tz_blue w-full rounded-full flex justify-center items-center" :disabled="!passwordValidation.valid || !acceptedTOS || loading || firstnameError || lastnameError">
                                 <span v-if="loading" class="p-3"><SpinnerComponent/></span>
                                 <span v-else>Register</span>
                             </button> 
@@ -126,6 +129,9 @@ export default {
                 password: ''
             },
 
+            firstnameError: '',
+            lastnameError: '',
+
             passHint: false,
             rules: [
 				{ message:'One lowercase letter required.', regex:/[a-z]+/ },
@@ -137,6 +143,24 @@ export default {
         }
     },
     methods: {
+        validateFirstname() {
+            const usernamePattern = /^[a-zA-Z0-9_]+$/;
+            if (!usernamePattern.test(this.form_data.firstname)) {
+                this.firstnameError = 'firstname must not contain special characters';
+            } else {
+                this.firstnameError = '';
+            }
+        },
+
+        validateLastname() {
+            const usernamePattern = /^[a-zA-Z0-9_]+$/;
+            if (!usernamePattern.test(this.form_data.lastname)) {
+                this.lastnameError = 'lastname must not contain special characters';
+            } else {
+                this.lastnameError = '';
+            }
+        },
+
         async register(){
             try{
                 this.loading = true;

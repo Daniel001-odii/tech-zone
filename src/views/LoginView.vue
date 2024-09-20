@@ -27,9 +27,7 @@
     
                     <!-- MAIN CONTENT STARTS HERE -->
                     <div class="mt-3">
-                        <h1 class="text-3xl font-bold">Create an account</h1>
-                        <!-- <span>{{ this.$route.query }}</span> -->
-                        <p>Already have an account? <RouterLink to="/login">Login</RouterLink> </p>
+                        <h1 class="text-3xl font-bold">Login</h1>
     
                         <div class="text-red-500 mt-6 bg-red-500 bg-opacity-10 p-3 rounded-md flex flex-row gap-3" v-if="error">
                             <i class="bi bi-exclamation-triangle-fill"></i>
@@ -46,7 +44,7 @@
                                 <div class="tz_form_control">
                                     <label for="password">password</label>
                                     <div class=" relative ">
-                                        <button type="button" @click="reveal_password = !reveal_password" class=" absolute top-3 right-3">
+                                        <button type="button" @mouseleave="reveal_password = false" @mouseover="reveal_password = true" class="absolute top-3 right-3">
                                             <span v-if="reveal_password">
                                                 <i class="bi bi-eye"></i>
                                             </span>
@@ -54,7 +52,8 @@
                                                 <i class="bi bi-eye-slash"></i>
                                             </span>
                                         </button>
-                                        <input class="form_input_new w-full" :type="reveal_password ? 'text':'password'" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
+                                       
+                                        <input class="form_input_new w-full"  :type="reveal_password ? 'text':'password'" name="password" id="password" placeholder="a very strong password" v-model="form_data.password" required>
                                     </div>
                                     
                                 </div>
@@ -87,7 +86,7 @@
     
     
                             <div class="text-center">
-                                <p>Don't have account yet? <RouterLink to="/register/decide" class=" decoration-tz_blue">Sign up</RouterLink> </p>
+                                <p>Don't have account yet? <RouterLink to="/register/decide" class=" underline text-tz_blue">Sign up</RouterLink> </p>
                             </div>                      
                         </form>
                     </div>
@@ -121,6 +120,7 @@
 
     import { useToast } from 'vue-toastification'
     
+ 
     
     export default {
         name: "LoginView",
@@ -150,10 +150,6 @@
             };
         },
         methods: {
-            revealOrHidePassword(){
-
-            },
-
 
             async login() {
                 this.loading = true;

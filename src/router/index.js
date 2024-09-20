@@ -68,17 +68,10 @@ import EmailVerificationView from '@/views/EmailVerificationView.vue'
 const routes = [
 
   // MAIN LANDING PAGE AFTER LAUNCH
-  /* {
-    path: '/',
-    name: 'home',
-    component: LandingPageViewVue,
-    meta: { title: 'home' }
-  }, */
-
   {
     path: '/',
     name: 'home',
-    component: WaitListPageView,
+    component: LandingPageViewVue,
     meta: { title: 'home' }
   },
 

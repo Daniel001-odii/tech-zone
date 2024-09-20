@@ -2,7 +2,8 @@
    
    <FullPageLoading v-if="loading"/>
 
-    <!-- <div class="flex flex-row"> -->
+    <!-- <div class="flex flex-row">
+        -->
        
         <div class=" min-h-screen bg-[#E7F1FF] flex flex-col">
             <div class=" my-auto mx-0 flex flex-col justify-center items-center">
@@ -21,11 +22,12 @@
                             <div class="flex flex-col gap-3">
                                 <div class="tz_form_control">
                                     <label for="email">Email Address</label>
-                                    <input class="form_input" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="email" required>
+                                    <input class="form_input_new"  @change="validateEmail" type="email" name="email" id="email" placeholder="johndoe@gmail.com" v-model="email" required>
                                 </div>
+                                <span v-if="emailError" style="color: red">{{ emailError }}</span>
                             </div>
                             <Alert :type="'danger'" :message="`${error}`" v-if="error"/>
-                            <button type="submit" class=" bg-tz_blue text-white font-medium p-3 rounded-full">Send Reset Link</button>
+                            <button type="submit" class=" bg-tz_blue text-white font-medium p-3 rounded-full" :disabled="emailError">Send Reset Link</button>
                             <!-- <LoaderButton type="button" @click="sendResetLink"  :buttonText="loading ? 'Loading...' : 'Send Reset Link'" :loading="loading"/> -->
                         </form>
                 </div>
@@ -60,12 +62,22 @@ export default {
             error: '',
             loading: false,
             email: '',
-
             message: false,
+            emailError: ''
 
         };
     },
     methods: {
+
+        validateEmail() {
+            const emailPattern =
+                /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailPattern.test(this.email)) {
+                this.emailError = 'Invalid email format';
+            } else {
+                this.emailError = '';
+            }
+        },
 
         async sendResetLink(){
             this.loading = true;
@@ -90,6 +102,10 @@ export default {
 <style scoped>
     .tz_form_control{
         @apply flex flex-col justify-start text-start 
+    }
+
+    .form_input_new{
+        @apply rounded-xl border border-[#666666] bg-transparent p-3
     }
 
     .wallpaper{
