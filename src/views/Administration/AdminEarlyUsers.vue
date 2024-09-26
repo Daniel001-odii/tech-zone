@@ -34,7 +34,7 @@
                         <tr v-for="(user, user_id) in users" :key="user_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
-                                    <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <input :value="user.email" v-model="selectedEmails" id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                 </div>
                             </td>
@@ -54,6 +54,9 @@
                         </tr>
                     </tbody>
                 </table>
+
+                {{ selectedEmails }}
+                {{ isChecked }}
                 <!-- <button  type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">User profile</button> -->
                 
             </div>
@@ -79,6 +82,9 @@ export default {
             },
             getDay,
             format,
+
+            selectedEmails: [],
+            isChecked: false,
         }
     },
     methods: {
@@ -90,6 +96,11 @@ export default {
             return `${month} - ${day}`
         },
 
+
+        selectUser(user){
+            this.selected_users.push(user.email)
+        },
+
         async getUsers(){
             try{
                 const response = await axios.get('/admin/early_users/all', { headers: this.headers });
@@ -97,6 +108,17 @@ export default {
             }catch(error){
                 this.error = error;
             }
+        },
+
+        async sendBulkEmail(){
+            try{
+                
+                const response = await axios.post('/bulk_email', { emails: this.selectedEmails}, { headers: this.headers });
+                console.log(" respinse from sent emails: ", response)
+
+            }catch(error){{
+                this.error = error;
+            }}
         }
     },
 
