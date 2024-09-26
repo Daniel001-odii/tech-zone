@@ -4,16 +4,16 @@
         <!-- LEFT SIDE BAR  -->
         <div class=" w-[350px] h-full flex flex-col bg-[#27323F]  dark:bg-[#1f2a36] dark:text-white p-3 items-center">
             <img src="../../../public/apex-tek-white.svg" class=" w-[150px] mt-14">
-            <div class=" mt-[100px] flex flex-col gap-3 text-white w-full h-full overflow-y-scroll">
+            <div class=" mt-[100px] flex flex-col gap-3 text-white w-full h-full overflow-y-auto">
 
                 <RouterLink to="/admin/dashboard" class="side_nav_item" :class="{ 'active_page': isDashboard }">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </RouterLink>
 
-                <RouterLink to="/admin/settings" class="side_nav_item" :class="{ 'active_page': isSettings }">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
+                <RouterLink to="/admin/waitlist" class="side_nav_item">
+                    <i class="bi bi-people"></i>
+                    <span>Early Users</span>
                 </RouterLink>
 
                 <RouterLink to="#" class="side_nav_item text-gray-500">
@@ -60,6 +60,11 @@
                     <i class="bi bi-exclamation-triangle"></i>
                     <span>Alerts</span>
                 </RouterLink>
+
+                <RouterLink to="/admin/settings" class="side_nav_item" :class="{ 'active_page': isSettings }">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </RouterLink>
             </div>
        
         </div>
@@ -90,7 +95,7 @@
             </div>
 
             <!-- PAGE CONTENT -->
-            <div class="flex flex-col h-full w-full overflow-y-scroll">
+            <div class="flex flex-col h-full w-full overflow-y-scroll p-8">
                 
                 <router-view></router-view>
 

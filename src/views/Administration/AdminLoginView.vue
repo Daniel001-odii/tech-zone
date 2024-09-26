@@ -5,7 +5,8 @@
     
         <div class="flex flex-row">
             <div class=" h-screen w-full lg:w-3/6 flex flex-col justify-center items-center dark:bg-[#27323F] dark:text-white">
-                <Alert :type="'danger'" :message="`${error}`" v-if="error"/>
+                <!-- <Alert :type="'danger'" :message="`${error}`" v-if="error"/> -->
+                <p v-if="error" class="text-red-500 py-3">{{error}}</p>
                 <div class=" w-fit p-8" v-if="login_stage == 0">
                         <div class="text-start  w-full mb-5">
                             <h1 class="text-3xl font-bold">Welcome back</h1>
@@ -32,7 +33,7 @@
                                 </div>
                                 <RouterLink to="/password/forgot">Forgot password ?</RouterLink>
                             </div>
-                            <LoaderButton  :buttonText="loading ? 'Loading...' : 'Continue'" :loading="loading"/>
+                            <LoaderButton @clicked="login"  :buttonText="loading ? 'Loading...' : 'Continue'" :loading="loading"/>
                                      
                         </form>
                 </div>

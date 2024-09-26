@@ -26,7 +26,7 @@
     methods: {
       handleClick() {
         if (!this.loading) {
-          this.$emit('click');
+          this.$emit('clicked');
         }
       },
     },

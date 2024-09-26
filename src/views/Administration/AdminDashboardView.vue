@@ -5,6 +5,14 @@
         <!-- TOP SIDE FOR MAINPAGE -->
         <div class="flex flex-row flex-wrap gap-3 mt-6">
             <AdminStat class=" bg-purple-100"
+            :title="'Early Users in Waitlist'"
+            :value="count.users"
+            :iconColor="'bg-yellow-500'"
+            >
+                <i class="bi bi-person-check"></i>
+            </AdminStat>
+
+            <AdminStat class=" bg-purple-100"
             :title="'Total Registered Users'"
             :value="count.users"
             :iconColor="'bg-purple-500'"

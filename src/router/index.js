@@ -61,6 +61,7 @@ import BillingsAndOverviewPageView from '@/views/Employers/BillingsAndOverviewPa
 import SearchPageView from '@/views/Employers/SearchPageView.vue';
 
 import EmailVerificationView from '@/views/EmailVerificationView.vue'
+import AdminEarlyUsers from '@/views/Administration/AdminEarlyUsers.vue'
 
 
 
@@ -265,6 +266,7 @@ const routes = [
     component: AdminTemplateView,
     children: [
       { path: "dashboard", component: AdminDashboardView, meta: { title: 'admin dashboard' } },
+      { path: "waitlist", component: AdminEarlyUsers, meta: { title: 'admin dashboard' } },
       { path: "settings", component: AdminSettingsView, meta: { title: 'admin settings' } },
     ],
     meta: { requiresAdminAuth: true, role: 'admin' }
