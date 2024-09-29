@@ -67,6 +67,10 @@ const options = {
   // You can set your default options here...
 };
 
+
+import "quill/dist/quill.snow.css";
+
+
 // IMPORT PRIMEVUE ACCORDION
 // app.use(PrimeVue, {
 //   unstyled: true

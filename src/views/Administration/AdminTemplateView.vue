@@ -4,19 +4,19 @@
         <!-- LEFT SIDE BAR  -->
         <div class=" w-[350px] h-full flex flex-col bg-[#27323F]  dark:bg-[#1f2a36] dark:text-white p-3 items-center">
             <img src="../../../public/apex-tek-white.svg" class=" w-[150px] mt-14">
-            <div class=" mt-[100px] flex flex-col gap-3 text-white w-full h-full overflow-y-auto">
+            <div class=" mt-[100px] flex flex-col gap-3 text-white w-full overflow-y-auto">
 
                 <RouterLink to="/admin/dashboard" class="side_nav_item" :class="{ 'active_page': isDashboard }">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </RouterLink>
 
-                <RouterLink to="/admin/waitlist" class="side_nav_item">
+                <RouterLink to="/admin/waitlist" class="side_nav_item" :class="{ 'active_page': isEarlyUsers }">
                     <i class="bi bi-people"></i>
                     <span>Early Users</span>
                 </RouterLink>
 
-                <RouterLink to="#" class="side_nav_item text-gray-500">
+                <RouterLink to="#" class="side_nav_item text-gray-500" :class="{ 'active_page': isUsers }">
                     <i class="bi bi-people"></i>
                     <span>Users</span>
                 </RouterLink>
@@ -81,7 +81,8 @@
                         <div class=" h-[50px] w-[50px] bg-blue-300 rounded-full flex font-bold text-2xl justify-center items-center text-blue-800">{{ admin.firstname[0] }}{{ admin.lastname[0] }}</div>
                         <div class="flex flex-col">
                             <span class="font-bold">{{ admin.firstname }} {{ admin.lastname }}</span>
-                            <span class="text-blue-500">{{  admin.email  }}</span>
+                            <!-- <span class="text-blue-500">{{  admin.email  }}</span> -->
+                            <span class="bg-yellow-500 text-white py-1 px-3 w-fit text-sm rounded-xl">{{  admin.role  }}</span>
                         </div>
                     </div>
                     <button class=" bg-gray-200 p-4 rounded-full flex justify-center items-center h-10 w-10 dark:bg-tz_light_blue">
@@ -95,7 +96,7 @@
             </div>
 
             <!-- PAGE CONTENT -->
-            <div class="flex flex-col h-full w-full overflow-y-scroll p-8">
+            <div class="flex flex-col w-full overflow-y-auto p-8 h-full">
                 
                 <router-view></router-view>
 
@@ -124,6 +125,12 @@ export default {
     computed: {
         isDashboard() { return this.$route.path.startsWith("/admin/dashboard"); },
         isSettings() { return this.$route.path.startsWith("/admin/settings"); },
+        isEarlyUsers() { return this.$route.path.startsWith("/admin/waitlist"); },
+        isUsers() { return this.$route.path.startsWith("/admin/users"); },
+        isEmployers() { return this.$route.path.startsWith("/admin/employers"); },
+        isJobs() { return this.$route.path.startsWith("/admin/jobs"); },
+        isContracts() { return this.$route.path.startsWith("/admin/contracts"); },
+        
     },
     methods:{
         logout(){
@@ -167,6 +174,6 @@ export default {
 }
 
 .active_page{
-    @apply bg-tz_light_blue font-bold text-blue-300
+    @apply bg-tz_blue font-bold text-white
 }
 </style>
