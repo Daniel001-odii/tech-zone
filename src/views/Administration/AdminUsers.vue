@@ -1,4 +1,7 @@
 <template>
+    
+    
+
     <Modal v-show="email_compose_modal"
         :name="'Compose Bulk Email'"
         :modal_active="true"
@@ -41,11 +44,11 @@
     </Modal>
 
     <h1 class="text-3xl font-bold">All Users ({{ this.response.total }})</h1>
-    <div>
+    <div class="w-full h-full flex items-center justify-center" v-if="loading">
+        <SpinnerComponent/>
+    </div>
+    <div v-else>
         <div class=" mt-8">
-    
-    
-
             <p class="text-red-500">{{ error }}</p>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
 
@@ -170,10 +173,15 @@ import "quill/dist/quill.bubble.css";
 import { RouterLink } from 'vue-router';
 // import "quill/dist/quill.snow.css";
 
+import FullPageLoading from '@/components/FullPageLoading.vue';
+import SpinnerComponent from '@/components/SpinnerComponent.vue';
+
 export default {
     name: "AdminUsers",
     components: {
         Modal,
+        FullPageLoading,
+        SpinnerComponent,
     },
     data(){
         return {
@@ -207,6 +215,8 @@ export default {
             editor: null,
             modelValue: '',
             readableHTML: '',
+
+            loading: false,
         }
     },
     methods: {
@@ -288,14 +298,16 @@ export default {
 
         async getUsers(){
             try{
+                this.loading = true;
                 const response = await axios.get(`/admin/users/all?limit=${this.page_limit}`, { headers: this.headers });
                 this.users = response.data.users;
                 this.response = response.data;
-
+                this.loading = false;
                 this.users.map(user =>{this.emails.push(user.email)})
                 // this.emails = this.users.map(user =>{user})
             }catch(error){
                 this.error = error;
+                this.loading = false;
             }
         },
 

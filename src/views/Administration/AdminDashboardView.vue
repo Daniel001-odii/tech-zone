@@ -224,6 +224,7 @@ export default {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
             },
+            loading: false,
         }
     },
 

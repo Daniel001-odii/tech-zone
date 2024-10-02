@@ -40,7 +40,10 @@
       
     </Modal>
     <h1 class="text-3xl font-bold">Early Users ({{ this.response.total }})</h1>
-    <div>
+    <div class="w-full h-full flex items-center justify-center" v-if="loading">
+        <SpinnerComponent/>
+    </div>
+    <div v-else>
         <div class=" mt-8">
     
             <div class="flex flex-row w-full mt-6 p-5 items-center justify-between bg-gray-800 bg-opacity-80 rounded-md border-opacity-10">
@@ -146,12 +149,14 @@ import { useToast } from 'vue-toastification';
 import Quill from "quill";
 // import "quill/dist/quill.core.css";
 import "quill/dist/quill.bubble.css";
+import SpinnerComponent from '@/components/SpinnerComponent.vue';
 // import "quill/dist/quill.snow.css";
 
 export default {
     name: "AdminEarlyUsers",
     components: {
         Modal,
+        SpinnerComponent
     },
     data(){
         return {
@@ -185,6 +190,7 @@ export default {
             editor: null,
             modelValue: '',
             readableHTML: '',
+            loading: false,
         }
     },
     methods: {
@@ -266,14 +272,17 @@ export default {
 
         async getUsers(){
             try{
+                this.loading = true;
                 const response = await axios.get(`/admin/early_users/all?limit=${this.page_limit}`, { headers: this.headers });
                 this.users = response.data.users;
                 this.response = response.data;
 
-                this.users.map(user =>{this.emails.push(user.email)})
+                this.users.map(user =>{this.emails.push(user.email)});
+                this.loading = false;
                 // this.emails = this.users.map(user =>{user})
             }catch(error){
                 this.error = error;
+                this.loading = false;
             }
         },
 

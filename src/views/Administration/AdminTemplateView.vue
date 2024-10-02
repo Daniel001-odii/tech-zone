@@ -80,7 +80,7 @@
                     <div class="flex flex-row gap-3 justify-center items-center">
                         <div class=" size-[40px] bg-blue-300 rounded-full flex font-bold justify-center items-center text-blue-800">{{ admin_initials }}</div>
                         <div class="flex flex-col">
-                            <div class="font-bold">{{ admin.firstname }} {{ admin.lastname }}   <span class="  ml-3bg-yellow-500 text-white py-1 px-3 w-fit text-sm rounded-xl">{{  admin.role  }}</span></div>
+                            <div class="font-bold">{{ admin.firstname }} {{ admin.lastname }}   <span class=" bg-yellow-500 text-white py-1 px-3 w-fit text-sm rounded-xl">{{  admin.role  }}</span></div>
                             <span class="text-blue-500 text-sm">{{  admin.email  }}</span>
                            
                         </div>

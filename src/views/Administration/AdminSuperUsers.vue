@@ -56,12 +56,12 @@
       
     </Modal>
 
-    <h1 class="text-3xl font-bold">All Administrators ({{ this.response.total }})</h1>
-    <div>
+    <h1 class="text-3xl font-bold">All Administrators ({{ user_count}})</h1>
+    <div class="w-full h-full flex items-center justify-center" v-if="loading">
+        <SpinnerComponent/>
+    </div>
+    <div v-else>
         <div class=" mt-8">
-    
-    
-
             <p class="text-red-500">{{ error }}</p>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
 
@@ -69,30 +69,24 @@
             <div class="flex py-5 w-full items-end justify-end">
                 <button class="btn" @click="add_new_user_modal = !add_new_user_modal">+ Add New User</button>
             </div>
-            <div class="relative overflow-x-auto">
+            <div class="relative overflow-x-auto h-[70vh]">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="p-4">
+                               <!--  <th scope="col" class="p-4">
                                     <div class="flex items-center">
                                         <input id="checkbox-all-search" @change="selectAllEmails($event)"  type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
                                     </div>
-                                </th>
+                                </th> -->
                                 <th scope="col" class="px-6 py-3 ">
                                     Username
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Email
                                 </th>
-                                <!-- <th scope="col" class="px-6 py-3">
-                                    Title
-                                </th>
                                 <th scope="col" class="px-6 py-3">
-                                    State
-                                </th> -->
-                                <th scope="col" class="px-6 py-3">
-                                    Joined
+                                    Role
                                 </th>
                                
                                 <th scope="col" class="px-6 py-3">
@@ -101,13 +95,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(user, user_id) in employers" :key="user_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4">
+                            <tr v-for="(user, user_id) in administrative_users" :key="user_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                               <!--  <td class="w-4 p-4">
                                     <div class="flex items-center">
                                         <input :value="user.email" v-model="selectedEmails" id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                     </div>
-                                </td>
+                                </td> -->
 
                                 <td class="px-6 py-4">
                                     <div class="flex flex-row gap-3 items-center w-fit">
@@ -123,22 +117,55 @@
                                 </td>
 
                                 <td class="px-6 py-4">
-                                    <span v-if="user.createdAt">{{ formattedDate(user.createdAt) }}</span>
-                                    <span v-else>{{ formattedDate(user.created) }}</span>
+                                    <span v-if="user.role == 'admin'" class="bg-red-700 admin_role">{{ user.role }}</span>
+                                    <span v-if="user.role == 'manager'" class="bg-orange-500 admin_role">{{ user.role }}</span>
+                                    <span v-if="user.role == 'moderator'" class="bg-yellow-500 admin_role">{{ user.role }}</span>
+                                    <span v-if="user.role == 'team-lead'" class="bg-blue-500 admin_role">{{ user.role }}</span>
+                                    <span v-if="user.role == 'team-member'" class="bg-gray-500 admin_role">{{ user.role }}</span>
                                 </td>
                         
                                 <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                   <CustomDropdown>
+                                        <template #trigger>
+                                            <button class="">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                        </template>
+                                        <template #menu >
+                                            <div class="dark:bg-gray-700 bg-gray-100">
+                                                <div class="hover:bg-gray-800 p-3 rounded-sm flex flex-row gap-4">
+                                                    <i class="bi bi-person-fill-gear"></i>
+                                                    <span>settings</span>
+                                                </div>
+                                                <div class="hover:bg-gray-800 p-3 rounded-sm flex flex-row gap-4">
+                                                    <i class="bi bi-person-fill-down"></i>
+                                                    <span>restrict</span>
+                                                </div>
+                                                <div class="hover:bg-gray-800 p-3 rounded-sm flex flex-row gap-4 text-red-500">
+                                                    <i class="bi bi-person-fill-x"></i>
+                                                    <span>remove</span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                   </CustomDropdown>
                                 </td>
                             </tr>
                         </tbody>
                 </table> 
             </div>
 
-            <div>page: {{ response.page }} of {{ response.pages}}</div>
+            <div class=" mt-4">
+                <p>Levels/Groups of permission for all administrative levels</p>
+                <ol>
+                    <li>Level One</li>
+                    <li>Level Two</li>
+                    <li>Level Three</li>
+                </ol>
+            </div>
+
 
             <!-- PAGINATION -->
-            <div class="flex flex-row-reverse justify-between p-3 bg-gray-800 bg-opacity-80 rounded-md my-3">
+            <!-- <div class="flex flex-row-reverse justify-between p-3 bg-gray-800 bg-opacity-80 rounded-md my-3">
                 <div class="flex flex-row gap-3">
                     <button class="btn" @click="getPrevUsers"><</button>
                     <button class="btn" @click="getNextUsers">></button>
@@ -153,7 +180,7 @@
                     </select>
                 </div>
                 
-            </div>
+            </div> -->
 
             </div>
             <!-- emails: {{emails}} -->
@@ -174,15 +201,20 @@ import { useToast } from 'vue-toastification';
 
 
 import { RouterLink } from 'vue-router';
+import SpinnerComponent from '@/components/SpinnerComponent.vue';
+import CustomDropdown from '@/components/CustomDropdown.vue';
+
 
 export default {
     name: "AdminSuperUsers",
     components: {
         Modal,
+        SpinnerComponent,
+        CustomDropdown
     },
     data(){
         return {
-            employers: '',
+            administrative_users: '',
             error: '',
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
@@ -222,7 +254,8 @@ export default {
                 role: ''
             },
 
-            invite_error: ''
+            invite_error: '',   
+            user_count: 0,
         }
     },
     methods: {
@@ -265,51 +298,19 @@ export default {
             }
         },
 
-        async getNextUsers(){
-            try{
-                if(this.page < this.response.pages){
-                    this.page ++;
-                    const response = await axios.get(`/admin/employers/all?page=${this.page}&limit=${this.page_limit}`, { headers: this.headers });
-                    this.employers = response.data.employers;
-                    this.response = response.data;
-                    console.log("employers: ", this.employers);
-
-                    this.emails = []
-                    this.employers.map(user =>{this.emails.push(user.email)})
-                }
-               
-            }catch(error){
-                this.error = error;
-            }
-        },
-
-        async getPrevUsers(){
-            try{
-                if(this.page > 0){
-                    this.page --;
-                    const response = await axios.get(`/admin/employers/all?page=${this.page}&limit=${this.page_limit}`, { headers: this.headers });
-                    this.employers = response.data.employers;
-                    this.response = response.data;
-                    console.log("employers: ", this.employers);
-                    this.emails = []
-                    this.employers.map(user =>{this.emails.push(user.email)})
-                }
-               
-            }catch(error){
-                this.error = error;
-            }
-        },
 
         async getUsers(){
             try{
-                const response = await axios.get(`/admin/employers/all?limit=${this.page_limit}`, { headers: this.headers });
-                this.employers = response.data.employers;
+                this.loading = true;
+                const response = await axios.get(`/admin/admins/all?limit=${this.page_limit}`, { headers: this.headers });
+                this.administrative_users = response.data.administrative_users;
                 this.response = response.data;
-
-                this.employers.map(user =>{this.emails.push(user.email)})
-                // this.emails = this.employers.map(user =>{user})
+                this.loading = false;
+                this.user_count = response.data.administrative_users.length
+                // this.emails = this.administrative_users.map(user =>{user})
             }catch(error){
                 this.error = error;
+                this.loading = false;
             }
         },
 
@@ -360,5 +361,7 @@ export default {
 </script>
 
 <style scoped>
-
+.admin_role{
+    @apply  text-white px-2 py-1 rounded-xl;
+}
 </style>

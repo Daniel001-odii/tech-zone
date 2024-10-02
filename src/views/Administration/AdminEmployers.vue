@@ -41,123 +41,123 @@
     </Modal>
 
     <h1 class="text-3xl font-bold">All Employers ({{ this.response.total }})</h1>
-    <div>
-        <div class=" mt-8">
-    
-    
+    <div class="w-full h-full flex items-center justify-center" v-if="loading">
+        <SpinnerComponent/>
+    </div>
+    <div v-else>
+    <div> 
+        <p class="text-red-500">{{ error }}</p>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
 
-            <p class="text-red-500">{{ error }}</p>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="p-4">
+                                <div class="flex items-center">
+                                    <input id="checkbox-all-search" @change="selectAllEmails($event)"  type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                </div>
+                            </th>
 
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-all-search" @change="selectAllEmails($event)"  type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                    </div>
-                                </th>
-
-                                <th scope="col" class="px-6 py-3">
-                                    Username
-                                </th>
-                                
-                                <th scope="col" class="px-6 py-3">
-                                    Email
-                                </th>
-                               
-                                <!-- <th scope="col" class="px-6 py-3">
-                                    Title
-                                </th> -->
-                                <th scope="col" class="px-6 py-3">
-                                    State
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Joined
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Provider
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(user, user_id) in employers" :key="user_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input :value="user.email" v-model="selectedEmails" id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
-
-                                <td class="px-6 py-4">
-                                    
-                                    <RouterLink target="_blank" :to="'#'" class=" hover:text-blue-500 hover:underline flex flex-row gap-3 items-center">
-                                        <img :src="user.profile.image_url" class="size-[30px] rounded-full"/>
-                                        <span>{{ user.username }}</span>
-                                     
-                                    </RouterLink>
-                                </td>
-
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-row gap-3 items-center">
-                                       
-                                        <span> {{ user.email }} </span>
-                                    </div>
-                                </td>
-
-                               
-
-                                <!-- <td class="px-6 py-4">
-                                    {{ user.profile.title }}
-                                </td> -->
-
-                                <td class="px-6 py-4">
-                                    <span v-if="user.profile.location">{{ user.profile.location.state }}</span>
-                                    <span v-else>-</span>
-                                </td>
-
-                                <td class="px-6 py-4">
-                                <span v-if="user.createdAt">{{ formattedDate(user.createdAt) }}</span>
-                                <span v-else>{{ formattedDate(user.created) }}</span>
-                                </td>
+                            <th scope="col" class="px-6 py-3">
+                                Username
+                            </th>
                             
-                                <td class="px-6 py-4">
-                                {{ user.provider}}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                </table> 
+                            <th scope="col" class="px-6 py-3">
+                                Email
+                            </th>
+                            
+                            <!-- <th scope="col" class="px-6 py-3">
+                                Title
+                            </th> -->
+                            <th scope="col" class="px-6 py-3">
+                                State
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Joined
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Provider
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(user, user_id) in employers" :key="user_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="w-4 p-4">
+                                <div class="flex items-center">
+                                    <input :value="user.email" v-model="selectedEmails" id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4">
+                                
+                                <RouterLink target="_blank" :to="'#'" class=" hover:text-blue-500 hover:underline flex flex-row gap-3 items-center">
+                                    <img :src="user.profile.image_url" class="size-[30px] rounded-full"/>
+                                    <span>{{ user.username }}</span>
+                                    
+                                </RouterLink>
+                            </td>
+
+                            <td class="px-6 py-4">
+                                <div class="flex flex-row gap-3 items-center">
+                                    
+                                    <span> {{ user.email }} </span>
+                                </div>
+                            </td>
+
+                            
+
+                            <!-- <td class="px-6 py-4">
+                                {{ user.profile.title }}
+                            </td> -->
+
+                            <td class="px-6 py-4">
+                                <span v-if="user.profile.location">{{ user.profile.location.state }}</span>
+                                <span v-else>-</span>
+                            </td>
+
+                            <td class="px-6 py-4">
+                            <span v-if="user.createdAt">{{ formattedDate(user.createdAt) }}</span>
+                            <span v-else>{{ formattedDate(user.created) }}</span>
+                            </td>
+                        
+                            <td class="px-6 py-4">
+                            {{ user.provider}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                            </td>
+                        </tr>
+                    </tbody>
+            </table> 
+        </div>
+
+        <div>page: {{ response.page }} of {{ response.pages}}</div>
+
+        <!-- PAGINATION -->
+        <div class="flex flex-row-reverse justify-between p-3 bg-gray-800 bg-opacity-80 rounded-md my-3">
+            <div class="flex flex-row gap-3">
+                <button class="btn" @click="getPrevUsers"><</button>
+                <button class="btn" @click="getNextUsers">></button>
             </div>
 
-            <div>page: {{ response.page }} of {{ response.pages}}</div>
-
-            <!-- PAGINATION -->
-            <div class="flex flex-row-reverse justify-between p-3 bg-gray-800 bg-opacity-80 rounded-md my-3">
-                <div class="flex flex-row gap-3">
-                    <button class="btn" @click="getPrevUsers"><</button>
-                    <button class="btn" @click="getNextUsers">></button>
-                </div>
-
-                <div class="flex flex-row gap-3 justify-center items-center">
-                    <p>Records per page:</p>
-                    <select @change="getUsers" v-model="page_limit" class="bg-gray-300 text-black">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                </div>
-                
+            <div class="flex flex-row gap-3 justify-center items-center">
+                <p>Records per page:</p>
+                <select @change="getUsers" v-model="page_limit" class="bg-gray-300 text-black">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
             </div>
+            
+        </div>
 
-            </div>
+        </div>
             <!-- emails: {{emails}} -->
 
         </div>
@@ -178,12 +178,14 @@ import Quill from "quill";
 // import "quill/dist/quill.core.css";
 import "quill/dist/quill.bubble.css";
 import { RouterLink } from 'vue-router';
+import SpinnerComponent from '@/components/SpinnerComponent.vue';
 // import "quill/dist/quill.snow.css";
 
 export default {
     name: "AdminEmployers",
     components: {
         Modal,
+        SpinnerComponent,
     },
     data(){
         return {
@@ -217,6 +219,7 @@ export default {
             editor: null,
             modelValue: '',
             readableHTML: '',
+            loading: false,
         }
     },
     methods: {
@@ -298,14 +301,17 @@ export default {
 
         async getUsers(){
             try{
+                this.loading = true;
                 const response = await axios.get(`/admin/employers/all?limit=${this.page_limit}`, { headers: this.headers });
                 this.employers = response.data.employers;
                 this.response = response.data;
 
-                this.employers.map(user =>{this.emails.push(user.email)})
+                this.employers.map(user =>{this.emails.push(user.email)});
+                this.loading = false;
                 // this.emails = this.employers.map(user =>{user})
             }catch(error){
                 this.error = error;
+                this.loading = false;
             }
         },
 
