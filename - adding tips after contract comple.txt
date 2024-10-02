@@ -1,0 +1,24 @@
+- adding tips after contract completion
+
+indicate number of workable hours per days, workable days per week and number of weeks worked for each month
+
+taskwatch disables once max workable hours has been exceeded..
+
+
+5 days per week.. calculate on workable durations....
+
+
+
+if the job is been declined, 
+the employer should provide more reason why the clock-in was declined
+
+- do not allow contract budget modified after acceptance... (done)
+
+before contracts can be paused..
+employers should confirm for already worked days or times...
+
+
+camera source idea for custom verification
+https://kmtabish.medium.com/access-devices-camera-from-static-html-page-using-javascript-camera-api-7b0117f4e2db
+
+

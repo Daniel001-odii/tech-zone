@@ -4,13 +4,13 @@
 
         <!-- TOP SIDE FOR MAINPAGE -->
         <div class="flex flex-row flex-wrap gap-3 mt-6">
-            <AdminStat class=" bg-purple-100"
+           <!--  <AdminStat class=" bg-purple-100"
             :title="'Early Users in Waitlist'"
             :value="count.users"
             :iconColor="'bg-yellow-500'"
             >
                 <i class="bi bi-person-check"></i>
-            </AdminStat>
+            </AdminStat> -->
 
             <AdminStat class=" bg-purple-100"
             :title="'Total Registered Users'"
@@ -211,7 +211,7 @@ export default {
 
     data(){
         return{
-            count: '',
+            count: {},
             admin: '',
 
             jobs: '',
@@ -219,6 +219,7 @@ export default {
             applications: '',
             contracts: '',
             users: '',
+            users_count: 0,
 
             headers: {
                 Authorization: `JWT ${localStorage.getItem('life-gaurd')}`
@@ -255,7 +256,8 @@ export default {
             try{
                 const response = await axios.get(`${this.api_url}/admin/users/all`, { headers});
                 this.users = response.data.users;
-                // console.log(" admin users :", this.users)
+                this.users_count = response.data.total;
+                console.log(" users :", response.data)
             }catch(error){
 
             }

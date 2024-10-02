@@ -6,7 +6,7 @@
     <div v-if="sent_verification_mail" class="p-12 rounded-lg bg-white dark:bg-gray-800 max-w-[600px] text-center flex flex-col gap-4 justify-center items-center">
         <i class="bi bi-send-check-fill text-6xl text-green-300"></i>
         <h1 class="text-3xl font-extrabold">Verification Email Sent</h1>
-        <p>A verification email has been sent to <b>sample@mail.com</b>. Please check your mailbox to verify your account before you can continue</p>
+        <p>A verification email has been sent to <b>{{  user.email }}</b>. Please check your mailbox to verify your account before you can continue</p>
         <small class="text-blue-300">Please kindly refresh the browser after verifying your email.</small>
         <!-- <button class="btn w-fit mt-4">Send verification email</button> -->
     </div>
@@ -200,13 +200,13 @@
 </div>
 
  <!-- ACCOUNT WARNINGS -->
- <div v-if="user && user.role == 'user' && !user.settings.KYC.is_verified" class="p-3 bg-red-500 text-white flex flex-row flex-wrap justify-between items-center">
-    <div class="container">
+ <div v-if="user && user.role == 'user' && !user.settings.KYC.is_verified" class="p-3 px-8 bg-red-500 bg-opacity-20 text-red-500  flex flex-row gap-8 items-center justify-between">
+    <div class="flex flex-row items-center">
         <i class="bi bi-exclamation-triangle-fill mr-3"></i>
         <span>Please verify your account to avoid account restriction</span>
     </div>
     <RouterLink to="/in/settings?tab=verification">
-        <button class="p-2 border rounded-md">Verify now</button>
+        <button class="p-2 rounded-md underline">Verify now</button>
     </RouterLink>
 </div>
 

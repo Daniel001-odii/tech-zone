@@ -109,15 +109,23 @@
         },
         methods: {
            async login(){
-            this.loading = false;
+           
             try{
-                const response = await axios.post(`${this.api_url}/login/admin`, this.form_data);
+                this.loading = true;
+                const response = await axios.post(`/login/admin`, this.form_data);
                 console.log("login response :", response);
                 this.token = response.data.token;
-                this.login_stage = 1;
+                if(response.data.user.role == 'admin'){
+                    this.login_stage = 1;
+                    this.$route.query.await_otp = true;
+                } else {
+                    localStorage.setItem('life-gaurd', this.token);
+                    this.$router.push('/admin/dashboard')
+                }
+               
                 this.loading = false;
             }catch(error){
-                console.log(error);
+                console.log("error in login: ", error);
                 this.error = error.response.data.message;
                 this.loading = false;
             }
@@ -160,6 +168,14 @@
 
           
     
+        },
+
+        mounted(){
+          /*   if( this.$route.query.await_otp = true ) {
+                this.login_stage = 1
+            } else {
+                this.login_stage = 0;
+            } */
         },
     
         computed:{
