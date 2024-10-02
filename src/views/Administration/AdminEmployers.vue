@@ -59,15 +59,18 @@
                                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
                                     </div>
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Email
-                                </th>
+
                                 <th scope="col" class="px-6 py-3">
                                     Username
                                 </th>
+                                
                                 <th scope="col" class="px-6 py-3">
-                                    Title
+                                    Email
                                 </th>
+                               
+                                <!-- <th scope="col" class="px-6 py-3">
+                                    Title
+                                </th> -->
                                 <th scope="col" class="px-6 py-3">
                                     State
                                 </th>
@@ -92,28 +95,35 @@
                                 </td>
 
                                 <td class="px-6 py-4">
-                                    <div class="flex flex-row gap-3 items-center">
+                                    
+                                    <RouterLink target="_blank" :to="'#'" class=" hover:text-blue-500 hover:underline flex flex-row gap-3 items-center">
                                         <img :src="user.profile.image_url" class="size-[30px] rounded-full"/>
-                                        <span> {{ user.email }} </span>
-                                    </div>
-                                </td>
-
-                                <td class="px-6 py-4">
-                                    <RouterLink target="_blank" :to="'#'" class=" hover:text-blue-500 hover:underline">
-                                        {{ user.username }}
+                                        <span>{{ user.username }}</span>
+                                     
                                     </RouterLink>
                                 </td>
 
                                 <td class="px-6 py-4">
+                                    <div class="flex flex-row gap-3 items-center">
+                                       
+                                        <span> {{ user.email }} </span>
+                                    </div>
+                                </td>
+
+                               
+
+                                <!-- <td class="px-6 py-4">
                                     {{ user.profile.title }}
+                                </td> -->
+
+                                <td class="px-6 py-4">
+                                    <span v-if="user.profile.location">{{ user.profile.location.state }}</span>
+                                    <span v-else>-</span>
                                 </td>
 
                                 <td class="px-6 py-4">
-                                    {{ user.location }}
-                                </td>
-
-                                <td class="px-6 py-4">
-                                {{ formattedDate(user.createdAt) }}
+                                <span v-if="user.createdAt">{{ formattedDate(user.createdAt) }}</span>
+                                <span v-else>{{ formattedDate(user.created) }}</span>
                                 </td>
                             
                                 <td class="px-6 py-4">

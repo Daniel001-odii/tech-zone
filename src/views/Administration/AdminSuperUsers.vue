@@ -80,10 +80,10 @@
                                     </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3 ">
-                                    Email
+                                    Username
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Username
+                                    Email
                                 </th>
                                 <!-- <th scope="col" class="px-6 py-3">
                                     Title
@@ -111,19 +111,20 @@
 
                                 <td class="px-6 py-4">
                                     <div class="flex flex-row gap-3 items-center w-fit">
-                                        <img :src="user.profile.image_url" class="size-[30px] rounded-full"/>
-                                        <span> {{ user.email }} </span>
+                                        <!-- <img :src="user.profile.image_url" class="size-[30px] rounded-full"/> -->
+                                        <span> {{ user.username }} </span>
                                     </div>
                                 </td>
 
                                 <td class="px-6 py-4">
                                     <RouterLink target="_blank" :to="'#'" class=" hover:text-blue-500 hover:underline">
-                                        {{ user.username }}
+                                        {{ user.email }}
                                     </RouterLink>
                                 </td>
 
                                 <td class="px-6 py-4">
-                                {{ formattedDate(user.createdAt) }}
+                                    <span v-if="user.createdAt">{{ formattedDate(user.createdAt) }}</span>
+                                    <span v-else>{{ formattedDate(user.created) }}</span>
                                 </td>
                         
                                 <td class="px-6 py-4">
