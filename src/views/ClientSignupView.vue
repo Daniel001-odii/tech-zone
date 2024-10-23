@@ -67,8 +67,8 @@
                                     <input type="checkbox" id="agreeWithTOS" v-model="acceptedTOS"> 
                                     <p class="p-0 m-0">
                                         By clicking Sign up or continue with google I agree to  
-                                        <RouterLink class="text-tz_blue" to="#">Tech-zone Terms and Conditions</RouterLink> and
-                                        <RouterLink class="text-tz_blue" to="#">Privacy Policy</RouterLink>
+                                        <RouterLink class="text-tz_blue" to="/privacy">Tech-zone Terms and Conditions</RouterLink> and
+                                        <RouterLink class="text-tz_blue" to="/privacy">Privacy Policy</RouterLink>
                                     </p>
                                 </label>
                             </div>

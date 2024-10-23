@@ -60,8 +60,8 @@
                                     <input type="checkbox" id="agreeWithTOS" v-model="acceptedTOS"> 
                                     <p class="p-0 m-0">
                                         By clicking Sign up or continue with google I agree to  
-                                        <RouterLink class="text-tz_blue" to="#">Tech-zone Terms and Conditions</RouterLink> and
-                                        <RouterLink class="text-tz_blue" to="#">Privacy Policy</RouterLink>
+                                        <RouterLink class="text-tz_blue" to="/privacy">Tech-zone Terms and Conditions</RouterLink> and
+                                        <RouterLink class="text-tz_blue" to="/privacy">Privacy Policy</RouterLink>
                                     </p>
                                 </label>
                             </div>
@@ -148,7 +148,7 @@ export default {
             if (!usernamePattern.test(this.form_data.firstname)) {
                 this.firstnameError = 'firstname must not contain special characters';
             } else {
-                this.firstnameError = '';
+                this.firstnameError = null;
             }
         },
 
@@ -157,7 +157,7 @@ export default {
             if (!usernamePattern.test(this.form_data.lastname)) {
                 this.lastnameError = 'lastname must not contain special characters';
             } else {
-                this.lastnameError = '';
+                this.lastnameError = null;
             }
         },
 
@@ -178,7 +178,7 @@ export default {
             catch(error){
                 this.error = error.response.data.message;
                 // display toast..
-                this.toast.error(response.data.message);
+                this.toast.error(error.response.data.message);
                 console.log("error registering: ", error);
                 this.loading = false;
             }

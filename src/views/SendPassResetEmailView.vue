@@ -27,15 +27,15 @@
                                 <span v-if="emailError" style="color: red">{{ emailError }}</span>
                             </div>
                             <Alert :type="'danger'" :message="`${error}`" v-if="error"/>
-                            <button type="submit" class=" bg-tz_blue text-white font-medium p-3 rounded-full" :disabled="emailError">Send Reset Link</button>
-                            <!-- <LoaderButton type="button" @click="sendResetLink"  :buttonText="loading ? 'Loading...' : 'Send Reset Link'" :loading="loading"/> -->
+                            <!-- <button type="button" @click="sendResetLink" class=" bg-tz_blue text-white font-medium p-3 rounded-full" :disabled="emailError">Send Reset Link</button> -->
+                            <LoaderButton type="button" @click="sendResetLink"  :buttonText="loading ? 'Loading...' : 'Send Reset Link'" :loading="loading"/>
                         </form>
                 </div>
                 <div v-if="message">
-                    <div class="text-center flex flex-col justify-center items-center  w-full mb-5">
+                    <div class="text-center flex flex-col justify-center items-center  w-full mb-5 p-8">
                         <img src="../assets/images/paper-plane.png" class=" h-52">
                             <h1 class="text-3xl font-bold mb-4">Password Reset Link sent!</h1>
-                            <span class="p-5">An email has been sent to {{  email }} with instructions for resetting your password.</span>
+                            <span class="px-8 text-xl">An email with instructions for resetting your password will be sent to {{ email }} if found in our records.</span>
                         </div>
                 </div>
 
