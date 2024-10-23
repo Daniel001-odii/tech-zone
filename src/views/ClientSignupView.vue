@@ -50,6 +50,8 @@
                                     <input class="rounded-xl p-3 dark:bg-transparent w-full" type="text" name="company_name" id="company_name" placeholder="John Doe & Co." v-model="form_data.company_name" required>
                                 </div>
 
+                                <!-- {{ passwordValidation }} -->
+
                                 <div v-if='passHint && passwordValidation.errors.length > 0' class='hints'>
                                     <small v-for='error in passwordValidation.errors'>{{ error }}<br/></small>
                                 </div>
@@ -72,6 +74,7 @@
                             </div>
 
                             <button class="p-3 text-white bg-tz_blue w-full rounded-full flex justify-center items-center" :disabled="!passwordValidation.valid || !acceptedTOS || loading || firstnameError || lastnameError">
+                            <!-- <button class="p-3 text-white bg-tz_blue w-full rounded-full flex justify-center items-center" :disabled="firstnameError"> -->
                                 <span v-if="loading" class="p-3"><SpinnerComponent/></span>
                                 <span v-else>Register</span>
                             </button> 
@@ -131,8 +134,8 @@ export default {
                 company_name: '',
             },
 
-            firstnameError: '',
-            lastnameError: '',
+            firstnameError: null,
+            lastnameError: null,
 
             passHint: false,
             rules: [
@@ -150,7 +153,7 @@ export default {
             if (!usernamePattern.test(this.form_data.firstname)) {
                 this.firstnameError = 'firstname must not contain special characters';
             } else {
-                this.firstnameError = '';
+                this.firstnameError = null;
             }
         },
 
@@ -159,7 +162,7 @@ export default {
             if (!usernamePattern.test(this.form_data.lastname)) {
                 this.lastnameError = 'lastname must not contain special characters';
             } else {
-                this.lastnameError = '';
+                this.lastnameError = null;
             }
         },
 
